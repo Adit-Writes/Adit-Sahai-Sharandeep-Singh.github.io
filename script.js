@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initCategoryFilter();
 });
 
-/* 1. Interactive Card Aura Tracking */
 function initMouseGlow() {
     const cards = document.querySelectorAll('.glass-card');
     cards.forEach(card => {
@@ -14,29 +13,32 @@ function initMouseGlow() {
             const rect = card.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-            blob.style.left = `${x}px`;
-            blob.style.top = `${y}px`;
+            blob.style.left = x + 'px';
+            blob.style.top = y + 'px';
         });
     });
 }
 
-/* 2. Premium Viewport Lift Transitions */
 function initScrollReveal() {
     const reveals = document.querySelectorAll('.reveal');
-    const revealOnScroll = () => {
-        const windowHeight = window.innerHeight;
-        reveals.forEach(element => {
-            const elementTop = element.getBoundingClientRect().top;
-            if (elementTop < windowHeight - 80) {
-                element.classList.add('active');
+
+    reveals.forEach(el => el.classList.remove('active'));
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                observer.unobserve(entry.target);
             }
         });
-    };
-    window.addEventListener('scroll', revealOnScroll);
-    revealOnScroll();
+    }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -60px 0px'
+    });
+
+    reveals.forEach(el => observer.observe(el));
 }
 
-/* 3. Article Category Filter Matrix (Robust Fix) */
 function initCategoryFilter() {
     const buttons = document.querySelectorAll('.category-btn');
     const articles = document.querySelectorAll('.article-feed .article-card');
@@ -44,20 +46,15 @@ function initCategoryFilter() {
     buttons.forEach(button => {
         button.addEventListener('click', (e) => {
             e.preventDefault();
-
-            // Handle active styling
             buttons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
 
             const targetFilter = button.getAttribute('data-filter');
 
-            // Handle visibility directly via block display overrides
             articles.forEach(article => {
                 const articleCategory = article.getAttribute('data-category');
-
                 if (targetFilter === 'all' || articleCategory === targetFilter) {
                     article.style.display = 'block';
-                    // Re-trigger visual fade alignment
                     setTimeout(() => {
                         article.style.opacity = '1';
                         article.style.transform = 'translateY(0)';
