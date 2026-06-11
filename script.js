@@ -1,8 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const observerOptions = {
-    threshold: 0.1
-  };
-
   const observer = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -10,9 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
         observer.unobserve(entry.target);
       }
     });
-  }, observerOptions);
+  }, { threshold: 0.2 });
 
-  document.querySelectorAll('.glass-card').forEach((el) => {
-    observer.observe(el);
-  });
+  document.querySelectorAll('.glass-card').forEach(el => observer.observe(el));
 });
