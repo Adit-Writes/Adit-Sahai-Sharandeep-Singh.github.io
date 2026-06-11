@@ -1,37 +1,68 @@
-body {
-  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-  color: white;
-  font-family: 'Segoe UI', sans-serif;
+/* Professional reset and typography */
+* {
   margin: 0;
-  padding: 20px;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: radial-gradient(circle at top right, #1a1a2e, #0f0c29);
+  color: #e0e0e0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.6;
   min-height: 100vh;
+  padding: 60px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 header {
   text-align: center;
-  padding: 50px 0;
+  margin-bottom: 60px;
+}
+
+header h1 {
+  font-size: 3rem;
+  letter-spacing: -1px;
+  color: #ffffff;
+  margin-bottom: 10px;
 }
 
 nav a {
-  color: #00d2ff;
+  color: #a0a0a0;
   margin: 0 15px;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 500;
+  transition: color 0.3s;
 }
 
+nav a:hover {
+  color: #00d2ff;
+}
+
+/* Elegant Glass Cards */
 .card {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 20px;
-  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 40px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 600px;
   margin: 20px 0;
-  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* This is the key: this forces the cards to be hidden before JS acts */
+.card h2 {
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
 .glass-card {
   opacity: 0;
-  transform: translateY(50px);
-  transition: opacity 1s ease-out, transform 1s ease-out;
+  transform: translateY(40px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
 .glass-card.fade-in {
@@ -40,7 +71,21 @@ nav a {
 }
 
 .book-link {
-  color: #ffcc00;
+  color: #00d2ff;
   text-decoration: none;
-  font-weight: bold;
+  font-weight: 600;
+  transition: border-bottom 0.2s;
+  border-bottom: 1px solid transparent;
+}
+
+.book-link:hover {
+  border-bottom: 1px solid #00d2ff;
+}
+
+ul {
+  list-style: none;
+}
+
+li {
+  margin: 15px 0;
 }
