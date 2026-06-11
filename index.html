@@ -1,9 +1,31 @@
-<section class="glass-card fade-in my-10">
-    <h2 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
-        About the Author
-    </h2>
-    <p class="mt-4 text-slate-300">
-        Adit Sahai is the author of <strong>"Space and Time: The Cosmic Reality"</strong> and 
-        <strong>"Mystery of the Bermuda Triangle"</strong>.
-    </p>
+---
+layout: default
+---
+<header>
+    <h1>Adit Sahai</h1>
+    <nav>
+        <a href="#sports">Sports</a> | 
+        <a href="#politics">Politics</a> | 
+        <a href="#science">Science</a>
+    </nav>
+</header>
+
+<section class="card">
+    <h2>About Me</h2>
+    <p>I am Adit Sahai, author of:</p>
+    <ul>
+        <li><a class="book-link" href="https://evincepub.com/product/space-and-time-the-cosmic-reality/">Space and Time: The Cosmic Reality</a></li>
+        <li><a class="book-link" href="https://www.flipkart.com/bermuda-triangle/p/itm41ff45793d253">The Mystery of the Bermuda Triangle</a></li>
+    </ul>
+</section>
+
+<section>
+    <h2>Latest Articles</h2>
+    {% for post in site.documents %}
+        <article class="card">
+            <h3>{{ post.title }}</h3>
+            <p>{{ post.excerpt }}</p>
+            <a href="{{ post.url }}">Read More</a>
+        </article>
+    {% endfor %}
 </section>
