@@ -21,7 +21,7 @@ window.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
             console.error("Error loading the CMS data:", error);
             // Optional: Show an error on the screen if something goes wrong
-            document.getElementById('main-title').innerText = "Failed to load heading";
+            document.getElementById('heading').innerText = "Failed to load heading";
         });
         
 });
