@@ -1,6 +1,6 @@
 content:
   - name: page
-    label: madarchod
+    label: HELLO
     type: file
     path: docs
     fields:
