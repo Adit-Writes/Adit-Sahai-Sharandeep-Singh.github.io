@@ -1,6 +1,5 @@
-media: media
 content:
-  - name: pages
+  - name: page
     label: Pages
     type: collection
     path: docs
