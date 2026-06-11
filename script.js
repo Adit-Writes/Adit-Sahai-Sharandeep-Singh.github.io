@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
     const observerOptions = {
-        threshold: 0.15, // Triggers when 15% of the element is visible
+        threshold: 0.15,
         rootMargin: "0px 0px -50px 0px"
     };
 
@@ -8,12 +8,11 @@ document.addEventListener("DOMContentLoaded", () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                observer.unobserve(entry.target); // Only animate once
+                observer.unobserve(entry.target);
             }
         });
     }, observerOptions);
 
-    // Grab all elements that need to fade in
     const fadeElements = document.querySelectorAll('.fade-target');
     fadeElements.forEach((el) => {
         observer.observe(el);
