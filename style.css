@@ -32,20 +32,17 @@ nav a:hover {
   border-radius: 15px;
   margin: 20px 0;
   backdrop-filter: blur(10px);
-  transition: transform 0.3s;
+  transition: transform 0.3s, opacity 0.6s ease-out, transform 0.6s ease-out;
+  /* Animation initial state */
+  opacity: 0;
+  transform: translateY(20px);
 }
 
 .card:hover {
   transform: scale(1.02);
 }
 
-/* Animation Hooks for script.js */
-.card {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
+/* Animation Triggered Class */
 .card.fade-in {
   opacity: 1;
   transform: translateY(0);
