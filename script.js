@@ -15,7 +15,7 @@ window.addEventListener('DOMContentLoaded', () => {
             
             // 4. Find your H1 tag and swap its text with the 'Title' value from the CMS
             if (data && data.Title) {
-                document.getElementById('main-title').innerText = data.Title;
+                document.getElementById('heading').innerText = data.Title;
             }
         })
         .catch(error => {
