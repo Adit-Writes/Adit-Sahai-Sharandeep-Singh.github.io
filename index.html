@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adit Sahai | Perspectives & Essays</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=7">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2 family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -13,43 +15,65 @@
         <div class="logo">A.S.</div>
         <div class="nav-links">
             <a href="#about">About</a>
-            <a href="#feed">Articles</a>
+            <a href="#articles">Articles</a>
         </div>
     </nav>
 
     <header id="about" class="hero glass-card">
-        <h1>Adit Sahai</h1>
-        <p class="bio">Documenting perspectives on physics, deep-sea anomalies, and the cosmic fabric of reality through research and essays.</p>
+        <div class="hero-text">
+            <p class="subtitle">Writer & Independent Researcher</p>
+            <h1>Adit Sahai</h1>
+            <p class="bio">Documenting perspectives on cosmic realities, theoretical physics, and deep-sea anomalies through deeply researched essays and commentary.</p>
+        </div>
+        <div class="hero-visual">
+            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80" alt="Cosmic Research Network">
+        </div>
     </header>
 
-    <main id="feed" class="content-feed">
+    <div class="section-divider">
+        <h2>Latest Columns</h2>
+        <div class="gold-line"></div>
+    </div>
+
+    <main id="articles" class="article-feed">
         
-        <article class="card glass-card">
-            <span class="tag">Featured Book</span>
-            <h3>Space and Time: The Cosmic Reality</h3>
-            <p>A journey into the deep cosmos and the fundamental principles that govern our universe.</p>
-            <a href="https://evincepub.com/product/space-and-time-the-cosmic-reality/" target="_blank" class="link">View Book Details →</a>
+        <article class="article-card glass-card">
+            <div class="article-meta">
+                <span class="category">Theoretical Physics</span>
+                <span class="read-time">7 min read</span>
+            </div>
+            <h3 class="article-title">The Illusion of Linear Spacetime</h3>
+            <p class="article-excerpt">How modern quantum anomalies challenge our classical perception of time, moving us closer to a completely unified cosmic model.</p>
+            <div class="article-footer">
+                <span class="date">June 2026</span>
+                <a href="#" class="read-link">Read Full Essay <span class="arrow">→</span></a>
+            </div>
         </article>
 
-        <article class="card glass-card">
-            <span class="tag">Featured Book</span>
-            <h3>The Bermuda Triangle</h3>
-            <p>Uncovering the truth, the myths, and the science behind the world's most infamous stretch of ocean.</p>
-            <a href="https://www.flipkart.com/bermuda-triangle/p/itm41ff45793d253" target="_blank" class="link">View Book Details →</a>
+        <article class="article-card glass-card">
+            <div class="article-meta">
+                <span class="category">Oceanic Anomalies</span>
+                <span class="read-time">5 min read</span>
+            </div>
+            <h3 class="article-title">Bermuda: Decoding the Data Behind the Myth</h3>
+            <p class="article-excerpt">Separating localized magnetic variations and methane hydrate releases from the historical lore surrounding the Atlantic's lethal triangle.</p>
+            <div class="article-footer">
+                <span class="date">May 2026</span>
+                <a href="#" class="read-link">Read Full Essay <span class="arrow">→</span></a>
+            </div>
         </article>
 
-        <article class="card glass-card">
-            <span class="tag">Theoretical Physics • 7 min read</span>
-            <h3>The Illusion of Linear Spacetime</h3>
-            <p>How modern quantum anomalies challenge our classical perception of time, moving us closer to a unified cosmic model.</p>
-            <a href="#" class="link">Read Full Essay →</a>
-        </article>
-
-        <article class="card glass-card">
-            <span class="tag">Oceanic Anomalies • 5 min read</span>
-            <h3>Bermuda: Decoding the Data Behind the Myth</h3>
-            <p>Separating localized magnetic variations and methane hydrate releases from the historical lore surrounding the Atlantic's lethal triangle.</p>
-            <a href="#" class="link">Read Full Essay →</a>
+        <article class="article-card glass-card">
+            <div class="article-meta">
+                <span class="category">Philosophy of Science</span>
+                <span class="read-time">4 min read</span>
+            </div>
+            <h3 class="article-title">Where Paradox Meets Reality</h3>
+            <p class="article-excerpt">An analysis of why human intuition consistently struggles at the boundary events of deep cosmic observation.</p>
+            <div class="article-footer">
+                <span class="date">April 2026</span>
+                <a href="#" class="read-link">Read Full Essay <span class="arrow">→</span></a>
+            </div>
         </article>
 
     </main>
@@ -57,5 +81,7 @@
     <footer class="footer">
         <p>&copy; 2026 Adit Sahai. All Rights Reserved.</p>
     </footer>
+
+    <script src="script.js"></script>
 </body>
 </html>
