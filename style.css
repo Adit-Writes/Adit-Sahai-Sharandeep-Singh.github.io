@@ -142,16 +142,14 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-sp
 /* Glow blob */
 .glow-blob {
     position: absolute;
-    width: 380px;
-    height: 380px;
-    background: radial-gradient(circle, rgba(212,175,55,0.16) 0%, transparent 65%);
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(120,160,255,0.08) 0%, transparent 65%);
     border-radius: 50%;
     pointer-events: none;
     opacity: 0;
-    /* JS sets left/top; this re-centers blob on that point */
     transform: translate(-50%, -50%);
-    transition: opacity 0.3s ease;
-    /* top layer — above everything inside the card */
+    transition: opacity 0.4s ease;
     z-index: 999;
     will-change: left, top;
 }
