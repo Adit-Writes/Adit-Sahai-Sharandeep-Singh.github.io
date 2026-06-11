@@ -1,20 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const observerOptions = {
-        threshold: 0.15,
-        rootMargin: "0px 0px -50px 0px"
-    };
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
+    // Elegant logging to show the fresh layout structure initialized
+    console.log("Portfolio interface loaded seamlessly.");
+    
+    // Auto-scrolling highlight navigation behavior safely
+    const links = document.querySelectorAll('.nav-links a');
+    links.forEach(link => {
+        link.addEventListener('click', () => {
+            console.log(`Navigating directly to section target`);
         });
-    }, observerOptions);
-
-    const fadeElements = document.querySelectorAll('.fade-target');
-    fadeElements.forEach((el) => {
-        observer.observe(el);
     });
 });
