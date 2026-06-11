@@ -6,14 +6,23 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initBackground() {
-    // Orb definitions — only blues, purples, deep magentas. No green, no brown.
+    // Palette: split-complementary anchored in deep indigo.
+    // Cool anchor: indigo, royal blue, violet-purple
+    // Warm complement: amber-gold, burnt orange, deep crimson
+    // Every color is dark-saturated so it glows without looking garish.
     const ORB_CONFIGS = [
-        { size: 72, color: '#1a3a8f', color2: '#0a1f5c', blur: 90,  opacity: 0.85 },
-        { size: 62, color: '#3b1d82', color2: '#1a0d48', blur: 85,  opacity: 0.80 },
-        { size: 58, color: '#0f3472', color2: '#071c42', blur: 95,  opacity: 0.75 },
-        { size: 50, color: '#5a1070', color2: '#2c0838', blur: 80,  opacity: 0.80 },
-        { size: 44, color: '#8b1a6b', color2: '#45083a', blur: 88,  opacity: 0.70 },
-        { size: 54, color: '#1e2a8a', color2: '#0c1450', blur: 92,  opacity: 0.75 },
+        // Cool anchor — indigo
+        { size: 72, color: '#1a2d8f', color2: '#090f3a', blur: 100, opacity: 0.90 },
+        // Cool — royal blue
+        { size: 60, color: '#0e3080', color2: '#06152e', blur: 95,  opacity: 0.85 },
+        // Cool — deep violet
+        { size: 54, color: '#3a1278', color2: '#160840', blur: 90,  opacity: 0.85 },
+        // Warm complement — amber gold
+        { size: 50, color: '#8a5a00', color2: '#3a2000', blur: 88,  opacity: 0.80 },
+        // Warm complement — burnt orange
+        { size: 46, color: '#8a2e00', color2: '#3a1000', blur: 85,  opacity: 0.75 },
+        // Warm complement — deep crimson
+        { size: 56, color: '#7a0a20', color2: '#300008', blur: 92,  opacity: 0.80 },
     ];
 
     const canvas = document.createElement('div');
@@ -82,8 +91,8 @@ function initBackground() {
         state.oy = state.y;
         state.tx = Math.random() * (vw  * 1.3) - vw  * 0.15;
         state.ty = Math.random() * (vh  * 1.3) - vh  * 0.15;
-        // Travel time: 18–36 seconds so movement feels slow and dreamy
-        state.duration = 18000 + Math.random() * 18000;
+        // Travel time: 24–48 seconds — slow enough that warm/cool shifts feel deliberate
+        state.duration = 24000 + Math.random() * 24000;
         state.elapsed  = 0;
     }
 
@@ -157,10 +166,13 @@ function initMouseGlow() {
             const g = parseInt(hex.slice(3,5), 16);
             const b = parseInt(hex.slice(5,7), 16);
 
-            // Weight: closer orb = more color influence, capped so it stays subtle
+            // Weight: closer orb = more color influence
+            // Warm colors (high R) get a slight boost since they're darker pigments
             const maxDist = Math.sqrt(window.innerWidth**2 + window.innerHeight**2);
             const weight  = Math.max(0, 1 - (minDist / (maxDist * 0.55)));
-            const alpha   = 0.07 + weight * 0.09; // range: 0.07 → 0.16 (subtle)
+            const isWarm  = r > g + 30; // orange/red/gold orbs
+            const peak    = isWarm ? 0.14 : 0.12;
+            const alpha   = 0.06 + weight * peak;
 
             blob.style.background =
                 `radial-gradient(circle, rgba(${r},${g},${b},${alpha.toFixed(3)}) 0%, transparent 65%)`;
