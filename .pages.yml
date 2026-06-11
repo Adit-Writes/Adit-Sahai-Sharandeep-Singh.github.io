@@ -1,6 +1,6 @@
 content:
   - name: pages
-    label: Pages
+    label: Page
     type: collection
     path: docs
     fields:
