@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initCategoryFilter();
 });
 
-/* 1. Mouse Aura Glow */
+/* 1. Interactive Card Aura Tracking */
 function initMouseGlow() {
     const cards = document.querySelectorAll('.glass-card');
     cards.forEach(card => {
@@ -20,7 +20,7 @@ function initMouseGlow() {
     });
 }
 
-/* 2. Scroll Animations */
+/* 2. Premium Viewport Lift Transitions */
 function initScrollReveal() {
     const reveals = document.querySelectorAll('.reveal');
     const revealOnScroll = () => {
@@ -36,14 +36,13 @@ function initScrollReveal() {
     revealOnScroll();
 }
 
-/* 3. Live Category Filtering Engine */
+/* 3. Article Category Filter Matrix */
 function initCategoryFilter() {
     const buttons = document.querySelectorAll('.category-btn');
     const articles = document.querySelectorAll('.article-feed .article-card');
 
     buttons.forEach(button => {
         button.addEventListener('click', () => {
-            // Remove active status from all buttons, assign to clicked button
             buttons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
 
