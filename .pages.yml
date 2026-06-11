@@ -1,6 +1,6 @@
 content:
   - name: page
-    label: Page
+    label: madarchod
     type: collection
     path: docs
     fields:
