@@ -1,91 +1,101 @@
-/* Professional reset and typography */
+/* --- Professional Reset --- */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  background: radial-gradient(circle at top right, #1a1a2e, #0f0c29);
-  color: #e0e0e0;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  line-height: 1.6;
-  min-height: 100vh;
-  padding: 60px 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    background: #0a0a0c; /* Deep, premium dark base */
+    color: #e2e2e6;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 80px 20px;
 }
 
+/* --- Typography & Header --- */
 header {
-  text-align: center;
-  margin-bottom: 60px;
+    text-align: center;
+    margin-bottom: 100px;
 }
 
 header h1 {
-  font-size: 3rem;
-  letter-spacing: -1px;
-  color: #ffffff;
-  margin-bottom: 10px;
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: -2px;
+    color: #ffffff;
+    margin-bottom: 20px;
 }
 
 nav a {
-  color: #a0a0a0;
-  margin: 0 15px;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s;
+    color: #888;
+    margin: 0 20px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: color 0.3s ease;
 }
 
 nav a:hover {
-  color: #00d2ff;
+    color: #ffffff;
 }
 
-/* Elegant Glass Cards */
+/* --- Editorial Glass Cards --- */
 .card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 40px;
-  border-radius: 20px;
-  width: 100%;
-  max-width: 600px;
-  margin: 20px 0;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 60px;
+    border-radius: 30px;
+    width: 100%;
+    max-width: 650px;
+    margin: 30px 0;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 .card h2 {
-  color: #ffffff;
-  margin-bottom: 20px;
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    color: #ffffff;
 }
 
+/* Animation trigger */
 .glass-card {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1s cubic-bezier(0.2, 0.8, 0.2, 1), transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .glass-card.fade-in {
-  opacity: 1;
-  transform: translateY(0);
+    opacity: 1;
+    transform: translateY(0);
 }
 
+/* --- Polished Links --- */
 .book-link {
-  color: #00d2ff;
-  text-decoration: none;
-  font-weight: 600;
-  transition: border-bottom 0.2s;
-  border-bottom: 1px solid transparent;
+    color: #00d2ff;
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(0, 210, 255, 0.3);
+    transition: all 0.3s ease;
 }
 
 .book-link:hover {
-  border-bottom: 1px solid #00d2ff;
+    color: #ffffff;
+    border-bottom: 1px solid #ffffff;
 }
 
 ul {
-  list-style: none;
+    list-style: none;
 }
 
 li {
-  margin: 15px 0;
+    margin: 15px 0;
+    font-size: 1.1rem;
 }
