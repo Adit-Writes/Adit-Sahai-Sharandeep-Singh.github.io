@@ -3,67 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adit Sahai | Author & Explorer</title>
-    <link rel="stylesheet" href="style.css?v=5">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Adit Sahai | Perspectives</title>
+    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <nav class="navbar glass-card">
+    <div class="noise-overlay"></div>
+
+    <nav class="navbar glass-card reveal">
         <div class="logo">A.S.</div>
         <div class="nav-links">
             <a href="#about">About</a>
             <a href="#books">Books</a>
+            <a href="#articles">Articles</a>
         </div>
     </nav>
 
-    <header id="about" class="hero glass-card">
-        <div class="hero-text">
-            <p class="subtitle">Author & Researcher</p>
-            <h1>Adit Sahai</h1>
-            <p class="bio">Exploring the boundaries of our universe, from the fundamental fabric of spacetime to the world's most enduring atmospheric anomalies.</p>
-        </div>
-        <div class="hero-visual">
-            <img src="https://images.unsplash.com/photo-1455390582262-044cdead27d8?auto=format&fit=crop&w=800&q=80" alt="Writing Workspace">
+    <header id="about" class="hero glass-card reveal glow-effect">
+        <div class="glow-blob"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <p class="subtitle">Author & Independent Researcher</p>
+                <h1>Adit Sahai</h1>
+                <p class="bio">Documenting perspectives on the fundamental fabric of spacetime and the world's most enduring oceanic anomalies.</p>
+            </div>
+            <div class="hero-visual">
+                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80" alt="Cosmic Background">
+            </div>
         </div>
     </header>
 
-    <div class="section-divider">
+    <div class="section-divider reveal">
         <h2>Featured Works</h2>
         <div class="gold-line"></div>
     </div>
 
-    <section id="books" class="book-grid">
-        
-        <article class="book-card glass-card">
+    <section id="books" class="book-grid reveal">
+        <article class="book-card glass-card glow-effect">
+            <div class="glow-blob"></div>
             <div class="book-image-wrapper">
-                <img src="space-time.jpg" alt="Space and Time Cover" class="book-cover">
+                <img src="space-time.jpg" alt="Space and Time" class="book-cover">
             </div>
             <div class="book-info">
                 <h3>Space and Time</h3>
                 <p class="book-subtitle">The Cosmic Reality</p>
-                <p class="description">A journey into the deep cosmos, demystifying the fundamental principles that govern our universe.</p>
+                <p class="description">A journey into the deep cosmos, demystifying the principles governing our universe.</p>
                 <a href="https://evincepub.com/product/space-and-time-the-cosmic-reality/" class="gold-btn" target="_blank">View Book</a>
             </div>
         </article>
 
-        <article class="book-card glass-card">
+        <article class="book-card glass-card glow-effect">
+            <div class="glow-blob"></div>
             <div class="book-image-wrapper">
-                <img src="bermuda.jpg" alt="The Mystery of the Bermuda Triangle Cover" class="book-cover">
+                <img src="bermuda.jpg" alt="The Bermuda Triangle" class="book-cover">
             </div>
             <div class="book-info">
                 <h3>The Bermuda Triangle</h3>
                 <p class="book-subtitle">The Ultimate Mystery</p>
-                <p class="description">Uncovering the truth, the myths, and the science behind the world's most infamous stretch of ocean.</p>
+                <p class="description">Uncovering the truth, the myths, and the science behind the infamous stretch of ocean.</p>
                 <a href="https://www.flipkart.com/bermuda-triangle/p/itm41ff45793d253" class="gold-btn" target="_blank">View Book</a>
             </div>
         </article>
-
     </section>
 
-    <footer class="footer">
+    <div class="section-divider reveal">
+        <h2>Essays & Perspectives</h2>
+        <div class="gold-line"></div>
+    </div>
+
+    <main id="articles" class="article-feed reveal">
+        
+        <article class="article-card glass-card glow-effect">
+            <div class="glow-blob"></div>
+            <div class="article-meta">
+                <span class="category">Theoretical Physics</span>
+                <span class="read-time">7 min read</span>
+            </div>
+            <h3 class="article-title">The Illusion of Linear Spacetime</h3>
+            <p class="article-excerpt">How modern quantum anomalies challenge our classical perception of time, moving us closer to a completely unified cosmic model.</p>
+            <div class="article-footer">
+                <span class="date">June 2026</span>
+                <a href="#" class="read-link">Read Full Essay <span class="arrow">→</span></a>
+            </div>
+        </article>
+
+        <article class="article-card glass-card glow-effect">
+            <div class="glow-blob"></div>
+            <div class="article-meta">
+                <span class="category">Oceanic Anomalies</span>
+                <span class="read-time">5 min read</span>
+            </div>
+            <h3 class="article-title">Bermuda: Decoding the Data Behind the Myth</h3>
+            <p class="article-excerpt">Separating localized magnetic variations and methane hydrate releases from the historical lore surrounding the Atlantic's lethal triangle.</p>
+            <div class="article-footer">
+                <span class="date">May 2026</span>
+                <a href="#" class="read-link">Read Full Essay <span class="arrow">→</span></a>
+            </div>
+        </article>
+
+    </main>
+
+    <footer class="footer reveal">
         <p>&copy; 2026 Adit Sahai. All Rights Reserved.</p>
     </footer>
 
