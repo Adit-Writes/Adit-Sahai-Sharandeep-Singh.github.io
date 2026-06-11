@@ -4,7 +4,5 @@ content:
     type: collection
     path: docs
     fields:
-      - name: bhosadike
+      - name: Title
         type: string
-      - name: body
-        type: rich-text
