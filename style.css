@@ -8,13 +8,12 @@
     --text-main: #f3f4f6;
     --text-muted: #9ca3af;
     --accent-gold: #d4af37;
-    --gold-bright: #f4e7b4;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
-/* --- Advanced Multi-Layered Background Glows & Shapes --- */
+/* --- Advanced Multi-Layered Geometric Background Colors & Shapes --- */
 body {
     background-color: var(--bg-base);
     color: var(--text-main);
@@ -25,7 +24,7 @@ body {
     overflow-x: hidden;
     position: relative;
     
-    /* Layered organic radial gradient fields to create physical layout depth */
+    /* Layered organic ambient radial fields to simulate depth behind cards */
     background-image: 
         radial-gradient(circle at 85% 15%, var(--glow-cosmic) 0%, transparent 45%),
         radial-gradient(circle at 15% 70%, var(--glow-abyssal) 0%, transparent 50%),
@@ -33,24 +32,22 @@ body {
     background-attachment: fixed;
 }
 
-/* Typography Base Defaults */
 h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-spacing: -0.01em; }
 
-/* --- Dominating Editorial Blog Title Banner --- */
+/* --- Dominating Editorial Title Banner --- */
 .blog-banner {
     text-align: center;
     padding: 70px 20px 20px 20px;
-    margin-bottom: 40px; /* Forcefully yet elegantly shifts everything below it downward */
+    margin-bottom: 40px;
     position: relative;
 }
 
 .main-blog-title {
     font-family: 'Playfair Display', serif;
-    font-size: 5.2rem; /* Massive, high-aura presence */
+    font-size: 5.2rem;
     font-weight: 900;
     letter-spacing: 5px;
     text-transform: uppercase;
-    /* Clean luxury steel metallic text gradient */
     background: linear-gradient(180deg, #ffffff 35%, rgba(255, 255, 255, 0.25) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -62,7 +59,7 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-sp
     font-size: 0.85rem;
     color: var(--accent-gold);
     text-transform: uppercase;
-    letter-spacing: 5px;
+    letter-spacing: 4px;
     font-weight: 600;
     opacity: 0.9;
     margin-bottom: 25px;
@@ -75,7 +72,7 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-sp
     margin: 0 auto;
 }
 
-/* --- Brand Logo Heading (A.S.) --- */
+/* --- Brand Logo Mark (A.S.) --- */
 .logo { 
     font-family: 'Playfair Display', serif; 
     font-size: 1.6rem; 
@@ -85,12 +82,9 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-sp
     background: linear-gradient(135deg, #ffffff 40%, var(--accent-gold) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    cursor: pointer;
-    transition: transform 0.3s ease;
 }
-.logo:hover { transform: scale(1.05); }
 
-/* Obsidian Glass Card Base Architecture */
+/* Glass Architecture */
 .glass-card {
     background: var(--glass-bg);
     backdrop-filter: blur(24px);
@@ -103,7 +97,7 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-sp
     transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
-/* Mouse Move Blur Interaction Layer */
+/* Interactive Cursor Glow */
 .glow-blob {
     position: absolute;
     width: 350px; height: 350px;
@@ -118,111 +112,114 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-sp
 .glass-card:hover .glow-blob { opacity: 1; }
 .glass-card > * { position: relative; z-index: 1; } 
 
-/* Scroll Reveals */
 .reveal {
     opacity: 0;
     transform: translateY(30px);
     transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
 }
-.reveal.active {
-    opacity: 1;
-    transform: translateY(0);
-}
+.reveal.active { opacity: 1; transform: translateY(0); }
 
-/* --- Global Section Alignments --- */
-.navbar, .blog-banner, .hero, .book-grid, .article-feed, .section-divider {
+/* Layout Boundaries */
+.navbar, .blog-banner, .hero, .book-grid, .category-menu, .article-feed, .section-divider {
     width: 100%;
     max-width: 1000px;
     margin-left: auto;
     margin-right: auto;
 }
 
-/* Fixed Glass Navigation bar */
 .navbar { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 20px 40px; 
-    margin-top: 25px; 
-    margin-bottom: 10px; 
-    z-index: 100; 
-    position: sticky; 
-    top: 20px;
+    display: flex; justify-content: space-between; align-items: center; 
+    padding: 20px 40px; margin-top: 25px; margin-bottom: 10px; 
+    z-index: 100; position: sticky; top: 20px;
 }
 .nav-links a { 
-    color: var(--text-main); 
-    text-decoration: none; 
-    margin-left: 30px; 
-    font-size: 0.8rem; 
-    font-weight: 600; 
-    text-transform: uppercase; 
-    letter-spacing: 2px; 
-    transition: color 0.3s, transform 0.3s;
-    display: inline-block;
+    color: var(--text-main); text-decoration: none; margin-left: 30px; 
+    font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; 
+    transition: color 0.3s; display: inline-block;
 }
-.nav-links a:hover { color: var(--accent-gold); transform: translateY(-1px); }
+.nav-links a:hover { color: var(--accent-gold); }
 
-/* About Section Profile Layout */
-.hero { 
-    padding: 50px 60px; 
-    margin-bottom: 70px; 
-    display: flex;
-    align-items: center;
-}
-.hero-content { 
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between; 
-    gap: 50px;
-    width: 100%;
-}
+/* About Section */
+.hero { padding: 50px 60px; margin-bottom: 70px; display: flex; align-items: center; }
+.hero-content { display: flex; align-items: center; justify-content: space-between; gap: 50px; width: 100%; }
 .hero-text { flex: 1.2; }
 .subtitle { color: var(--accent-gold); text-transform: uppercase; letter-spacing: 3px; font-size: 0.75rem; margin-bottom: 12px; font-weight: 600; }
 .hero h1 { font-size: 3.8rem; color: #fff; margin-bottom: 18px; line-height: 1.1; }
 .bio { color: var(--text-muted); font-size: 1.05rem; font-weight: 300; }
-.hero-visual { flex: 0.8; height: 320px; border-radius: 16px; overflow: hidden; border: 1px solid var(--glass-border); box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
+.hero-visual { flex: 0.8; height: 320px; border-radius: 16px; overflow: hidden; border: 1px solid var(--glass-border); }
 .hero-visual img { width: 100%; height: 100%; object-fit: cover; }
 
-/* Sub Section Layout Lines */
 .section-divider { text-align: center; margin-bottom: 40px; margin-top: 50px; }
 .section-divider h2 { font-size: 2.2rem; color: #fff; margin-bottom: 12px; }
 .gold-line { width: 60px; height: 2px; background: linear-gradient(90deg, transparent, var(--accent-gold), transparent); margin: 0 auto; }
 
-/* --- Books Grid Layout (CRUSHED AWKWARD EMPTY SPACE) --- */
+/* --- Fixed Book Containers & Visibility Controls --- */
 .book-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; margin-bottom: 60px; }
 .book-card { display: flex; flex-direction: column; }
-.book-card:hover { transform: translateY(-6px); border-color: rgba(212, 175, 55, 0.25); box-shadow: 0 25px 45px rgba(0,0,0,0.6); }
+.book-card:hover { transform: translateY(-6px); border-color: rgba(212, 175, 55, 0.25); }
 
-/* Drastically reduced from 420px to 310px to perfectly lock covers in position without empty spaces */
+/* Adjusted height and built a back-up lighting track to kill empty dark space completely */
 .book-image-wrapper { 
-    height: 310px; 
-    background: rgba(4, 5, 8, 0.4); 
+    height: 250px; /* Snug, clean container profile */
+    background: linear-gradient(135deg, rgba(18, 14, 43, 0.4) 0%, rgba(6, 17, 34, 0.4) 100%);
     border-bottom: 1px solid var(--glass-border); 
-    padding: 25px; 
+    padding: 20px; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
+    position: relative;
+    overflow: hidden;
 }
 .book-cover { 
-    max-width: 100%; 
-    max-height: 100%; 
+    height: 90%; /* Forces image to scale perfectly within bounding limits */
+    width: auto;
     object-fit: contain; 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5); 
-    transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1); 
+    filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6));
+    transition: transform 0.4s ease;
 }
-.book-card:hover .book-cover { transform: scale(1.04) translateY(-2px); }
+.book-card:hover .book-cover { transform: scale(1.05) translateY(-2px); }
 
 .book-info { padding: 30px; display: flex; flex-direction: column; flex-grow: 1; }
 .book-info h3 { font-size: 1.7rem; color: #fff; margin-bottom: 4px; }
 .book-subtitle { color: var(--accent-gold); font-style: italic; margin-bottom: 15px; font-size: 0.95rem; }
 .description { color: var(--text-muted); margin-bottom: 25px; flex-grow: 1; font-weight: 300; font-size: 0.95rem; }
 .gold-btn { display: block; padding: 12px; background: transparent; color: var(--accent-gold); border: 1px solid var(--accent-gold); border-radius: 8px; text-decoration: none; text-align: center; text-transform: uppercase; font-size: 0.8rem; font-weight: 600; letter-spacing: 2px; transition: all 0.3s ease; }
-.gold-btn:hover { background: var(--accent-gold); color: var(--bg-base); box-shadow: 0 0 15px rgba(212, 175, 55, 0.2); }
+.gold-btn:hover { background: var(--accent-gold); color: var(--bg-base); }
 
-/* Articles Component Framework */
-.article-feed { display: flex; flex-direction: column; gap: 24px; margin-bottom: 80px; }
-.article-card { padding: 40px; }
-.article-card:hover { transform: translateX(6px); border-color: rgba(212, 175, 55, 0.25); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+/* --- Premium Category Menu --- */
+.category-menu {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+.category-btn {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--glass-border);
+    color: var(--text-muted);
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.category-btn:hover, .category-btn.active {
+    background: var(--accent-gold);
+    color: var(--bg-base);
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+}
+
+/* Articles Framework */
+.article-feed { display: flex; flex-direction: column; gap: 24px; margin-bottom: 80px; min-height: 200px; }
+.article-card { padding: 40px; transition: transform 0.4s ease, border-color 0.4s ease, opacity 0.3s ease; }
+.article-card.hidden { display: none; opacity: 0; }
+.article-card:hover { transform: translateX(6px); border-color: rgba(212, 175, 55, 0.25); }
 .article-meta { display: flex; justify-content: space-between; margin-bottom: 15px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; }
 .category { color: var(--accent-gold); font-weight: 600; }
 .read-time { color: var(--text-muted); }
@@ -230,13 +227,11 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-sp
 .article-excerpt { color: var(--text-muted); font-size: 1.05rem; margin-bottom: 24px; font-weight: 300; }
 .article-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px; }
 .date { color: #4b5563; font-size: 0.85rem; }
-.read-link { color: #fff; text-decoration: none; font-weight: 500; transition: color 0.3s; display: inline-block; }
+.read-link { color: #fff; text-decoration: none; font-weight: 500; transition: color 0.3s; }
 .article-card:hover .read-link { color: var(--accent-gold); }
 
-/* Footer Design */
 .footer { text-align: center; padding: 50px 0; color: #4b5563; font-size: 0.85rem; }
 
-/* Responsive Media Controls */
 @media (max-width: 800px) {
     .main-blog-title { font-size: 3rem; letter-spacing: 2px; }
     .hero { padding: 35px 25px; margin-bottom: 40px; }
