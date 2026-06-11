@@ -5,25 +5,20 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initMouseGlow() {
-    const cards = document.querySelectorAll('.glass-card');
-    cards.forEach(card => {
+    document.querySelectorAll('.glass-card').forEach(card => {
         const blob = card.querySelector('.glow-blob');
         if (!blob) return;
 
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            // scrollTop/Left correction so blob stays locked even if page has scrolled
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            blob.style.left = x + 'px';
-            blob.style.top  = y + 'px';
+        card.addEventListener('mouseenter', () => {
+            blob.style.opacity = '1';
         });
-
         card.addEventListener('mouseleave', () => {
             blob.style.opacity = '0';
         });
-        card.addEventListener('mouseenter', () => {
-            blob.style.opacity = '1';
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            blob.style.left = (e.clientX - rect.left) + 'px';
+            blob.style.top  = (e.clientY - rect.top)  + 'px';
         });
     });
 }
@@ -60,7 +55,7 @@ function initCategoryFilter() {
                 if (targetFilter === 'all' || cat === targetFilter) {
                     article.style.display = 'block';
                     setTimeout(() => {
-                        article.style.opacity  = '1';
+                        article.style.opacity   = '1';
                         article.style.transform = 'translateY(0)';
                     }, 10);
                 } else {
