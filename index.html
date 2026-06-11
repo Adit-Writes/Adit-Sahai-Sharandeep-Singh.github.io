@@ -1,59 +1,35 @@
-/* General Layout */
-body {
-  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-  color: white;
-  font-family: 'Segoe UI', sans-serif;
-  margin: 0;
-  padding: 20px;
-  min-height: 100vh;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adit Sahai | Author Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
-header {
-  text-align: center;
-  padding: 50px 0;
-}
+    <header>
+        <h1>Adit Sahai</h1>
+        <nav>
+            <a href="#about">About</a>
+            <a href="#articles">Articles</a>
+        </nav>
+    </header>
 
-nav a {
-  color: #00d2ff;
-  margin: 0 15px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: 0.3s;
-}
+    <section id="about" class="card glass-card">
+        <h2>About Me</h2>
+        <p>I am Adit Sahai, author of:</p>
+        <ul>
+            <li><a class="book-link" href="https://evincepub.com/product/space-and-time-the-cosmic-reality/">Space and Time: The Cosmic Reality</a></li>
+            <li><a class="book-link" href="https://www.flipkart.com/bermuda-triangle/p/itm41ff45793d253">The Mystery of the Bermuda Triangle</a></li>
+        </ul>
+    </section>
 
-nav a:hover {
-  color: white;
-}
+    <section id="articles" class="card glass-card">
+        <h2>Latest Articles</h2>
+        <p>Stay tuned for my upcoming posts!</p>
+    </section>
 
-/* Card Styles */
-.card {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 20px;
-  border-radius: 15px;
-  margin: 20px 0;
-  backdrop-filter: blur(10px);
-  transition: transform 0.3s;
-}
-
-.card:hover {
-  transform: scale(1.02);
-}
-
-/* Animation Hooks for script.js */
-.card {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-.card.fade-in {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Text Elements */
-.book-link {
-  color: #ffcc00;
-  text-decoration: none;
-  font-weight: bold;
-}
+    <script src="script.js"></script>
+</body>
+</html>
