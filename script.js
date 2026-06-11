@@ -1,8 +1,30 @@
 document.addEventListener('DOMContentLoaded', () => {
+    initBackground();
     initMouseGlow();
     initScrollReveal();
     initCategoryFilter();
 });
+
+function initBackground() {
+    const canvas = document.createElement('div');
+    canvas.id = 'bg-canvas';
+    for (let i = 0; i < 6; i++) {
+        const orb = document.createElement('div');
+        orb.className = 'bg-orb';
+        canvas.appendChild(orb);
+    }
+    document.body.prepend(canvas);
+
+    // Subtle scroll parallax — each orb drifts at a different rate
+    const orbs = canvas.querySelectorAll('.bg-orb');
+    const rates = [0.04, -0.03, 0.06, -0.05, 0.03, -0.04];
+    window.addEventListener('scroll', () => {
+        const sy = window.scrollY;
+        orbs.forEach((orb, i) => {
+            orb.style.marginTop = (sy * rates[i]) + 'px';
+        });
+    }, { passive: true });
+}
 
 function initMouseGlow() {
     document.querySelectorAll('.glass-card').forEach(card => {
