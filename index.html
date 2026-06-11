@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adit Sahai | Author & Explorer</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=2">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,600;0,800;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <nav class="navbar glass-element">
+    <nav class="navbar glass-card">
         <div class="logo">A.S.</div>
         <div class="nav-links">
             <a href="#about">About</a>
@@ -19,7 +19,7 @@
         </div>
     </nav>
 
-    <header id="about" class="hero glass-element fade-target">
+    <header id="about" class="hero glass-card">
         <div class="hero-text">
             <p class="subtitle">Author & Researcher</p>
             <h1>Adit Sahai</h1>
@@ -30,15 +30,17 @@
         </div>
     </header>
 
-    <div class="section-divider fade-target">
+    <div class="section-divider">
         <h2>Featured Works</h2>
         <div class="gold-line"></div>
     </div>
 
     <section id="books" class="book-grid">
         
-        <article class="book-card glass-element fade-target">
-            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=500&q=80" alt="Space and Time Cover" class="book-cover">
+        <article class="book-card glass-card">
+            <div class="book-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=500&q=80" alt="Space and Time Cover" class="book-cover">
+            </div>
             <div class="book-info">
                 <h3>Space and Time</h3>
                 <p class="book-subtitle">The Cosmic Reality</p>
@@ -47,8 +49,10 @@
             </div>
         </article>
 
-        <article class="book-card glass-element fade-target">
-            <img src="https://images.unsplash.com/photo-1582650736173-9828d5705a61?auto=format&fit=crop&w=500&q=80" alt="Bermuda Triangle Cover" class="book-cover">
+        <article class="book-card glass-card">
+            <div class="book-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1582650736173-9828d5705a61?auto=format&fit=crop&w=500&q=80" alt="Bermuda Triangle Cover" class="book-cover">
+            </div>
             <div class="book-info">
                 <h3>The Bermuda Triangle</h3>
                 <p class="book-subtitle">The Ultimate Mystery</p>
@@ -58,6 +62,10 @@
         </article>
 
     </section>
+
+    <footer class="footer">
+        <p>&copy; 2026 Adit Sahai. All Rights Reserved.</p>
+    </footer>
 
     <script src="script.js"></script>
 </body>
