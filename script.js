@@ -1,18 +1,11 @@
-const GITHUB_USER = 'Adit-Writes';
-const GITHUB_REPO = 'Adit-Sahai.github.io';
-const FILE_PATH = 'docs';
-
 async function loadContent() {
-  const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/${FILE_PATH}`;
-  const res = await fetch(url);
-  const text = await res.text();
+  const res = await fetch(
+    'https://api.github.com/repos/Adit-Writes/Adit-Sahai.github.io/contents/docs'
+  );
+  const json = await res.json();
+  const text = atob(json.content); // it returns base64 encoded content
 
-  const match = text.match(/^---\s*([\s\S]*?)\s*---/);
-  if (!match) return;
-
-  const frontmatter = match[1];
-
-  const titleMatch = frontmatter.match(/^Title:\s*(.+)$/m);
+  const titleMatch = text.match(/^Title:\s*(.+)$/m);
   if (titleMatch) {
     document.getElementById('heading').textContent = titleMatch[1].trim();
   }
