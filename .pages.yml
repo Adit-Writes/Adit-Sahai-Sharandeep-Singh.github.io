@@ -1,8 +1,13 @@
 content:
-  - name: page
-    label: HELLO
+  - name: posts
+    label: Articles
     type: file
     path: docs
     fields:
       - name: Title
         type: string
+      - name: Category
+        type: select
+        options: ["Sports", "Politics", "Science"]
+      - name: Date
+        type: date
