@@ -4,7 +4,7 @@
     --glow-cosmic: #120e2b;
     --glow-abyssal: #061122;
     --glass-bg: rgba(9, 12, 18, 0.75);
-    --glass-border: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.06);
     --text-main: #f3f4f6;
     --text-muted: #9ca3af;
     --accent-gold: #d4af37;
@@ -23,8 +23,6 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     position: relative;
-    
-    /* Layered organic ambient radial fields to simulate depth behind cards */
     background-image: 
         radial-gradient(circle at 85% 15%, var(--glow-cosmic) 0%, transparent 45%),
         radial-gradient(circle at 15% 70%, var(--glow-abyssal) 0%, transparent 50%),
@@ -72,7 +70,6 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-sp
     margin: 0 auto;
 }
 
-/* --- Brand Logo Mark (A.S.) --- */
 .logo { 
     font-family: 'Playfair Display', serif; 
     font-size: 1.6rem; 
@@ -97,7 +94,6 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-sp
     transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
-/* Interactive Cursor Glow */
 .glow-blob {
     position: absolute;
     width: 350px; height: 350px;
@@ -119,8 +115,7 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-sp
 }
 .reveal.active { opacity: 1; transform: translateY(0); }
 
-/* Layout Boundaries */
-.navbar, .blog-banner, .hero, .book-grid, .category-menu, .article-feed, .section-divider {
+.navbar, .blog-banner, .hero, .book-grid, .category-menu-container, .article-feed, .section-divider {
     width: 100%;
     max-width: 1000px;
     margin-left: auto;
@@ -153,31 +148,29 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-sp
 .section-divider h2 { font-size: 2.2rem; color: #fff; margin-bottom: 12px; }
 .gold-line { width: 60px; height: 2px; background: linear-gradient(90deg, transparent, var(--accent-gold), transparent); margin: 0 auto; }
 
-/* --- Fixed Book Containers & Visibility Controls --- */
+/* --- Fixed Book Containers & Empty Space Stripping --- */
 .book-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; margin-bottom: 60px; }
 .book-card { display: flex; flex-direction: column; }
 .book-card:hover { transform: translateY(-6px); border-color: rgba(212, 175, 55, 0.25); }
 
-/* Adjusted height and built a back-up lighting track to kill empty dark space completely */
 .book-image-wrapper { 
-    height: 250px; /* Snug, clean container profile */
-    background: linear-gradient(135deg, rgba(18, 14, 43, 0.4) 0%, rgba(6, 17, 34, 0.4) 100%);
+    height: 340px; /* Elevated height window to let true covers render completely */
+    background: #090c12; 
     border-bottom: 1px solid var(--glass-border); 
-    padding: 20px; 
+    padding: 30px 20px; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    position: relative;
-    overflow: hidden;
 }
 .book-cover { 
-    height: 90%; /* Forces image to scale perfectly within bounding limits */
-    width: auto;
+    max-height: 100%; 
+    max-width: 100%;
     object-fit: contain; 
-    filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6));
+    filter: drop-shadow(0 12px 20px rgba(0,0,0,0.7));
     transition: transform 0.4s ease;
+    display: block;
 }
-.book-card:hover .book-cover { transform: scale(1.05) translateY(-2px); }
+.book-card:hover .book-cover { transform: scale(1.03) translateY(-4px); }
 
 .book-info { padding: 30px; display: flex; flex-direction: column; flex-grow: 1; }
 .book-info h3 { font-size: 1.7rem; color: #fff; margin-bottom: 4px; }
@@ -186,33 +179,53 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-sp
 .gold-btn { display: block; padding: 12px; background: transparent; color: var(--accent-gold); border: 1px solid var(--accent-gold); border-radius: 8px; text-decoration: none; text-align: center; text-transform: uppercase; font-size: 0.8rem; font-weight: 600; letter-spacing: 2px; transition: all 0.3s ease; }
 .gold-btn:hover { background: var(--accent-gold); color: var(--bg-base); }
 
-/* --- Premium Category Menu --- */
-.category-menu {
+/* --- Premium Luxury Category Filter Menu (COMPLETE DESIGN OVERHAUL) --- */
+.category-menu-container {
     display: flex;
     justify-content: center;
-    gap: 12px;
-    margin-bottom: 40px;
-    flex-wrap: wrap;
+    margin-bottom: 45px;
+    padding: 0 10px;
 }
+
+.category-menu {
+    background: rgba(15, 20, 30, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 6px;
+    border-radius: 40px;
+    display: flex;
+    gap: 6px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
 .category-btn {
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid var(--glass-border);
-    color: var(--text-muted);
-    padding: 10px 22px;
+    background: transparent !important;
+    border: none !important;
+    outline: none !important;
+    color: var(--text-muted) !important;
+    padding: 10px 24px;
     border-radius: 30px;
     font-family: 'Inter', sans-serif;
     font-size: 0.8rem;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.5px;
     cursor: pointer;
+    box-shadow: none !important;
     transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+    -webkit-appearance: none;
+    appearance: none;
 }
-.category-btn:hover, .category-btn.active {
-    background: var(--accent-gold);
-    color: var(--bg-base);
-    border-color: var(--accent-gold);
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+
+.category-btn:hover {
+    color: #ffffff !important;
+}
+
+.category-btn.active {
+    background: var(--accent-gold) !important;
+    color: var(--bg-base) !important;
+    font-weight: 700;
 }
 
 /* Articles Framework */
@@ -240,4 +253,6 @@ h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 600; letter-sp
     .book-grid { grid-template-columns: 1fr; }
     .navbar { flex-direction: column; gap: 15px; padding: 20px; }
     .nav-links a { margin: 0 10px; }
+    .category-menu { flex-direction: column; width: 100%; border-radius: 16px; padding: 10px; }
+    .category-btn { width: 100%; text-align: center; }
 }
