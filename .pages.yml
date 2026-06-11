@@ -1,7 +1,7 @@
 content:
   - name: page
     label: madarchod
-    type: collection
+    type: file
     path: docs
     fields:
       - name: Title
