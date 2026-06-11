@@ -1,42 +1,70 @@
-// 1. Scroll Reveal Animation
-// This watches elements as you scroll down and fades them in smoothly
-const revealElements = document.querySelectorAll('.reveal');
+/**
+ * THE SAHAI ANALOGY - ENGINE SCRIPT
+ * Handles UI interactions, mouse aura tracking, and scroll reveals.
+ */
 
-const revealOptions = {
-    threshold: 0.15, // Triggers when 15% of the element is visible
-    rootMargin: "0px 0px -50px 0px"
-};
-
-const revealOnScroll = new IntersectionObserver(function(entries, observer) {
-    entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        entry.target.classList.add('active');
-        // Optional: Stop observing once revealed so it doesn't animate out and back in
-        observer.unobserve(entry.target); 
-    });
-}, revealOptions);
-
-revealElements.forEach(el => {
-    revealOnScroll.observe(el);
+document.addEventListener('DOMContentLoaded', () => {
+    initMouseGlow();
+    initScrollReveal();
+    initDynamicArticles();
 });
 
-// 2. Dynamic Mouse Glow Effect on Cards
-// This tracks your cursor and moves a soft gold glow underneath the glass
-const glowCards = document.querySelectorAll('.glow-effect');
-
-glowCards.forEach(card => {
-    const blob = card.querySelector('.glow-blob');
+/* ==========================================================================
+   1. INTERACTIVE MOUSE GLOW
+   Tracks cursor coordinates to move the gold ambient glow inside glass cards.
+   ========================================================================== */
+function initMouseGlow() {
+    const cards = document.querySelectorAll('.glass-card');
     
-    card.addEventListener('mousemove', (e) => {
-        // Get the bounding rectangle of target
-        const rect = card.getBoundingClientRect();
-        
-        // Calculate mouse position relative to the card
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        // Update the blob's position
-        blob.style.left = `${x}px`;
-        blob.style.top = `${y}px`;
+    cards.forEach(card => {
+        const blob = card.querySelector('.glow-blob');
+        if (!blob) return; // Skip if card doesn't have a glow element
+
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            // Calculate mouse position relative to the card boundaries
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Smoothly update the blob position
+            blob.style.left = `${x}px`;
+            blob.style.top = `${y}px`;
+        });
     });
-});
+}
+
+/* ==========================================================================
+   2. SCROLL REVEAL ANIMATION
+   Triggers a premium fade-in lift effect as elements enter the viewport.
+   ========================================================================== */
+function initScrollReveal() {
+    const reveals = document.querySelectorAll('.reveal');
+    
+    const revealOnScroll = () => {
+        const windowHeight = window.innerHeight;
+        const revealPoint = 80; // Pixels from bottom before triggering
+
+        reveals.forEach(element => {
+            const elementTop = element.getBoundingClientRect().top;
+            
+            if (elementTop < windowHeight - revealPoint) {
+                element.classList.add('active');
+            }
+        });
+    };
+
+    // Listen to scroll events and run once immediately to catch items already on screen
+    window.addEventListener('scroll', revealOnScroll);
+    revealOnScroll();
+}
+
+/* ==========================================================================
+   3. PAGES CMS INTEGRATION PLACEHOLDER
+   Since your site runs on a pure static architecture (.nojekyll), Pages CMS 
+   works best by writing your posts to a structured JSON data file.
+   ========================================================================== */
+function initDynamicArticles() {
+    // This is where your asynchronous fetch architecture will go to read 
+    // your Pages CMS collection folder (e.g., fetching a generated articles.json)
+    console.log("The Sahai Analogy Core Engine Initialized Successfully.");
+}
