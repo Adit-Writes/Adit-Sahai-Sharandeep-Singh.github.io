@@ -1,4 +1,3 @@
-/* --- Color Palette & Reset --- */
 :root {
     --bg-dark: #0f1014;
     --glass-bg: rgba(25, 26, 31, 0.6);
@@ -26,7 +25,6 @@ body {
     overflow-x: hidden;
 }
 
-/* --- Shared Glass Styling --- */
 .glass-element {
     background: var(--glass-bg);
     backdrop-filter: blur(16px);
@@ -35,13 +33,11 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* --- Typography --- */
 h1, h2, h3, .logo {
     font-family: 'Playfair Display', serif;
     font-weight: 600;
 }
 
-/* --- Navigation --- */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -72,7 +68,6 @@ h1, h2, h3, .logo {
     color: var(--accent-gold);
 }
 
-/* --- Hero Section --- */
 .hero {
     display: flex;
     flex-wrap: wrap;
@@ -129,7 +124,6 @@ h1, h2, h3, .logo {
     transform: scale(1.05);
 }
 
-/* --- Section Divider --- */
 .section-divider {
     text-align: center;
     margin: 80px 0 50px;
@@ -147,7 +141,6 @@ h1, h2, h3, .logo {
     margin: 0 auto;
 }
 
-/* --- Books Grid Layout --- */
 .book-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -202,7 +195,6 @@ h1, h2, h3, .logo {
     flex-grow: 1;
 }
 
-/* --- Buttons --- */
 .gold-btn {
     display: inline-block;
     padding: 12px 24px;
@@ -224,7 +216,6 @@ h1, h2, h3, .logo {
     font-weight: 600;
 }
 
-/* --- Animations --- */
 .fade-target {
     opacity: 0;
     transform: translateY(40px);
@@ -236,7 +227,6 @@ h1, h2, h3, .logo {
     transform: translateY(0);
 }
 
-/* --- Mobile Responsiveness --- */
 @media (max-width: 768px) {
     .hero-text h1 { font-size: 3rem; }
     .navbar { flex-direction: column; gap: 15px; padding: 20px; border-radius: 16px; }
