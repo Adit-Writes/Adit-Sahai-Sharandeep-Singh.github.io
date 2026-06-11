@@ -26,6 +26,7 @@ body {
     padding: 20px 40px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 .hero {
@@ -35,7 +36,8 @@ body {
     text-align: center;
 }
 
-.hero h1 { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--gold); }
+.hero h1 { font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--gold); margin-bottom: 10px; }
+.bio { color: #9ca3af; font-size: 1.1rem; }
 
 .content-feed {
     max-width: 800px;
@@ -47,15 +49,16 @@ body {
 
 .card {
     padding: 40px;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .card:hover { transform: translateY(-5px); border-color: var(--gold); }
 
-.tag { color: var(--gold); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px; }
+.tag { color: var(--gold); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 10px; }
 
-.card h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin: 10px 0; }
+.card h3 { font-family: 'Playfair Display', serif; font-size: 1.8rem; margin: 0 0 15px 0; color: #ffffff; }
 
-.link { color: white; text-decoration: none; font-weight: 600; display: inline-block; margin-top: 15px; }
+.link { color: white; text-decoration: none; font-weight: 600; display: inline-block; margin-top: 15px; border-bottom: 1px solid transparent; transition: border 0.3s ease; }
+.link:hover { border-bottom: 1px solid var(--gold); color: var(--gold); }
 
-.footer { text-align: center; margin-top: 80px; color: #4b5563; }
+.footer { text-align: center; margin-top: 80px; color: #4b5563; font-size: 0.8rem; }
