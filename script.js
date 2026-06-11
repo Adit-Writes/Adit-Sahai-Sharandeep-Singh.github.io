@@ -1,6 +1,6 @@
 const GITHUB_USER = 'Adit-Writes';
 const GITHUB_REPO = 'Adit-Sahai.github.io';
-const FILE_PATH = 'doc';
+const FILE_PATH = 'docs';
 
 async function loadContent() {
   const url = `https://raw.githubusercontent.com/${GITHUB_USER}/${GITHUB_REPO}/main/${FILE_PATH}`;
