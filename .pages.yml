@@ -1,5 +1,5 @@
 content:
-  - name: page
+  - name: pages
     label: Pages
     type: collection
     path: docs
