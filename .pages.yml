@@ -92,6 +92,7 @@ content:
           collection: ArticleCategories # Points directly to your collection
           field: name # The field inside the category file to display/save
           placeholder: Select the category of the Article
+          value: "{slug}"
         
       - name: Published
         type: boolean
