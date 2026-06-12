@@ -35,7 +35,7 @@
                 <p class="bio">{{AboutAuthor.Desciption}}</p>
             </div>
             <div class="hero-visual">
-                <img src="{{AboutAuthor.Pic}}" alt="Abstract Analytical Interface">
+                <img src=" {{AboutAuthor.Pic}} " alt="Abstract Analytical Interface">
             </div>
         </div>
     </section>
@@ -87,16 +87,6 @@
         </div>
     </div>
 
-    <!--
-    HOW TO ADD A NEW ARTICLE
-    ════════════════════════
-    1. Copy any <article> block below and paste it before </section>
-    2. Set data-category="science" (or politics / sports)
-    3. Fill in .category, .read-time, .article-title, .article-excerpt, .date
-    4. The "Read Essay →" link wires itself automatically — don't touch the href
-    5. Add full body text in article.html inside <div id="art-body">
-    -->
-
     <section class="article-feed">
 
         <article class="article-card glass-card reveal active" data-category="science">
@@ -130,4 +120,39 @@
         <article class="article-card glass-card reveal active" data-category="sports">
             <div class="glow-blob"></div>
             <div class="article-meta">
-                <span class="category">Sports
+                <span class="category">Sports</span>
+                <span class="read-time">6 min read</span>
+            </div>
+            <h3 class="article-title">Data-Driven Domination in Modern Athletic Strategy</h3>
+            <p class="article-excerpt">An in-depth look at how predictive spatial metrics and physiological telemetry modeling completely replaced legacy sporting instincts.</p>
+            <div class="article-footer">
+                <span class="date">May 2026</span>
+                <a href="#" class="read-link">Read Essay →</a>
+            </div>
+        </article>
+
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2026 The Sahai Analogy. All rights reserved.</p>
+    </footer>
+
+    <script src="MainCode/script.js"></script>
+    <script>
+        function makeArticleLink(card) {
+            const title    = card.querySelector('.article-title')?.textContent.trim()   || '';
+            const category = card.querySelector('.category')?.textContent.trim()        || '';
+            const date     = card.querySelector('.date')?.textContent.trim()            || '';
+            const readTime = card.querySelector('.read-time')?.textContent.trim()       || '';
+            const excerpt  = card.querySelector('.article-excerpt')?.textContent.trim() || '';
+            const params = new URLSearchParams({ title, category, date, readTime, excerpt });
+            return 'article.html?' + params.toString();
+        }
+
+        document.querySelectorAll('.article-feed .article-card').forEach(card => {
+            const link = card.querySelector('.read-link');
+            if (link) link.href = makeArticleLink(card);
+        });
+    </script>
+</body>
+</html>
