@@ -57,6 +57,7 @@ content:
   - name: Articals
     path: _data/Articals
     type: collection
+    filename: "{Title}.md"
     
     view:
       fields: [Title, Topic, Published, ReleaseDate, LastUpdated]
