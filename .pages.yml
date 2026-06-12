@@ -55,6 +55,14 @@ content:
       - name: Link
         type: string
 
+  - name: ArticleCategories
+    type: file
+    path: _data/ArticleCategories.json
+    fields:
+      - name: categories
+        type: string
+        list: true
+
   - name: Articles
     path: _data/ArticlesData
     type: collection
@@ -78,7 +86,10 @@ content:
         type: select
         required: true
         options:
-          values: [Science, Space, Politics, Sports]
+          values: 
+            reference:
+              collection: ArticleCategories
+              field: categories
           placeholder: Select the category of the Artical
         
       - name: Published
