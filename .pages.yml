@@ -3,7 +3,7 @@ media: files
 content:
   - name: AboutAuthor
     type: file
-    path: Data/AboutAuthor
+    path: _data/AboutAuthor.json
     fields:
       - name: Name
         type: string
