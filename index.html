@@ -84,7 +84,7 @@
 <section class="article-feed">
     {% for article in Articles %}
     {% if article.Published %}
-    <article class="article-card glass-card reveal" data-category="{{ article.Topic.name | lower }}">
+    <article class="article-card glass-card reveal" data-category="{{ article.Topic | default('') | lower }}">
         <div class="glow-blob"></div>
         <div class="article-meta">
             <span class="category">{{ article.Topic }}</span>
