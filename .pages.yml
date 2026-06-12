@@ -1,7 +1,7 @@
 media: files
 content:
   - name: Articals
-    path: Data
+    path: Data/Articals
     type: collection
     
     view:
