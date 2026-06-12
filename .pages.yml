@@ -62,7 +62,7 @@ content:
     format: json
     filename: "{primary}.json"
     view:
-      primary: Title
+      primary: name
     fields:
       - name: name
         type: string
