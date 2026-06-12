@@ -4,14 +4,25 @@ content:
     label: Articals
     path: Data
     type: collection
+    
     view:
-      - fields: [title, published, date]
+      fields: [Title, Published, ReleaseDate]
+      primary: title
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+        
     fields:
-      - name: Label
+      - name: Title
         type: string
         
       - name: Type
         type: select
+        
+      - name: Published
+        type: boolean
+        default: false
         
       - name: Description
         type: rich-text
