@@ -16,9 +16,11 @@ content:
     fields:
       - name: Title
         type: string
+        required: true
         
       - name: Category
         type: select
+        required: true
         options:
           values: [Science, Space, Politics, Sports]
         
@@ -31,9 +33,11 @@ content:
         
       - name: Body
         type: rich-text
+        required: true
         
       - name: ReleaseDate
         type: date
+        required: true
         
       - name: Comments
         type: boolean
