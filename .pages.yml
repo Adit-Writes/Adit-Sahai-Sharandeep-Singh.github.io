@@ -5,10 +5,10 @@ content:
     type: file
     path: Data/AboutAuthor
     fields:
-      - name: AuthorName
+      - name: Name
         type: string
 
-      - name: AuthorImage
+      - name: Pic
         type: image
         
       - name: Desciption
@@ -16,7 +16,32 @@ content:
         options:
           switcher: false
 
-        
+  - name: Books
+    path: Data/Books
+    type: collection
+    view:
+      fields: [Title, Category, Published, ReleaseDate, LastUpdated]
+      primary: title
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+
+    fields:
+      - name: Name
+        type: string
+
+      - name: Pic
+        type: image
+
+      - name: About
+        type: rich-text
+        options:
+          switcher: false
+
+      - name: Link
+        type: string
+
   - name: Articals
     path: Data/Articals
     type: collection
