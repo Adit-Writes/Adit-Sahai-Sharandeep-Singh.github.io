@@ -68,6 +68,8 @@ permalink: "articles/{{ article.Title | slug }}/"
                 <span class="read-time">{{ article.ReadTime }} min read</span>
                 <span class="meta-dot"></span>
                 <span class="date">{{ article.ReleaseDate }}</span>
+                <span class="meta-dot"></span>
+                <span class="date">Updated {{ article.LastUpdated }}</span>
             </div>
             <h1 class="article-main-title">{{ article.Title }}</h1>
             <p class="article-lead">{{ article.Description | safe }}</p>
