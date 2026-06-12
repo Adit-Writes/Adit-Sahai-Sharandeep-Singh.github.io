@@ -31,7 +31,9 @@
         <div class="hero-content">
             <div class="hero-text">
                 <p class="subtitle">Author & Commentator</p>
-                <h1>{{ Books['the-bermuda-triangle'].Name}}</h1>
+                <h1>{% for filename, book in Books | dictsort("attribute", "Name") %}
+    <li>{{ book.Name }}</li>
+  {% endfor %}</h1>
                 <p class="bio">Deconstructing structural frameworks across multiple horizons—analyzing deep cosmic anomalies, tracing the absolute undercurrents of global political strategy, and evaluating the modern dynamics of high-stakes sports.</p>
             </div>
             <div class="hero-visual">
