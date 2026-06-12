@@ -22,7 +22,7 @@ content:
   - name: Books
     path: _data/Books
     type: collection
-    filename: "{Name}.md"
+    filename: "{Stuff}.md"
     view:
       fields: [Name, Pic, Topic, PublishedDate, Link]
       primary: Name
