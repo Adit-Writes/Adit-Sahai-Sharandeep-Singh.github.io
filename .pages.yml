@@ -89,6 +89,9 @@ content:
       - name: Likes
         type: boolean
         default: true
+
+      - name: ReadTime
+        type: number
         
       - name: Description
         type: rich-text
