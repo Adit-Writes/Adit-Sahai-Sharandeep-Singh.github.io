@@ -59,15 +59,15 @@ content:
     path: _data/ArticlesData
     type: collection
     format: json
-    filename: "{slug}.json"
+    filename: "{primary}.json"
     
     view:
       fields: [Title, Topic, Published, ReleaseDate, LastUpdated]
-      primary: title
-      sort: [date, title]
+      primary: Title
+      sort: [ReleaseDate, Title]
       default:
-        sort: date
-        order: desc
+          sort: ReleaseDate
+          order: desc
         
     fields:
       - name: Title
