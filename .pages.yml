@@ -1,4 +1,6 @@
-media: files
+media:
+  input: src/media
+  output: /media
 
 content:
   - name: AboutAuthor
