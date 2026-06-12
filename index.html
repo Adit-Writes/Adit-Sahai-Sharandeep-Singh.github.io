@@ -26,34 +26,45 @@
         <div class="banner-line"></div>
     </header>
 
-    <section id="about" class="hero glass-card reveal active">
+    {# ── About ─────────────────────────────────────────── #}
+    <section id="about" class="hero glass-card reveal">
         <div class="glow-blob"></div>
         <div class="hero-content">
             <div class="hero-text">
-                <p class="subtitle">{{AboutAuthor.Expertise}}</p>
-                <h1>{{AboutAuthor.Name}}</h1>
-                <p class="bio">{{AboutAuthor.Desciption}}</p>
+                <p class="subtitle">{{ AboutAuthor.Expertise }}</p>
+                <h1>{{ AboutAuthor.Name }}</h1>
+                <p class="bio">{{ AboutAuthor.Desciption | safe }}</p>
             </div>
             <div class="hero-visual">
-                <img src="/Adit-Sahai.github.io{{ AboutAuthor.Pic }}" alt="Abstract Analytical Interface">
+                <img src="{{ site.base }}{{ AboutAuthor.Pic }}" alt="{{ AboutAuthor.Name }}">
             </div>
         </div>
-    <section class="book-grid">
-    {% for book in Books %}
-    <div class="book-card glass-card reveal">
-        <div class="glow-blob"></div>
-        <div class="book-image-wrapper">
-            <img src="//Adit-Sahai.github.io{{ book.Pic }}" alt="{{ book.Name }}" class="book-cover">
-        </div>
-        <div class="book-info">
-            <h3>{{ book.Name }}</h3>
-            <p class="book-subtitle">{{ book.Topic }}</p>
-            <p class="description">{{ book.About }}</p>
-            <a href="{{ book.Link }}" class="gold-btn">View Book</a>
-        </div>
+    </section>
+
+    {# ── Books ─────────────────────────────────────────── #}
+    <div id="books" class="section-divider">
+        <h2>Published Books</h2>
+        <div class="gold-line"></div>
     </div>
-    {% endfor %}
-</section>
+
+    <section class="book-grid">
+        {% for book in Books %}
+        <div class="book-card glass-card reveal">
+            <div class="glow-blob"></div>
+            <div class="book-image-wrapper">
+                <img src="{{ site.base }}{{ book.Pic }}" alt="{{ book.Name }}" class="book-cover">
+            </div>
+            <div class="book-info">
+                <h3>{{ book.Name }}</h3>
+                <p class="book-subtitle">{{ book.Topic }}</p>
+                <p class="description">{{ book.About | safe }}</p>
+                <a href="{{ book.Link }}" class="gold-btn">View Book</a>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+
+    {# ── Articles ──────────────────────────────────────── #}
     <div id="articles" class="section-divider">
         <h2>Essays & Perspectives</h2>
         <div class="gold-line"></div>
@@ -69,49 +80,23 @@
     </div>
 
     <section class="article-feed">
-
-        <article class="article-card glass-card reveal active" data-category="science">
+        {% for article in Articles %}
+        {% if article.Published %}
+        <article class="article-card glass-card reveal" data-category="{{ article.Topic | lower }}">
             <div class="glow-blob"></div>
             <div class="article-meta">
-                <span class="category">Science</span>
-                <span class="read-time">7 min read</span>
+                <span class="category">{{ article.Topic }}</span>
+                <span class="read-time">{{ article.ReadTime }} min read</span>
             </div>
-            <h3 class="article-title">The Singularity Paradox</h3>
-            <p class="article-excerpt">Analyzing what happens to localized mathematical data structures at the precise point where gravitational curvature reaches infinity.</p>
+            <h3 class="article-title">{{ article.Title }}</h3>
+            <p class="article-excerpt">{{ article.Description | safe }}</p>
             <div class="article-footer">
-                <span class="date">June 2026</span>
+                <span class="date">{{ article.ReleaseDate }}</span>
                 <a href="#" class="read-link">Read Essay →</a>
             </div>
         </article>
-
-        <article class="article-card glass-card reveal active" data-category="politics">
-            <div class="glow-blob"></div>
-            <div class="article-meta">
-                <span class="category">Politics</span>
-                <span class="read-time">10 min read</span>
-            </div>
-            <h3 class="article-title">The Realpolitik of Algorithmic Trade Boundaries</h3>
-            <p class="article-excerpt">How sovereign legislative powers are quietly structuring digital trading channels to weaponize economic infrastructure.</p>
-            <div class="article-footer">
-                <span class="date">June 2026</span>
-                <a href="#" class="read-link">Read Essay →</a>
-            </div>
-        </article>
-
-        <article class="article-card glass-card reveal active" data-category="sports">
-            <div class="glow-blob"></div>
-            <div class="article-meta">
-                <span class="category">Sports</span>
-                <span class="read-time">6 min read</span>
-            </div>
-            <h3 class="article-title">Data-Driven Domination in Modern Athletic Strategy</h3>
-            <p class="article-excerpt">An in-depth look at how predictive spatial metrics and physiological telemetry modeling completely replaced legacy sporting instincts.</p>
-            <div class="article-footer">
-                <span class="date">May 2026</span>
-                <a href="#" class="read-link">Read Essay →</a>
-            </div>
-        </article>
-
+        {% endif %}
+        {% endfor %}
     </section>
 
     <footer class="footer">
