@@ -24,9 +24,9 @@ content:
     path: Data/Books
     type: collection
     view:
-      fields: [Name, Pic, PublishedDate, Link]
+      fields: [Name, Pic, Topic, PublishedDate, Link]
       primary: Name
-      sort: [PublishedDate, Name]
+      sort: [PublishedDate, Name, Topic]
       default:
         sort: PublishedDate
         order: desc
