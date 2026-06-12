@@ -56,12 +56,11 @@ content:
         type: string
 
   - name: ArticleCategories
-    type: file
+    type: collection
     path: _data/ArticleCategories.json
     fields:
       - name: categories
         type: string
-        list: true
 
   - name: Articles
     path: _data/ArticlesData
