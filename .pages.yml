@@ -2,7 +2,7 @@ media: files
 content:
   - name: Articals
     label: Articals
-    path: Data/Articals
+    path: Data
     type: collection
     fields:
       - name: Label
