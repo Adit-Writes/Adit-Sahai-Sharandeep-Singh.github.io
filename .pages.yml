@@ -8,13 +8,14 @@ content:
       - name: AuthorName
         type: string
 
+      - name: AuthorImage
+        type: image
+        
       - name: Desciption
         type: rich-text
         options:
           switcher: false
 
-      - name: AuthorImage
-        type: image
         
   - name: Articals
     path: Data/Articals
