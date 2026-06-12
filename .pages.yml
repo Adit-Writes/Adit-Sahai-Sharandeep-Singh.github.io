@@ -56,12 +56,15 @@ content:
         type: string
 
   - name: ArticleCategories
-    type: file
-    path: _data/ArticleCategories.json
+    label: Categories
+    type: collection # Changed from file to collection
+    path: _data/categories
+    format: json
+    filename: "{primary}.json"
     fields:
-      - name: categories
+      - name: name
         type: string
-        list: true
+        required: true
 
   - name: Articles
     path: _data/ArticlesData
@@ -83,17 +86,12 @@ content:
         required: true
         
       - name: Topic
-        type: select
+        type: reference # Changed from select to reference
         required: true
         options:
-          values:
-            reference:
-              name: ArticleCategories
-              type: reference
-              options:
-                collection: ArticleCategories
-                field: categories
-          placeholder: Select the category of the Artical
+          collection: ArticleCategories # Points directly to your collection
+          field: name # The field inside the category file to display/save
+          placeholder: Select the category of the Article
         
       - name: Published
         type: boolean
