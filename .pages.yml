@@ -14,5 +14,8 @@ content:
       - name: Comments
         type: boolean
         default: true
+      - name: Likes
+        type: boolean
+        default: true
         
   
