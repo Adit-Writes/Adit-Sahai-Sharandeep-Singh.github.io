@@ -1,9 +1,9 @@
 media: files
 
 content:
-  - name: some
+  - name: AboutAuthor
     type: file
-    path: Data/some
+    path: Data/AboutAuthor
     fields:
       - name: Name
         type: string
