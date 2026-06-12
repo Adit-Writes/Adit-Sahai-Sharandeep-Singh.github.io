@@ -72,14 +72,12 @@
         <div class="gold-line"></div>
     </div>
 
-    <div class="category-menu-container">
-        <div class="category-menu">
-            <button class="category-btn active" data-filter="all">All Categories</button>
-            <button class="category-btn" data-filter="science">Science</button>
-            <button class="category-btn" data-filter="politics">Politics</button>
-            <button class="category-btn" data-filter="sports">Sports</button>
-        </div>
-    </div>
+    <div class="category-menu">
+    <button class="category-btn active" data-filter="all">All Categories</button>
+    {% for cat in Categories %}
+    <button class="category-btn" data-filter="{{ cat.name | lower }}">{{ cat.name }}</button>
+    {% endfor %}
+</div>
 
     <section class="article-feed">
         {% for article in Articles %}
