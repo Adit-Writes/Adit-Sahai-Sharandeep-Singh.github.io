@@ -146,7 +146,7 @@
             const readTime = card.querySelector('.read-time')?.textContent.trim()       || '';
             const excerpt  = card.querySelector('.article-excerpt')?.textContent.trim() || '';
             const params = new URLSearchParams({ title, category, date, readTime, excerpt });
-            return 'MainCode/article.html?' + params.toString();
+            return 'MainCode/article.njk?' + params.toString();
         }
 
         document.querySelectorAll('.article-feed .article-card').forEach(card => {
