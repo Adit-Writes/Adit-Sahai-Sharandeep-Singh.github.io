@@ -9,6 +9,9 @@ content:
         type: string
         required: true
 
+      - name: Expertise
+        type: string
+
       - name: Pic
         type: image
         
