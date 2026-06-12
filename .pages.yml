@@ -7,6 +7,7 @@ content:
     fields:
       - name: Name
         type: string
+        required: true
 
       - name: Pic
         type: image
@@ -20,9 +21,9 @@ content:
     path: Data/Books
     type: collection
     view:
-      fields: [Title, Category, Published, ReleaseDate, LastUpdated]
-      primary: title
-      sort: [date, title]
+      fields: [Name]
+      primary: Name
+      sort: [PublishedDate, Name]
       default:
         sort: date
         order: desc
@@ -30,7 +31,12 @@ content:
     fields:
       - name: Name
         type: string
-
+        required: true
+      
+      - name: PublishedDate
+        type: date
+        required: true
+        
       - name: Pic
         type: image
 
