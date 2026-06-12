@@ -23,7 +23,7 @@ content:
         required: true
         options:
           values: [Science, Space, Politics, Sports]
-          placeholder: Select the category of the Arctial
+          placeholder: Select the category of the Artcial
         
       - name: Published
         type: boolean
