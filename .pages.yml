@@ -19,6 +19,8 @@ content:
         
       - name: Category
         type: select
+        options:
+          values: [Science, Space, Politics, Sports]
         
       - name: Published
         type: boolean
