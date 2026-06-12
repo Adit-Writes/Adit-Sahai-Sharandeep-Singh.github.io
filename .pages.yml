@@ -27,6 +27,14 @@ content:
       - name: Published
         type: boolean
         default: false
+
+      - name: Comments
+        type: boolean
+        default: true
+        
+      - name: Likes
+        type: boolean
+        default: true
         
       - name: Description
         type: rich-text
@@ -42,12 +50,5 @@ content:
       - name: LastUpdated
         type: date
         
-      - name: Comments
-        type: boolean
-        default: true
-        
-      - name: Likes
-        type: boolean
-        default: true
         
   
