@@ -66,43 +66,37 @@
         {% endfor %}
     </section>
 
-    {# ── Articles ──────────────────────────────────────── #}
-    <div id="articles" class="section-divider">
-        <h2>Essays & Perspectives</h2>
-        <div class="gold-line"></div>
-    </div>
-
-    <div class="category-menu">
-    <button class="category-btn active" data-filter="all">All Categories</button>
-    {% for cat in Categories %}
-    <button class="category-btn" data-filter="{{ cat.name | lower }}">{{ cat.name }}</button>
-    {% endfor %}
+{# ── Articles ──────────────────────────────────────── #}
+<div id="articles" class="section-divider">
+    <h2>Essays & Perspectives</h2>
+    <div class="gold-line"></div>
 </div>
 
-    <section class="article-feed">
-        {% for article in Articles %}
-        {% if article.Published %}
-        <article class="article-card glass-card reveal" data-category="{{ article.Topic | lower }}">
-            <div class="glow-blob"></div>
-            <div class="article-meta">
-                <span class="category">{{ article.Topic }}</span>
-                <span class="read-time">{{ article.ReadTime }} min read</span>
-            </div>
-            <h3 class="article-title">{{ article.Title }}</h3>
-            <p class="article-excerpt">{{ article.Description | safe }}</p>
-            <div class="article-footer">
-                <span class="date">{{ article.ReleaseDate }}</span>
-                <a href="/Adit-Sahai.github.io/articles/{{ article.Title | slug }}/" class="read-link">Read Essay →</a>
-            </div>
-        </article>
-        {% endif %}
+<div class="category-menu-container">
+    <div class="category-menu">
+        <button class="category-btn active" data-filter="all">All Categories</button>
+        {% for cat in Categories %}
+        <button class="category-btn" data-filter="{{ cat.name | lower }}">{{ cat.name }}</button>
         {% endfor %}
-    </section>
+    </div>
+</div>
 
-    <footer class="footer">
-        <p>&copy; 2026 The Sahai Analogy. All rights reserved.</p>
-    </footer>
-
-    <script src="MainCode/script.js"></script>
-</body>
-</html>
+<section class="article-feed">
+    {% for article in Articles %}
+    {% if article.Published %}
+    <article class="article-card glass-card reveal" data-category="{{ article.Topic.name | lower }}">
+        <div class="glow-blob"></div>
+        <div class="article-meta">
+            <span class="category">{{ article.Topic.name }}</span>
+            <span class="read-time">{{ article.ReadTime }} min read</span>
+        </div>
+        <h3 class="article-title">{{ article.Title }}</h3>
+        <p class="article-excerpt">{{ article.Description | safe }}</p>
+        <div class="article-footer">
+            <span class="date">{{ article.ReleaseDate }}</span>
+            <a href="Sahai.github.io//articles/{{ article.Title | slug }}/" class="read-link">Read Essay →</a>
+        </div>
+    </article>
+    {% endif %}
+    {% endfor %}
+</section>
