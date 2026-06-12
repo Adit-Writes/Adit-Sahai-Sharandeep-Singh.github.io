@@ -38,41 +38,22 @@
                 <img src="/Adit-Sahai.github.io{{ AboutAuthor.Pic }}" alt="Abstract Analytical Interface">
             </div>
         </div>
-    </section>
-
-    <div id="books" class="section-divider">
-        <h2>Published Books</h2>
-        <div class="gold-line"></div>
-    </div>
-
     <section class="book-grid">
-        <div class="book-card glass-card reveal active">
-            <div class="glow-blob"></div>
-            <div class="book-image-wrapper">
-                <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1731776956i/129759858.jpg" alt="Space and Time Cover" class="book-cover" referrerpolicy="no-referrer">
-            </div>
-            <div class="book-info">
-                <h3>Space and Time</h3>
-                <p class="book-subtitle">The Cosmic Reality</p>
-                <p class="description">A journey into the deep cosmos, demystifying the profound fabrics of gravity, relativity, and unseen structural anomalies shaping our universe.</p>
-                <a href="#" class="gold-btn">View Book</a>
-            </div>
+    {% for book in Books %}
+    <div class="book-card glass-card reveal">
+        <div class="glow-blob"></div>
+        <div class="book-image-wrapper">
+            <img src="//Adit-Sahai.github.io{{ book.Pic }}" alt="{{ book.Name }}" class="book-cover">
         </div>
-
-        <div class="book-card glass-card reveal active">
-            <div class="glow-blob"></div>
-            <div class="book-image-wrapper">
-                <img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1732959841i/129992383.jpg" alt="The Bermuda Triangle Cover" class="book-cover" referrerpolicy="no-referrer">
-            </div>
-            <div class="book-info">
-                <h3>The Bermuda Triangle</h3>
-                <p class="book-subtitle">The Ultimate Mystery</p>
-                <p class="description">Uncovering the truths, historical myths, and oceanographic anomalies buried deep within the world's most infamous maritime dead zone.</p>
-                <a href="#" class="gold-btn">View Book</a>
-            </div>
+        <div class="book-info">
+            <h3>{{ book.Name }}</h3>
+            <p class="book-subtitle">{{ book.Topic }}</p>
+            <p class="description">{{ book.About }}</p>
+            <a href="{{ book.Link }}" class="gold-btn">View Book</a>
         </div>
-    </section>
-
+    </div>
+    {% endfor %}
+</section>
     <div id="articles" class="section-divider">
         <h2>Essays & Perspectives</h2>
         <div class="gold-line"></div>
