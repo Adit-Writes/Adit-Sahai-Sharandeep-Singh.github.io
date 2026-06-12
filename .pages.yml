@@ -4,6 +4,8 @@ content:
     label: Articals
     path: Data
     type: collection
+    view:
+      - fields: [title, published, date]
     fields:
       - name: Label
         type: string
@@ -17,7 +19,7 @@ content:
       - name: Body
         type: rich-text
         
-      - name: ReleaseData
+      - name: ReleaseDate
         type: date
         
       - name: Comments
