@@ -58,6 +58,7 @@ content:
   - name: Articles
     path: _data/ArticlesData
     type: collection
+    format: json
     filename: "{slug}.json"
     
     view:
