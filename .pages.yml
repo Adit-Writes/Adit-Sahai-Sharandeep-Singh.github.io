@@ -55,8 +55,8 @@ content:
       - name: Link
         type: string
 
-  - name: Articals
-    path: _data/Articals
+  - name: Articles
+    path: _data/Articles
     type: collection
     format: json
     filename: "{slug}.json"
