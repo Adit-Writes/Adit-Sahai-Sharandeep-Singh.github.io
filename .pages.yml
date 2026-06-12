@@ -92,6 +92,8 @@ content:
 
       - name: ReadTime
         type: number
+        options:
+          min: 1
         
       - name: Description
         type: rich-text
