@@ -91,6 +91,7 @@ content:
               type: reference
               options:
                 collection: ArticleCategories
+                field: categories
           placeholder: Select the category of the Artical
         
       - name: Published
