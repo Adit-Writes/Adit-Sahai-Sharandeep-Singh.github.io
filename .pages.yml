@@ -87,7 +87,8 @@ content:
         required: true
         options:
           values:
-            - name: ArticleCategories
+            reference:
+              name: ArticleCategories
               type: reference
               options:
                 collection: ArticleCategories
