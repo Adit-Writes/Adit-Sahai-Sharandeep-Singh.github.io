@@ -4,6 +4,7 @@ content:
   - name: AboutAuthor
     type: file
     path: _data/AboutAuthor
+    format: json
     fields:
       - name: Name
         type: string
