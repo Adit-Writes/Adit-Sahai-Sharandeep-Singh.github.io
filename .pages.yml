@@ -39,6 +39,9 @@ content:
         type: date
         required: true
         
+      - name: LastUpdated
+        type: date
+        
       - name: Comments
         type: boolean
         default: true
