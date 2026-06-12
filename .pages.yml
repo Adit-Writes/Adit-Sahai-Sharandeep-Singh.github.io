@@ -11,5 +11,8 @@ content:
         type: select
       - name: ReleaseData
         type: date
+      - name: Comments
+        type: boolean
+        default: true
         
   
