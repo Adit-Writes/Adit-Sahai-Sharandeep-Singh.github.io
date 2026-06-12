@@ -7,15 +7,23 @@ content:
     fields:
       - name: Label
         type: string
+        
       - name: Type
         type: select
+        
       - name: Description
         type: rich-text
+        
+      - name: Body
+        type: rich-text
+        
       - name: ReleaseData
         type: date
+        
       - name: Comments
         type: boolean
         default: true
+        
       - name: Likes
         type: boolean
         default: true
