@@ -61,6 +61,8 @@ content:
     path: _data/categories
     format: json
     filename: "{primary}.json"
+    view:
+      primary: Title
     fields:
       - name: name
         type: string
