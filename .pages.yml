@@ -57,7 +57,7 @@ content:
 
   - name: ArticleCategories
     label: Categories
-    type: collection # Changed from file to collection
+    type: collection
     path: _data/categories
     format: json
     filename: "{primary}.json"
