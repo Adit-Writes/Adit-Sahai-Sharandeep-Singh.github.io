@@ -22,7 +22,8 @@ content:
   - name: Books
     path: _data/Books
     type: collection
-    filename: "{Name}.md"
+    format: json
+    filename: "{slug}"
     view:
       fields: [Name, Pic, Topic, PublishedDate, Link]
       primary: Name
@@ -57,7 +58,8 @@ content:
   - name: Articals
     path: _data/Articals
     type: collection
-    filename: "{Title}.md"
+    format: json
+    filename: "{slug}"
     
     view:
       fields: [Title, Topic, Published, ReleaseDate, LastUpdated]
