@@ -25,7 +25,7 @@ content:
       primary: Name
       sort: [PublishedDate, Name]
       default:
-        sort: date
+        sort: PublishedDate
         order: desc
 
     fields:
