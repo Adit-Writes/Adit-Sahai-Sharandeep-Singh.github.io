@@ -31,13 +31,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        
       - name: Setup Pages
         uses: actions/configure-pages@v5
+
+      # === NEW STEP 1: Install Eleventy framework ===
+      - name: Install Eleventy
+        run: npm install @11ty/eleventy --save-dev
+
+      # === NEW STEP 2: Compile markdown/HTML templates into the _site folder ===
+      - name: Build Site
+        run: npx @11ty/eleventy
+
+      # === UPDATED STEP 3: Point the artifact uploader to your built '_site' folder ===
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Upload entire repository
-          path: '.'
+          # Eleventy outputs everything to a folder named '_site' by default
+          path: '_site'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v5
