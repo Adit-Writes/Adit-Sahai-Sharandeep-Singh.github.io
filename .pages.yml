@@ -8,6 +8,6 @@ content:
         type: string
       - name: Category
         type: select
-        options: {Sports,Science,Politics}
+        options: [Sports,Science,Politics]
       - name: Date
         type: date
