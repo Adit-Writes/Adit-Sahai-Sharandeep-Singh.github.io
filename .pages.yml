@@ -1,13 +1,13 @@
+media: files
 content:
-  - name: posts
-    label: Articles
-    path: Data/Articals.json
-    format: json
+  - name: Articals
+    label: Articals
+    path: Data/Articals
+    type: collection
     fields:
-      - name: Title
+      - name: Label
         type: string
-      - name: Category
+      - name: Type
         type: select
-        options: [Sports,Science,Politics]
-      - name: Date
-        type: date
+        
+  
