@@ -37,11 +37,15 @@ content:
         default: true
         
       - name: Description
-        type: text
+        type: rich-text
+        options:
+          switcher: false
         
       - name: Body
         type: rich-text
         required: true
+        options:
+          switcher: false
         
       - name: ReleaseDate
         type: date
