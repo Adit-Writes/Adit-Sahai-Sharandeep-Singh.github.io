@@ -56,11 +56,12 @@ content:
         type: string
 
   - name: ArticleCategories
-    type: collection
+    type: file
     path: _data/ArticleCategories.json
     fields:
       - name: categories
         type: string
+        list: true
 
   - name: Articles
     path: _data/ArticlesData
@@ -85,10 +86,11 @@ content:
         type: select
         required: true
         options:
-          values: 
-            reference:
-              collection: ArticleCategories
-              field: categories
+          values:
+            - name: ArticleCategories
+              type: reference
+              options:
+                collection: ArticleCategories
           placeholder: Select the category of the Artical
         
       - name: Published
