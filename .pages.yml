@@ -1,5 +1,21 @@
 media: files
+
 content:
+  - name: AboutAuthor
+    type: file
+    path: Data/AboutAuthor
+    fields:
+      - name: AuthorName
+        type: string
+
+      - name: Desciption
+        type: rich-text
+        options:
+          switcher: false
+
+      - name: AuthorImage
+        type: image
+        
   - name: Articals
     path: Data/Articals
     type: collection
@@ -53,21 +69,5 @@ content:
         
       - name: LastUpdated
         type: date
-
-  - name: AboutAuthor
-    type: file
-    path: Data/AboutAuthor
-    fields:
-      - name: AuthorName
-        type: string
-
-      - name: Desciption
-        type: rich-text
-        options:
-          switcher: false
-
-      - name: AuthorImage
-        type: image
-        
         
   
