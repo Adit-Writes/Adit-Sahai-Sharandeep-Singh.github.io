@@ -152,6 +152,7 @@
         document.querySelectorAll('.article-feed .article-card').forEach(card => {
             const link = card.querySelector('.read-link');
             if (link) link.href = makeArticleLink(card);
+            link.target = "_blank"; 
         });
     </script>
 </body>
