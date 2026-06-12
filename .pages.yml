@@ -1,7 +1,6 @@
 media: files
 content:
   - name: Articals
-    label: Articals
     path: Data
     type: collection
     
