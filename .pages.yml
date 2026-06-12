@@ -23,7 +23,7 @@ content:
         required: true
         options:
           values: [Science, Space, Politics, Sports]
-          placeholder: Select the category of the Artcial
+          placeholder: Select the category of the Artical
         
       - name: Published
         type: boolean
