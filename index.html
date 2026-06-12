@@ -58,6 +58,7 @@
                 <h3>{{ book.Name }}</h3>
                 <p class="book-subtitle">{{ book.Topic }}</p>
                 <p class="description">{{ book.About | safe }}</p>
+                <span class="date">{{ book.PublishedDate }}</span>
                 <a href="{{ book.Link }}" class="gold-btn">View Book</a>
             </div>
         </div>
