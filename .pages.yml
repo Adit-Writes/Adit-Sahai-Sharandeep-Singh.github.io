@@ -20,7 +20,7 @@ content:
           switcher: false
 
   - name: Books
-    path: Data/Books
+    path: _data/Books
     type: collection
     view:
       fields: [Name, Pic, Topic, PublishedDate, Link]
@@ -54,7 +54,7 @@ content:
         type: string
 
   - name: Articals
-    path: Data/Articals
+    path: _data/Articals
     type: collection
     
     view:
