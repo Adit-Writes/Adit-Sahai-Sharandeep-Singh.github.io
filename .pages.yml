@@ -59,7 +59,7 @@ content:
     path: _data/Articals
     type: collection
     format: json
-    filename: "{slug}"
+    filename: "{slug}.json"
     
     view:
       fields: [Title, Topic, Published, ReleaseDate, LastUpdated]
