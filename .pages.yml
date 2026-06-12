@@ -37,7 +37,7 @@ content:
         default: true
         
       - name: Description
-        type: rich-text
+        type: text
         
       - name: Body
         type: rich-text
