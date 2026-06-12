@@ -40,6 +40,8 @@ content:
       - name: PublishedDate
         type: date
         required: true
+        option:
+          format: yyyy-MM
         
       - name: Pic
         type: image
