@@ -7,11 +7,6 @@ content:
     
     view:
       fields: [Title, Type, Published, ReleaseDate]
-      primary: title
-      sort: [date, title]
-      default:
-        sort: date
-        order: desc
         
     fields:
       - name: Title
