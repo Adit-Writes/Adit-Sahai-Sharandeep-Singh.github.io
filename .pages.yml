@@ -86,16 +86,11 @@ content:
         required: true
         
       - name: Topic
-        type: reference
+        type: reference # Changed from select to reference
         required: true
         options:
-          collection: ArticleCategories
-          field: name # This is the value that gets written to your article JSON
-          
-          # ---> ADD THESE TWO LINES <---
-          search: [name]       # Allows you to backspace and search other categories
-          label: "{name}"      # Explicitly defines what text displays in the dropdown list
-          
+          collection: ArticleCategories # Points directly to your collection
+          field: name # The field inside the category file to display/save
           placeholder: Select the category of the Article
         
       - name: Published
