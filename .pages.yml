@@ -1,8 +1,8 @@
 content:
   - name: posts
     label: Articles
-    type: file
-    path: docs
+    path: Data/Articals.json
+    format: json
     fields:
       - name: Title
         type: string
