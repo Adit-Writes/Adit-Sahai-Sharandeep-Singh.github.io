@@ -9,5 +9,7 @@ content:
         type: string
       - name: Type
         type: select
+      - name: Release_Data
+        type: date
         
   
