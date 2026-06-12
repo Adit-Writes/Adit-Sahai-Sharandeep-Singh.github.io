@@ -1,78 +1,43 @@
+---
+pagination:
+    data: Articles
+    size: 1
+    alias: article
+permalink: "articles/{{ article.Title | slug }}/"
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Article — The Sahai Analogy</title>
+    <title>{{ article.Title }} — The Sahai Analogy</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/Adit-Sahai.github.io/MainCode/style.css">
     <style>
-        .article-page {
-            width: 100%;
-            max-width: 760px;
-            margin: 0 auto;
-            padding-bottom: 100px;
-        }
-        .back-link {
-            display: block;
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 40px;
-            margin-top: 10px;
-            transition: color 0.3s;
-        }
+        .article-page { width: 100%; max-width: 760px; margin: 0 auto; padding-bottom: 100px; }
+        .back-link { display: block; color: var(--text-muted); text-decoration: none; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 40px; margin-top: 10px; transition: color 0.3s; }
         .back-link:hover { color: var(--accent-gold); }
         .back-link::before { content: '← '; }
-
         .article-hero { padding: 50px 60px 40px; margin-bottom: 40px; }
-        .article-hero-meta {
-            display: flex; align-items: center; gap: 16px; margin-bottom: 28px;
-        }
+        .article-hero-meta { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
         .article-hero-meta .category { color: var(--accent-gold); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; }
         .meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-muted); opacity: 0.5; }
         .article-hero-meta .read-time,
         .article-hero-meta .date { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; }
-
-        .article-main-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 3.2rem; font-weight: 800; color: #fff;
-            line-height: 1.15; margin-bottom: 24px; letter-spacing: -0.01em;
-        }
-        .article-lead {
-            font-size: 1.15rem; color: var(--text-muted); font-weight: 300;
-            line-height: 1.7; border-left: 2px solid var(--accent-gold); padding-left: 20px;
-        }
-        .article-divider {
-            width: 60px; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
-            margin: 0 auto 40px;
-        }
+        .article-main-title { font-family: 'Playfair Display', serif; font-size: 3.2rem; font-weight: 800; color: #fff; line-height: 1.15; margin-bottom: 24px; letter-spacing: -0.01em; }
+        .article-lead { font-size: 1.15rem; color: var(--text-muted); font-weight: 300; line-height: 1.7; border-left: 2px solid var(--accent-gold); padding-left: 20px; }
+        .article-divider { width: 60px; height: 2px; background: linear-gradient(90deg, transparent, var(--accent-gold), transparent); margin: 0 auto 40px; }
         .article-body-card { padding: 50px 60px; margin-bottom: 30px; }
         .article-body { font-size: 1.05rem; color: var(--text-muted); font-weight: 300; line-height: 1.85; }
         .article-body p { margin-bottom: 24px; }
         .article-body h2 { font-family: 'Playfair Display', serif; font-size: 1.7rem; color: #fff; margin: 40px 0 16px; font-weight: 700; }
         .article-body h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: #e0e8ff; margin: 30px 0 12px; font-weight: 600; }
         .article-body blockquote { border-left: 2px solid var(--accent-gold); padding: 4px 0 4px 24px; margin: 30px 0; color: #a0b0d0; font-style: italic; font-size: 1.1rem; }
-
-        .placeholder-notice {
-            background: rgba(212,175,55,0.06); border: 1px dashed rgba(212,175,55,0.25);
-            border-radius: 12px; padding: 40px; text-align: center;
-            color: var(--text-muted); font-size: 0.9rem; line-height: 1.7;
-        }
-        .placeholder-notice .placeholder-icon { font-size: 2rem; margin-bottom: 16px; display: block; opacity: 0.5; }
-        .placeholder-notice strong { display: block; color: var(--accent-gold); font-size: 1rem; margin-bottom: 8px; font-family: 'Playfair Display', serif; }
-        .placeholder-notice code { background: rgba(255,255,255,0.06); padding: 2px 8px; border-radius: 4px; font-size: 0.82rem; color: #a0b8e0; }
-
         .article-nav-footer { text-align: center; padding: 20px 0 10px; }
         .article-nav-footer a { color: var(--text-muted); text-decoration: none; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; transition: color 0.3s; }
         .article-nav-footer a:hover { color: var(--accent-gold); }
-
         @media (max-width: 800px) {
             .article-hero { padding: 35px 25px 30px; }
             .article-main-title { font-size: 2.2rem; }
@@ -85,54 +50,40 @@
     <nav class="navbar glass-card">
         <div class="logo">A.S.</div>
         <div class="nav-links">
-            <a href="/Adit-Sahai.github.io/index.html#about">About</a>
-            <a href="/Adit-Sahai.github.io/index.html#books">Books</a>
-            <a href="/Adit-Sahai.github.io/index.html#articles">Articles</a>
+            <a href="{{ site.base }}/#about">About</a>
+            <a href="{{ site.base }}/#books">Books</a>
+            <a href="{{ site.base }}/#articles">Articles</a>
         </div>
     </nav>
 
     <div class="article-page">
 
-        <a href="/Adit-Sahai.github.io/index.html#articles" class="back-link">Back to Essays</a>
+        <a href="{{ site.base }}/#articles" class="back-link">Back to Essays</a>
 
-        <article class="article-hero glass-card reveal active">
+        <article class="article-hero glass-card reveal">
             <div class="glow-blob"></div>
             <div class="article-hero-meta">
-                <span class="category" id="art-category"></span>
+                <span class="category">{{ article.Topic }}</span>
                 <span class="meta-dot"></span>
-                <span class="read-time" id="art-read-time"></span>
+                <span class="read-time">{{ article.ReadTime }} min read</span>
                 <span class="meta-dot"></span>
-                <span class="date" id="art-date"></span>
+                <span class="date">{{ article.ReleaseDate }}</span>
             </div>
-            <h1 class="article-main-title" id="art-title"></h1>
-            <p class="article-lead" id="art-excerpt"></p>
+            <h1 class="article-main-title">{{ article.Title }}</h1>
+            <p class="article-lead">{{ article.Description | safe }}</p>
         </article>
 
         <div class="article-divider"></div>
 
-        <div class="article-body-card glass-card reveal active">
+        <div class="article-body-card glass-card reveal">
             <div class="glow-blob"></div>
-            <div class="article-body" id="art-body">
-                <!--
-                    HOW TO ADD YOUR FULL ARTICLE CONTENT
-                    ─────────────────────────────────────
-                    Replace the placeholder block below with your article HTML.
-                    You can use: <p>, <h2>, <h3>, <blockquote>
-
-                    The title, category, date, and excerpt are pulled
-                    automatically from the URL — only write the body here.
-                -->
-                <div class="placeholder-notice">
-                    <span class="placeholder-icon">✍️</span>
-                    <strong>Full article content coming soon</strong>
-                    Open <code>article.html</code> and replace this block
-                    with your content inside <code>&lt;div id="art-body"&gt;</code>.
-                </div>
+            <div class="article-body">
+                {{ article.Body | safe }}
             </div>
         </div>
 
         <div class="article-nav-footer">
-            <a href="/Adit-Sahai.github.io/index.html#articles">← View all essays</a>
+            <a href="{{ site.base }}/#articles">← View all essays</a>
         </div>
 
     </div>
@@ -141,23 +92,6 @@
         <p>&copy; 2026 The Sahai Analogy. All rights reserved.</p>
     </footer>
 
-    <script src="script.js"></script>
-    <script>
-        (function() {
-            const params = new URLSearchParams(window.location.search);
-            const title    = params.get('title')    || 'Untitled Essay';
-            const category = params.get('category') || '';
-            const date     = params.get('date')     || '';
-            const readTime = params.get('readTime') || '';
-            const excerpt  = params.get('excerpt')  || '';
-
-            document.title = title + ' — The Sahai Analogy';
-            document.getElementById('art-title').textContent     = title;
-            document.getElementById('art-category').textContent  = category;
-            document.getElementById('art-date').textContent      = date;
-            document.getElementById('art-read-time').textContent = readTime;
-            document.getElementById('art-excerpt').textContent   = excerpt;
-        })();
-    </script>
+    <script src="{{ site.base }}/MainCode/script.js"></script>
 </body>
 </html>
