@@ -7,7 +7,7 @@ content:
     fields:
       - name: Name
         type: string
-        required: true
+        required: false
 
       - name: Expertise
         type: string
