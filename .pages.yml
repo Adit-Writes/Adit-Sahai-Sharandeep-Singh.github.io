@@ -43,6 +43,9 @@ content:
       - name: Pic
         type: image
 
+      - name: Topic
+        type: string
+
       - name: About
         type: rich-text
         options:
@@ -56,7 +59,7 @@ content:
     type: collection
     
     view:
-      fields: [Title, Category, Published, ReleaseDate, LastUpdated]
+      fields: [Title, Topic, Published, ReleaseDate, LastUpdated]
       primary: title
       sort: [date, title]
       default:
@@ -68,7 +71,7 @@ content:
         type: string
         required: true
         
-      - name: Category
+      - name: Topic
         type: select
         required: true
         options:
