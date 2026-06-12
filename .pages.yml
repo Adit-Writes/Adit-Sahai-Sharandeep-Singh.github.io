@@ -6,7 +6,7 @@ content:
     type: collection
     
     view:
-      fields: [Title, Category, Published, ReleaseDate]
+      fields: [Title, Category, Published, ReleaseDate, LastUpdated]
       primary: title
       sort: [date, title]
       default:
