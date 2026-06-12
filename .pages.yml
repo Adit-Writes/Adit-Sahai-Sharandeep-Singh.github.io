@@ -9,6 +9,8 @@ content:
         type: string
       - name: Type
         type: select
+      - name: Description
+        type: rich-text
       - name: ReleaseData
         type: date
       - name: Comments
