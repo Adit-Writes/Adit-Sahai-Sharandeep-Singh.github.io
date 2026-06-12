@@ -23,7 +23,7 @@ content:
     path: _data/Books
     type: collection
     format: json
-    filename: "{slug}"
+    filename: "{slug}.json"
     view:
       fields: [Name, Pic, Topic, PublishedDate, Link]
       primary: Name
