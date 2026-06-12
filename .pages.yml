@@ -21,7 +21,7 @@ content:
     path: Data/Books
     type: collection
     view:
-      fields: [Name]
+      fields: [Name, PublishedDate, Link]
       primary: Name
       sort: [PublishedDate, Name]
       default:
