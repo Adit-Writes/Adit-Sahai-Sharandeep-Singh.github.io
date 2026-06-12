@@ -9,7 +9,7 @@ content:
       primary: title
       sort: [date, title]
       default:
-        sort: title
+        sort: date
         order: desc
         
     fields:
