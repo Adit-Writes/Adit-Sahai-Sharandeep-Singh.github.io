@@ -104,21 +104,5 @@
     </footer>
 
     <script src="MainCode/script.js"></script>
-    <script>
-        function makeArticleLink(card) {
-            const title    = card.querySelector('.article-title')?.textContent.trim()   || '';
-            const category = card.querySelector('.category')?.textContent.trim()        || '';
-            const date     = card.querySelector('.date')?.textContent.trim()            || '';
-            const readTime = card.querySelector('.read-time')?.textContent.trim()       || '';
-            const excerpt  = card.querySelector('.article-excerpt')?.textContent.trim() || '';
-            const params = new URLSearchParams({ title, category, date, readTime, excerpt });
-            return 'MainCode/article.html?' + params.toString();
-        }
-
-        document.querySelectorAll('.article-feed .article-card').forEach(card => {
-            const link = card.querySelector('.read-link');
-            if (link) link.href = makeArticleLink(card);
-        });
-    </script>
 </body>
 </html>
