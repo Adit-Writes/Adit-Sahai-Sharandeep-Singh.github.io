@@ -1,23 +1,23 @@
 :root {
-    --bg-base:            #050302; /* Deep space umbra */
-    --glass-bg:           rgba(23, 16, 12, 0.65); /* Sun-baked obsidian glass */
-    --glass-bg-strong:    rgba(15, 10, 7, 0.88);
-    --glass-border:       rgba(212, 147, 91, 0.22); /* Soft bronze edge */
-    --glass-border-hover: rgba(255, 191, 105, 0.85); /* Brilliant corona gold glow */
-    --text-main:          #fffbf7; /* Blazing solar white */
-    --text-muted:         #cfc3b6; /* Soft ash-gray for comfortable reading */
-    --text-dim:           #786452; /* Muted clay detail color */
-    --accent-gold:        #ffb359; /* Radiant corona gold active states */
-    --accent-gold-dim:    rgba(255, 179, 89, 0.12);
-    --accent-gold-line:   rgba(255, 179, 89, 0.35);
+    --bg-base:            #06020c; /* Deep synthwave night sky */
+    --glass-bg:           rgba(21, 9, 36, 0.65); /* Deep neon violet tint */
+    --glass-bg-strong:    rgba(13, 5, 23, 0.88);
+    --glass-border:       rgba(255, 0, 127, 0.25); /* Sharp laser-fuchsia frame */
+    --glass-border-hover: rgba(0, 240, 255, 0.9); /* Electric neon cyan hyper-glow */
+    --text-main:          #fff0f8; /* Crisp pink-tinted stark white */
+    --text-muted:         #b9a1cf; /* Soft lavender-gray body text */
+    --text-dim:           #724994; /* Dark structural neon violet */
+    --accent-gold:        #ff007f; /* Hot magenta active pills and links */
+    --accent-gold-dim:    rgba(255, 0, 127, 0.15);
+    --accent-gold-line:   rgba(255, 0, 127, 0.40);
     --max-w:              1020px;
     --max-w-article:      720px;
 
     /* Background Orb Personalities */
-    --orb-secondary-color: #613411; /* Deep molten bronze cloud */
-    --orb-blur-factor:     1.5;     /* Massively diffused sky spread */
-    --orb-speed-multiplier:0.5;     /* Glacial, cosmic orbit pace */
-    --orb-scale-multiplier:1.6;     /* Macro structural scale */
+    --orb-secondary-color: #00f0ff; /* Injects bright retro-cyan orbs */
+    --orb-blur-factor:     0.8;     /* Sharper, intense geometric light fields */
+    --orb-speed-multiplier:1.5;     /* Fast, sweeping digital currents */
+    --orb-scale-multiplier:0.9;     /* Compact, highly punchy light sources */
 }
 
 /* Add this to your Reset section for global smooth scrolling */
