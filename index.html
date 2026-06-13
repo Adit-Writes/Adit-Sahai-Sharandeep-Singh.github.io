@@ -1,18 +1,161 @@
-{% set PageTitle = "Home" %}
-{% extends "_includes/base.njk" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="pvEqpTOogXhfCdC85sQZbjvLQp6gPupMCs62PZL1urA" />
+    <title>The Sahai Analogy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="MainCode/style.css">
+</head>
+<body>
 
-{% block content %}
-    <header class="blog-banner reveal">
+    <!-- Background layers -->
+    <div id="bg-canvas"></div>
+    <div id="bg-pattern"></div>
+    <div id="bg-dots"></div>
+
+    <nav class="navbar glass-card">
+        <div class="logo">A.S.</div>
+        <div class="navbar-divider"></div>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#books">Books</a>
+            <a href="#articles">Articles</a>
+        </div>
+    </nav>
+
+    <header class="blog-banner">
         <h1 class="main-blog-title">The Sahai Analogy</h1>
         <p class="blog-tagline">Critical Perspectives on Science, Politics, and Sports Culture</p>
         <div class="banner-line"></div>
     </header>
 
-    <div class="section-divider reveal" style="margin-top: 30px;">
-        <h2>Explore The Work</h2>
-        <div class="nav-links" style="display: flex; gap: 20px; justify-content: center; margin-top: 20px;">
-            <a href="/Adit-Sahai.github.io/about.html" class="gold-btn" style="border-radius: 50px;">Meet The Author</a>
-            <a href="/Adit-Sahai.github.io/articles.html" class="gold-btn" style="border-radius: 50px;">Read Latest Essays</a>
+    {# ── About ─────────────────────────────────────────── #}
+    <section id="about" class="hero glass-card reveal">
+        <div class="glow-blob"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <p class="subtitle">{{ AboutAuthor.Expertise }}</p>
+                <h1>{{ AboutAuthor.Name }}</h1>
+                <p class="bio">{{ AboutAuthor.Desciption | safe }}</p>
+            </div>
+            <div class="hero-visual">
+                <img src="/Adit-Sahai.github.io{{ AboutAuthor.Pic }}" alt="{{ AboutAuthor.Name }}">
+            </div>
+        </div>
+    </section>
+
+    {# ── Books ─────────────────────────────────────────── #}
+    <div id="books" class="section-divider reveal">
+        <h2>Published Works</h2>
+        <div class="section-title-large">Books</div>
+        <div class="gold-line"></div>
+    </div>
+
+    <section class="book-grid">
+        {% for book in Books %}
+        <div class="book-card glass-card reveal">
+            <div class="glow-blob"></div>
+            <div class="book-image-wrapper">
+                <img src="/Adit-Sahai.github.io{{ book.Pic }}" alt="{{ book.Name }}" class="book-cover">
+            </div>
+            <div class="book-info">
+                <h3>{{ book.Name }}</h3>
+                <p class="book-subtitle">{{ book.Topic }}</p>
+                <p class="description">{{ book.About | safe }}</p>
+                <span class="date">{{ book.PublishedDate }}</span>
+                <a href="{{ book.Link }}" class="gold-btn">View Book</a>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+
+    {# ── Articles ──────────────────────────────────────── #}
+    <div id="articles" class="section-divider reveal">
+        <h2>Essays & Perspectives</h2>
+        <div class="section-title-large">Writing</div>
+        <div class="gold-line"></div>
+    </div>
+
+    <div class="category-menu-container reveal">
+        <div class="category-menu">
+            <button class="category-btn active" data-filter="all">All</button>
+            {% for cat in Categories %}
+            <button class="category-btn" data-filter="{{ cat.name | lower }}">{{ cat.name }}</button>
+            {% endfor %}
         </div>
     </div>
-{% endblock %}
+
+    <section class="article-feed">
+        {% for article in Articles %}
+        {% if article.Published %}
+        <article class="article-card glass-card reveal" data-category="{{ article.Topic | default('') | lower }}">
+            <div class="glow-blob"></div>
+            <div class="article-meta">
+                <span class="category">{{ article.Topic }}</span>
+                <span class="meta-sep"></span>
+                <span class="read-time">{{ article.ReadTime }} min read</span>
+                {% if article.Likes !== false and article.Likes !== 'false' %}
+                <span class="meta-sep"></span>
+                <span class="index-like-count" data-slug="{{ article.Title | slug }}">0 likes</span>
+                {% endif %}
+            </div>
+            <h3 class="article-title">{{ article.Title }}</h3>
+            <p class="article-excerpt">{{ article.Description | safe }}</p>
+            <div class="article-footer">
+                <span class="date">{{ article.ReleaseDate }}</span>
+                <a href="/Adit-Sahai.github.io/articles/{{ article.Title | slug }}/" class="read-link">Read Essay →</a>
+            </div>
+        </article>
+        {% endif %}
+        {% endfor %}
+    </section>
+
+    <footer class="footer">
+        <p>&copy; 2026 The Sahai Analogy. All rights reserved.</p>
+    </footer>
+
+    <script src="MainCode/script.js"></script>
+    
+    <script>
+    // Make sure to use your actual Supabase URL and Key
+    const SUPABASE_URL = 'https://mpeqripywqiotselpyut.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wZXFyaXB5d3Fpb3RzZWxweXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTE4MzUsImV4cCI6MjA5Njg4NzgzNX0.1lTHIY3M1xk5FmnTC2YMbSMNpi7vhWDuGGXUSNkwkm8';
+
+    async function loadIndexLikes() {
+        try {
+            // Fetch just the article_ids from the likes table to save bandwidth
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/article_likes?select=article_id`, {
+                headers: {
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_KEY}`
+                }
+            });
+            
+            if (!res.ok) return;
+            const likes = await res.json();
+
+            // Count occurrences of each article_id
+            const likeCounts = {};
+            likes.forEach(like => {
+                likeCounts[like.article_id] = (likeCounts[like.article_id] || 0) + 1;
+            });
+
+            // Find all our spans and update their text
+            document.querySelectorAll('.index-like-count').forEach(el => {
+                const slug = el.getAttribute('data-slug');
+                const count = likeCounts[slug] || 0;
+                el.textContent = count === 1 ? '1 like' : `${count} likes`;
+            });
+        } catch (e) {
+            console.error('Failed to load likes for homepage', e);
+        }
+    }
+
+    loadIndexLikes();
+</script>
+</body>
+</html>
