@@ -294,13 +294,32 @@ permalink: "articles/{{ article.Title | slug }}/"
     </footer>
 
     <script src="/Adit-Sahai.github.io/MainCode/script.js"></script>
-    <script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // ── Utilities ─────────────────────────────────────────────
+        function escHtml(s) {
+            return String(s || '')
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+
+        function formatDate(iso) {
+            return new Date(iso).toLocaleDateString('en-US', {
+                year: 'numeric', month: 'short', day: 'numeric'
+            });
+        }
+
         // ── Reading progress ──────────────────────────────────────
         const bar = document.getElementById('progressBar');
-        window.addEventListener('scroll', () => {
-            const docH = document.documentElement.scrollHeight - window.innerHeight;
-            bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
-        }, { passive: true });
+        if (bar) {
+            window.addEventListener('scroll', () => {
+                const docH = document.documentElement.scrollHeight - window.innerHeight;
+                bar.style.width = (docH > 0 ? (window.scrollY / docH) * 100 : 0) + '%';
+            }, { passive: true });
+        }
 
         // ── Config ────────────────────────────────────────────────
         const SUPABASE_URL = 'https://mpeqripywqiotselpyut.supabase.co';
@@ -329,32 +348,36 @@ permalink: "articles/{{ article.Title | slug }}/"
         // ARTICLE LIKES
         // ══════════════════════════════════════════════════════════
         const LIKE_KEY = `liked:${ARTICLE_ID}`;
+        const likeBtn = document.getElementById('likeBtn');
+        const likeCountEl = document.getElementById('likeCount');
 
         async function loadLikes() {
+            if (!likeBtn) return;
             try {
                 const all = await sb(`article_likes?article_id=eq.${ARTICLE_ID}&select=id`);
                 setLikeCount(all.length);
                 if (localStorage.getItem(LIKE_KEY)) activateLikeBtn();
+                
+                likeBtn.addEventListener('click', toggleLike);
             } catch (e) { console.warn('Likes unavailable', e); }
         }
 
         function setLikeCount(n) {
-            document.getElementById('likeCount').textContent = n === 1 ? '1 like' : `${n} likes`;
+            if (likeCountEl) likeCountEl.textContent = n === 1 ? '1 like' : `${n} likes`;
         }
 
         function activateLikeBtn() {
-            document.getElementById('likeBtn').classList.add('liked');
+            likeBtn.classList.add('liked');
             document.getElementById('likeHeart').textContent = '♥';
         }
 
         function deactivateLikeBtn() {
-            document.getElementById('likeBtn').classList.remove('liked');
+            likeBtn.classList.remove('liked');
             document.getElementById('likeHeart').textContent = '♡';
         }
 
         async function toggleLike() {
-            const btn = document.getElementById('likeBtn');
-            btn.disabled = true;
+            likeBtn.disabled = true;
             try {
                 const liked = localStorage.getItem(LIKE_KEY);
                 if (!liked) {
@@ -376,35 +399,16 @@ permalink: "articles/{{ article.Title | slug }}/"
                 const all = await sb(`article_likes?article_id=eq.${ARTICLE_ID}&select=id`);
                 setLikeCount(all.length);
             } catch (e) { console.warn('Like failed', e); }
-            btn.disabled = false;
+            likeBtn.disabled = false;
         }
 
         // ══════════════════════════════════════════════════════════
         // COMMENTS
         // ══════════════════════════════════════════════════════════
-
-        // Stored as: comment_owner:<commentId> = fingerprint
-        function getOwnerFp(commentId) {
-            return localStorage.getItem(`comment_owner:${commentId}`);
-        }
-
-        function getCommentLikeFp(commentId) {
-            return localStorage.getItem(`comment_liked:${commentId}`);
-        }
-
-        function formatDate(iso) {
-            return new Date(iso).toLocaleDateString('en-US', {
-                year: 'numeric', month: 'short', day: 'numeric'
-            });
-        }
-
-        function escHtml(s) {
-            return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-                    .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-        }
-
-        // commentLikeCounts: { [commentId]: number }
         let commentLikeCounts = {};
+
+        function getOwnerFp(commentId) { return localStorage.getItem(`comment_owner:${commentId}`); }
+        function getCommentLikeFp(commentId) { return localStorage.getItem(`comment_liked:${commentId}`); }
 
         function renderComment(c) {
             const isOwner    = !!getOwnerFp(c.id);
@@ -428,7 +432,6 @@ permalink: "articles/{{ article.Title | slug }}/"
                             <button
                                 class="comment-like-btn ${isLiked ? 'liked' : ''}"
                                 data-comment-id="${c.id}"
-                                onclick="toggleCommentLike(this)"
                             >
                                 <span class="clheart">${isLiked ? '♥' : '♡'}</span>
                                 <span class="cl-count">${likeCount > 0 ? likeCount : ''}</span>
@@ -437,7 +440,6 @@ permalink: "articles/{{ article.Title | slug }}/"
                             <button
                                 class="comment-delete-btn"
                                 data-comment-id="${c.id}"
-                                onclick="deleteComment(this)"
                             >Delete</button>` : ''}
                         </div>
                     </div>
@@ -446,13 +448,11 @@ permalink: "articles/{{ article.Title | slug }}/"
             return div;
         }
 
-        // ── Comment likes ─────────────────────────────────────────
         async function loadCommentLikes(commentIds) {
             if (!commentIds.length) return;
             try {
-                // Fetch all likes for these comments in one request
-                const ids   = commentIds.map(id => `"${id}"`).join(',');
-                const rows  = await sb(`comment_likes?comment_id=in.(${commentIds.join(',')})&select=comment_id`);
+                const ids = commentIds.map(id => `"${id}"`).join(',');
+                const rows = await sb(`comment_likes?comment_id=in.(${ids})&select=comment_id`);
                 rows.forEach(r => {
                     commentLikeCounts[r.comment_id] = (commentLikeCounts[r.comment_id] || 0) + 1;
                 });
@@ -494,7 +494,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             btn.disabled = false;
         }
 
-        // ── Comment delete ────────────────────────────────────────
         async function deleteComment(btn) {
             const commentId = btn.getAttribute('data-comment-id');
             const fp        = getOwnerFp(commentId);
@@ -507,65 +506,77 @@ permalink: "articles/{{ article.Title | slug }}/"
                 await sb(`article_comments?id=eq.${commentId}&fingerprint=eq.${fp}`, {
                     method: 'DELETE'
                 });
-                // Remove from DOM
+                
                 const item = document.querySelector(`.comment-item[data-id="${commentId}"]`);
                 if (item) {
-                    item.style.opacity   = '0';
-                    item.style.transform = 'translateY(-8px)';
+                    item.style.opacity    = '0';
+                    item.style.transform  = 'translateY(-8px)';
                     item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
                     setTimeout(() => item.remove(), 320);
                 }
                 localStorage.removeItem(`comment_owner:${commentId}`);
 
-                // Update count
                 const countEl = document.getElementById('commentsCount');
-                const cur     = parseInt(countEl.textContent) || 0;
-                const next    = Math.max(0, cur - 1);
-                countEl.textContent = next === 0 ? '' : next === 1 ? '1 comment' : `${next} comments`;
+                if (countEl) {
+                    const cur     = parseInt(countEl.textContent) || 0;
+                    const next    = Math.max(0, cur - 1);
+                    countEl.textContent = next === 0 ? '' : next === 1 ? '1 comment' : `${next} comments`;
+                }
             } catch (e) {
                 console.warn('Delete failed', e);
                 btn.disabled = false;
             }
         }
 
-        // ── Load comments ─────────────────────────────────────────
         async function loadComments() {
+            const list   = document.getElementById('commentsList');
+            const loader = document.getElementById('commentsLoading');
+            if (!list) return;
+
             try {
-                const list   = document.getElementById('commentsList');
-                const loader = document.getElementById('commentsLoading');
-                const data   = await sb(
+                const data = await sb(
                     `article_comments?article_id=eq.${ARTICLE_ID}&order=created_at.desc&select=id,name,body,created_at,fingerprint`
                 );
 
-                // Load comment likes in parallel
                 const ids = data.map(c => c.id);
                 await loadCommentLikes(ids);
 
-                loader.remove();
+                if (loader) loader.remove();
                 const countEl = document.getElementById('commentsCount');
-                countEl.textContent = data.length === 0 ? '' :
-                                      data.length === 1 ? '1 comment' : `${data.length} comments`;
+                if (countEl) {
+                    countEl.textContent = data.length === 0 ? '' :
+                                          data.length === 1 ? '1 comment' : `${data.length} comments`;
+                }
 
                 if (data.length === 0) {
                     list.innerHTML = '<p class="no-comments">No comments yet — be the first to share your thoughts.</p>';
-                    return;
+                } else {
+                    data.forEach(c => list.appendChild(renderComment(c)));
                 }
 
-                data.forEach(c => list.appendChild(renderComment(c)));
+                // Event Delegation for comments
+                list.addEventListener('click', (e) => {
+                    const likeBtn = e.target.closest('.comment-like-btn');
+                    if (likeBtn) toggleCommentLike(likeBtn);
+
+                    const deleteBtn = e.target.closest('.comment-delete-btn');
+                    if (deleteBtn) deleteComment(deleteBtn);
+                });
+
             } catch (e) {
-                document.getElementById('commentsLoading').textContent = 'Could not load comments.';
+                if (loader) loader.textContent = 'Could not load comments.';
                 console.warn('Comments unavailable', e);
             }
         }
 
-        // ── Submit comment ────────────────────────────────────────
         async function submitComment() {
             const nameEl = document.getElementById('commentName');
             const bodyEl = document.getElementById('commentBody');
             const errEl  = document.getElementById('commentError');
             const btn    = document.getElementById('submitBtn');
-            errEl.textContent = '';
+            if (!btn) return;
 
+            errEl.textContent = '';
             const name = nameEl.value.trim();
             const body = bodyEl.value.trim();
 
@@ -577,9 +588,7 @@ permalink: "articles/{{ article.Title | slug }}/"
             btn.textContent = 'Posting…';
 
             try {
-                // Generate a fingerprint for ownership
                 const fp = crypto.randomUUID();
-
                 const result = await sb('article_comments', {
                     method:  'POST',
                     prefer:  'return=representation',
@@ -587,7 +596,6 @@ permalink: "articles/{{ article.Title | slug }}/"
                     body:    { article_id: ARTICLE_ID, name, body, fingerprint: fp }
                 });
 
-                // Store ownership — keyed by the real DB id returned
                 const newComment = Array.isArray(result) ? result[0] : result;
                 if (newComment?.id) {
                     localStorage.setItem(`comment_owner:${newComment.id}`, fp);
@@ -595,9 +603,9 @@ permalink: "articles/{{ article.Title | slug }}/"
 
                 nameEl.value = '';
                 bodyEl.value = '';
-                document.getElementById('charCount').textContent = '0 / 1200';
+                const charCountEl = document.getElementById('charCount');
+                if (charCountEl) charCountEl.textContent = '0 / 1200';
 
-                // Optimistic render with real id so delete works immediately
                 const list  = document.getElementById('commentsList');
                 const noMsg = list.querySelector('.no-comments');
                 if (noMsg) noMsg.remove();
@@ -611,9 +619,11 @@ permalink: "articles/{{ article.Title | slug }}/"
                 list.insertBefore(renderComment(fakeComment), list.firstChild);
 
                 const countEl = document.getElementById('commentsCount');
-                const cur     = parseInt(countEl.textContent) || 0;
-                const next    = cur + 1;
-                countEl.textContent = next === 1 ? '1 comment' : `${next} comments`;
+                if (countEl) {
+                    const cur     = parseInt(countEl.textContent) || 0;
+                    const next    = cur + 1;
+                    countEl.textContent = next === 1 ? '1 comment' : `${next} comments`;
+                }
             } catch (e) {
                 errEl.textContent = 'Failed to post comment. Please try again.';
                 console.warn('Submit failed', e);
@@ -622,40 +632,45 @@ permalink: "articles/{{ article.Title | slug }}/"
             btn.textContent = 'Post Comment';
         }
 
-        // Char counter
         const bodyTextarea = document.getElementById('commentBody');
         if (bodyTextarea) {
             bodyTextarea.addEventListener('input', () => {
-                document.getElementById('charCount').textContent =
-                    `${bodyTextarea.value.length} / 1200`;
+                const charCountEl = document.getElementById('charCount');
+                if (charCountEl) {
+                    charCountEl.textContent = `${bodyTextarea.value.length} / 1200`;
+                }
             });
         }
 
-        // ══════════════════════════════════════════════════════════
-        // ARTICLE SEARCH (on article page — navigates to index)
-        // ══════════════════════════════════════════════════════════
+        const submitBtnTrigger = document.getElementById('submitBtn');
+        if (submitBtnTrigger) {
+            submitBtnTrigger.addEventListener('click', submitComment);
+        }
 
-        // We embed article data at build time for client-side search
-        // Nunjucks renders this into a JS array — no extra fetch needed
+        // ══════════════════════════════════════════════════════════
+        // ARTICLE SEARCH
+        // ══════════════════════════════════════════════════════════
         const ALL_ARTICLES = [
             {% for a in Articles %}
             {% if a.Published %}
             {
-                title:    {{ a.Title | dump | safe }},
-                category: {{ a.Topic | dump | safe }},
-                slug:     {{ a.Title | slug | dump | safe }},
-                excerpt:  {{ a.Description | striptags | dump | safe }}
+                title:    {{ (a.Title | default("")) | dump | safe }},
+                category: {{ (a.Topic | default("")) | dump | safe }},
+                slug:     {{ (a.Title | default("") | slug) | dump | safe }},
+                excerpt:  {{ (a.Description | default("")) | striptags | dump | safe }}
             },
             {% endif %}
             {% endfor %}
         ];
 
         function initSearch() {
-            const toggle    = document.getElementById('searchToggle');
-            const box       = document.getElementById('searchBox');
-            const input     = document.getElementById('searchInput');
-            const results   = document.getElementById('searchResults');
+            const toggle   = document.getElementById('searchToggle');
+            const box      = document.getElementById('searchBox');
+            const input    = document.getElementById('searchInput');
+            const results  = document.getElementById('searchResults');
             const searchWrap = document.getElementById('searchWrap');
+
+            if (!toggle || !box || !input || !results || !searchWrap) return;
 
             toggle.addEventListener('click', e => {
                 e.stopPropagation();
@@ -688,10 +703,10 @@ permalink: "articles/{{ article.Title | slug }}/"
                 }
 
                 matches.forEach(a => {
-                    const link       = document.createElement('a');
-                    link.className   = 'search-result-item';
-                    link.href        = `/Adit-Sahai.github.io/articles/${a.slug}/`;
-                    link.innerHTML   = `<strong>${escHtml(a.title)}</strong><span class="s-cat">${escHtml(a.category)}</span>`;
+                    const link     = document.createElement('a');
+                    link.className = 'search-result-item';
+                    link.href      = `/Adit-Sahai.github.io/articles/${a.slug}/`;
+                    link.innerHTML = `<strong>${escHtml(a.title)}</strong><span class="s-cat">${escHtml(a.category)}</span>`;
                     results.appendChild(link);
                 });
             });
@@ -705,18 +720,11 @@ permalink: "articles/{{ article.Title | slug }}/"
             });
         }
 
-        function escHtml(s) {
-            return String(s)
-                .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-                .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-        }
-
         // ── Init ──────────────────────────────────────────────────
-        const likesSection    = document.getElementById('likesSection');
-        const commentsSection = document.getElementById('commentsSection');
-        if (likesSection)    loadLikes();
-        if (commentsSection) loadComments();
+        if (document.getElementById('likesSection')) loadLikes();
+        if (document.getElementById('commentsSection')) loadComments();
         initSearch();
-    </script>
+    });
+</script>
 </body>
 </html>
