@@ -1,7 +1,7 @@
 {
   "Title": "he",
   "Topic": "_data/categories/facts.json",
-  "Published": false,
+  "Published": true,
   "Comments": true,
   "Likes": true,
   "Body": "he",
