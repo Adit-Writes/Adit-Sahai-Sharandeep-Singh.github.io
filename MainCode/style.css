@@ -1,16 +1,16 @@
-/* ── Tokens: Green Sage Monochromatic ────────────────────── */
+/* ── Tokens: Warm Beige Tetradic ─────────────────────────── */
 :root {
-    --bg-base:            #0a0f0d; /* Ultra-dark matte forest pine */
-    --glass-bg:           rgba(20, 30, 26, 0.65); /* Deep sage-tinted glass */
-    --glass-bg-strong:    rgba(15, 25, 21, 0.88);
-    --glass-border:       rgba(135, 169, 153, 0.25); /* Soft sage border */
-    --glass-border-hover: rgba(163, 199, 182, 0.8); /* Bright sage glow on hover */
-    --text-main:          #f0f5f3; /* Crisp, off-white sage tint */
-    --text-muted:         #a3b899; /* Muted olive-sage for reading text */
-    --text-dim:           #4e6156; /* Dark moss for meta elements */
-    --accent-gold:        #cbdbb2; /* Pale lime-sage accent for links/active states */
-    --accent-gold-dim:    rgba(203, 219, 178, 0.15);
-    --accent-gold-line:   rgba(203, 219, 178, 0.45);
+    --bg-base:            #0d0b0a; /* Deep espresso/dark charcoal base */
+    --glass-bg:           rgba(28, 24, 22, 0.65); /* Warm, tinted glass layer */
+    --glass-bg-strong:    rgba(20, 17, 16, 0.88);
+    --glass-border:       rgba(186, 161, 141, 0.25); /* Soft almond border */
+    --glass-border-hover: rgba(224, 197, 148, 0.8); /* Rich cream-gold hover glow */
+    --text-main:          #fcfaf7; /* Soft linen white */
+    --text-muted:         #c7bba8; /* Warm taupe/beige for easy reading */
+    --text-dim:           #6e6153; /* Muted earth brown for meta information */
+    --accent-gold:        #d4a373; /* Warm terracotta/tan accent for links/buttons */
+    --accent-gold-dim:    rgba(212, 163, 115, 0.15);
+    --accent-gold-line:   rgba(212, 163, 115, 0.45);
     --max-w:              1020px;
     --max-w-article:      720px;
 }
