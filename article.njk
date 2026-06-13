@@ -17,12 +17,17 @@ permalink: "articles/{{ article.Title | slug }}/"
     <link rel="stylesheet" href="/Adit-Sahai.github.io/MainCode/style.css">
 </head>
 <body>
-
     <!-- Reading progress bar -->
     <div class="progress-bar" id="progressBar"></div>
 
+    <!-- Background layers -->
+    <div id="bg-canvas"></div>
+    <div id="bg-pattern"></div>
+    <div id="bg-dots"></div>
+
     <nav class="navbar glass-card">
         <div class="logo">A.S.</div>
+        <div class="navbar-divider"></div>
         <div class="nav-links">
             <a href="/Adit-Sahai.github.io/#about">About</a>
             <a href="/Adit-Sahai.github.io/#books">Books</a>
@@ -31,10 +36,9 @@ permalink: "articles/{{ article.Title | slug }}/"
     </nav>
 
     <div class="article-page">
-
         <a href="/Adit-Sahai.github.io/#articles" class="back-link">Back to Essays</a>
 
-        <!-- Hero — open, no card box -->
+        <!-- Hero — glass panel with gold top-edge accent -->
         <article class="article-hero reveal">
             <div class="article-hero-meta">
                 <span class="category">{{ article.Topic }}</span>
@@ -47,13 +51,10 @@ permalink: "articles/{{ article.Title | slug }}/"
                 <span class="date">Updated {{ article.LastUpdated }}</span>
                 {% endif %}
             </div>
-
             <h1 class="article-main-title">{{ article.Title }}</h1>
-
             <div class="article-title-rule">
                 <span>✦</span>
             </div>
-
             <p class="article-lead">{{ article.Description | safe }}</p>
         </article>
 
@@ -62,7 +63,7 @@ permalink: "articles/{{ article.Title | slug }}/"
             <div class="article-divider-icon">· · ·</div>
         </div>
 
-        <!-- Body — open, full width -->
+        <!-- Body — glass card for definition -->
         <div class="article-body-card reveal">
             <div class="article-body">
                 {{ article.Body | safe }}
@@ -72,7 +73,6 @@ permalink: "articles/{{ article.Title | slug }}/"
         <div class="article-nav-footer">
             <a href="/Adit-Sahai.github.io/#articles">← View all essays</a>
         </div>
-
     </div>
 
     <footer class="footer">
