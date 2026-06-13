@@ -10,23 +10,26 @@ const ORB_TRANSITION_SECS   = 10;    // how long orb color/size transition takes
 // ============================================================
 
 const MY_FAVORITE_THEMES = [
-    }--bg-base: #030814;
-
-    --glass-bg: rgba(15,25,45,.65);
-    --glass-bg-strong: rgba(8,15,32,.88);
-
-    --glass-border: rgba(120,180,255,.25);
-    --glass-border-hover: rgba(180,220,255,.9);
-
-    --text-main: #f6fbff;
-    --text-muted: #bdd4e8;
-    --text-dim: #6f8da8;
-
-    --accent-gold: #9dd7ff;
-    --accent-gold-dim: rgba(157,215,255,.12);
-    --accent-gold-line: rgba(157,215,255,.35);
-
-    --orb-secondary-color: #66b8ff;}
+    {
+    name: "Arctic Aurora",
+    tokens: {
+        '--bg-base':             '#020611',
+        '--glass-bg':            'rgba(8, 18, 38, 0.65)',
+        '--glass-bg-strong':     'rgba(4, 10, 24, 0.88)',
+        '--glass-border':        'rgba(120, 220, 255, 0.22)',
+        '--glass-border-hover':  'rgba(120, 220, 255, 0.85)',
+        '--text-main':           '#f5fcff',
+        '--text-muted':          '#b7d2de',
+        '--text-dim':            '#6d8da0',
+        '--accent-gold':         '#7cf3ff',
+        '--accent-gold-dim':     'rgba(124, 243, 255, 0.15)',
+        '--accent-gold-line':    'rgba(124, 243, 255, 0.40)',
+        '--orb-secondary-color': '#6a7dff',
+        '--orb-blur-factor':     '1.15',
+        '--orb-speed-multiplier':'1.1',
+        '--orb-scale-multiplier':'1.2'
+    }
+},
 ];
 
 // ============================================================
