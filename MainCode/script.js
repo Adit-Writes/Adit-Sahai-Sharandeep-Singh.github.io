@@ -197,28 +197,82 @@ function initBackground() {
 
 function updateActiveOrbSkins() {
     const states = window._orbStates;
-    if (!states || !states.length) return;
+    if (!states) return;
 
     const styles = getComputedStyle(document.documentElement);
-    const accentColor = styles.getPropertyValue('--accent-gold').trim() || '#ffffff';
-    const secondaryColor = styles.getPropertyValue('--orb-secondary-color').trim() || accentColor;
-    
-    const blurFactor = parseFloat(styles.getPropertyValue('--orb-blur-factor')) || 1.0;
-    const scaleMultiplier = parseFloat(styles.getPropertyValue('--orb-scale-multiplier')) || 1.0;
+
+    const accentColor =
+        styles.getPropertyValue('--accent-gold').trim();
+
+    const secondaryColor =
+        styles.getPropertyValue('--orb-secondary-color').trim();
+
+    const blurFactor =
+        parseFloat(
+            styles.getPropertyValue('--orb-blur-factor')
+        ) || 1;
+
+    const scaleMultiplier =
+        parseFloat(
+            styles.getPropertyValue('--orb-scale-multiplier')
+        ) || 1;
+
     const vw = window.innerWidth;
 
-    states.forEach((state) => {
-        const targetColor = state.isSecondary ? secondaryColor : accentColor;
-        const targetSize = Math.round(vw * (state.sizePercent * scaleMultiplier) / 100);
-        const targetBlur = state.blurBase * blurFactor;
+    states.forEach(state => {
 
-        state.color = targetColor;
+        const color =
+            state.isSecondary
+                ? secondaryColor
+                : accentColor;
 
-        // Transitions smoothly apply updates via CSS instead of popping out
-        state.el.style.width = `${targetSize}px`;
-        state.el.style.height = `${targetSize}px`;
-        state.el.style.filter = `blur(${targetBlur}px)`;
-        state.el.style.background = `radial-gradient(circle, ${targetColor} 0%, rgba(0,0,0,0) 70%)`;
+        const targetSize =
+            Math.round(
+                vw *
+                (state.sizePercent * scaleMultiplier)
+                / 100
+            );
+
+        const targetBlur =
+            state.blurBase * blurFactor;
+
+        state.el.style.width =
+            targetSize + 'px';
+
+        state.el.style.height =
+            targetSize + 'px';
+
+        const incoming =
+            state.activeLayer === 0
+                ? state.layerB
+                : state.layerA;
+
+        const outgoing =
+            state.activeLayer === 0
+                ? state.layerA
+                : state.layerB;
+
+        incoming.style.background =
+            `radial-gradient(
+                circle,
+                ${color} 0%,
+                transparent 70%
+            )`;
+
+        incoming.style.filter =
+            `blur(${targetBlur}px)`;
+
+        requestAnimationFrame(() => {
+
+            incoming.style.opacity = '1';
+            outgoing.style.opacity = '0';
+
+        });
+
+        state.activeLayer =
+            state.activeLayer === 0 ? 1 : 0;
+
+        state.color = color;
     });
 }
 
