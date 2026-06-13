@@ -198,7 +198,6 @@ function updateActiveOrbSkins() {
 
     const styles = getComputedStyle(document.documentElement);
     const accentColor = styles.getPropertyValue('--accent-gold').trim() || '#ffffff';
-    const baseBg = styles.getPropertyValue('--bg-base').trim() || '#000000';
     const secondaryColor = styles.getPropertyValue('--orb-secondary-color').trim() || accentColor;
     
     const blurFactor = parseFloat(styles.getPropertyValue('--orb-blur-factor')) || 1.0;
@@ -216,7 +215,9 @@ function updateActiveOrbSkins() {
         state.el.style.width = `${targetSize}px`;
         state.el.style.height = `${targetSize}px`;
         state.el.style.filter = `blur(${targetBlur}px)`;
-        state.el.style.background = `radial-gradient(circle, ${targetColor} 0%, ${baseBg} 60%, transparent 100%)`;
+        
+        // FIX: Removed the solid ${baseBg} color stop so the blur layer does not create a solid mask
+        state.el.style.background = `radial-gradient(circle, ${targetColor} 0%, rgba(0,0,0,0) 70%)`;
     });
 }
 
