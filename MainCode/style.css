@@ -1,23 +1,23 @@
 :root {
-    --bg-base:            #03070a; /* Sub-zero midnight arctic sky */
-    --glass-bg:           rgba(10, 22, 31, 0.65); /* Deep frosted glacier blue */
-    --glass-bg-strong:    rgba(6, 14, 20, 0.88);
-    --glass-border:       rgba(141, 198, 224, 0.22); /* Fine ice crystals edge */
-    --glass-border-hover: rgba(147, 250, 216, 0.85); /* Vivid aurora mint highlight */
-    --text-main:          #f2f8fc; /* Pale powdered snow white */
-    --text-muted:         #a1b6c7; /* Glacial fog gray for reading lines */
-    --text-dim:           #4c667a; /* Frozen slate for secondary tags */
-    --accent-gold:        #93fad8; /* Aurora green-mint active state */
-    --accent-gold-dim:    rgba(147, 250, 216, 0.12);
-    --accent-gold-line:   rgba(147, 250, 216, 0.35);
+    --bg-base:            #020503; /* Pure dark carbon fiber */
+    --glass-bg:           rgba(8, 23, 14, 0.65); /* Dark jade translucent stone */
+    --glass-bg-strong:    rgba(4, 15, 9, 0.88);
+    --glass-border:       rgba(46, 204, 113, 0.22); /* Structural jade rim */
+    --glass-border-hover: rgba(0, 255, 136, 0.85); /* Piercing hyper-jade glow */
+    --text-main:          #f0fbf4; /* Mint-tinted stark silk white */
+    --text-muted:         #9bb3a4; /* Muted eucalyptus green for reading text */
+    --text-dim:           #43614e; /* Dark moss for meta markers */
+    --accent-gold:        #00ff88; /* Luminous emerald highlights */
+    --accent-gold-dim:    rgba(0, 255, 136, 0.12);
+    --accent-gold-line:   rgba(0, 255, 136, 0.35);
     --max-w:              1020px;
     --max-w-article:      720px;
 
     /* Background Orb Personalities */
-    --orb-secondary-color: #1b4965; /* Deep fjord blue */
-    --orb-blur-factor:     1.2;     /* Shimmering northern sky textures */
-    --orb-speed-multiplier:0.9;     /* Smooth, organic auroral wave movement */
-    --orb-scale-multiplier:1.1;
+    --orb-secondary-color: #052915; /* Abyssal emerald shadow */
+    --orb-blur-factor:     1.1;
+    --orb-speed-multiplier:1.1;     /* Active but smooth matrix energy */
+    --orb-scale-multiplier:1.0;
 }
 
 /* Add this to your Reset section for global smooth scrolling */
