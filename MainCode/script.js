@@ -10,106 +10,23 @@ const ORB_TRANSITION_SECS   = 10;    // how long orb color/size transition takes
 // ============================================================
 
 const MY_FAVORITE_THEMES = [
-    {
-        name: "Cyberpunk Tox",
-        tokens: {
-            '--bg-base':             '#040106',
-            '--glass-bg':            'rgba(18, 6, 24, 0.65)',
-            '--glass-bg-strong':     'rgba(11, 3, 15, 0.88)',
-            '--glass-border':        'rgba(255, 0, 127, 0.22)',
-            '--glass-border-hover':  'rgba(255, 0, 127, 0.85)',
-            '--text-main':           '#fff0f6',
-            '--text-muted':          '#c4abb6',
-            '--text-dim':            '#73455a',
-            '--accent-gold':         '#ff007f',
-            '--accent-gold-dim':     'rgba(255, 0, 127, 0.15)',
-            '--accent-gold-line':    'rgba(255, 0, 127, 0.40)',
-            '--orb-secondary-color': '#1aff6b',
-            '--orb-blur-factor':     '0.85',
-            '--orb-speed-multiplier':'1.6',
-            '--orb-scale-multiplier':'0.9'
-        }
-    },
-    {
-        name: "Abyssal Flare",
-        tokens: {
-            '--bg-base':             '#02070d',
-            '--glass-bg':            'rgba(6, 18, 33, 0.65)',
-            '--glass-bg-strong':     'rgba(3, 10, 20, 0.88)',
-            '--glass-border':        'rgba(0, 210, 255, 0.25)',
-            '--glass-border-hover':  'rgba(0, 210, 255, 0.85)',
-            '--text-main':           '#e6f2fa',
-            '--text-muted':          '#8ca6b8',
-            '--text-dim':            '#435b6e',
-            '--accent-gold':         '#00d2ff',
-            '--accent-gold-dim':     'rgba(0, 210, 255, 0.12)',
-            '--accent-gold-line':    'rgba(0, 210, 255, 0.35)',
-            '--orb-secondary-color': '#ff6a00',
-            '--orb-blur-factor':     '1.3',
-            '--orb-speed-multiplier':'0.6',
-            '--orb-scale-multiplier':'1.4'
-        }
-    },
-    {
-        name: "Outrun 1984",
-        tokens: {
-            '--bg-base':             '#06020c',
-            '--glass-bg':            'rgba(21, 9, 36, 0.65)',
-            '--glass-bg-strong':     'rgba(13, 5, 23, 0.88)',
-            '--glass-border':        'rgba(255, 0, 127, 0.25)',
-            '--glass-border-hover':  'rgba(0, 240, 255, 0.9)',
-            '--text-main':           '#fff0f8',
-            '--text-muted':          '#b9a1cf',
-            '--text-dim':            '#724994',
-            '--accent-gold':         '#ff007f',
-            '--accent-gold-dim':     'rgba(255, 0, 127, 0.15)',
-            '--accent-gold-line':    'rgba(255, 0, 127, 0.40)',
-            '--orb-secondary-color': '#00f0ff',
-            '--orb-blur-factor':     '0.8',
-            '--orb-speed-multiplier':'1.5',
-            '--orb-scale-multiplier':'0.9'
-        }
-    },
-    {
-        name: "Solar Fjord",
-        tokens: {
-            '--bg-base':             '#030706',
-            '--glass-bg':            'rgba(9, 24, 20, 0.65)',
-            '--glass-bg-strong':     'rgba(5, 15, 12, 0.88)',
-            '--glass-border':        'rgba(147, 250, 216, 0.22)',
-            '--glass-border-hover':  'rgba(147, 250, 216, 0.85)',
-            '--text-main':           '#f2fcf8',
-            '--text-muted':          '#a1b8b0',
-            '--text-dim':            '#4c665e',
-            '--accent-gold':         '#93fad8',
-            '--accent-gold-dim':     'rgba(147, 250, 216, 0.12)',
-            '--accent-gold-line':    'rgba(147, 250, 216, 0.35)',
-            '--orb-secondary-color': '#d35400',
-            '--orb-blur-factor':     '1.5',
-            '--orb-speed-multiplier':'0.55',
-            '--orb-scale-multiplier':'1.5'
-        }
-    },
-    {
-        name: "Plasma Storm",
-        tokens: {
-            '--bg-base':             '#050103',
-            '--glass-bg':            'rgba(24, 8, 14, 0.65)',
-            '--glass-bg-strong':     'rgba(15, 4, 8, 0.88)',
-            '--glass-border':        'rgba(255, 46, 76, 0.25)',
-            '--glass-border-hover':  'rgba(255, 46, 76, 0.90)',
-            '--text-main':           '#fff2f4',
-            '--text-muted':          '#cca6ab',
-            '--text-dim':            '#7a474e',
-            '--accent-gold':         '#ff2e4c',
-            '--accent-gold-dim':     'rgba(255, 46, 76, 0.15)',
-            '--accent-gold-line':    'rgba(255, 46, 76, 0.40)',
-            '--orb-secondary-color': '#3f1094',
-            '--orb-blur-factor':     '1.0',
-            '--orb-speed-multiplier':'1.2',
-            '--orb-scale-multiplier':'1.1'
-        }
-    }
+    }--bg-base: #030814;
+
+    --glass-bg: rgba(15,25,45,.65);
+    --glass-bg-strong: rgba(8,15,32,.88);
+
+    --glass-border: rgba(120,180,255,.25);
+    --glass-border-hover: rgba(180,220,255,.9);
+
+    --text-main: #f6fbff;
+    --text-muted: #bdd4e8;
+    --text-dim: #6f8da8;
+
+    --accent-gold: #9dd7ff;
+    --accent-gold-dim: rgba(157,215,255,.12);
+    --accent-gold-line: rgba(157,215,255,.35);
+
+    --orb-secondary-color: #66b8ff;}
 ];
 
 // ============================================================
