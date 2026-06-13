@@ -503,7 +503,7 @@ function initMouseGlow() {
         const blob = card.querySelector('.glow-blob');
         if (!blob) return;
 
-        card.addEventListener('mouseenter', () => { blob.style.opacity = '0.1'; });
+        card.addEventListener('mouseenter', () => { blob.style.opacity = '1'; });
         card.addEventListener('mouseleave', () => { blob.style.opacity = '0'; });
 
         card.addEventListener('mousemove', (e) => {
