@@ -1,17 +1,16 @@
-/* ── Tokens: Warm Beige Tetradic ─────────────────────────── */
-/* ── Tokens: Green Sage Monochromatic ────────────────────── */
+/* ── Tokens: Cyberpunk Crimson ───────────────────────────── */
 :root {
-    --bg-base:            #0a0f0d; /* Ultra-dark matte forest pine */
-    --glass-bg:           rgba(20, 30, 26, 0.65); /* Deep sage-tinted glass */
-    --glass-bg-strong:    rgba(15, 25, 21, 0.88);
-    --glass-border:       rgba(135, 169, 153, 0.25); /* Soft sage border */
-    --glass-border-hover: rgba(163, 199, 182, 0.8); /* Bright sage glow on hover */
-    --text-main:          #f0f5f3; /* Crisp, off-white sage tint */
-    --text-muted:         #a3b899; /* Muted olive-sage for reading text */
-    --text-dim:           #4e6156; /* Dark moss for meta elements */
-    --accent-gold:        #cbdbb2; /* Pale lime-sage accent for links/active states */
-    --accent-gold-dim:    rgba(203, 219, 178, 0.15);
-    --accent-gold-line:   rgba(203, 219, 178, 0.45);
+    --bg-base:            #050103; /* Pure void black with a drop of blood */
+    --glass-bg:           rgba(20, 6, 12, 0.65); /* Dark crimson tinted glass */
+    --glass-bg-strong:    rgba(13, 3, 8, 0.88);
+    --glass-border:       rgba(220, 45, 90, 0.22); /* Deep red structural border */
+    --glass-border-hover: rgba(255, 46, 109, 0.85); /* Piercing hot pink neon glow */
+    --text-main:          #fff0f3; /* Brilliant light pink-white tint */
+    --text-muted:         #a6858d; /* Desaturated rose-ash for reading */
+    --text-dim:           #663d46; /* Dried blood red for meta detail */
+    --accent-gold:        #ff2e6d; /* Primary neon highlight */
+    --accent-gold-dim:    rgba(255, 46, 109, 0.15);
+    --accent-gold-line:   rgba(255, 46, 109, 0.45);
     --max-w:              1020px;
     --max-w-article:      720px;
 }
