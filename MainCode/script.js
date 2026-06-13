@@ -6,8 +6,7 @@ initCategoryFilter();
 });
 
 // ── Theme Rotator Configuration ───────────────────────────
-const ROTATION_INTERVAL_MINUTES = 3; // Change this number to set the frequency
-const ROTATION_INTERVAL_MINUTES = 0.3; // Change this number to set the frequency
+const ROTATION_INTERVAL_MINUTES = 1; // Change this number to set the frequency
 
 const MY_FAVORITE_THEMES = [
 {
