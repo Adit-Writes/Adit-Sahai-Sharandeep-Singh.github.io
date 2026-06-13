@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="pvEqpTOogXhfCdC85sQZbjvLQp6gPupMCs62PZL1urA" />
+    <title>{{ PageTitle | default("Home") }} | The Sahai Analogy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="MainCode/style.css">
+</head>
+<body>
+
+    <div id="bg-canvas"></div>
+    <div id="bg-pattern"></div>
+    <div id="bg-dots"></div>
+
+    <nav class="navbar glass-card">
+        <div class="logo"><a href="/Adit-Sahai.github.io/" style="text-decoration: none; color: inherit;">A.S.</a></div>
+        <div class="navbar-divider"></div>
+        <div class="nav-links">
+            <a href="/Adit-Sahai.github.io/about.html">About</a>
+            <a href="/Adit-Sahai.github.io/books.html">Books</a>
+            <a href="/Adit-Sahai.github.io/articles.html">Articles</a>
+        </div>
+    </nav>
+
+    <main class="page-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 The Sahai Analogy. All rights reserved.</p>
+    </footer>
+
+    <script src="MainCode/script.js"></script>
+    
+    <script>
+        const SUPABASE_URL = 'https://mpeqripywqiotselpyut.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wZXFyaXB5d3Fpb3RzZWxweXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTE4MzUsImV4cCI6MjA5Njg4NzgzNX0.1lTHIY3M1xk5FmnTC2YMbSMNpi7vhWDuGGXUSNkwkm8';
+
+        async function loadIndexLikes() {
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/article_likes?select=article_id`, {
+                    headers: {
+                        'apikey': SUPABASE_KEY,
+                        'Authorization': `Bearer ${SUPABASE_KEY}`
+                    }
+                });
+                
+                if (!res.ok) return;
+                const likes = await res.json();
+
+                const likeCounts = {};
+                likes.forEach(like => {
+                    likeCounts[like.article_id] = (likeCounts[like.article_id] || 0) + 1;
+                });
+
+                document.querySelectorAll('.index-like-count').forEach(el => {
+                    const slug = el.getAttribute('data-slug');
+                    const count = likeCounts[slug] || 0;
+                    el.textContent = count === 1 ? '1 like' : `${count} likes`;
+                });
+            } catch (e) {
+                console.error('Failed to load likes', e);
+            }
+        }
+
+        // Only run on pages where like spans actually exist
+        if(document.querySelector('.index-like-count')) {
+            loadIndexLikes();
+        }
+    </script>
+</body>
+</html>
