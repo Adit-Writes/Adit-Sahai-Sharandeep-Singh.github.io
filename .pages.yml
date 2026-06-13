@@ -1,4 +1,6 @@
-media: files
+media:
+  input: files # Folder in your GitHub repo where uploaded images will be saved
+  output: /files # The public URL path your website uses to display those images
 
 content:
   - name: AboutAuthor
@@ -86,13 +88,13 @@ content:
         required: true
         
       - name: Topic
-        type: reference # Changed from select to reference
+        type: select # Reverted back to select to explicitly define options
         required: true
         options:
-          collection: ArticleCategories # Points directly to your collection
-          field: name # The field inside the category file to display/save
-          placeholder: Select the category of the Article
-          label: "{name}"
+          - facts
+          - politics
+          - science
+          - sports # Sports is now immediately available
         
       - name: Published
         type: boolean
@@ -128,5 +130,3 @@ content:
         
       - name: LastUpdated
         type: date
-        
-  
