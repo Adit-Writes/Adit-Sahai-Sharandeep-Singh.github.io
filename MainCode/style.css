@@ -1,17 +1,23 @@
 :root {
-    --bg-base:            #080402;
-    --glass-bg:           rgba(26, 14, 8, 0.65);
-    --glass-bg-strong:    rgba(18, 9, 4, 0.88);
-    --glass-border:       rgba(211, 105, 35, 0.25);
-    --glass-border-hover: rgba(255, 130, 40, 0.85);
-    --text-main:          #fff5f0;
-    --text-muted:         #c9b0a1;
-    --text-dim:           #754e38;
-    --accent-gold:        #ff8228;
-    --accent-gold-dim:    rgba(255, 130, 40, 0.12);
-    --accent-gold-line:   rgba(255, 130, 40, 0.35);
+    --bg-base:            #030303;
+    --glass-bg:           rgba(18, 18, 18, 0.65);
+    --glass-bg-strong:    rgba(12, 12, 12, 0.88);
+    --glass-border:       rgba(255, 255, 255, 0.15);
+    --glass-border-hover: rgba(255, 255, 255, 0.9);
+    --text-main:          #ffffff;
+    --text-muted:         #aaaaaa;
+    --text-dim:           #555555;
+    --accent-gold:        #ffffff;
+    --accent-gold-dim:    rgba(255, 255, 255, 0.08);
+    --accent-gold-line:   rgba(255, 255, 255, 0.25);
     --max-w:              1020px;
     --max-w-article:      720px;
+
+    /* Background Orb Personalities */
+    --orb-secondary-color: #262626; /* Dark monochrome gunmetal */
+    --orb-blur-factor:     1.5;     /* Extensively diffused */
+    --orb-speed-multiplier:0.3;     /* Virtually motionless stark aesthetic */
+    --orb-scale-multiplier:1.5;     /* Sweeping macro fields */
 }
 
 /* Add this to your Reset section for global smooth scrolling */
