@@ -1,8 +1,8 @@
 {
   "Title": "The Real Topic",
   "Topic": "_data/categories/space.json",
-  "Published": false,
-  "Comments": false,
+  "Published": true,
+  "Comments": true,
   "Likes": false,
   "ReadTime": 12,
   "Description": "Des",
