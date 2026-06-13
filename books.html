@@ -1,0 +1,28 @@
+{% set PageTitle = "Books" %}
+{% extends "_includes/base.njk" %}
+
+{% block content %}
+    <div class="section-divider reveal" style="margin-top: 0;">
+        <h2>Published Works</h2>
+        <div class="section-title-large">Library</div>
+        <div class="gold-line"></div>
+    </div>
+
+    <section class="book-grid">
+        {% for book in Books %}
+        <div class="book-card glass-card reveal">
+            <div class="glow-blob"></div>
+            <div class="book-image-wrapper">
+                <img src="/Adit-Sahai.github.io{{ book.Pic }}" alt="{{ book.Name }}" class="book-cover">
+            </div>
+            <div class="book-info">
+                <h3>{{ book.Name }}</h3>
+                <p class="book-subtitle">{{ book.Topic }}</p>
+                <p class="description">{{ book.About | safe }}</p>
+                <span class="date">{{ book.PublishedDate }}</span>
+                <a href="{{ book.Link }}" class="gold-btn">View Book</a>
+            </div>
+        </div>
+        {% endfor %}
+    </section>
+{% endblock %}
