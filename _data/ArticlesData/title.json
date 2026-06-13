@@ -2,7 +2,7 @@
   "Title": "The Real Topic",
   "Topic": "_data/categories/space.json",
   "Published": true,
-  "Comments": true,
+  "Comments": false,
   "Likes": true,
   "ReadTime": 12,
   "Description": "Des",
