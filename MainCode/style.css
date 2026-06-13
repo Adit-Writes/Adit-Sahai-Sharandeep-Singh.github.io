@@ -182,14 +182,10 @@ body::after {
   position:      absolute;
   border-radius: 50%;
   will-change:   transform, background, filter;
-  transition:
-    opacity    3s ease,
-    left       0.5s linear,
-    top        0.5s linear,
-    background 2.5s ease-in-out,
-    width      2.5s ease-in-out,
-    height     2.5s ease-in-out,
-    filter     2.5s ease-in-out;
+  /*
+   * Transition is set entirely by JS using ORB_TRANSITION_SECS.
+   * Do not add transition shorthand here — it would override the JS value.
+   */
 }
 
 
