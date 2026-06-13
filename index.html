@@ -98,6 +98,8 @@
                 <span class="category">{{ article.Topic }}</span>
                 <span class="meta-sep"></span>
                 <span class="read-time">{{ article.ReadTime }} min read</span>
+                <span class="meta-sep"></span>
+                <span class="index-like-count" data-slug="{{ article.Title | slug }}">0 likes</span>
             </div>
             <h3 class="article-title">{{ article.Title }}</h3>
             <p class="article-excerpt">{{ article.Description | safe }}</p>
@@ -115,5 +117,43 @@
     </footer>
 
     <script src="MainCode/script.js"></script>
+    
+    <script>
+    // Make sure to use your actual Supabase URL and Key
+    const SUPABASE_URL = 'https://mpeqripywqiotselpyut.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wZXFyaXB5d3Fpb3RzZWxweXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTE4MzUsImV4cCI6MjA5Njg4NzgzNX0.1lTHIY3M1xk5FmnTC2YMbSMNpi7vhWDuGGXUSNkwkm8';
+
+    async function loadIndexLikes() {
+        try {
+            // Fetch just the article_ids from the likes table to save bandwidth
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/article_likes?select=article_id`, {
+                headers: {
+                    'apikey': SUPABASE_KEY,
+                    'Authorization': `Bearer ${SUPABASE_KEY}`
+                }
+            });
+            
+            if (!res.ok) return;
+            const likes = await res.json();
+
+            // Count occurrences of each article_id
+            const likeCounts = {};
+            likes.forEach(like => {
+                likeCounts[like.article_id] = (likeCounts[like.article_id] || 0) + 1;
+            });
+
+            // Find all our spans and update their text
+            document.querySelectorAll('.index-like-count').forEach(el => {
+                const slug = el.getAttribute('data-slug');
+                const count = likeCounts[slug] || 0;
+                el.textContent = count === 1 ? '1 like' : `${count} likes`;
+            });
+        } catch (e) {
+            console.error('Failed to load likes for homepage', e);
+        }
+    }
+
+    loadIndexLikes();
+</script>
 </body>
 </html>
