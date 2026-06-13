@@ -2,8 +2,8 @@
 //  CONFIGURATION — edit these values freely
 // ============================================================
 
-const ROTATION_INTERVAL_MS  = 5000;   // how often themes rotate (ms)
-const ORB_TRANSITION_SECS   = 5.0;    // how long orb color transition takes (seconds)
+const ROTATION_INTERVAL_MS  = 15000;   // how often themes rotate (ms)
+const ORB_TRANSITION_SECS   = 10.0;    // how long orb color transition takes (seconds)
 
 // ============================================================
 //  THEME DEFINITIONS
