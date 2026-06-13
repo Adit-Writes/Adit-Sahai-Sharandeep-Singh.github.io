@@ -1,23 +1,23 @@
 :root {
-    --bg-base:            #020503; /* Pure dark carbon fiber */
-    --glass-bg:           rgba(8, 23, 14, 0.65); /* Dark jade translucent stone */
-    --glass-bg-strong:    rgba(4, 15, 9, 0.88);
-    --glass-border:       rgba(46, 204, 113, 0.22); /* Structural jade rim */
-    --glass-border-hover: rgba(0, 255, 136, 0.85); /* Piercing hyper-jade glow */
-    --text-main:          #f0fbf4; /* Mint-tinted stark silk white */
-    --text-muted:         #9bb3a4; /* Muted eucalyptus green for reading text */
-    --text-dim:           #43614e; /* Dark moss for meta markers */
-    --accent-gold:        #00ff88; /* Luminous emerald highlights */
-    --accent-gold-dim:    rgba(0, 255, 136, 0.12);
-    --accent-gold-line:   rgba(0, 255, 136, 0.35);
+    --bg-base:            #04020d; /* Pure abyssal indigo black */
+    --glass-bg:           rgba(15, 10, 36, 0.65); /* Electric velvet glass panels */
+    --glass-bg-strong:    rgba(9, 6, 23, 0.88);
+    --glass-border:       rgba(155, 89, 182, 0.25); /* Electric violet border edge */
+    --glass-border-hover: rgba(224, 86, 253, 0.85); /* Brilliant neon orchid glow */
+    --text-main:          #faf5ff; /* Stark starlight white */
+    --text-muted:         #bca9cc; /* Muted cosmic dusk purple for text lines */
+    --text-dim:           #6f538a; /* Deep nebula gray-purple for tags */
+    --accent-gold:        #e056fd; /* Radiant hot neon-violet active buttons */
+    --accent-gold-dim:    rgba(224, 86, 253, 0.15);
+    --accent-gold-line:   rgba(224, 86, 253, 0.40);
     --max-w:              1020px;
     --max-w-article:      720px;
 
     /* Background Orb Personalities */
-    --orb-secondary-color: #052915; /* Abyssal emerald shadow */
-    --orb-blur-factor:     1.1;
-    --orb-speed-multiplier:1.1;     /* Active but smooth matrix energy */
-    --orb-scale-multiplier:1.0;
+    --orb-secondary-color: #573a08; /* Injects warm cosmic amber gold orbs */
+    --orb-blur-factor:     1.0;     /* Highly defined contrasting color fields */
+    --orb-speed-multiplier:1.2;     /* Fluid, active star-cluster movement */
+    --orb-scale-multiplier:1.2;     /* Generous cloud sizing */
 }
 
 /* Add this to your Reset section for global smooth scrolling */
