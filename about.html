@@ -1,0 +1,18 @@
+{% set PageTitle = "About" %}
+{% extends "_includes/base.njk" %}
+
+{% block content %}
+    <section id="about" class="hero glass-card reveal">
+        <div class="glow-blob"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <p class="subtitle">{{ AboutAuthor.Expertise }}</p>
+                <h1>{{ AboutAuthor.Name }}</h1>
+                <p class="bio">{{ AboutAuthor.Desciption | safe }}</p>
+            </div>
+            <div class="hero-visual">
+                <img src="/Adit-Sahai.github.io{{ AboutAuthor.Pic }}" alt="{{ AboutAuthor.Name }}">
+            </div>
+        </div>
+    </section>
+{% endblock %}
