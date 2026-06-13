@@ -1,8 +1,12 @@
 // ── Core Engine Initialization ───────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+    // 1. Pick and apply an initial random theme right away on page load
     applyRandomTheme();
+    
+    // 2. Set up the automated loop (20000ms = 20 seconds)
     setInterval(applyRandomTheme, 20000); 
 
+    // 3. Initialize interactive mechanics
     initMouseGlow();
     initScrollReveal();
     initCategoryFilter();
@@ -73,6 +77,8 @@ function applyRandomTheme() {
     const randomTheme = pool[Math.floor(Math.random() * pool.length)];
     currentThemeName = randomTheme.name;
 
+    console.log(`🎨 Theme Rotator: Switching to "${randomTheme.name}"`);
+
     const root = document.documentElement;
     Object.entries(randomTheme.tokens).forEach(([variable, value]) => {
         root.style.setProperty(variable, value);
@@ -111,15 +117,20 @@ function initBackground() {
         const startX = Math.random() * vw;
         const startY = Math.random() * vh;
 
+        const styles = getComputedStyle(document.documentElement);
+        const scaleMultiplier = parseFloat(styles.getPropertyValue('--orb-scale-multiplier')) || 1.0;
+        const initialSizePx = Math.round(vw * (cfg.sizePercent * scaleMultiplier) / 100);
+
         const state = {
             el,
             sizePercent: cfg.sizePercent,
+            sizePx: initialSizePx,
             blurBase: cfg.blurBase,
             isSecondary: cfg.isSecondary,
             opacity: cfg.opacity,
             x: startX, y: startY,
             tx: 0, ty: 0, ox: startX, oy: startY,
-            duration: 1, elapsed: 0
+            duration: 1, elapsed: 0, speedMultiplier: 1.0
         };
 
         setTimeout(() => { el.style.opacity = cfg.opacity; }, i * 200);
@@ -153,9 +164,6 @@ function initBackground() {
         const dt = now - last;
         last = now;
 
-        const styles = getComputedStyle(document.documentElement);
-        const scaleMultiplier = parseFloat(styles.getPropertyValue('--orb-scale-multiplier')) || 1.0;
-
         orbs.forEach(state => {
             state.elapsed += dt;
             const t = Math.min(state.elapsed / state.duration, 1);
@@ -164,12 +172,20 @@ function initBackground() {
             state.x = state.ox + (state.tx - state.ox) * e;
             state.y = state.oy + (state.ty - state.oy) * e;
 
-            const currentSize = (window.innerWidth * state.sizePercent * scaleMultiplier) / 100;
-            
-            state.el.style.left = (state.x - currentSize / 2) + 'px';
-            state.el.style.top  = (state.y - currentSize / 2) + 'px';
+            // Updated from step 3: During transition animation frames, dynamically 
+            // re-read the client layout measurements directly from CSS computed values 
+            // instead of jumping variables instantly.
+            const currentComputedSize = parseFloat(getComputedStyle(state.el).width);
+            if (!isNaN(currentComputedSize)) {
+                state.sizePx = currentComputedSize;
+            }
 
-            if (t >= 1) pickTarget(state, window.innerWidth, window.innerHeight);
+            state.el.style.left = (state.x - state.sizePx / 2) + 'px';
+            state.el.style.top  = (state.y - state.sizePx / 2) + 'px';
+
+            if (t >= 1) {
+                pickTarget(state, window.innerWidth, window.innerHeight);
+            }
         });
         requestAnimationFrame(tick);
     }
@@ -182,6 +198,7 @@ function updateActiveOrbSkins() {
 
     const styles = getComputedStyle(document.documentElement);
     const accentColor = styles.getPropertyValue('--accent-gold').trim() || '#ffffff';
+    const baseBg = styles.getPropertyValue('--bg-base').trim() || '#000000';
     const secondaryColor = styles.getPropertyValue('--orb-secondary-color').trim() || accentColor;
     
     const blurFactor = parseFloat(styles.getPropertyValue('--orb-blur-factor')) || 1.0;
@@ -195,10 +212,11 @@ function updateActiveOrbSkins() {
 
         state.color = targetColor;
 
+        // Transitions cleanly map layout dimensions
         state.el.style.width = `${targetSize}px`;
         state.el.style.height = `${targetSize}px`;
         state.el.style.filter = `blur(${targetBlur}px)`;
-        state.el.style.background = `radial-gradient(circle, ${targetColor} 0%, rgba(0,0,0,0) 70%)`;
+        state.el.style.background = `radial-gradient(circle, ${targetColor} 0%, ${baseBg} 60%, transparent 100%)`;
     });
 }
 
@@ -230,8 +248,9 @@ function initMouseGlow() {
             if (!closest || !closest.color) return;
 
             let hex = closest.color.replace('#', '');
-            if (hex.length === 3) hex = hex.split('').map(char => char + char).join('');
-            
+            if (hex.length === 3) {
+                hex = hex.split('').map(char => char + char).join('');
+            }
             const r = parseInt(hex.slice(0, 2), 16);
             const g = parseInt(hex.slice(2, 4), 16);
             const b = parseInt(hex.slice(4, 6), 16);
