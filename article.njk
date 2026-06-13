@@ -152,7 +152,7 @@ permalink: "articles/{{ article.Title | slug }}/"
         // Unique identifier for this article (slug-stable)
         const ARTICLE_ID = '{{ article.Title | slug }}';
 
-        // ── Supabase helper ───────────────────────────────────────
+       // ── Supabase helper ───────────────────────────────────────
         async function sb(path, opts = {}) {
             const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
                 headers: {
@@ -165,9 +165,12 @@ permalink: "articles/{{ article.Title | slug }}/"
                 method: opts.method || 'GET',
                 body:   opts.body ? JSON.stringify(opts.body) : undefined
             });
+            
             if (!res.ok) throw new Error(await res.text());
-            if (res.status === 204) return null;
-            return res.json();
+            
+            // Safely parse the response: if it's empty, return null instead of crashing
+            const text = await res.text();
+            return text ? JSON.parse(text) : null;
         }
 
         // ══════════════════════════════════════════════════════════
