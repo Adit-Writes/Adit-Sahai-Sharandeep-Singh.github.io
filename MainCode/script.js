@@ -85,14 +85,17 @@ function applyRandomTheme() {
     console.log(`🎨 Theme Rotator: Switching to "${randomTheme.name}"`);
 
     const root = document.documentElement;
-    Object.entries(randomTheme.tokens).forEach(([variable, value]) => {
-        root.style.setProperty(variable, value);
+    
+    // Use requestAnimationFrame to ensure the browser processes the style changes in a single frame
+    requestAnimationFrame(() => {
+        Object.entries(randomTheme.tokens).forEach(([variable, value]) => {
+            root.style.setProperty(variable, value);
+        });
+        
+        // This triggers the orb update
+        updateActiveOrbSkins();
     });
-
-    // SMOOTH FIX: Instead of tearing down the canvas, we interpolate the skins of the active elements!
-    updateActiveOrbSkins();
 }
-
 function initBackground() {
     const canvas = document.createElement('div');
     canvas.id = 'bg-canvas';
