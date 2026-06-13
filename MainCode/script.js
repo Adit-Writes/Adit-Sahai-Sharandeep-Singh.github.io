@@ -29,6 +29,44 @@ const MY_FAVORITE_THEMES = [
         '--orb-speed-multiplier':'1.1',
         '--orb-scale-multiplier':'1.2'
     }
+},{
+    name: "Crimson Ember",
+    tokens: {
+        '--bg-base':             '#0a0203',
+        '--glass-bg':            'rgba(28, 8, 10, 0.65)',
+        '--glass-bg-strong':     'rgba(18, 4, 6, 0.88)',
+        '--glass-border':        'rgba(255, 60, 80, 0.22)',
+        '--glass-border-hover':  'rgba(255, 80, 95, 0.85)',
+        '--text-main':           '#fff1f2',
+        '--text-muted':          '#e2b6bb',
+        '--text-dim':            '#8a4a52',
+        '--accent-gold':         '#ff3b4d',
+        '--accent-gold-dim':     'rgba(255, 59, 77, 0.15)',
+        '--accent-gold-line':    'rgba(255, 59, 77, 0.42)',
+        '--orb-secondary-color': '#ff8a3b',
+        '--orb-blur-factor':     '1.05',
+        '--orb-speed-multiplier':'1.35',
+        '--orb-scale-multiplier':'1.15'
+    }
+},{
+    name: "Sandstone Ivory",
+    tokens: {
+        '--bg-base':             '#120f0b',
+        '--glass-bg':            'rgba(34, 28, 22, 0.62)',
+        '--glass-bg-strong':     'rgba(20, 16, 12, 0.88)',
+        '--glass-border':        'rgba(210, 190, 160, 0.25)',
+        '--glass-border-hover':  'rgba(240, 220, 190, 0.85)',
+        '--text-main':           '#fff7ed',
+        '--text-muted':          '#d6c6b3',
+        '--text-dim':            '#9a8977',
+        '--accent-gold':         '#e6c7a2',
+        '--accent-gold-dim':     'rgba(230, 199, 162, 0.15)',
+        '--accent-gold-line':    'rgba(230, 199, 162, 0.40)',
+        '--orb-secondary-color': '#c8a46a',
+        '--orb-blur-factor':     '1.1',
+        '--orb-speed-multiplier':'0.95',
+        '--orb-scale-multiplier':'1.2'
+    }
 },
 ];
 
