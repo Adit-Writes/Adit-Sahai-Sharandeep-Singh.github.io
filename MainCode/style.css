@@ -57,15 +57,15 @@ body::before {
             45deg,
             transparent,
             transparent 38px,
-            rgba(80, 120, 220, 0.07) 38px,
-            rgba(80, 120, 220, 0.07) 39px
+            rgba(80, 120, 220, 0.09) 38px,
+            rgba(80, 120, 220, 0.09) 39px
         ),
         repeating-linear-gradient(
             -45deg,
             transparent,
             transparent 38px,
-            rgba(80, 120, 220, 0.05) 38px,
-            rgba(80, 120, 220, 0.05) 39px
+            rgba(80, 120, 220, 0.07) 38px,
+            rgba(80, 120, 220, 0.07) 39px
         );
     animation: patternDrift 28s linear infinite;
 }
@@ -84,7 +84,7 @@ body::before {
     pointer-events: none;
     background-image: radial-gradient(
         circle,
-        rgba(120, 160, 255, 0.2) 1px,
+        rgba(120, 160, 255, 0.12) 1px,
         transparent 1px
     );
     background-size: 32px 32px;
