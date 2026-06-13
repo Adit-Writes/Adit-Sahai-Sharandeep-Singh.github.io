@@ -1,15 +1,16 @@
+/* ── Tokens: Deep Atlantic ──────────────────────────────── */
 :root {
-    --bg-base:            #050103;
-    --glass-bg:           rgba(20, 6, 12, 0.65);
-    --glass-bg-strong:    rgba(13, 3, 8, 0.88);
-    --glass-border:       rgba(220, 45, 90, 0.22);
-    --glass-border-hover: rgba(255, 46, 109, 0.85);
-    --text-main:          #fff0f3;
-    --text-muted:         #a6858d;
-    --text-dim:           #663d46;
-    --accent-gold:        #ff2e6d;
-    --accent-gold-dim:    rgba(255, 46, 109, 0.12);
-    --accent-gold-line:   rgba(255, 46, 109, 0.35);
+    --bg-base:            #02070d; /* Abyssal ocean trench black */
+    --glass-bg:           rgba(8, 22, 38, 0.65); /* Ice-cold deep sea glass */
+    --glass-bg-strong:    rgba(4, 14, 26, 0.88);
+    --glass-border:       rgba(74, 144, 226, 0.25); /* Glacial blue edge */
+    --glass-border-hover: rgba(0, 245, 255, 0.8); /* Piercing electric cyan glow */
+    --text-main:          #e6f0fa; /* Crisp Arctic white */
+    --text-muted:         #7da0c4; /* Mist blue for dense reading body text */
+    --text-dim:           #3b5a7d; /* Deep slate anchor color for dates */
+    --accent-gold:        #00f5ff; /* Hyper-clean cyan active elements */
+    --accent-gold-dim:    rgba(0, 245, 255, 0.13);
+    --accent-gold-line:   rgba(0, 245, 255, 0.45);
     --max-w:              1020px;
     --max-w-article:      720px;
 }
