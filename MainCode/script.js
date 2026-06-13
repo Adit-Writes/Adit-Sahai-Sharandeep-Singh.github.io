@@ -13,105 +13,101 @@ const ORB_TRANSITION_SECS   = 5.0;    // how long orb color transition takes (se
 
 const MY_FAVORITE_THEMES = [
     {
-        name: "Cyberpunk Tox",
-        tokens: {
-            '--bg-base':            '#040106',
-            '--glass-bg':           'rgba(18, 6, 24, 0.65)',
-            '--glass-bg-strong':    'rgba(11, 3, 15, 0.88)',
-            '--glass-border':       'rgba(255, 0, 127, 0.22)',
-            '--glass-border-hover': 'rgba(255, 0, 127, 0.85)',
-            '--text-main':          '#fff0f6',
-            '--text-muted':         '#c4abb6',
-            '--text-dim':           '#73455a',
-            '--accent-gold':        '#ff007f',
-            '--accent-gold-dim':    'rgba(255, 0, 127, 0.15)',
-            '--accent-gold-line':   'rgba(255, 0, 127, 0.40)',
-            '--orb-colors':         '#ff007f, #1aff6b, #bf00ff, #ff6600, #00cfff',
-            '--orb-blur-factor':    '0.85',
-            '--orb-speed-multiplier': '1.6',
-            '--orb-scale-multiplier': '0.9'
-        }
-    },
-    {
-        name: "Abyssal Flare",
-        tokens: {
-            '--bg-base':            '#02070d',
-            '--glass-bg':           'rgba(6, 18, 33, 0.65)',
-            '--glass-bg-strong':    'rgba(3, 10, 20, 0.88)',
-            '--glass-border':       'rgba(0, 210, 255, 0.25)',
-            '--glass-border-hover': 'rgba(0, 210, 255, 0.85)',
-            '--text-main':          '#e6f2fa',
-            '--text-muted':         '#8ca6b8',
-            '--text-dim':           '#435b6e',
-            '--accent-gold':        '#00d2ff',
-            '--accent-gold-dim':    'rgba(0, 210, 255, 0.12)',
-            '--accent-gold-line':   'rgba(0, 210, 255, 0.35)',
-            '--orb-colors':         '#00d2ff, #ff6a00, #0044ff, #ff003c, #00ffaa',
-            '--orb-blur-factor':    '1.3',
-            '--orb-speed-multiplier': '0.6',
-            '--orb-scale-multiplier': '1.4'
-        }
-    },
-    {
-        name: "Outrun 1984",
-        tokens: {
-            '--bg-base':            '#06020c',
-            '--glass-bg':           'rgba(21, 9, 36, 0.65)',
-            '--glass-bg-strong':    'rgba(13, 5, 23, 0.88)',
-            '--glass-border':       'rgba(255, 0, 127, 0.25)',
-            '--glass-border-hover': 'rgba(0, 240, 255, 0.9)',
-            '--text-main':          '#fff0f8',
-            '--text-muted':         '#b9a1cf',
-            '--text-dim':           '#724994',
-            '--accent-gold':        '#ff007f',
-            '--accent-gold-dim':    'rgba(255, 0, 127, 0.15)',
-            '--accent-gold-line':   'rgba(255, 0, 127, 0.40)',
-            '--orb-colors':         '#ff007f, #00f0ff, #9400ff, #ffcc00, #ff4400',
-            '--orb-blur-factor':    '0.8',
-            '--orb-speed-multiplier': '1.5',
-            '--orb-scale-multiplier': '0.9'
-        }
-    },
-    {
-        name: "Solar Fjord",
-        tokens: {
-            '--bg-base':            '#030706',
-            '--glass-bg':           'rgba(9, 24, 20, 0.65)',
-            '--glass-bg-strong':    'rgba(5, 15, 12, 0.88)',
-            '--glass-border':       'rgba(147, 250, 216, 0.22)',
-            '--glass-border-hover': 'rgba(147, 250, 216, 0.85)',
-            '--text-main':          '#f2fcf8',
-            '--text-muted':         '#a1b8b0',
-            '--text-dim':           '#4c665e',
-            '--accent-gold':        '#93fad8',
-            '--accent-gold-dim':    'rgba(147, 250, 216, 0.12)',
-            '--accent-gold-line':   'rgba(147, 250, 216, 0.35)',
-            '--orb-colors':         '#93fad8, #d35400, #00c9a7, #f9ca24, #6a5acd',
-            '--orb-blur-factor':    '1.5',
-            '--orb-speed-multiplier': '0.55',
-            '--orb-scale-multiplier': '1.5'
-        }
-    },
-    {
-        name: "Plasma Storm",
-        tokens: {
-            '--bg-base':            '#050103',
-            '--glass-bg':           'rgba(24, 8, 14, 0.65)',
-            '--glass-bg-strong':    'rgba(15, 4, 8, 0.88)',
-            '--glass-border':       'rgba(255, 46, 76, 0.25)',
-            '--glass-border-hover': 'rgba(255, 46, 76, 0.90)',
-            '--text-main':          '#fff2f4',
-            '--text-muted':         '#cca6ab',
-            '--text-dim':           '#7a474e',
-            '--accent-gold':        '#ff2e4c',
-            '--accent-gold-dim':    'rgba(255, 46, 76, 0.15)',
-            '--accent-gold-line':   'rgba(255, 46, 76, 0.40)',
-            '--orb-colors':         '#ff2e4c, #3f1094, #ff8800, #00d4ff, #cc00ff',
-            '--orb-blur-factor':    '1.0',
-            '--orb-speed-multiplier': '1.2',
-            '--orb-scale-multiplier': '1.1'
-        }
+    name: "Crimson Ember",
+    tokens: {
+        '--bg-base':            '#0a0203',
+        '--glass-bg':           'rgba(28, 8, 10, 0.65)',
+        '--glass-bg-strong':    'rgba(18, 4, 6, 0.88)',
+        '--glass-border':       'rgba(255, 60, 80, 0.22)',
+        '--glass-border-hover': 'rgba(255, 80, 95, 0.85)',
+        '--text-main':          '#fff1f2',
+        '--text-muted':         '#e2b6bb',
+        '--text-dim':           '#8a4a52',
+        '--accent-gold':        '#ff3b4d',
+        '--accent-gold-dim':    'rgba(255, 59, 77, 0.15)',
+        '--accent-gold-line':   'rgba(255, 59, 77, 0.42)',
+        '--orb-colors':         '#ff2e3e, #ff6a00, #ffb703, #ff004f, #ff3d8d',
+        '--orb-blur-factor':    '1.05',
+        '--orb-speed-multiplier': '1.35',
+        '--orb-scale-multiplier': '1.15'
     }
+},{
+    name: "Sandstone Ivory",
+    tokens: {
+        '--bg-base':            '#120f0b',
+        '--glass-bg':           'rgba(34, 28, 22, 0.62)',
+        '--glass-bg-strong':    'rgba(20, 16, 12, 0.88)',
+        '--glass-border':       'rgba(210, 190, 160, 0.25)',
+        '--glass-border-hover': 'rgba(240, 220, 190, 0.85)',
+        '--text-main':          '#fff7ed',
+        '--text-muted':         '#d6c6b3',
+        '--text-dim':           '#9a8977',
+        '--accent-gold':        '#e6c7a2',
+        '--accent-gold-dim':    'rgba(230, 199, 162, 0.15)',
+        '--accent-gold-line':   'rgba(230, 199, 162, 0.40)',
+        '--orb-colors':         '#e6c7a2, #c8a46a, #b08968, #f2e6d8, #d4a373',
+        '--orb-blur-factor':    '1.1',
+        '--orb-speed-multiplier': '0.95',
+        '--orb-scale-multiplier': '1.2'
+    }
+},{
+    name: "Arctic Aurora",
+    tokens: {
+        '--bg-base':            '#020611',
+        '--glass-bg':           'rgba(8, 18, 38, 0.65)',
+        '--glass-bg-strong':    'rgba(4, 10, 24, 0.88)',
+        '--glass-border':       'rgba(120, 220, 255, 0.22)',
+        '--glass-border-hover': 'rgba(120, 220, 255, 0.85)',
+        '--text-main':          '#f5fcff',
+        '--text-muted':         '#b7d2de',
+        '--text-dim':           '#6d8da0',
+        '--accent-gold':        '#7cf3ff',
+        '--accent-gold-dim':    'rgba(124, 243, 255, 0.15)',
+        '--accent-gold-line':   'rgba(124, 243, 255, 0.40)',
+        '--orb-colors':         '#7cf3ff, #6a7dff, #00e5ff, #b3f5ff, #4dd0e1',
+        '--orb-blur-factor':    '1.15',
+        '--orb-speed-multiplier': '1.1',
+        '--orb-scale-multiplier': '1.2'
+    }
+},{
+    name: "Nebula Dream",
+    tokens: {
+        '--bg-base':            '#05030f',
+        '--glass-bg':           'rgba(22, 12, 42, 0.65)',
+        '--glass-bg-strong':    'rgba(14, 7, 28, 0.88)',
+        '--glass-border':       'rgba(183, 120, 255, 0.24)',
+        '--glass-border-hover': 'rgba(220, 170, 255, 0.90)',
+        '--text-main':          '#fffaff',
+        '--text-muted':         '#d4c5df',
+        '--text-dim':           '#88709c',
+        '--accent-gold':        '#b98cff',
+        '--accent-gold-dim':    'rgba(185, 140, 255, 0.15)',
+        '--accent-gold-line':   'rgba(185, 140, 255, 0.42)',
+        '--orb-colors':         '#b98cff, #59f3ff, #ff4fd8, #7c4dff, #00ffd5',
+        '--orb-blur-factor':    '1.2',
+        '--orb-speed-multiplier': '1.4',
+        '--orb-scale-multiplier': '1.2'
+    }
+},{
+    name: "Ocean Glass",
+    tokens: {
+        '--bg-base':            '#041018',
+        '--glass-bg':           'rgba(10, 30, 40, 0.60)',
+        '--glass-bg-strong':    'rgba(6, 18, 24, 0.88)',
+        '--glass-border':       'rgba(120, 255, 220, 0.22)',
+        '--glass-border-hover': 'rgba(180, 255, 240, 0.85)',
+        '--text-main':          '#f3fffb',
+        '--text-muted':         '#b8d6cf',
+        '--text-dim':           '#6f8f88',
+        '--accent-gold':        '#7fffd4',
+        '--accent-gold-dim':    'rgba(127, 255, 212, 0.15)',
+        '--accent-gold-line':   'rgba(127, 255, 212, 0.40)',
+        '--orb-colors':         '#7fffd4, #00c2ff, #66ffe3, #4db8ff, #a8fff0',
+        '--orb-blur-factor':    '1.1',
+        '--orb-speed-multiplier': '1.0',
+        '--orb-scale-multiplier': '1.25'
+    }
+},
 ];
 
 // ============================================================
