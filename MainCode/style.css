@@ -274,6 +274,7 @@ body::before {
 
 /* Starfield */
 
+/* Starfield */
 body::after {
 
     content: '';
@@ -586,6 +587,7 @@ h1, h2, h3, h4 {
 
 /* Small dot separator between logo and links */
 
+/* Small dot separator between logo and links */
 .navbar-divider {
 
     width: 1px;
@@ -811,7 +813,6 @@ h1, h2, h3, h4 {
 }
 
 .hero-text { flex: 1.3; }
-
 .subtitle {
 
     color: var(--accent-gold);
@@ -993,7 +994,6 @@ h1, h2, h3, h4 {
     gap: 0;
 
 }
-
 .book-info h3 {
 
     font-size: 1.55rem;
@@ -1331,7 +1331,6 @@ h1, h2, h3, h4 {
     transition: color 0.3s;
 
 }
-
 .article-excerpt {
 
     color: var(--text-muted);
@@ -2416,7 +2415,7 @@ h1, h2, h3, h4 {
     40%            { opacity: 1;   transform: scale(1.1); }
 }
 
-/* ── Screen Adaptability Media Queries ───────────────────── */
+/* Responsive */
 @media (max-width: 800px) {
     body { padding: 0 5%; }
     .main-blog-title { letter-spacing: 2px; }
