@@ -1,23 +1,23 @@
 :root {
-    --bg-base:            #02070d; /* Deep oceanic trench black */
-    --glass-bg:           rgba(6, 18, 33, 0.65); /* Ice-cold marine glass */
-    --glass-bg-strong:    rgba(3, 10, 20, 0.88);
-    --glass-border:       rgba(0, 210, 255, 0.25); /* Fine electric cyan border */
-    --glass-border-hover: rgba(0, 210, 255, 0.85); /* Vivid glacial cyan glow */
-    --text-main:          #e6f2fa; /* Frost-tinted white */
-    --text-muted:         #8ca6b8; /* Muted coastal gray-blue for text */
-    --text-dim:           #435b6e; /* Abyssal slate metadata */
-    --accent-gold:        #00d2ff; /* Electric cyan links/buttons */
-    --accent-gold-dim:    rgba(0, 210, 255, 0.12);
-    --accent-gold-line:   rgba(0, 210, 255, 0.35);
+    --bg-base:            #05020a; /* Obsidian base with a violet cast */
+    --glass-bg:           rgba(18, 10, 31, 0.65); /* Translucent dark amethyst amethyst */
+    --glass-bg-strong:    rgba(11, 6, 20, 0.88);
+    --glass-border:       rgba(165, 94, 234, 0.25); /* Velvet orchid violet border */
+    --glass-border-hover: rgba(224, 86, 253, 0.85); /* Neon lavender hover halo */
+    --text-main:          #fbf9fe; /* Stark silver-white text */
+    --text-muted:         #bcaec9; /* Heather-lavender gray for paragraphs */
+    --text-dim:           #6e5585; /* Dark spiritual violet for dates */
+    --accent-gold:        #e056fd; /* Brilliant orchid active pills */
+    --accent-gold-dim:    rgba(224, 86, 253, 0.15);
+    --accent-gold-line:   rgba(224, 86, 253, 0.40);
     --max-w:              1020px;
     --max-w-article:      720px;
 
     /* Background Orb Personalities */
-    --orb-secondary-color: #ff6a00; /* Injects blazing magma orange/amber */
-    --orb-blur-factor:     1.3;     /* Heavy, sprawling thermal currents */
-    --orb-speed-multiplier:0.6;     /* Lazy, sluggish tectonic drift */
-    --orb-scale-multiplier:1.4;     /* Large volumetric atmosphere */
+    --orb-secondary-color: #eab543; /* Injects heavy imperial honey gold */
+    --orb-blur-factor:     1.4;     /* Richly diffused cosmic luxury cloud */
+    --orb-speed-multiplier:0.75;    /* Stately, measured movement */
+    --orb-scale-multiplier:1.3;     /* Generous, wide-sweeping fields */
 }
 
 /* Add this to your Reset section for global smooth scrolling */
