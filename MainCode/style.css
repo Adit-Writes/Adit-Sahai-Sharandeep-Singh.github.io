@@ -1,23 +1,23 @@
 :root {
-    --bg-base:            #04020d; /* Pure abyssal indigo black */
-    --glass-bg:           rgba(15, 10, 36, 0.65); /* Electric velvet glass panels */
-    --glass-bg-strong:    rgba(9, 6, 23, 0.88);
-    --glass-border:       rgba(155, 89, 182, 0.25); /* Electric violet border edge */
-    --glass-border-hover: rgba(224, 86, 253, 0.85); /* Brilliant neon orchid glow */
-    --text-main:          #faf5ff; /* Stark starlight white */
-    --text-muted:         #bca9cc; /* Muted cosmic dusk purple for text lines */
-    --text-dim:           #6f538a; /* Deep nebula gray-purple for tags */
-    --accent-gold:        #e056fd; /* Radiant hot neon-violet active buttons */
-    --accent-gold-dim:    rgba(224, 86, 253, 0.15);
-    --accent-gold-line:   rgba(224, 86, 253, 0.40);
+    --bg-base:            #040106; /* Pitch black carbon shadow */
+    --glass-bg:           rgba(18, 6, 24, 0.65); /* Dark plum tinted glass */
+    --glass-bg-strong:    rgba(11, 3, 15, 0.88);
+    --glass-border:       rgba(255, 0, 127, 0.22); /* Sharp hot-pink rim */
+    --glass-border-hover: rgba(255, 0, 127, 0.85); /* Piercing neon fuchsia glow */
+    --text-main:          #fff0f6; /* Pink-tinted white */
+    --text-muted:         #c4abb6; /* Dull rose-ash for reading */
+    --text-dim:           #73455a; /* Deep structural berry */
+    --accent-gold:        #ff007f; /* Hot pink active elements */
+    --accent-gold-dim:    rgba(255, 0, 127, 0.15);
+    --accent-gold-line:   rgba(255, 0, 127, 0.40);
     --max-w:              1020px;
     --max-w-article:      720px;
 
     /* Background Orb Personalities */
-    --orb-secondary-color: #573a08; /* Injects warm cosmic amber gold orbs */
-    --orb-blur-factor:     1.0;     /* Highly defined contrasting color fields */
-    --orb-speed-multiplier:1.2;     /* Fluid, active star-cluster movement */
-    --orb-scale-multiplier:1.2;     /* Generous cloud sizing */
+    --orb-secondary-color: #1aff6b; /* Injects bright radioactive lime green */
+    --orb-blur-factor:     0.85;    /* Piercing, semi-distinct gas fields */
+    --orb-speed-multiplier:1.6;     /* High volatility speed */
+    --orb-scale-multiplier:0.9;     /* Snappy, compact energy pockets */
 }
 
 /* Add this to your Reset section for global smooth scrolling */
