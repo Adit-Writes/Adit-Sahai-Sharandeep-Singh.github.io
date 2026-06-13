@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     applyRandomTheme();
     
     // 2. Set up the automated loop (20000ms = 20 seconds)
-    setInterval(applyRandomTheme, 20000); 
+    setInterval(applyRandomTheme, 5000); 
 
     // 3. Initialize interactive mechanics
     initMouseGlow();
