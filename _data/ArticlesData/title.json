@@ -3,7 +3,7 @@
   "Topic": "_data/categories/space.json",
   "Published": true,
   "Comments": false,
-  "Likes": true,
+  "Likes": false,
   "ReadTime": 12,
   "Description": "Des",
   "Body": "Body",
