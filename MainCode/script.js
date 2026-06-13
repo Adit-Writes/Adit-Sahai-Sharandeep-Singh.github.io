@@ -1,13 +1,18 @@
+// ── Core Engine Initialization ───────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-    initBackground();
+    // 1. Pick and apply an initial random theme right away on page load
+    applyRandomTheme();
+    
+    // 2. Set up the automated loop (20000ms = 20 seconds)
+    setInterval(applyRandomTheme, 20000); 
+
+    // 3. Initialize interactive mechanics
     initMouseGlow();
     initScrollReveal();
     initCategoryFilter();
 });
 
 // ── Theme Rotator Configuration ───────────────────────────
-const ROTATION_INTERVAL_MINUTES = 0.3; // Change this number to set the frequency
-
 const MY_FAVORITE_THEMES = [
     {
         name: "Cyberpunk Tox",
@@ -66,7 +71,6 @@ let currentThemeName = null;
 function applyRandomTheme() {
     if (!MY_FAVORITE_THEMES.length) return;
 
-    // Filter out the currently active theme so it doesn't pick the same one twice in a row
     const availableThemes = MY_FAVORITE_THEMES.filter(t => t.name !== currentThemeName);
     const pool = availableThemes.length > 0 ? availableThemes : MY_FAVORITE_THEMES;
     
@@ -75,52 +79,20 @@ function applyRandomTheme() {
 
     console.log(`🎨 Theme Rotator: Switching to "${randomTheme.name}"`);
 
-    // Inject the theme variables smoothly into the DOM document root
     const root = document.documentElement;
     Object.entries(randomTheme.tokens).forEach(([variable, value]) => {
         root.style.setProperty(variable, value);
     });
 
-    // Re-initialize background orbs to immediately pick up the new physical structures and speeds
-    const oldCanvas = document.getElementById('bg-canvas');
-    if (oldCanvas) oldCanvas.remove();
-    if (typeof initBackground === 'function') {
+    const existingCanvas = document.getElementById('bg-canvas');
+    if (!existingCanvas) {
         initBackground();
+    } else {
+        updateActiveOrbSkins();
     }
 }
 
-// Hook into your existing initialization logic
-document.addEventListener('DOMContentLoaded', () => {
-    // Pick an initial random theme right away on page load
-    applyRandomTheme();
-    
-    // Set up the loop interval
-    setInterval(applyRandomTheme, ROTATION_INTERVAL_MINUTES * 60 * 1000);
-});
-
 function initBackground() {
-    // 1. Read theme colors and structural personality tokens
-    const styles = getComputedStyle(document.documentElement);
-    const accentColor = styles.getPropertyValue('--accent-gold').trim() || '#ffffff';
-    const glowLine    = styles.getPropertyValue('--accent-gold-line').trim() || 'rgba(255,255,255,0.4)';
-    const baseBg      = styles.getPropertyValue('--bg-base').trim() || '#000000';
-    
-    // Custom theme behavior modifiers
-    const secondaryOrbColor = styles.getPropertyValue('--orb-secondary-color').trim() || glowLine;
-    const blurFactor        = parseFloat(styles.getPropertyValue('--orb-blur-factor')) || 1.0;
-    const speedMultiplier   = parseFloat(styles.getPropertyValue('--orb-speed-multiplier')) || 1.0;
-    const scaleMultiplier   = parseFloat(styles.getPropertyValue('--orb-scale-multiplier')) || 1.0;
-
-    // 2. Build structural configuration using the theme variants
-    const ORB_CONFIGS = [
-        { size: 75 * scaleMultiplier, color: accentColor,       color2: baseBg,        blur: 110 * blurFactor, opacity: 0.40 },
-        { size: 65 * scaleMultiplier, color: secondaryOrbColor, color2: baseBg,        blur: 100 * blurFactor, opacity: 0.55 },
-        { size: 55 * scaleMultiplier, color: accentColor,       color2: 'transparent', blur: 90  * blurFactor, opacity: 0.30 },
-        { size: 50 * scaleMultiplier, color: secondaryOrbColor, color2: baseBg,        blur: 85  * blurFactor, opacity: 0.45 },
-        { size: 48 * scaleMultiplier, color: accentColor,       color2: baseBg,        blur: 80  * blurFactor, opacity: 0.35 },
-        { size: 60 * scaleMultiplier, color: secondaryOrbColor, color2: 'transparent', blur: 95  * blurFactor, opacity: 0.50 },
-    ];
-
     const canvas = document.createElement('div');
     canvas.id = 'bg-canvas';
     document.body.prepend(canvas);
@@ -128,61 +100,59 @@ function initBackground() {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
 
-    const orbs = ORB_CONFIGS.map((cfg, i) => {
+    const BASE_CONFIGS = [
+        { sizePercent: 75, isSecondary: false, blurBase: 110, opacity: 0.40 },
+        { sizePercent: 65, isSecondary: true,  blurBase: 100, opacity: 0.55 },
+        { sizePercent: 55, isSecondary: false, blurBase: 90,  opacity: 0.30 },
+        { sizePercent: 50, isSecondary: true,  blurBase: 85,  opacity: 0.45 },
+        { sizePercent: 48, isSecondary: false, blurBase: 80,  opacity: 0.35 },
+        { sizePercent: 60, isSecondary: true,  blurBase: 95,  opacity: 0.50 }
+    ];
+
+    const orbs = BASE_CONFIGS.map((cfg, i) => {
         const el = document.createElement('div');
         el.className = 'bg-orb';
-
-        const sizePx = Math.round(vw * cfg.size / 100);
-        el.style.cssText = `
-            width:${sizePx}px; height:${sizePx}px;
-            background: radial-gradient(circle, ${cfg.color} 0%, ${cfg.color2} 60%, transparent 100%);
-            filter: blur(${cfg.blur}px);
-            opacity: 0;
-            transition: opacity 3s ease;
-            position: absolute;
-            pointer-events: none;
-        `;
         canvas.appendChild(el);
 
-        const startX = Math.random() * (vw + sizePx) - sizePx / 2;
-        const startY = Math.random() * (vh + sizePx) - sizePx / 2;
+        const startX = Math.random() * vw;
+        const startY = Math.random() * vh;
+
+        const styles = getComputedStyle(document.documentElement);
+        const scaleMultiplier = parseFloat(styles.getPropertyValue('--orb-scale-multiplier')) || 1.0;
+        const initialSizePx = Math.round(vw * (cfg.sizePercent * scaleMultiplier) / 100);
 
         const state = {
             el,
-            sizePx,
-            color: cfg.color,
+            sizePercent: cfg.sizePercent,
+            sizePx: initialSizePx,
+            blurBase: cfg.blurBase,
+            isSecondary: cfg.isSecondary,
             opacity: cfg.opacity,
-            x: startX,
-            y: startY,
-            tx: 0, ty: 0,
-            vx: 0, vy: 0,
-            duration: 0,
-            elapsed: 0,
-            ox: startX, oy: startY,
-            speedMultiplier: speedMultiplier // Store speed context
+            x: startX, y: startY,
+            tx: 0, ty: 0, ox: startX, oy: startY,
+            duration: 1, elapsed: 0, speedMultiplier: 1.0
         };
 
-        el.style.left = (state.x - sizePx / 2) + 'px';
-        el.style.top  = (state.y - sizePx / 2) + 'px';
-
-        setTimeout(() => { el.style.opacity = cfg.opacity; }, i * 300);
+        setTimeout(() => { el.style.opacity = cfg.opacity; }, i * 200);
         pickTarget(state, vw, vh);
-
         return state;
     });
 
     window._orbStates = orbs;
+    updateActiveOrbSkins();
 
-    function pickTarget(state, vw, vh) {
+    function pickTarget(state, width, height) {
+        const styles = getComputedStyle(document.documentElement);
+        const speedMultiplier = parseFloat(styles.getPropertyValue('--orb-speed-multiplier')) || 1.0;
+
         state.ox = state.x;
         state.oy = state.y;
-        state.tx = Math.random() * (vw * 1.3) - vw * 0.15;
-        state.ty = Math.random() * (vh * 1.3) - vh * 0.15;
+        state.tx = Math.random() * (width * 1.3) - width * 0.15;
+        state.ty = Math.random() * (height * 1.3) - height * 0.15;
         
-        // Base timing altered dynamically by the theme speed multiplier
         const baseDuration = (24000 + Math.random() * 24000);
-        state.duration = baseDuration / state.speedMultiplier;
-        state.elapsed  = 0;
+        state.duration = baseDuration / speedMultiplier;
+        state.elapsed = 0;
     }
 
     function easeInOut(t) {
@@ -190,7 +160,6 @@ function initBackground() {
     }
 
     let last = performance.now();
-
     function tick(now) {
         const dt = now - last;
         last = now;
@@ -203,6 +172,14 @@ function initBackground() {
             state.x = state.ox + (state.tx - state.ox) * e;
             state.y = state.oy + (state.ty - state.oy) * e;
 
+            // Updated from step 3: During transition animation frames, dynamically 
+            // re-read the client layout measurements directly from CSS computed values 
+            // instead of jumping variables instantly.
+            const currentComputedSize = parseFloat(getComputedStyle(state.el).width);
+            if (!isNaN(currentComputedSize)) {
+                state.sizePx = currentComputedSize;
+            }
+
             state.el.style.left = (state.x - state.sizePx / 2) + 'px';
             state.el.style.top  = (state.y - state.sizePx / 2) + 'px';
 
@@ -210,113 +187,85 @@ function initBackground() {
                 pickTarget(state, window.innerWidth, window.innerHeight);
             }
         });
-
         requestAnimationFrame(tick);
     }
-
     requestAnimationFrame(tick);
 }
 
+function updateActiveOrbSkins() {
+    const states = window._orbStates;
+    if (!states || !states.length) return;
 
+    const styles = getComputedStyle(document.documentElement);
+    const accentColor = styles.getPropertyValue('--accent-gold').trim() || '#ffffff';
+    const baseBg = styles.getPropertyValue('--bg-base').trim() || '#000000';
+    const secondaryColor = styles.getPropertyValue('--orb-secondary-color').trim() || accentColor;
+    
+    const blurFactor = parseFloat(styles.getPropertyValue('--orb-blur-factor')) || 1.0;
+    const scaleMultiplier = parseFloat(styles.getPropertyValue('--orb-scale-multiplier')) || 1.0;
+    const vw = window.innerWidth;
 
+    states.forEach((state) => {
+        const targetColor = state.isSecondary ? secondaryColor : accentColor;
+        const targetSize = Math.round(vw * (state.sizePercent * scaleMultiplier) / 100);
+        const targetBlur = state.blurBase * blurFactor;
+
+        state.color = targetColor;
+
+        // Transitions cleanly map layout dimensions
+        state.el.style.width = `${targetSize}px`;
+        state.el.style.height = `${targetSize}px`;
+        state.el.style.filter = `blur(${targetBlur}px)`;
+        state.el.style.background = `radial-gradient(circle, ${targetColor} 0%, ${baseBg} 60%, transparent 100%)`;
+    });
+}
 
 function initMouseGlow() {
-
-    // Expose orb state so we can read positions + colors
-
-    // orbStates is populated by initBackground and stored on window
-
     document.querySelectorAll('.glass-card').forEach(card => {
-
         const blob = card.querySelector('.glow-blob');
-
         if (!blob) return;
 
-
-
         card.addEventListener('mouseenter', () => { blob.style.opacity = '1'; });
-
         card.addEventListener('mouseleave', () => { blob.style.opacity = '0'; });
 
-
-
         card.addEventListener('mousemove', (e) => {
-
             const rect = card.getBoundingClientRect();
-
             blob.style.left = (e.clientX - rect.left) + 'px';
-
             blob.style.top  = (e.clientY - rect.top)  + 'px';
 
-
-
-            // Find the orb whose center is closest to the cursor
-
             const states = window._orbStates;
-
             if (!states || !states.length) return;
 
-
-
             let closest = null;
-
             let minDist = Infinity;
-
             states.forEach(s => {
-
                 const dx = s.x - e.clientX;
-
                 const dy = s.y - e.clientY;
-
                 const dist = Math.sqrt(dx*dx + dy*dy);
-
                 if (dist < minDist) { minDist = dist; closest = s; }
-
             });
 
+            if (!closest || !closest.color) return;
 
-
-            if (!closest) return;
-
-
-
-            // Parse the orb's primary hex color into rgb
-
-            const hex = closest.color;
-
-            const r = parseInt(hex.slice(1,3), 16);
-
-            const g = parseInt(hex.slice(3,5), 16);
-
-            const b = parseInt(hex.slice(5,7), 16);
-
-
-
-            // Weight: closer orb = more color influence
-
-            // Warm colors (high R) get a slight boost since they're darker pigments
+            let hex = closest.color.replace('#', '');
+            if (hex.length === 3) {
+                hex = hex.split('').map(char => char + char).join('');
+            }
+            const r = parseInt(hex.slice(0, 2), 16);
+            const g = parseInt(hex.slice(2, 4), 16);
+            const b = parseInt(hex.slice(4, 6), 16);
 
             const maxDist = Math.sqrt(window.innerWidth**2 + window.innerHeight**2);
-
             const weight  = Math.max(0, 1 - (minDist / (maxDist * 0.55)));
-
-            const isWarm  = r > g + 30; // orange/red/gold orbs
-
+            const isWarm  = r > g + 30; 
             const peak    = isWarm ? 0.14 : 0.12;
-
             const alpha   = 0.06 + weight * peak;
 
-
-
-            blob.style.background =
-
-                `radial-gradient(circle, rgba(${r},${g},${b},${alpha.toFixed(3)}) 0%, transparent 65%)`;
-
+            blob.style.background = `radial-gradient(circle, rgba(${r},${g},${b},${alpha.toFixed(3)}) 0%, transparent 65%)`;
         });
-
     });
-
 }
+
 function initScrollReveal() {
     const reveals = document.querySelectorAll('.reveal');
     reveals.forEach(el => el.classList.remove('active'));
