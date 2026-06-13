@@ -1,16 +1,16 @@
-/* ── Tokens: Cyberpunk Crimson ───────────────────────────── */
+/* ── Tokens: Royal Amethyst ──────────────────────────────── */
 :root {
-    --bg-base:            #050103; /* Pure void black with a drop of blood */
-    --glass-bg:           rgba(20, 6, 12, 0.65); /* Dark crimson tinted glass */
-    --glass-bg-strong:    rgba(13, 3, 8, 0.88);
-    --glass-border:       rgba(220, 45, 90, 0.22); /* Deep red structural border */
-    --glass-border-hover: rgba(255, 46, 109, 0.85); /* Piercing hot pink neon glow */
-    --text-main:          #fff0f3; /* Brilliant light pink-white tint */
-    --text-muted:         #a6858d; /* Desaturated rose-ash for reading */
-    --text-dim:           #663d46; /* Dried blood red for meta detail */
-    --accent-gold:        #ff2e6d; /* Primary neon highlight */
-    --accent-gold-dim:    rgba(255, 46, 109, 0.15);
-    --accent-gold-line:   rgba(255, 46, 109, 0.45);
+    --bg-base:            #05020a; /* Obsidian base with a dark purple velvet cast */
+    --glass-bg:           rgba(18, 10, 31, 0.65); /* Mystical dark amethyst glass */
+    --glass-bg-strong:    rgba(11, 6, 20, 0.88);
+    --glass-border:       rgba(142, 100, 220, 0.25); /* Soft orchid violet frame */
+    --glass-border-hover: rgba(186, 133, 255, 0.85); /* Radiant neon lavender glow */
+    --text-main:          #f7f4fc; /* Pale lavender-tinted stark white */
+    --text-muted:         #aba0c2; /* Muted heather gray for readable content */
+    --text-dim:           #5b4e75; /* Dark spiritual violet for small metadata */
+    --accent-gold:        #ca9eff; /* Luminous light violet active tags */
+    --accent-gold-dim:    rgba(202, 158, 255, 0.15);
+    --accent-gold-line:   rgba(202, 158, 255, 0.45);
     --max-w:              1020px;
     --max-w-article:      720px;
 }
