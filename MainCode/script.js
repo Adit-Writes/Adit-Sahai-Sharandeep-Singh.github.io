@@ -13,28 +13,75 @@ const ORB_TRANSITION_SECS   = 10.0;    // how long orb color transition takes (s
 
 const MY_FAVORITE_THEMES = [
     {
-    name: "Prism Catalyst (Test)",
+    name: "Crimson Ember",
     tokens: {
-        '--bg-base':            '#05060a',
-        '--glass-bg':           'rgba(12, 14, 24, 0.65)',
-        '--glass-bg-strong':    'rgba(6, 8, 14, 0.88)',
-        '--glass-border':       'rgba(120, 140, 255, 0.20)',
-        '--glass-border-hover': 'rgba(255, 255, 255, 0.80)',
-        '--text-main':          '#f8fbff',
-        '--text-muted':         '#b8c2d6',
-        '--text-dim':           '#6d7890',
-        '--accent-gold':        '#7aa2ff',
-        '--accent-gold-dim':    'rgba(122, 162, 255, 0.15)',
-        '--accent-gold-line':   'rgba(122, 162, 255, 0.40)',
+        '--bg-base':             '#0a0506',
+        '--glass-bg':            'rgba(28, 8, 10, 0.65)',
+        '--glass-bg-strong':     'rgba(18, 4, 6, 0.88)',
+        '--glass-border':       'rgba(255, 60, 80, 0.25)',
+        '--glass-border-hover': 'rgba(255, 60, 80, 0.85)',
 
-        // intentionally very distinct orb colors (no shade similarity)
-        '--orb-colors':         '#ff004c, #00d1ff, #ffe600, #7c3cff, #00ff7b',
+        '--text-main':          '#fff1f2',
+        '--text-muted':         '#d7a7ad',
+        '--text-dim':           '#7a4a50',
 
-        '--orb-blur-factor':    '1.15',
-        '--orb-speed-multiplier': '1.25',
-        '--orb-scale-multiplier': '1.1'
+        '--accent-gold':        '#ff3b4d',
+        '--accent-gold-dim':    'rgba(255, 59, 77, 0.15)',
+        '--accent-gold-line':   'rgba(255, 59, 77, 0.35)',
+
+        '--orb-colors':         '#ff2a2a, #ff6b3d, #ff3b8d, #ffb347, #c1121f',
+
+        '--orb-blur-factor':    '1.05',
+        '--orb-speed-multiplier':'1.25',
+        '--orb-scale-multiplier':'1.05'
     }
-}
+},{
+    name: "Aurora Ice",
+    tokens: {
+        '--bg-base':             '#050814',
+        '--glass-bg':            'rgba(10, 18, 40, 0.65)',
+        '--glass-bg-strong':     'rgba(6, 12, 30, 0.88)',
+        '--glass-border':       'rgba(80, 140, 255, 0.25)',
+        '--glass-border-hover': 'rgba(80, 140, 255, 0.85)',
+
+        '--text-main':          '#eef4ff',
+        '--text-muted':         '#a9b9d6',
+        '--text-dim':           '#5a6f93',
+
+        '--accent-gold':        '#4da3ff',
+        '--accent-gold-dim':    'rgba(77, 163, 255, 0.15)',
+        '--accent-gold-line':   'rgba(77, 163, 255, 0.35)',
+
+        '--orb-colors':         '#1e90ff, #00c2ff, #7a5cff, #00ffd0, #3b82f6',
+
+        '--orb-blur-factor':    '0.95',
+        '--orb-speed-multiplier':'1.3',
+        '--orb-scale-multiplier':'1.1'
+    }
+},{
+    name: "Sand & Ivory",
+    tokens: {
+        '--bg-base':             '#0e0b08',
+        '--glass-bg':            'rgba(40, 30, 24, 0.6)',
+        '--glass-bg-strong':     'rgba(28, 20, 16, 0.88)',
+        '--glass-border':       'rgba(210, 190, 160, 0.25)',
+        '--glass-border-hover': 'rgba(210, 190, 160, 0.85)',
+
+        '--text-main':          '#f7f1e6',
+        '--text-muted':         '#cbbba4',
+        '--text-dim':           '#8a7a66',
+
+        '--accent-gold':        '#d6b48a',
+        '--accent-gold-dim':    'rgba(214, 180, 138, 0.15)',
+        '--accent-gold-line':   'rgba(214, 180, 138, 0.35)',
+
+        '--orb-colors':         '#d6b48a, #f2d2a9, #a68a64, #ffe0b2, #c8a27a',
+
+        '--orb-blur-factor':    '1.0',
+        '--orb-speed-multiplier':'0.95',
+        '--orb-scale-multiplier':'1.08'
+    }
+},
 ];
 
 // ============================================================
