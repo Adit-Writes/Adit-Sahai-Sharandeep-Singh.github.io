@@ -9,6 +9,130 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="MainCode/style.css">
+    <style>
+        /* ── Search ─────────────────────────────────────────────── */
+        .search-wrap {
+            position: relative;
+            display:  flex;
+            align-items: center;
+        }
+
+        .search-toggle {
+            background:  none;
+            border:      none;
+            cursor:      pointer;
+            color:       var(--text-muted);
+            font-size:   1.05rem;
+            line-height: 1;
+            padding:     6px 10px;
+            border-radius: 50px;
+            transition:  color 0.2s, background 0.2s;
+            display:     flex;
+            align-items: center;
+        }
+
+        .search-toggle:hover { color: #fff; background: rgba(80,130,255,0.1); }
+
+        .search-box {
+            position:   absolute;
+            right:      0;
+            top:        calc(100% + 10px);
+            width:      260px;
+            background: rgba(6, 13, 30, 0.96);
+            border:     1px solid var(--glass-border);
+            border-radius: 14px;
+            padding:    10px 14px;
+            backdrop-filter: blur(24px);
+            box-shadow: 0 12px 40px rgba(0,0,20,0.6);
+            display:    none;
+            z-index:    200;
+        }
+
+        .search-box.open { display: block; }
+
+        .search-input {
+            width:       100%;
+            background:  transparent;
+            border:      none;
+            outline:     none;
+            color:       var(--text-main);
+            font-family: 'Inter', sans-serif;
+            font-size:   0.9rem;
+            font-weight: 300;
+            caret-color: var(--accent-gold);
+        }
+
+        .search-input::placeholder { color: var(--text-dim); }
+
+        /* ── Liked badge on card ────────────────────────────────── */
+        .liked-badge {
+            display:      none;
+            align-items:  center;
+            gap:          4px;
+            font-size:    0.68rem;
+            font-weight:  600;
+            color:        var(--accent-gold);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            opacity:      0.9;
+        }
+
+        .liked-badge.visible { display: flex; }
+        .liked-badge-heart   { font-size: 0.8rem; }
+
+        /* ── "Liked" category button ────────────────────────────── */
+        .category-btn.liked-filter {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* ── Sub-filter row (show only liked in this category) ──── */
+        .liked-subfilter-row {
+            display:         flex;
+            justify-content: center;
+            margin-top:      -28px;
+            margin-bottom:   28px;
+            opacity:         0;
+            pointer-events:  none;
+            transition:      opacity 0.3s ease;
+        }
+
+        .liked-subfilter-row.visible {
+            opacity:        1;
+            pointer-events: all;
+        }
+
+        .liked-subfilter-btn {
+            background:    transparent;
+            border:        1px solid var(--glass-border);
+            border-radius: 50px;
+            color:         var(--text-dim);
+            cursor:        pointer;
+            font-family:   'Inter', sans-serif;
+            font-size:     0.68rem;
+            font-weight:   600;
+            letter-spacing: 2px;
+            padding:       6px 18px;
+            text-transform: uppercase;
+            transition:    all 0.25s ease;
+        }
+
+        .liked-subfilter-btn:hover        { color: var(--accent-gold); border-color: var(--accent-gold-line); }
+        .liked-subfilter-btn.active       { background: var(--accent-gold-dim); color: var(--accent-gold); border-color: var(--accent-gold-line); }
+
+        /* ── No results message ─────────────────────────────────── */
+        .no-results-msg {
+            display:    none;
+            text-align: center;
+            color:      var(--text-dim);
+            font-size:  0.9rem;
+            font-style: italic;
+            padding:    48px 0;
+        }
+
+        .no-results-msg.visible { display: block; }
+    </style>
 </head>
 <body>
 
@@ -24,6 +148,22 @@
             <a href="#about">About</a>
             <a href="#books">Books</a>
             <a href="#articles">Articles</a>
+        </div>
+        <!-- Search -->
+        <div class="search-wrap" id="searchWrap">
+            <button class="search-toggle" id="searchToggle" aria-label="Search articles" title="Search articles">
+                &#x2315;
+            </button>
+            <div class="search-box" id="searchBox">
+                <input
+                    class="search-input"
+                    id="searchInput"
+                    type="text"
+                    placeholder="Search articles…"
+                    autocomplete="off"
+                    spellcheck="false"
+                />
+            </div>
         </div>
     </nav>
 
@@ -86,13 +226,30 @@
             {% for cat in Categories %}
             <button class="category-btn" data-filter="{{ cat.name | lower }}">{{ cat.name }}</button>
             {% endfor %}
+            <!-- Liked articles filter — always last -->
+            <button class="category-btn liked-filter" data-filter="__liked__">
+                <span>♥</span> Liked
+            </button>
         </div>
+    </div>
+
+    <!-- Sub-filter: show only liked within current category -->
+    <div class="liked-subfilter-row" id="likedSubfilterRow">
+        <button class="liked-subfilter-btn" id="likedSubfilterBtn">
+            ♥ &nbsp;Show only liked
+        </button>
     </div>
 
     <section class="article-feed">
         {% for article in Articles %}
         {% if article.Published %}
-        <article class="article-card glass-card reveal" data-category="{{ article.Topic | default('') | lower }}">
+        <article
+            class="article-card glass-card reveal"
+            data-category="{{ article.Topic | default('') | lower }}"
+            data-slug="{{ article.Title | slug }}"
+            data-title="{{ article.Title | lower }}"
+            data-description="{{ article.Description | lower | striptags }}"
+        >
             <div class="glow-blob"></div>
             <div class="article-meta">
                 <span class="category">{{ article.Topic }}</span>
@@ -102,6 +259,11 @@
                 <span class="meta-sep"></span>
                 <span class="index-like-count" data-slug="{{ article.Title | slug }}">0 likes</span>
                 {% endif %}
+                <!-- Liked badge — shown when user has liked this article -->
+                <span class="meta-sep liked-badge-sep" style="display:none"></span>
+                <span class="liked-badge" data-slug="{{ article.Title | slug }}">
+                    <span class="liked-badge-heart">♥</span> Liked
+                </span>
             </div>
             <h3 class="article-title">{{ article.Title }}</h3>
             <p class="article-excerpt">{{ article.Description | safe }}</p>
@@ -114,39 +276,52 @@
         {% endfor %}
     </section>
 
+    <!-- No results -->
+    <p class="no-results-msg" id="noResultsMsg">No articles found.</p>
+
     <footer class="footer">
         <p>&copy; 2026 The Sahai Analogy. All rights reserved.</p>
     </footer>
 
     <script src="MainCode/script.js"></script>
-    
+
     <script>
-    // Make sure to use your actual Supabase URL and Key
     const SUPABASE_URL = 'https://mpeqripywqiotselpyut.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wZXFyaXB5d3Fpb3RzZWxweXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTE4MzUsImV4cCI6MjA5Njg4NzgzNX0.1lTHIY3M1xk5FmnTC2YMbSMNpi7vhWDuGGXUSNkwkm8';
 
+    // ── State ────────────────────────────────────────────────────
+    let activeFilter     = 'all';
+    let likedSubActive   = false;
+    let searchQuery      = '';
+
+    // Collect all liked slugs from localStorage
+    function getLikedSlugs() {
+        const liked = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key && key.startsWith('liked:')) {
+                liked.push(key.slice(6)); // strip "liked:" prefix
+            }
+        }
+        return liked;
+    }
+
+    // ── Like counts ──────────────────────────────────────────────
     async function loadIndexLikes() {
         try {
-            // Fetch just the article_ids from the likes table to save bandwidth
             const res = await fetch(`${SUPABASE_URL}/rest/v1/article_likes?select=article_id`, {
-                headers: {
-                    'apikey': SUPABASE_KEY,
-                    'Authorization': `Bearer ${SUPABASE_KEY}`
-                }
+                headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
             });
-            
             if (!res.ok) return;
             const likes = await res.json();
 
-            // Count occurrences of each article_id
             const likeCounts = {};
             likes.forEach(like => {
                 likeCounts[like.article_id] = (likeCounts[like.article_id] || 0) + 1;
             });
 
-            // Find all our spans and update their text
             document.querySelectorAll('.index-like-count').forEach(el => {
-                const slug = el.getAttribute('data-slug');
+                const slug  = el.getAttribute('data-slug');
                 const count = likeCounts[slug] || 0;
                 el.textContent = count === 1 ? '1 like' : `${count} likes`;
             });
@@ -155,7 +330,141 @@
         }
     }
 
+    // ── Liked badges ─────────────────────────────────────────────
+    function applyLikedBadges() {
+        const likedSlugs = new Set(getLikedSlugs());
+        document.querySelectorAll('.liked-badge').forEach(badge => {
+            const slug = badge.getAttribute('data-slug');
+            const sep  = badge.previousElementSibling; // .liked-badge-sep
+            if (likedSlugs.has(slug)) {
+                badge.classList.add('visible');
+                if (sep) sep.style.display = '';
+            } else {
+                badge.classList.remove('visible');
+                if (sep) sep.style.display = 'none';
+            }
+        });
+    }
+
+    // ── Filter + search engine ───────────────────────────────────
+    function applyFilters() {
+        const likedSlugs  = new Set(getLikedSlugs());
+        const cards       = document.querySelectorAll('.article-feed .article-card');
+        const noResults   = document.getElementById('noResultsMsg');
+        let   anyVisible  = false;
+
+        cards.forEach(card => {
+            const slug     = card.getAttribute('data-slug')     || '';
+            const category = card.getAttribute('data-category') || '';
+            const title    = card.getAttribute('data-title')    || '';
+            const desc     = card.getAttribute('data-description') || '';
+
+            // 1. Category / liked filter
+            let passCategory = false;
+            if (activeFilter === 'all') {
+                passCategory = likedSubActive ? likedSlugs.has(slug) : true;
+            } else if (activeFilter === '__liked__') {
+                passCategory = likedSlugs.has(slug);
+            } else {
+                passCategory = category === activeFilter &&
+                               (!likedSubActive || likedSlugs.has(slug));
+            }
+
+            // 2. Search
+            const passSearch = searchQuery === '' ||
+                               title.includes(searchQuery) ||
+                               desc.includes(searchQuery);
+
+            const show = passCategory && passSearch;
+            card.style.display = show ? '' : 'none';
+            if (show) anyVisible = true;
+        });
+
+        noResults.classList.toggle('visible', !anyVisible);
+    }
+
+    // ── Category buttons ─────────────────────────────────────────
+    function initCategoryFilter() {
+        const buttons          = document.querySelectorAll('.category-btn');
+        const subfilterRow     = document.getElementById('likedSubfilterRow');
+        const subfilterBtn     = document.getElementById('likedSubfilterBtn');
+
+        buttons.forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.preventDefault();
+                buttons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                activeFilter   = btn.getAttribute('data-filter');
+                likedSubActive = false;
+                subfilterBtn.classList.remove('active');
+
+                // Show sub-filter row for any non-"all" / non-"liked" category
+                const showSub = activeFilter !== 'all' && activeFilter !== '__liked__';
+                subfilterRow.classList.toggle('visible', showSub);
+
+                applyFilters();
+            });
+        });
+
+        subfilterBtn.addEventListener('click', () => {
+            likedSubActive = !likedSubActive;
+            subfilterBtn.classList.toggle('active', likedSubActive);
+            applyFilters();
+        });
+    }
+
+    // ── Search ───────────────────────────────────────────────────
+    function initSearch() {
+        const toggle    = document.getElementById('searchToggle');
+        const box       = document.getElementById('searchBox');
+        const input     = document.getElementById('searchInput');
+        const searchWrap = document.getElementById('searchWrap');
+
+        toggle.addEventListener('click', e => {
+            e.stopPropagation();
+            const isOpen = box.classList.toggle('open');
+            if (isOpen) {
+                input.focus();
+                // Scroll to articles section smoothly
+                document.getElementById('articles').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                input.value = '';
+                searchQuery = '';
+                applyFilters();
+            }
+        });
+
+        // Close when clicking outside
+        document.addEventListener('click', e => {
+            if (!searchWrap.contains(e.target)) {
+                box.classList.remove('open');
+                input.value = '';
+                searchQuery = '';
+                applyFilters();
+            }
+        });
+
+        input.addEventListener('input', () => {
+            searchQuery = input.value.trim().toLowerCase();
+            applyFilters();
+        });
+
+        // Close on Escape
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                box.classList.remove('open');
+                input.value = '';
+                searchQuery = '';
+                applyFilters();
+            }
+        });
+    }
+
+    // ── Init ─────────────────────────────────────────────────────
     loadIndexLikes();
-</script>
+    applyLikedBadges();
+    initCategoryFilter();
+    initSearch();
+    </script>
 </body>
 </html>
