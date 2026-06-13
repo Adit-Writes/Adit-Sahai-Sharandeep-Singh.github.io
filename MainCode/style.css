@@ -1,23 +1,23 @@
 :root {
-    --bg-base:            #06020c; /* Deep synthwave night sky */
-    --glass-bg:           rgba(21, 9, 36, 0.65); /* Deep neon violet tint */
-    --glass-bg-strong:    rgba(13, 5, 23, 0.88);
-    --glass-border:       rgba(255, 0, 127, 0.25); /* Sharp laser-fuchsia frame */
-    --glass-border-hover: rgba(0, 240, 255, 0.9); /* Electric neon cyan hyper-glow */
-    --text-main:          #fff0f8; /* Crisp pink-tinted stark white */
-    --text-muted:         #b9a1cf; /* Soft lavender-gray body text */
-    --text-dim:           #724994; /* Dark structural neon violet */
-    --accent-gold:        #ff007f; /* Hot magenta active pills and links */
-    --accent-gold-dim:    rgba(255, 0, 127, 0.15);
-    --accent-gold-line:   rgba(255, 0, 127, 0.40);
+    --bg-base:            #0c0b09; /* Roasted coffee bean base shadow */
+    --glass-bg:           rgba(28, 25, 22, 0.65); /* Warm library glass panels */
+    --glass-bg-strong:    rgba(20, 18, 16, 0.88);
+    --glass-border:       rgba(214, 196, 171, 0.20); /* Soft weathered paper rim */
+    --glass-border-hover: rgba(240, 225, 194, 0.85); /* Rich, warm parchment halo */
+    --text-main:          #fdfbf7; /* Antique linen white */
+    --text-muted:         #c2b5a3; /* Faded book ink gray for readability */
+    --text-dim:           #6e6150; /* Muted walnut brown for dates/meta tags */
+    --accent-gold:        #d6c4ab; /* Refined cream active element state */
+    --accent-gold-dim:    rgba(214, 196, 171, 0.12);
+    --accent-gold-line:   rgba(214, 196, 171, 0.35);
     --max-w:              1020px;
     --max-w-article:      720px;
 
     /* Background Orb Personalities */
-    --orb-secondary-color: #00f0ff; /* Injects bright retro-cyan orbs */
-    --orb-blur-factor:     0.8;     /* Sharper, intense geometric light fields */
-    --orb-speed-multiplier:1.5;     /* Fast, sweeping digital currents */
-    --orb-scale-multiplier:0.9;     /* Compact, highly punchy light sources */
+    --orb-secondary-color: #3b2c1b; /* Aged mahogany wood stain color */
+    --orb-blur-factor:     1.3;     /* Gently blended atmosphere */
+    --orb-speed-multiplier:0.7;     /* Stately, slow historical drift */
+    --orb-scale-multiplier:1.2;
 }
 
 /* Add this to your Reset section for global smooth scrolling */
