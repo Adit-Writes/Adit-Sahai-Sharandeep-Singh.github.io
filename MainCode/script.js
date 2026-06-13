@@ -503,7 +503,7 @@ function initMouseGlow() {
         const blob = card.querySelector('.glow-blob');
         if (!blob) return;
 
-        card.addEventListener('mouseenter', () => { blob.style.opacity = '1'; });
+        card.addEventListener('mouseenter', () => { blob.style.opacity = '0.1'; });
         card.addEventListener('mouseleave', () => { blob.style.opacity = '0'; });
 
         card.addEventListener('mousemove', (e) => {
@@ -532,7 +532,7 @@ function initMouseGlow() {
             const peak    = isWarm ? 0.14 : 0.12;
             const alpha   = (0.06 + weight * peak).toFixed(3);
 
-            blob.style.background = `radial-gradient(circle, rgba(${r},${g},${b},${alpha}) 0%, transparent 65%)`;
+            blob.style.background = `radial-gradient(circle, rgba(${r},${g},${b},${alpha}) 0%, transparent 90%)`;
         });
     });
 }
