@@ -42,14 +42,18 @@ transition:
 
 /* Ensure background orbs naturally blend their opacity and theme transformations */
 .bg-orb {
+    position: absolute;
+    border-radius: 50%;
+    will-change: transform, background, filter;
+    /* Removed !important to allow the browser to breathe */
     transition: 
         opacity 3s ease, 
-        left 0.5s ease-out, 
-        top 0.5s ease-out,
-        background 1.5s ease-in-out,
-        width 1.5s ease-in-out,
-        height 1.5s ease-in-out,
-        filter 1.5s ease-in-out !important;
+        left 0.5s linear, 
+        top 0.5s linear,
+        background 2.5s ease-in-out,
+        width 2.5s ease-in-out,
+        height 2.5s ease-in-out,
+        filter 2.5s ease-in-out;
 }
 
 /* ── Body & background ───────────────────────────────────── */
