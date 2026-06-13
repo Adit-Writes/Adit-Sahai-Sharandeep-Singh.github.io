@@ -1,6 +1,6 @@
 media:
-  input: files # Folder in your GitHub repo where uploaded images will be saved
-  output: /files # The public URL path your website uses to display those images
+  input: files
+  output: /files
 
 content:
   - name: AboutAuthor
@@ -62,7 +62,9 @@ content:
     type: collection
     path: _data/categories
     format: json
-    filename: "{primary}.json"
+    filename: "{slug}.json"
+    view:
+      primary: name # This fixes the connection!
     fields:
       - name: name
         type: string
@@ -72,7 +74,7 @@ content:
     path: _data/ArticlesData
     type: collection
     format: json
-    filename: "{primary}.json"
+    filename: "{slug}.json" # Changed to slug for cleaner URLs in your 11ty build
     
     view:
       fields: [Title, Topic, Published, ReleaseDate, LastUpdated]
@@ -88,13 +90,11 @@ content:
         required: true
         
       - name: Topic
-        type: select # Reverted back to select to explicitly define options
+        type: reference 
         required: true
         options:
-          - facts
-          - politics
-          - science
-          - sports # Sports is now immediately available
+          collection: ArticleCategories 
+          field: name 
         
       - name: Published
         type: boolean
