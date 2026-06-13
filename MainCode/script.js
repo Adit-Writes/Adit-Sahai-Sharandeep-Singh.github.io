@@ -6,20 +6,26 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initBackground() {
-    // 1. Dynamically read colors from your active CSS token palette
+    // 1. Read theme colors and structural personality tokens
     const styles = getComputedStyle(document.documentElement);
     const accentColor = styles.getPropertyValue('--accent-gold').trim() || '#ffffff';
     const glowLine    = styles.getPropertyValue('--accent-gold-line').trim() || 'rgba(255,255,255,0.4)';
     const baseBg      = styles.getPropertyValue('--bg-base').trim() || '#000000';
+    
+    // Custom theme behavior modifiers
+    const secondaryOrbColor = styles.getPropertyValue('--orb-secondary-color').trim() || glowLine;
+    const blurFactor        = parseFloat(styles.getPropertyValue('--orb-blur-factor')) || 1.0;
+    const speedMultiplier   = parseFloat(styles.getPropertyValue('--orb-speed-multiplier')) || 1.0;
+    const scaleMultiplier   = parseFloat(styles.getPropertyValue('--orb-scale-multiplier')) || 1.0;
 
-    // 2. Build a structural configuration using your theme variables
+    // 2. Build structural configuration using the theme variants
     const ORB_CONFIGS = [
-        { size: 72, color: accentColor,   color2: baseBg,   blur: 110, opacity: 0.45 },
-        { size: 60, color: glowLine,      color2: baseBg,   blur: 100, opacity: 0.65 },
-        { size: 54, color: accentColor,   color2: 'transparent', blur: 90,  opacity: 0.35 },
-        { size: 50, color: glowLine,      color2: baseBg,   blur: 85,  opacity: 0.50 },
-        { size: 46, color: accentColor,   color2: baseBg,   blur: 80,  opacity: 0.40 },
-        { size: 56, color: glowLine,      color2: 'transparent', blur: 95,  opacity: 0.55 },
+        { size: 75 * scaleMultiplier, color: accentColor,       color2: baseBg,        blur: 110 * blurFactor, opacity: 0.40 },
+        { size: 65 * scaleMultiplier, color: secondaryOrbColor, color2: baseBg,        blur: 100 * blurFactor, opacity: 0.55 },
+        { size: 55 * scaleMultiplier, color: accentColor,       color2: 'transparent', blur: 90  * blurFactor, opacity: 0.30 },
+        { size: 50 * scaleMultiplier, color: secondaryOrbColor, color2: baseBg,        blur: 85  * blurFactor, opacity: 0.45 },
+        { size: 48 * scaleMultiplier, color: accentColor,       color2: baseBg,        blur: 80  * blurFactor, opacity: 0.35 },
+        { size: 60 * scaleMultiplier, color: secondaryOrbColor, color2: 'transparent', blur: 95  * blurFactor, opacity: 0.50 },
     ];
 
     const canvas = document.createElement('div');
@@ -51,7 +57,7 @@ function initBackground() {
         const state = {
             el,
             sizePx,
-            color: cfg.color, // Passing dynamic computed color string
+            color: cfg.color,
             opacity: cfg.opacity,
             x: startX,
             y: startY,
@@ -60,6 +66,7 @@ function initBackground() {
             duration: 0,
             elapsed: 0,
             ox: startX, oy: startY,
+            speedMultiplier: speedMultiplier // Store speed context
         };
 
         el.style.left = (state.x - sizePx / 2) + 'px';
@@ -78,7 +85,10 @@ function initBackground() {
         state.oy = state.y;
         state.tx = Math.random() * (vw * 1.3) - vw * 0.15;
         state.ty = Math.random() * (vh * 1.3) - vh * 0.15;
-        state.duration = 24000 + Math.random() * 24000;
+        
+        // Base timing altered dynamically by the theme speed multiplier
+        const baseDuration = (24000 + Math.random() * 24000);
+        state.duration = baseDuration / state.speedMultiplier;
         state.elapsed  = 0;
     }
 
@@ -113,7 +123,6 @@ function initBackground() {
 
     requestAnimationFrame(tick);
 }
-
 function initMouseGlow() {
 
     // Expose orb state so we can read positions + colors
