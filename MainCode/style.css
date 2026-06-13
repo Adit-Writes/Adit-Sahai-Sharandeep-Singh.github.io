@@ -1,16 +1,16 @@
-/* ── Tokens: Deep Atlantic ──────────────────────────────── */
+/* ── Tokens: Toxicity ────────────────────────────────────── */
 :root {
-    --bg-base:            #02070d; /* Abyssal ocean trench black */
-    --glass-bg:           rgba(8, 22, 38, 0.65); /* Ice-cold deep sea glass */
-    --glass-bg-strong:    rgba(4, 14, 26, 0.88);
-    --glass-border:       rgba(74, 144, 226, 0.25); /* Glacial blue edge */
-    --glass-border-hover: rgba(0, 245, 255, 0.8); /* Piercing electric cyan glow */
-    --text-main:          #e6f0fa; /* Crisp Arctic white */
-    --text-muted:         #7da0c4; /* Mist blue for dense reading body text */
-    --text-dim:           #3b5a7d; /* Deep slate anchor color for dates */
-    --accent-gold:        #00f5ff; /* Hyper-clean cyan active elements */
-    --accent-gold-dim:    rgba(0, 245, 255, 0.13);
-    --accent-gold-line:   rgba(0, 245, 255, 0.45);
+    --bg-base:            #060806; /* Grim dark ash and carbon shadow */
+    --glass-bg:           rgba(18, 24, 18, 0.65); /* Acidic tinted dark pane */
+    --glass-bg-strong:    rgba(11, 15, 11, 0.88);
+    --glass-border:       rgba(100, 180, 100, 0.2); /* Soft chemical green rim */
+    --glass-border-hover: rgba(50, 255, 120, 0.8); /* Blazing radioactive lime glow */
+    --text-main:          #f0fcf2; /* Pale green-tinted paper white */
+    --text-muted:         #9cb5a1; /* Desaturated swamp moss for clean text lines */
+    --text-dim:           #465c4a; /* Deep murky industrial leaf green */
+    --accent-gold:        #32ff78; /* High-voltage lime green highlights */
+    --accent-gold-dim:    rgba(50, 255, 120, 0.12);
+    --accent-gold-line:   rgba(50, 255, 120, 0.45);
     --max-w:              1020px;
     --max-w-article:      720px;
 }
