@@ -40,6 +40,12 @@ transition:
         box-shadow 5s ease-in-out;
 }
 
+.theme-transitioning {
+    transition:
+        background-color 4.5s ease,
+        color 4.5s ease;
+}
+
 /* Ensure background orbs naturally blend their opacity and theme transformations */
 .bg-orb {
     position: absolute;
