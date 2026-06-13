@@ -2,13 +2,11 @@
 //  CONFIGURATION — edit these values freely
 // ============================================================
 
-const ROTATION_INTERVAL_MS  = 15000;   // how often themes rotate (ms)
-const ORB_TRANSITION_SECS   = 10.0;    // how long orb color transition takes (seconds)
+const ROTATION_INTERVAL_MS   = 15000;   // how often themes rotate (ms)
+const ORB_TRANSITION_SECS    = 10.0;    // how long orb color transition takes (seconds)
 
 // ============================================================
 //  THEME DEFINITIONS
-//  --orb-colors: comma-separated list of 5 hex colors
-//  each orb picks one randomly on every theme change
 // ============================================================
 
 const MY_FAVORITE_THEMES = [
@@ -20,17 +18,13 @@ const MY_FAVORITE_THEMES = [
         '--glass-bg-strong':     'rgba(18, 4, 6, 0.88)',
         '--glass-border':       'rgba(255, 60, 80, 0.25)',
         '--glass-border-hover': 'rgba(255, 60, 80, 0.85)',
-
         '--text-main':          '#fff1f2',
         '--text-muted':         '#d7a7ad',
         '--text-dim':           '#7a4a50',
-
         '--accent-gold':        '#ff3b4d',
         '--accent-gold-dim':    'rgba(255, 59, 77, 0.15)',
         '--accent-gold-line':   'rgba(255, 59, 77, 0.35)',
-
         '--orb-colors':         '#ff2a2a, #ff6b3d, #ff3b8d, #ffb347, #c1121f',
-
         '--orb-blur-factor':    '1.05',
         '--orb-speed-multiplier':'1.25',
         '--orb-scale-multiplier':'1.05'
@@ -43,17 +37,13 @@ const MY_FAVORITE_THEMES = [
         '--glass-bg-strong':     'rgba(6, 12, 30, 0.88)',
         '--glass-border':       'rgba(80, 140, 255, 0.25)',
         '--glass-border-hover': 'rgba(80, 140, 255, 0.85)',
-
         '--text-main':          '#eef4ff',
         '--text-muted':         '#a9b9d6',
         '--text-dim':           '#5a6f93',
-
         '--accent-gold':        '#4da3ff',
         '--accent-gold-dim':    'rgba(77, 163, 255, 0.15)',
         '--accent-gold-line':   'rgba(77, 163, 255, 0.35)',
-
         '--orb-colors':         '#1e90ff, #00c2ff, #7a5cff, #00ffd0, #3b82f6',
-
         '--orb-blur-factor':    '0.95',
         '--orb-speed-multiplier':'1.3',
         '--orb-scale-multiplier':'1.1'
@@ -66,17 +56,13 @@ const MY_FAVORITE_THEMES = [
         '--glass-bg-strong':     'rgba(28, 20, 16, 0.88)',
         '--glass-border':       'rgba(210, 190, 160, 0.25)',
         '--glass-border-hover': 'rgba(210, 190, 160, 0.85)',
-
         '--text-main':          '#f7f1e6',
         '--text-muted':         '#cbbba4',
         '--text-dim':           '#8a7a66',
-
         '--accent-gold':        '#d6b48a',
         '--accent-gold-dim':    'rgba(214, 180, 138, 0.15)',
         '--accent-gold-line':   'rgba(214, 180, 138, 0.35)',
-
         '--orb-colors':         '#d6b48a, #f2d2a9, #a68a64, #ffe0b2, #c8a27a',
-
         '--orb-blur-factor':    '1.0',
         '--orb-speed-multiplier':'0.95',
         '--orb-scale-multiplier':'1.08'
@@ -89,17 +75,13 @@ const MY_FAVORITE_THEMES = [
         '--glass-bg-strong':     'rgba(6, 18, 12, 0.88)',
         '--glass-border':       'rgba(0, 255, 140, 0.22)',
         '--glass-border-hover': 'rgba(0, 255, 140, 0.85)',
-
         '--text-main':          '#eafff3',
         '--text-muted':         '#a7d6bc',
         '--text-dim':           '#5a8f73',
-
         '--accent-gold':        '#00ff9a',
         '--accent-gold-dim':    'rgba(0, 255, 154, 0.15)',
         '--accent-gold-line':   'rgba(0, 255, 154, 0.35)',
-
         '--orb-colors':         '#00ff9a, #39ff14, #00d4ff, #7cffcb, #2bff88',
-
         '--orb-blur-factor':    '0.9',
         '--orb-speed-multiplier':'1.45',
         '--orb-scale-multiplier':'1.05'
@@ -112,17 +94,13 @@ const MY_FAVORITE_THEMES = [
         '--glass-bg-strong':     'rgba(14, 6, 22, 0.88)',
         '--glass-border':       'rgba(170, 90, 255, 0.25)',
         '--glass-border-hover': 'rgba(170, 90, 255, 0.85)',
-
         '--text-main':          '#f5ecff',
         '--text-muted':         '#c7b3e6',
         '--text-dim':           '#7a5a9a',
-
         '--accent-gold':        '#b56cff',
         '--accent-gold-dim':    'rgba(181, 108, 255, 0.15)',
         '--accent-gold-line':   'rgba(181, 108, 255, 0.35)',
-
         '--orb-colors':         '#b56cff, #7c3aed, #00d9ff, #ff4fd8, #9b5cff',
-
         '--orb-blur-factor':    '1.05',
         '--orb-speed-multiplier':'1.35',
         '--orb-scale-multiplier':'1.1'
@@ -135,17 +113,13 @@ const MY_FAVORITE_THEMES = [
         '--glass-bg-strong':     'rgba(6, 7, 10, 0.9)',
         '--glass-border':       'rgba(120, 120, 120, 0.22)',
         '--glass-border-hover': 'rgba(200, 200, 200, 0.7)',
-
         '--text-main':          '#f0f4ff',
         '--text-muted':         '#a0a8b8',
         '--text-dim':           '#5a6270',
-
         '--accent-gold':        '#7dd3fc',
         '--accent-gold-dim':    'rgba(125, 211, 252, 0.12)',
         '--accent-gold-line':   'rgba(125, 211, 252, 0.28)',
-
         '--orb-colors':         '#7dd3fc, #f97316, #22c55e, #a78bfa, #e5e7eb',
-
         '--orb-blur-factor':    '0.95',
         '--orb-speed-multiplier':'1.2',
         '--orb-scale-multiplier':'1.08'
@@ -183,7 +157,6 @@ function orbGradient(rgb) {
     return `radial-gradient(circle, rgb(${rgb.r},${rgb.g},${rgb.b}) 0%, rgba(0,0,0,0) 70%)`;
 }
 
-// Parse "--orb-colors" CSS variable into an array of hex strings
 function parseOrbColors(stylesObj) {
     const raw = stylesObj.getPropertyValue('--orb-colors').trim();
     return raw.split(',').map(s => s.trim()).filter(Boolean);
@@ -194,17 +167,111 @@ function pickRandomColor(colors) {
 }
 
 // ============================================================
-//  BOOT
+//  TOKEN LERPER — smooth CSS variable interpolation
 // ============================================================
 
-document.addEventListener('DOMContentLoaded', () => {
-    initBackground();
-    applyRandomTheme();
-    setInterval(applyRandomTheme, ROTATION_INTERVAL_MS);
-    initMouseGlow();
-    initScrollReveal();
-    initCategoryFilter();
-});
+function parseColorToken(raw) {
+    raw = raw.trim();
+    if (raw.startsWith('#')) {
+        const rgb = hexToRgb(raw);
+        return { ...rgb, a: 1 };
+    }
+    const m = raw.match(/rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)(?:\s*,\s*([\d.]+))?\s*\)/);
+    if (m) return { r: +m[1], g: +m[2], b: +m[3], a: m[4] !== undefined ? +m[4] : 1 };
+    return null;
+}
+
+function serializeColor(rgba, originalRaw) {
+    const { r, g, b, a } = rgba;
+    const isHex = originalRaw.trim().startsWith('#') && a === 1;
+    if (isHex) {
+        return '#' + [r, g, b].map(v => Math.round(v).toString(16).padStart(2, '0')).join('');
+    }
+    return `rgba(${Math.round(r)},${Math.round(g)},${Math.round(b)},${a.toFixed(4)})`;
+}
+
+function lerpRgba(a, b, t) {
+    return {
+        r: a.r + (b.r - a.r) * t,
+        g: a.g + (b.g - a.g) * t,
+        b: a.b + (b.b - a.b) * t,
+        a: a.a + (b.a - a.a) * t,
+    };
+}
+
+// One entry per CSS variable currently being lerped
+const _tokenLerps = new Map();
+let _tokenLerpRunning = false;
+
+function startTokenLerpLoop() {
+    if (_tokenLerpRunning) return;
+    _tokenLerpRunning = true;
+
+    let last = performance.now();
+
+    function tick(now) {
+        const dt = now - last;
+        last = now;
+
+        const root = document.documentElement;
+
+        _tokenLerps.forEach((state, variable) => {
+            state.elapsed = Math.min(state.elapsed + dt, state.duration);
+            const t   = easeInOut(state.elapsed / state.duration);
+            const cur = lerpRgba(state.fromColor, state.toColor, t);
+            root.style.setProperty(variable, serializeColor(cur, state.rawTarget));
+            if (state.elapsed >= state.duration) _tokenLerps.delete(variable);
+        });
+
+        if (_tokenLerps.size > 0) {
+            requestAnimationFrame(tick);
+        } else {
+            _tokenLerpRunning = false;
+        }
+    }
+
+    requestAnimationFrame(tick);
+}
+
+// Tokens that are numbers/lists — can't lerp, apply instantly
+const INSTANT_TOKENS = new Set([
+    '--orb-blur-factor',
+    '--orb-speed-multiplier',
+    '--orb-scale-multiplier',
+    '--orb-colors',
+]);
+
+function applyThemeTokensSmooth(tokens, durationMs) {
+    const root   = document.documentElement;
+    const styles = getComputedStyle(root);
+
+    Object.entries(tokens).forEach(([variable, rawTarget]) => {
+        if (INSTANT_TOKENS.has(variable)) {
+            root.style.setProperty(variable, rawTarget);
+            return;
+        }
+
+        const toColor = parseColorToken(rawTarget);
+        if (!toColor) {
+            root.style.setProperty(variable, rawTarget);
+            return;
+        }
+
+        const currentRaw = styles.getPropertyValue(variable).trim();
+        const fromColor  = parseColorToken(currentRaw) || toColor;
+
+        _tokenLerps.set(variable, {
+            variable,
+            fromColor,
+            toColor,
+            rawTarget,
+            elapsed:  0,
+            duration: durationMs,
+        });
+    });
+
+    startTokenLerpLoop();
+}
 
 // ============================================================
 //  THEME ROTATOR
@@ -222,12 +289,11 @@ function applyRandomTheme() {
 
     console.log(`🎨 Theme: "${randomTheme.name}"`);
 
-    const root = document.documentElement;
+    const durationMs = ORB_TRANSITION_SECS * 1000;
+
     requestAnimationFrame(() => {
-        Object.entries(randomTheme.tokens).forEach(([variable, value]) => {
-            root.style.setProperty(variable, value);
-        });
-        updateActiveOrbSkins();
+        applyThemeTokensSmooth(randomTheme.tokens, durationMs);
+        updateActiveOrbSkins(randomTheme.tokens, durationMs);
     });
 }
 
@@ -263,28 +329,50 @@ function initBackground() {
         const state = {
             el,
             sizePercent:    cfg.sizePercent,
-            sizePx:         0,
             blurBase:       cfg.blurBase,
             opacity:        cfg.opacity,
             x: startX,  y: startY,
             tx: 0,       ty: 0,
             ox: startX,  oy: startY,
             duration: 1, elapsed: 0,
+
+            // Color lerp
             currentRgb:    { r: 80, g: 0, b: 80 },
             targetRgb:     { r: 80, g: 0, b: 80 },
             colorT:        1,
-            colorDuration: ORB_TRANSITION_SECS * 1000
+            colorDuration: ORB_TRANSITION_SECS * 1000,
+
+            // Size lerp (in px)
+            currentSizePx: 0,
+            targetSizePx:  0,
+            sizeT:         1,
+            sizeDuration:  ORB_TRANSITION_SECS * 1000,
+
+            // Blur lerp (in px)
+            currentBlurPx: cfg.blurBase,
+            targetBlurPx:  cfg.blurBase,
+            blurT:         1,
+            blurDuration:  ORB_TRANSITION_SECS * 1000,
         };
 
         el.style.position      = 'absolute';
         el.style.pointerEvents = 'none';
         el.style.opacity       = '0';
-        el.style.transition    = [
-            `opacity ${ORB_TRANSITION_SECS}s ease`,
-            `width   ${ORB_TRANSITION_SECS}s ease-in-out`,
-            `height  ${ORB_TRANSITION_SECS}s ease-in-out`,
-            `filter  ${ORB_TRANSITION_SECS}s ease-in-out`
-        ].join(', ');
+        // No CSS transition on size/filter — we drive them from JS every frame
+        el.style.transition    = `opacity ${ORB_TRANSITION_SECS}s ease`;
+
+        // Seed actual size so first lerp starts from a real value
+        const initialStyles    = getComputedStyle(document.documentElement);
+        const initScale        = parseFloat(initialStyles.getPropertyValue('--orb-scale-multiplier')) || 1.0;
+        const initBlurFactor   = parseFloat(initialStyles.getPropertyValue('--orb-blur-factor'))      || 1.0;
+        state.currentSizePx    = Math.round(vw * (cfg.sizePercent * initScale) / 100);
+        state.targetSizePx     = state.currentSizePx;
+        state.currentBlurPx    = cfg.blurBase * initBlurFactor;
+        state.targetBlurPx     = state.currentBlurPx;
+
+        el.style.width  = `${state.currentSizePx}px`;
+        el.style.height = `${state.currentSizePx}px`;
+        el.style.filter = `blur(${state.currentBlurPx}px)`;
 
         setTimeout(() => { el.style.opacity = cfg.opacity; }, i * 200);
         pickTarget(state, vw, vh);
@@ -312,28 +400,44 @@ function initBackground() {
         last = now;
 
         orbs.forEach(state => {
-            // Position
+            // ---- Position ----
             state.elapsed += dt;
             const t = Math.min(state.elapsed / state.duration, 1);
             const e = easeInOut(t);
             state.x = state.ox + (state.tx - state.ox) * e;
             state.y = state.oy + (state.ty - state.oy) * e;
 
-            const computed = parseFloat(getComputedStyle(state.el).width);
-            if (!isNaN(computed)) state.sizePx = computed;
-
-            state.el.style.left = (state.x - state.sizePx / 2) + 'px';
-            state.el.style.top  = (state.y - state.sizePx / 2) + 'px';
-
             if (t >= 1) pickTarget(state, window.innerWidth, window.innerHeight);
 
-            // Color lerp
+            // ---- Color lerp ----
             if (state.colorT < 1) {
                 state.colorT     = Math.min(state.colorT + dt / state.colorDuration, 1);
-                const easedT     = easeInOut(state.colorT);
-                state.currentRgb = lerpColor(state.currentRgb, state.targetRgb, easedT);
+                const easedColor = easeInOut(state.colorT);
+                state.currentRgb = lerpColor(state.currentRgb, state.targetRgb, easedColor);
                 state.el.style.background = orbGradient(state.currentRgb);
             }
+
+            // ---- Size lerp ----
+            if (state.sizeT < 1) {
+                state.sizeT = Math.min(state.sizeT + dt / state.sizeDuration, 1);
+                const easedSize = easeInOut(state.sizeT);
+                state.currentSizePx = state.currentSizePx + (state.targetSizePx - state.currentSizePx) * easedSize;
+            }
+
+            // ---- Blur lerp ----
+            if (state.blurT < 1) {
+                state.blurT = Math.min(state.blurT + dt / state.blurDuration, 1);
+                const easedBlur = easeInOut(state.blurT);
+                state.currentBlurPx = state.currentBlurPx + (state.targetBlurPx - state.currentBlurPx) * easedBlur;
+            }
+
+            // ---- Write to DOM ----
+            const sizePx = Math.round(state.currentSizePx);
+            state.el.style.left   = (state.x - sizePx / 2) + 'px';
+            state.el.style.top    = (state.y - sizePx / 2) + 'px';
+            state.el.style.width  = `${sizePx}px`;
+            state.el.style.height = `${sizePx}px`;
+            state.el.style.filter = `blur(${state.currentBlurPx.toFixed(1)}px)`;
         });
 
         requestAnimationFrame(tick);
@@ -343,46 +447,40 @@ function initBackground() {
 }
 
 // ============================================================
-//  ORB SKIN UPDATE — each orb picks a random color from the list
+//  ORB SKIN UPDATE — kick off lerps for color, size, blur
 // ============================================================
 
-function updateActiveOrbSkins() {
+function updateActiveOrbSkins(themeTokens, durationMs) {
     const states = window._orbStates;
     if (!states || !states.length) return;
 
     const styles          = getComputedStyle(document.documentElement);
     const orbColors       = parseOrbColors(styles);
-    const blurFactor      = parseFloat(styles.getPropertyValue('--orb-blur-factor'))     || 1.0;
-    const scaleMultiplier = parseFloat(styles.getPropertyValue('--orb-scale-multiplier'))|| 1.0;
+    const blurFactor      = parseFloat(styles.getPropertyValue('--orb-blur-factor'))      || 1.0;
+    const scaleMultiplier = parseFloat(styles.getPropertyValue('--orb-scale-multiplier')) || 1.0;
     const vw              = window.innerWidth;
 
-    // Fallback if --orb-colors isn't set yet
-    const fallback = styles.getPropertyValue('--accent-gold').trim() || '#ffffff';
+    const fallback  = styles.getPropertyValue('--accent-gold').trim() || '#ffffff';
     const colorPool = orbColors.length >= 1 ? orbColors : [fallback];
 
+    const transitionMs = durationMs || ORB_TRANSITION_SECS * 1000;
+
     states.forEach(state => {
-        // Each orb independently picks a random color from the pool
-        const rawTarget  = pickRandomColor(colorPool);
-        const targetRgb  = hexToRgb(rawTarget);
-        const targetSize = Math.round(vw * (state.sizePercent * scaleMultiplier) / 100);
-        const targetBlur = state.blurBase * blurFactor;
-
-        // Kick off color lerp from current position
-        state.targetRgb     = targetRgb;
+        // Color
+        const rawTarget = pickRandomColor(colorPool);
+        state.targetRgb     = hexToRgb(rawTarget);
         state.colorT        = 0;
-        state.colorDuration = ORB_TRANSITION_SECS * 1000;
-        state.color         = rawTarget;
+        state.colorDuration = transitionMs;
 
-        state.el.style.transition = [
-            `opacity ${ORB_TRANSITION_SECS}s ease`,
-            `width   ${ORB_TRANSITION_SECS}s ease-in-out`,
-            `height  ${ORB_TRANSITION_SECS}s ease-in-out`,
-            `filter  ${ORB_TRANSITION_SECS}s ease-in-out`
-        ].join(', ');
+        // Size — lerp from current to new target
+        state.targetSizePx  = Math.round(vw * (state.sizePercent * scaleMultiplier) / 100);
+        state.sizeT         = 0;
+        state.sizeDuration  = transitionMs;
 
-        state.el.style.width  = `${targetSize}px`;
-        state.el.style.height = `${targetSize}px`;
-        state.el.style.filter = `blur(${targetBlur}px)`;
+        // Blur — lerp from current to new target
+        state.targetBlurPx  = state.blurBase * blurFactor;
+        state.blurT         = 0;
+        state.blurDuration  = transitionMs;
     });
 }
 
@@ -480,3 +578,16 @@ function initCategoryFilter() {
         });
     });
 }
+
+// ============================================================
+//  BOOT
+// ============================================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    initBackground();
+    applyRandomTheme();
+    setInterval(applyRandomTheme, ROTATION_INTERVAL_MS);
+    initMouseGlow();
+    initScrollReveal();
+    initCategoryFilter();
+});
