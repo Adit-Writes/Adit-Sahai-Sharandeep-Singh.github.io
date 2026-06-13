@@ -43,8 +43,9 @@
     </section>
 
     {# ── Books ─────────────────────────────────────────── #}
-    <div id="books" class="section-divider">
-        <h2>Published Books</h2>
+    <div id="books" class="section-divider reveal">
+        <h2>Published Works</h2>
+        <div class="section-title-large">Books</div>
         <div class="gold-line"></div>
     </div>
 
@@ -66,44 +67,47 @@
         {% endfor %}
     </section>
 
-{# ── Articles ──────────────────────────────────────── #}
-<div id="articles" class="section-divider">
-    <h2>Essays & Perspectives</h2>
-    <div class="gold-line"></div>
-</div>
-
-<div class="category-menu-container">
-    <div class="category-menu">
-        <button class="category-btn active" data-filter="all">All Categories</button>
-        {% for cat in Categories %}
-        <button class="category-btn" data-filter="{{ cat.name | lower }}">{{ cat.name }}</button>
-        {% endfor %}
+    {# ── Articles ──────────────────────────────────────── #}
+    <div id="articles" class="section-divider reveal">
+        <h2>Essays & Perspectives</h2>
+        <div class="section-title-large">Writing</div>
+        <div class="gold-line"></div>
     </div>
-</div>
 
-<section class="article-feed">
-    {% for article in Articles %}
-    {% if article.Published %}
-    <article class="article-card glass-card reveal" data-category="{{ article.Topic | default('') | lower }}">
-        <div class="glow-blob"></div>
-        <div class="article-meta">
-            <span class="category">{{ article.Topic }}</span>
-            <span class="read-time">{{ article.ReadTime }} min read</span>
+    <div class="category-menu-container reveal">
+        <div class="category-menu">
+            <button class="category-btn active" data-filter="all">All</button>
+            {% for cat in Categories %}
+            <button class="category-btn" data-filter="{{ cat.name | lower }}">{{ cat.name }}</button>
+            {% endfor %}
         </div>
-        <h3 class="article-title">{{ article.Title }}</h3>
-        <p class="article-excerpt">{{ article.Description | safe }}</p>
-        <div class="article-footer">
-            <span class="date">{{ article.ReleaseDate }}</span>
-            <a href="/Adit-Sahai.github.io/articles/{{ article.Title | slug }}/" class="read-link">Read Article</a>
-        </div>
-    </article>
-    {% endif %}
-    {% endfor %}
-</section>
-    
-<footer class="footer">
+    </div>
+
+    <section class="article-feed">
+        {% for article in Articles %}
+        {% if article.Published %}
+        <article class="article-card glass-card reveal" data-category="{{ article.Topic | default('') | lower }}">
+            <div class="glow-blob"></div>
+            <div class="article-meta">
+                <span class="category">{{ article.Topic }}</span>
+                <span class="meta-sep"></span>
+                <span class="read-time">{{ article.ReadTime }} min read</span>
+            </div>
+            <h3 class="article-title">{{ article.Title }}</h3>
+            <p class="article-excerpt">{{ article.Description | safe }}</p>
+            <div class="article-footer">
+                <span class="date">{{ article.ReleaseDate }}</span>
+                <a href="/Adit-Sahai.github.io/articles/{{ article.Title | slug }}/" class="read-link">Read Essay →</a>
+            </div>
+        </article>
+        {% endif %}
+        {% endfor %}
+    </section>
+
+    <footer class="footer">
         <p>&copy; 2026 The Sahai Analogy. All rights reserved.</p>
     </footer>
+
     <script src="MainCode/script.js"></script>
 </body>
 </html>
