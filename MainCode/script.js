@@ -13,101 +13,28 @@ const ORB_TRANSITION_SECS   = 10.0;    // how long orb color transition takes (s
 
 const MY_FAVORITE_THEMES = [
     {
-    name: "Crimson Ember",
+    name: "Prism Catalyst (Test)",
     tokens: {
-        '--bg-base':            '#0a0203',
-        '--glass-bg':           'rgba(28, 8, 10, 0.65)',
-        '--glass-bg-strong':    'rgba(18, 4, 6, 0.88)',
-        '--glass-border':       'rgba(255, 60, 80, 0.22)',
-        '--glass-border-hover': 'rgba(255, 80, 95, 0.85)',
-        '--text-main':          '#fff1f2',
-        '--text-muted':         '#e2b6bb',
-        '--text-dim':           '#8a4a52',
-        '--accent-gold':        '#ff3b4d',
-        '--accent-gold-dim':    'rgba(255, 59, 77, 0.15)',
-        '--accent-gold-line':   'rgba(255, 59, 77, 0.42)',
-        '--orb-colors':         '#ff2e3e, #ff6a00, #ffb703, #ff004f, #ff3d8d',
-        '--orb-blur-factor':    '1.05',
-        '--orb-speed-multiplier': '1.35',
-        '--orb-scale-multiplier': '1.15'
-    }
-},{
-    name: "Sandstone Ivory",
-    tokens: {
-        '--bg-base':            '#120f0b',
-        '--glass-bg':           'rgba(34, 28, 22, 0.62)',
-        '--glass-bg-strong':    'rgba(20, 16, 12, 0.88)',
-        '--glass-border':       'rgba(210, 190, 160, 0.25)',
-        '--glass-border-hover': 'rgba(240, 220, 190, 0.85)',
-        '--text-main':          '#fff7ed',
-        '--text-muted':         '#d6c6b3',
-        '--text-dim':           '#9a8977',
-        '--accent-gold':        '#e6c7a2',
-        '--accent-gold-dim':    'rgba(230, 199, 162, 0.15)',
-        '--accent-gold-line':   'rgba(230, 199, 162, 0.40)',
-        '--orb-colors':         '#e6c7a2, #c8a46a, #b08968, #f2e6d8, #d4a373',
-        '--orb-blur-factor':    '1.1',
-        '--orb-speed-multiplier': '0.95',
-        '--orb-scale-multiplier': '1.2'
-    }
-},{
-    name: "Arctic Aurora",
-    tokens: {
-        '--bg-base':            '#020611',
-        '--glass-bg':           'rgba(8, 18, 38, 0.65)',
-        '--glass-bg-strong':    'rgba(4, 10, 24, 0.88)',
-        '--glass-border':       'rgba(120, 220, 255, 0.22)',
-        '--glass-border-hover': 'rgba(120, 220, 255, 0.85)',
-        '--text-main':          '#f5fcff',
-        '--text-muted':         '#b7d2de',
-        '--text-dim':           '#6d8da0',
-        '--accent-gold':        '#7cf3ff',
-        '--accent-gold-dim':    'rgba(124, 243, 255, 0.15)',
-        '--accent-gold-line':   'rgba(124, 243, 255, 0.40)',
-        '--orb-colors':         '#7cf3ff, #6a7dff, #00e5ff, #b3f5ff, #4dd0e1',
+        '--bg-base':            '#05060a',
+        '--glass-bg':           'rgba(12, 14, 24, 0.65)',
+        '--glass-bg-strong':    'rgba(6, 8, 14, 0.88)',
+        '--glass-border':       'rgba(120, 140, 255, 0.20)',
+        '--glass-border-hover': 'rgba(255, 255, 255, 0.80)',
+        '--text-main':          '#f8fbff',
+        '--text-muted':         '#b8c2d6',
+        '--text-dim':           '#6d7890',
+        '--accent-gold':        '#7aa2ff',
+        '--accent-gold-dim':    'rgba(122, 162, 255, 0.15)',
+        '--accent-gold-line':   'rgba(122, 162, 255, 0.40)',
+
+        // intentionally very distinct orb colors (no shade similarity)
+        '--orb-colors':         '#ff004c, #00d1ff, #ffe600, #7c3cff, #00ff7b',
+
         '--orb-blur-factor':    '1.15',
-        '--orb-speed-multiplier': '1.1',
-        '--orb-scale-multiplier': '1.2'
+        '--orb-speed-multiplier': '1.25',
+        '--orb-scale-multiplier': '1.1'
     }
-},{
-    name: "Nebula Dream",
-    tokens: {
-        '--bg-base':            '#05030f',
-        '--glass-bg':           'rgba(22, 12, 42, 0.65)',
-        '--glass-bg-strong':    'rgba(14, 7, 28, 0.88)',
-        '--glass-border':       'rgba(183, 120, 255, 0.24)',
-        '--glass-border-hover': 'rgba(220, 170, 255, 0.90)',
-        '--text-main':          '#fffaff',
-        '--text-muted':         '#d4c5df',
-        '--text-dim':           '#88709c',
-        '--accent-gold':        '#b98cff',
-        '--accent-gold-dim':    'rgba(185, 140, 255, 0.15)',
-        '--accent-gold-line':   'rgba(185, 140, 255, 0.42)',
-        '--orb-colors':         '#b98cff, #59f3ff, #ff4fd8, #7c4dff, #00ffd5',
-        '--orb-blur-factor':    '1.2',
-        '--orb-speed-multiplier': '1.4',
-        '--orb-scale-multiplier': '1.2'
-    }
-},{
-    name: "Ocean Glass",
-    tokens: {
-        '--bg-base':            '#041018',
-        '--glass-bg':           'rgba(10, 30, 40, 0.60)',
-        '--glass-bg-strong':    'rgba(6, 18, 24, 0.88)',
-        '--glass-border':       'rgba(120, 255, 220, 0.22)',
-        '--glass-border-hover': 'rgba(180, 255, 240, 0.85)',
-        '--text-main':          '#f3fffb',
-        '--text-muted':         '#b8d6cf',
-        '--text-dim':           '#6f8f88',
-        '--accent-gold':        '#7fffd4',
-        '--accent-gold-dim':    'rgba(127, 255, 212, 0.15)',
-        '--accent-gold-line':   'rgba(127, 255, 212, 0.40)',
-        '--orb-colors':         '#7fffd4, #00c2ff, #66ffe3, #4db8ff, #a8fff0',
-        '--orb-blur-factor':    '1.1',
-        '--orb-speed-multiplier': '1.0',
-        '--orb-scale-multiplier': '1.25'
-    }
-},
+}
 ];
 
 // ============================================================
