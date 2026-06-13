@@ -115,23 +115,101 @@ function initBackground() {
 }
 
 function initMouseGlow() {
+
+    // Expose orb state so we can read positions + colors
+
+    // orbStates is populated by initBackground and stored on window
+
     document.querySelectorAll('.glass-card').forEach(card => {
+
         const blob = card.querySelector('.glow-blob');
+
         if (!blob) return;
 
+
+
         card.addEventListener('mouseenter', () => { blob.style.opacity = '1'; });
+
         card.addEventListener('mouseleave', () => { blob.style.opacity = '0'; });
 
+
+
         card.addEventListener('mousemove', (e) => {
+
             const rect = card.getBoundingClientRect();
+
             blob.style.left = (e.clientX - rect.left) + 'px';
+
             blob.style.top  = (e.clientY - rect.top)  + 'px';
 
-            // Instead of doing heavy parsing math over changing string formats,
-            // we safely feed the CSS Accent glow directly into the card hover container
-            blob.style.background = `radial-gradient(circle, var(--accent-gold-line) 0%, transparent 70%)`;
+
+
+            // Find the orb whose center is closest to the cursor
+
+            const states = window._orbStates;
+
+            if (!states || !states.length) return;
+
+
+
+            let closest = null;
+
+            let minDist = Infinity;
+
+            states.forEach(s => {
+
+                const dx = s.x - e.clientX;
+
+                const dy = s.y - e.clientY;
+
+                const dist = Math.sqrt(dx*dx + dy*dy);
+
+                if (dist < minDist) { minDist = dist; closest = s; }
+
+            });
+
+
+
+            if (!closest) return;
+
+
+
+            // Parse the orb's primary hex color into rgb
+
+            const hex = closest.color;
+
+            const r = parseInt(hex.slice(1,3), 16);
+
+            const g = parseInt(hex.slice(3,5), 16);
+
+            const b = parseInt(hex.slice(5,7), 16);
+
+
+
+            // Weight: closer orb = more color influence
+
+            // Warm colors (high R) get a slight boost since they're darker pigments
+
+            const maxDist = Math.sqrt(window.innerWidth**2 + window.innerHeight**2);
+
+            const weight  = Math.max(0, 1 - (minDist / (maxDist * 0.55)));
+
+            const isWarm  = r > g + 30; // orange/red/gold orbs
+
+            const peak    = isWarm ? 0.14 : 0.12;
+
+            const alpha   = 0.06 + weight * peak;
+
+
+
+            blob.style.background =
+
+                `radial-gradient(circle, rgba(${r},${g},${b},${alpha.toFixed(3)}) 0%, transparent 65%)`;
+
         });
+
     });
+
 }
 function initScrollReveal() {
     const reveals = document.querySelectorAll('.reveal');
