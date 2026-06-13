@@ -88,13 +88,18 @@ function applyRandomTheme() {
     
     // Use requestAnimationFrame to ensure the browser processes the style changes in a single frame
     requestAnimationFrame(() => {
-        Object.entries(randomTheme.tokens).forEach(([variable, value]) => {
+        Object.entries(randomTheme.tokens).forEach(
+        ([variable, value]) => {
             root.style.setProperty(variable, value);
         });
         
-        // This triggers the orb update
         updateActiveOrbSkins();
-    });
+        
+        setTimeout(() => {
+            document.body.classList.remove(
+                'theme-transitioning'
+            );
+        }, 4500);
 }
 function initBackground() {
     const canvas = document.createElement('div');
