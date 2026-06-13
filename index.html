@@ -98,8 +98,10 @@
                 <span class="category">{{ article.Topic }}</span>
                 <span class="meta-sep"></span>
                 <span class="read-time">{{ article.ReadTime }} min read</span>
+                {% if article.Likes !== false and article.Likes !== 'false' %}
                 <span class="meta-sep"></span>
                 <span class="index-like-count" data-slug="{{ article.Title | slug }}">0 likes</span>
+                {% endif %}
             </div>
             <h3 class="article-title">{{ article.Title }}</h3>
             <p class="article-excerpt">{{ article.Description | safe }}</p>
