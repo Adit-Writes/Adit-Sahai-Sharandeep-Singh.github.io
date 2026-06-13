@@ -1,7 +1,6 @@
 // ── Core Engine Initialization ───────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     applyRandomTheme();
-    // FIX: Aligned the interval timer with the 20s comment so themes have time to breathe
     setInterval(applyRandomTheme, 20000); 
 
     initMouseGlow();
@@ -115,13 +114,12 @@ function initBackground() {
         const state = {
             el,
             sizePercent: cfg.sizePercent,
-            sizePx: 0, // Will be populated immediately by updateActiveOrbSkins
             blurBase: cfg.blurBase,
             isSecondary: cfg.isSecondary,
             opacity: cfg.opacity,
             x: startX, y: startY,
             tx: 0, ty: 0, ox: startX, oy: startY,
-            duration: 1, elapsed: 0, speedMultiplier: 1.0
+            duration: 1, elapsed: 0
         };
 
         setTimeout(() => { el.style.opacity = cfg.opacity; }, i * 200);
@@ -155,6 +153,9 @@ function initBackground() {
         const dt = now - last;
         last = now;
 
+        const styles = getComputedStyle(document.documentElement);
+        const scaleMultiplier = parseFloat(styles.getPropertyValue('--orb-scale-multiplier')) || 1.0;
+
         orbs.forEach(state => {
             state.elapsed += dt;
             const t = Math.min(state.elapsed / state.duration, 1);
@@ -163,13 +164,12 @@ function initBackground() {
             state.x = state.ox + (state.tx - state.ox) * e;
             state.y = state.oy + (state.ty - state.oy) * e;
 
-            // FIX: Removed layout thrashing (getComputedStyle) from the animation loop.
-            // FIX: Switched to hardware-accelerated transforms instead of inline left/top.
-            state.el.style.transform = `translate3d(${state.x - state.sizePx / 2}px, ${state.y - state.sizePx / 2}px, 0)`;
+            const currentSize = (window.innerWidth * state.sizePercent * scaleMultiplier) / 100;
+            
+            state.el.style.left = (state.x - currentSize / 2) + 'px';
+            state.el.style.top  = (state.y - currentSize / 2) + 'px';
 
-            if (t >= 1) {
-                pickTarget(state, window.innerWidth, window.innerHeight);
-            }
+            if (t >= 1) pickTarget(state, window.innerWidth, window.innerHeight);
         });
         requestAnimationFrame(tick);
     }
@@ -194,7 +194,6 @@ function updateActiveOrbSkins() {
         const targetBlur = state.blurBase * blurFactor;
 
         state.color = targetColor;
-        state.sizePx = targetSize; // FIX: Cache the size calculation here
 
         state.el.style.width = `${targetSize}px`;
         state.el.style.height = `${targetSize}px`;
@@ -231,9 +230,8 @@ function initMouseGlow() {
             if (!closest || !closest.color) return;
 
             let hex = closest.color.replace('#', '');
-            if (hex.length === 3) {
-                hex = hex.split('').map(char => char + char).join('');
-            }
+            if (hex.length === 3) hex = hex.split('').map(char => char + char).join('');
+            
             const r = parseInt(hex.slice(0, 2), 16);
             const g = parseInt(hex.slice(2, 4), 16);
             const b = parseInt(hex.slice(4, 6), 16);
