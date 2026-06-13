@@ -2,7 +2,7 @@
 //  CONFIGURATION — edit these values freely
 // ============================================================
 
-const ROTATION_INTERVAL_MS   = 30000;   // how often themes rotate (ms)
+const ROTATION_INTERVAL_MS   = 15000;   // how often themes rotate (ms)
 const ORB_TRANSITION_SECS    = 10.0;    // how long orb color transition takes (seconds)
 
 // ============================================================
@@ -336,19 +336,22 @@ function initBackground() {
             ox: startX,  oy: startY,
             duration: 1, elapsed: 0,
 
-            // Color lerp
+            // Color lerp — fromRgb is snapshot at transition start, never mutated mid-lerp
+            fromRgb:       { r: 80, g: 0, b: 80 },
             currentRgb:    { r: 80, g: 0, b: 80 },
             targetRgb:     { r: 80, g: 0, b: 80 },
             colorT:        1,
             colorDuration: ORB_TRANSITION_SECS * 1000,
 
-            // Size lerp (in px)
+            // Size lerp (in px) — fromSizePx is snapshot at transition start
+            fromSizePx:    0,
             currentSizePx: 0,
             targetSizePx:  0,
             sizeT:         1,
             sizeDuration:  ORB_TRANSITION_SECS * 1000,
 
-            // Blur lerp (in px)
+            // Blur lerp (in px) — fromBlurPx is snapshot at transition start
+            fromBlurPx:    cfg.blurBase,
             currentBlurPx: cfg.blurBase,
             targetBlurPx:  cfg.blurBase,
             blurT:         1,
@@ -366,8 +369,10 @@ function initBackground() {
         const initScale        = parseFloat(initialStyles.getPropertyValue('--orb-scale-multiplier')) || 1.0;
         const initBlurFactor   = parseFloat(initialStyles.getPropertyValue('--orb-blur-factor'))      || 1.0;
         state.currentSizePx    = Math.round(vw * (cfg.sizePercent * initScale) / 100);
+        state.fromSizePx       = state.currentSizePx;
         state.targetSizePx     = state.currentSizePx;
         state.currentBlurPx    = cfg.blurBase * initBlurFactor;
+        state.fromBlurPx       = state.currentBlurPx;
         state.targetBlurPx     = state.currentBlurPx;
 
         el.style.width  = `${state.currentSizePx}px`;
@@ -413,7 +418,7 @@ function initBackground() {
             if (state.colorT < 1) {
                 state.colorT     = Math.min(state.colorT + dt / state.colorDuration, 1);
                 const easedColor = easeInOut(state.colorT);
-                state.currentRgb = lerpColor(state.currentRgb, state.targetRgb, easedColor);
+                state.currentRgb = lerpColor(state.fromRgb, state.targetRgb, easedColor);
                 state.el.style.background = orbGradient(state.currentRgb);
             }
 
@@ -421,14 +426,14 @@ function initBackground() {
             if (state.sizeT < 1) {
                 state.sizeT = Math.min(state.sizeT + dt / state.sizeDuration, 1);
                 const easedSize = easeInOut(state.sizeT);
-                state.currentSizePx = state.currentSizePx + (state.targetSizePx - state.currentSizePx) * easedSize;
+                state.currentSizePx = state.fromSizePx + (state.targetSizePx - state.fromSizePx) * easedSize;
             }
 
             // ---- Blur lerp ----
             if (state.blurT < 1) {
                 state.blurT = Math.min(state.blurT + dt / state.blurDuration, 1);
                 const easedBlur = easeInOut(state.blurT);
-                state.currentBlurPx = state.currentBlurPx + (state.targetBlurPx - state.currentBlurPx) * easedBlur;
+                state.currentBlurPx = state.fromBlurPx + (state.targetBlurPx - state.fromBlurPx) * easedBlur;
             }
 
             // ---- Write to DOM ----
@@ -466,18 +471,23 @@ function updateActiveOrbSkins(themeTokens, durationMs) {
     const transitionMs = durationMs || ORB_TRANSITION_SECS * 1000;
 
     states.forEach(state => {
+        // Snapshot current values as lerp start points — must happen before T resets
+        state.fromRgb      = { ...state.currentRgb };
+        state.fromSizePx   = state.currentSizePx;
+        state.fromBlurPx   = state.currentBlurPx;
+
         // Color
         const rawTarget = pickRandomColor(colorPool);
         state.targetRgb     = hexToRgb(rawTarget);
         state.colorT        = 0;
         state.colorDuration = transitionMs;
 
-        // Size — lerp from current to new target
+        // Size
         state.targetSizePx  = Math.round(vw * (state.sizePercent * scaleMultiplier) / 100);
         state.sizeT         = 0;
         state.sizeDuration  = transitionMs;
 
-        // Blur — lerp from current to new target
+        // Blur
         state.targetBlurPx  = state.blurBase * blurFactor;
         state.blurT         = 0;
         state.blurDuration  = transitionMs;
