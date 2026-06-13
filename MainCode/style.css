@@ -84,7 +84,7 @@ body::before {
     pointer-events: none;
     background-image: radial-gradient(
         circle,
-        rgba(120, 160, 255, 0.09) 1px,
+        rgba(120, 160, 255, 0.2) 1px,
         transparent 1px
     );
     background-size: 32px 32px;
