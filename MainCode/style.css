@@ -30,6 +30,21 @@ html {
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 
+/* Add smooth color shifting properties across the entire layout core */
+body, .glass-card, .article-card, .article-body-card, .navbar, .category-btn, p, h1, h2, h3, a {
+    transition: 
+        background 1.2s ease-in-out, 
+        background-color 1.2s ease-in-out, 
+        border-color 1.2s ease-in-out, 
+        color 0.8s ease-in-out,
+        box-shadow 1.2s ease-in-out !important;
+}
+
+/* Ensure background orbs naturally blend their opacity transformations */
+.bg-orb {
+    transition: opacity 3s ease, left 0.5s ease-out, top 0.5s ease-out !important;
+}
+
 /* ── Body & background ───────────────────────────────────── */
 body {
     background-color: var(--bg-base);
