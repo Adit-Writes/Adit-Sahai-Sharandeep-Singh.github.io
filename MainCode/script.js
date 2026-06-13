@@ -102,6 +102,16 @@ function applyRandomTheme() {
         }, 4500);
 }
 function initBackground() {
+    state.layerA.style.background =
+    `radial-gradient(
+        circle,
+        var(--accent-gold) 0%,
+        transparent 70%
+    )`;
+
+state.layerA.style.opacity = '1';
+
+state.layerB.style.opacity = '0';
     const canvas = document.createElement('div');
     canvas.id = 'bg-canvas';
     document.body.prepend(canvas);
