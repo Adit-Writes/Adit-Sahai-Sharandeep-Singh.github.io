@@ -1,12 +1,9 @@
 // ── Core Engine Initialization ───────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Pick and apply an initial random theme right away on page load
     applyRandomTheme();
-    
-    // 2. Set up the automated loop (20000ms = 20 seconds)
-    setInterval(applyRandomTheme, 5000); 
+    // FIX: Aligned the interval timer with the 20s comment so themes have time to breathe
+    setInterval(applyRandomTheme, 20000); 
 
-    // 3. Initialize interactive mechanics
     initMouseGlow();
     initScrollReveal();
     initCategoryFilter();
@@ -77,8 +74,6 @@ function applyRandomTheme() {
     const randomTheme = pool[Math.floor(Math.random() * pool.length)];
     currentThemeName = randomTheme.name;
 
-    console.log(`🎨 Theme Rotator: Switching to "${randomTheme.name}"`);
-
     const root = document.documentElement;
     Object.entries(randomTheme.tokens).forEach(([variable, value]) => {
         root.style.setProperty(variable, value);
@@ -117,14 +112,10 @@ function initBackground() {
         const startX = Math.random() * vw;
         const startY = Math.random() * vh;
 
-        const styles = getComputedStyle(document.documentElement);
-        const scaleMultiplier = parseFloat(styles.getPropertyValue('--orb-scale-multiplier')) || 1.0;
-        const initialSizePx = Math.round(vw * (cfg.sizePercent * scaleMultiplier) / 100);
-
         const state = {
             el,
             sizePercent: cfg.sizePercent,
-            sizePx: initialSizePx,
+            sizePx: 0, // Will be populated immediately by updateActiveOrbSkins
             blurBase: cfg.blurBase,
             isSecondary: cfg.isSecondary,
             opacity: cfg.opacity,
@@ -172,16 +163,9 @@ function initBackground() {
             state.x = state.ox + (state.tx - state.ox) * e;
             state.y = state.oy + (state.ty - state.oy) * e;
 
-            // Updated from step 3: During transition animation frames, dynamically 
-            // re-read the client layout measurements directly from CSS computed values 
-            // instead of jumping variables instantly.
-            const currentComputedSize = parseFloat(getComputedStyle(state.el).width);
-            if (!isNaN(currentComputedSize)) {
-                state.sizePx = currentComputedSize;
-            }
-
-            state.el.style.left = (state.x - state.sizePx / 2) + 'px';
-            state.el.style.top  = (state.y - state.sizePx / 2) + 'px';
+            // FIX: Removed layout thrashing (getComputedStyle) from the animation loop.
+            // FIX: Switched to hardware-accelerated transforms instead of inline left/top.
+            state.el.style.transform = `translate3d(${state.x - state.sizePx / 2}px, ${state.y - state.sizePx / 2}px, 0)`;
 
             if (t >= 1) {
                 pickTarget(state, window.innerWidth, window.innerHeight);
@@ -210,13 +194,11 @@ function updateActiveOrbSkins() {
         const targetBlur = state.blurBase * blurFactor;
 
         state.color = targetColor;
+        state.sizePx = targetSize; // FIX: Cache the size calculation here
 
-        // Transitions cleanly map layout dimensions
         state.el.style.width = `${targetSize}px`;
         state.el.style.height = `${targetSize}px`;
         state.el.style.filter = `blur(${targetBlur}px)`;
-        
-        // FIX: Removed the solid ${baseBg} color stop so the blur layer does not create a solid mask
         state.el.style.background = `radial-gradient(circle, ${targetColor} 0%, rgba(0,0,0,0) 70%)`;
     });
 }
