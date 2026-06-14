@@ -14,7 +14,7 @@ content:
       - name: Pic
         type: image
 
-      - name: Desciption
+      - name: Description
         type: rich-text
         options:
           switcher: false
