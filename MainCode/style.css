@@ -4,36 +4,36 @@
 
 :root {
   /* Backgrounds */
-  --bg-base:            #050103;
-  --glass-bg:           rgba(24, 8, 14, 0.65);
-  --glass-bg-strong:    rgba(15, 4, 8, 0.88);
+  --bg-base:            #020617;
+  --glass-bg:           rgba(10, 25, 50, 0.60);
+  --glass-bg-strong:    rgba(6, 15, 30, 0.90);
 
   /* Borders */
-  --glass-border:       rgba(255, 46, 76, 0.25);
-  --glass-border-hover: rgba(255, 46, 76, 0.90);
+  --glass-border:       rgba(0, 180, 200, 0.25);
+  --glass-border-hover: rgba(0, 180, 200, 0.85);
 
   /* Text */
-  --text-main:  #fff2f4;
-  --text-muted: #cca6ab;
-  --text-dim:   #7a474e;
+  --text-main:  #e6f7ff;
+  --text-muted: #9cc7d8;
+  --text-dim:   #4f7c8a;
 
   /* Accent */
-  --accent-gold:      #ff2e4c;
-  --accent-gold-dim:  rgba(255, 46, 76, 0.15);
-  --accent-gold-line: rgba(255, 46, 76, 0.40);
+  --accent-gold:      #00b4d8;
+  --accent-gold-dim:  rgba(0, 180, 216, 0.15);
+  --accent-gold-line: rgba(0, 180, 216, 0.35);
 
   /* Layout */
   --max-w:         1020px;
   --max-w-article: 720px;
 
   /* Orb personality */
-  --orb-secondary-color:   #3f1094;
-  --orb-blur-factor:       1.0;
+  --orb-secondary-color:   #0077b6;
+  --orb-blur-factor:       0.95;
   --orb-speed-multiplier:  1.2;
   --orb-scale-multiplier:  1.1;
 
   /* ── Mouse glow intensity (0.0 = invisible, 1.0 = full, >1.0 = extra bright) */
-  --glow-blob-intensity: 0.60;
+  --glow-blob-intensity: 0.65;
 }
 
 /* ============================================================
