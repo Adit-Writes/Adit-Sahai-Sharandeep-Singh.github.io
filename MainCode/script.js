@@ -124,7 +124,126 @@ const MY_FAVORITE_THEMES = [
         '--orb-speed-multiplier':'1.2',
         '--orb-scale-multiplier':'1.08'
     }
+},{
+    name: "Midnight Ember",
+    tokens: {
+        '--bg-base':             '#0b0605',
+        '--glass-bg':            'rgba(40, 18, 12, 0.62)',
+        '--glass-bg-strong':     'rgba(25, 10, 6, 0.88)',
+        '--glass-border':       'rgba(255, 120, 70, 0.22)',
+        '--glass-border-hover': 'rgba(255, 120, 70, 0.8)',
+        '--text-main':          '#fff3ec',
+        '--text-muted':         '#e2b7a3',
+        '--text-dim':           '#8a5a48',
+        '--accent-gold':        '#ff7a45',
+        '--accent-gold-dim':    'rgba(255, 122, 69, 0.15)',
+        '--accent-gold-line':   'rgba(255, 122, 69, 0.35)',
+        '--orb-colors':         '#ff6b35, #ff3d2e, #ff9f1c, #c44536, #ff784f',
+        '--orb-blur-factor':    '1.05',
+        '--orb-speed-multiplier':'1.3',
+        '--orb-scale-multiplier':'1.05'
+    }
 },
+{
+    name: "Arctic Glass",
+    tokens: {
+        '--bg-base':             '#050b12',
+        '--glass-bg':            'rgba(12, 28, 40, 0.6)',
+        '--glass-bg-strong':     'rgba(8, 18, 28, 0.9)',
+        '--glass-border':       'rgba(120, 200, 255, 0.22)',
+        '--glass-border-hover': 'rgba(120, 200, 255, 0.85)',
+        '--text-main':          '#eaf6ff',
+        '--text-muted':         '#a8c7db',
+        '--text-dim':           '#5f7c92',
+        '--accent-gold':        '#6dd3ff',
+        '--accent-gold-dim':    'rgba(109, 211, 255, 0.15)',
+        '--accent-gold-line':   'rgba(109, 211, 255, 0.35)',
+        '--orb-colors':         '#6dd3ff, #00a6fb, #90e0ef, #48cae4, #0077b6',
+        '--orb-blur-factor':    '0.95',
+        '--orb-speed-multiplier':'1.25',
+        '--orb-scale-multiplier':'1.1'
+    }
+},
+{
+    name: "Golden Dusk",
+    tokens: {
+        '--bg-base':             '#0e0a06',
+        '--glass-bg':            'rgba(40, 26, 12, 0.62)',
+        '--glass-bg-strong':     'rgba(25, 16, 8, 0.9)',
+        '--glass-border':       'rgba(255, 190, 90, 0.22)',
+        '--glass-border-hover': 'rgba(255, 190, 90, 0.85)',
+        '--text-main':          '#fff7e6',
+        '--text-muted':         '#e2c9a3',
+        '--text-dim':           '#9b7a4f',
+        '--accent-gold':        '#ffbe5a',
+        '--accent-gold-dim':    'rgba(255, 190, 90, 0.15)',
+        '--accent-gold-line':   'rgba(255, 190, 90, 0.35)',
+        '--orb-colors':         '#ffbe5a, #ff9f1c, #e85d04, #ffd166, #f48c06',
+        '--orb-blur-factor':    '1.0',
+        '--orb-speed-multiplier':'1.15',
+        '--orb-scale-multiplier':'1.08'
+    }
+},
+{
+    name: "Cyber Magenta",
+    tokens: {
+        '--bg-base':             '#07000a',
+        '--glass-bg':            'rgba(30, 8, 40, 0.65)',
+        '--glass-bg-strong':     'rgba(18, 4, 24, 0.9)',
+        '--glass-border':       'rgba(255, 0, 180, 0.25)',
+        '--glass-border-hover': 'rgba(255, 0, 180, 0.85)',
+        '--text-main':          '#ffe9fb',
+        '--text-muted':         '#d7a0cc',
+        '--text-dim':           '#8a4f7a',
+        '--accent-gold':        '#ff2bd6',
+        '--accent-gold-dim':    'rgba(255, 43, 214, 0.15)',
+        '--accent-gold-line':   'rgba(255, 43, 214, 0.35)',
+        '--orb-colors':         '#ff2bd6, #ff6bd6, #9b5cff, #00e5ff, #ff0080',
+        '--orb-blur-factor':    '1.1',
+        '--orb-speed-multiplier':'1.4',
+        '--orb-scale-multiplier':'1.1'
+    }
+},
+{
+    name: "Deep Ocean",
+    tokens: {
+        '--bg-base':             '#020617',
+        '--glass-bg':            'rgba(10, 25, 50, 0.6)',
+        '--glass-bg-strong':     'rgba(6, 15, 30, 0.9)',
+        '--glass-border':       'rgba(0, 180, 200, 0.25)',
+        '--glass-border-hover': 'rgba(0, 180, 200, 0.85)',
+        '--text-main':          '#e6f7ff',
+        '--text-muted':         '#9cc7d8',
+        '--text-dim':           '#4f7c8a',
+        '--accent-gold':        '#00b4d8',
+        '--accent-gold-dim':    'rgba(0, 180, 216, 0.15)',
+        '--accent-gold-line':   'rgba(0, 180, 216, 0.35)',
+        '--orb-colors':         '#00b4d8, #0077b6, #90e0ef, #48cae4, #0096c7',
+        '--orb-blur-factor':    '0.95',
+        '--orb-speed-multiplier':'1.2',
+        '--orb-scale-multiplier':'1.1'
+    }
+},
+{
+    name: "Void Sakura",
+    tokens: {
+        '--bg-base':             '#0a0610',
+        '--glass-bg':            'rgba(35, 15, 30, 0.6)',
+        '--glass-bg-strong':     'rgba(20, 8, 18, 0.9)',
+        '--glass-border':       'rgba(255, 105, 180, 0.22)',
+        '--glass-border-hover': 'rgba(255, 105, 180, 0.85)',
+        '--text-main':          '#fff0f6',
+        '--text-muted':         '#e2b3c7',
+        '--text-dim':           '#9b6b84',
+        '--accent-gold':        '#ff69b4',
+        '--accent-gold-dim':    'rgba(255, 105, 180, 0.15)',
+        '--accent-gold-line':   'rgba(255, 105, 180, 0.35)',
+        '--orb-colors':         '#ff69b4, #ff85a2, #c084fc, #f472b6, #fb7185',
+        '--orb-blur-factor':    '1.05',
+        '--orb-speed-multiplier':'1.25',
+        '--orb-scale-multiplier':'1.08'
+    }
+}
 ];
 
 // ============================================================
