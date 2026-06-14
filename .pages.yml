@@ -10,10 +10,8 @@ content:
     fields:
       - name: PageTitle
         type: string
-        required: true
 
       - name: Pic
-        required: true
         type: image
 
       - name: Desciption
