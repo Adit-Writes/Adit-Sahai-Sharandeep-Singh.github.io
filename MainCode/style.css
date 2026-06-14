@@ -33,7 +33,7 @@
   --orb-scale-multiplier:  1.1;
 
   /* ── Mouse glow intensity (0.0 = invisible, 1.0 = full, >1.0 = extra bright) */
-  --glow-blob-intensity: 0.72;
+  --glow-blob-intensity: 0.60;
 }
 
 /* ============================================================
