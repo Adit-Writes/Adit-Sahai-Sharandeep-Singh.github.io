@@ -10,12 +10,15 @@ content:
     fields:
       - name: PageTitle
         type: string
+        required: true
 
       - name: Pic
         type: image
+        required: true
 
       - name: Desciption
         type: rich-text
+        required: true
         options:
           switcher: false
 
