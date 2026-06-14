@@ -31,6 +31,10 @@ content:
 
       - name: Pic
         type: image
+
+      - name: ACC_Links
+        type: string
+        list: true
         
       - name: Desciption
         type: rich-text
