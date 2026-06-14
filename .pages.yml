@@ -3,6 +3,22 @@ media:
   output: /files
 
 content:
+
+  - name: WebPageINFO
+    type: file
+    path: _data/PageInfo.json
+    fields:
+      - name: PageTitle
+        type: string
+
+      - name: Pic
+        type: image
+
+      - name: Desciption
+        type: rich-text
+        options:
+          switcher: false
+
   - name: AboutAuthor
     type: file
     path: _data/AboutAuthor.json
