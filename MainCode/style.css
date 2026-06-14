@@ -380,6 +380,92 @@ h1, h2, h3, h4 {
 }
 
 /* ============================================================
+   SEARCH
+   ============================================================ */
+
+.search-wrap {
+  position: relative;
+  display:  flex;
+  align-items: center;
+}
+
+.search-toggle {
+  background:  none;
+  border:      none;
+  cursor:      pointer;
+  color:       var(--text-muted);
+  font-size:   1.45rem;
+  line-height: 1;
+  padding:     8px 14px;
+  border-radius: 50px;
+  transition:  color 0.2s, background 0.2s;
+  display:     flex;
+  align-items: center;
+}
+
+.search-toggle:hover {
+  color:      #fff;
+  background: rgba(80,130,255,0.1);
+}
+
+.search-box {
+  position:   absolute;
+  right:      0;
+  top:        calc(100% + 10px);
+  width:      260px;
+  background: rgba(6, 13, 30, 0.96);
+  border:     1px solid var(--glass-border);
+  border-radius: 14px;
+  padding:    10px 14px;
+  backdrop-filter: blur(24px);
+  box-shadow: 0 12px 40px rgba(0,0,20,0.6);
+  display:    none;
+  z-index:    200;
+}
+
+.search-box.open { display: block; }
+
+.search-input {
+  width:       100%;
+  background:  transparent;
+  border:      none;
+  outline:     none;
+  color:       var(--text-main);
+  font-family: 'Inter', sans-serif;
+  font-size:   0.9rem;
+  font-weight: 300;
+  caret-color: var(--accent-gold);
+}
+
+.search-input::placeholder { color: var(--text-dim); }
+
+/* Search results dropdown (article pages) */
+.search-results {
+  margin-top:  8px;
+  display:     flex;
+  flex-direction: column;
+  gap:         4px;
+  max-height:  280px;
+  overflow-y:  auto;
+}
+
+.search-result-item {
+  display:        block;
+  padding:        8px 10px;
+  border-radius:  8px;
+  color:          var(--text-muted);
+  font-size:      0.82rem;
+  text-decoration: none;
+  transition:     background 0.2s, color 0.2s;
+  line-height:    1.4;
+}
+
+.search-result-item:hover  { background: rgba(80,130,255,0.1); color: #fff; }
+.search-result-item strong { display: block; color: var(--text-main); font-weight: 600; font-size: 0.85rem; margin-bottom: 2px; }
+.search-result-item .s-cat { font-size: 0.68rem; color: var(--accent-gold); text-transform: uppercase; letter-spacing: 1.5px; }
+.search-no-results         { color: var(--text-dim); font-size: 0.8rem; font-style: italic; padding: 6px 10px; }
+
+/* ============================================================
    BANNER
    ============================================================ */
 
@@ -538,7 +624,8 @@ h1, h2, h3, h4 {
 
 .book-card {
   display:        flex;
-  flex-direction: column;
+  flex-direction: row;
+  overflow:       hidden;
   transition:     transform 0.4s ease;
 }
 
@@ -547,9 +634,9 @@ h1, h2, h3, h4 {
 }
 
 .book-image-wrapper {
-  height:          320px;
+  flex:            0 0 38%;
   background:      rgba(3, 7, 18, 0.98);
-  border-bottom:   1px solid var(--glass-border);
+  border-right:    1px solid var(--glass-border);
   padding:         28px 20px;
   display:         flex;
   align-items:     center;
@@ -562,12 +649,14 @@ h1, h2, h3, h4 {
   content:    '';
   position:   absolute;
   inset:      0;
-  background: radial-gradient(ellipse at 50% 120%, rgba(201,168,76,0.04) 0%, transparent 70%);
+  background: radial-gradient(ellipse at 50% 120%, var(--accent-gold-dim) 0%, transparent 70%);
 }
 
 .book-cover {
   max-height:  100%;
-  max-width:   75%;
+  max-width:   100%;
+  width:       100%;
+  height:      auto;
   object-fit:  contain;
   filter:      drop-shadow(0 16px 32px rgba(0,0,50,0.95));
   display:     block;
@@ -581,15 +670,16 @@ h1, h2, h3, h4 {
 }
 
 .book-info {
-  padding:        32px;
+  flex:           1;
+  padding:        30px 32px;
   display:        flex;
   flex-direction: column;
-  flex-grow:      1;
   gap:            0;
+  min-width:      0;
 }
 
 .book-info h3 {
-  font-size:     1.55rem;
+  font-size:     1.5rem;
   color:         #fff;
   margin-bottom: 5px;
 }
@@ -597,14 +687,14 @@ h1, h2, h3, h4 {
 .book-subtitle {
   color:         var(--accent-gold);
   font-style:    italic;
-  font-size:     0.88rem;
+  font-size:     0.86rem;
   opacity:       0.85;
   margin-bottom: 14px;
 }
 
 .description {
   color:         var(--text-muted);
-  font-size:     0.92rem;
+  font-size:     0.9rem;
   font-weight:   300;
   line-height:   1.7;
   flex-grow:     1;
@@ -616,13 +706,15 @@ h1, h2, h3, h4 {
   font-size:      0.75rem;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  margin-bottom:  22px;
+  margin-bottom:  20px;
   display:        block;
 }
 
 .gold-btn {
-  display:         block;
-  padding:         13px;
+  display:         inline-flex;
+  align-items:     center;
+  justify-content: center;
+  padding:         13px 20px;
   background:      transparent;
   color:           var(--accent-gold);
   border:          1px solid var(--accent-gold-line);
@@ -634,6 +726,7 @@ h1, h2, h3, h4 {
   font-weight:     600;
   letter-spacing:  2.5px;
   transition:      all 0.35s ease;
+  align-self:      flex-start;
 }
 
 .gold-btn:hover {
@@ -692,6 +785,58 @@ h1, h2, h3, h4 {
   font-weight: 700;
 }
 
+.category-btn.liked-filter {
+  display:     flex;
+  align-items: center;
+  gap:         5px;
+}
+
+/* Sub-filter row (show only liked in this category) */
+.liked-subfilter-row {
+  display:         flex;
+  justify-content: center;
+  margin-top:      -28px;
+  margin-bottom:   28px;
+  opacity:         0;
+  pointer-events:  none;
+  transition:      opacity 0.3s ease;
+}
+
+.liked-subfilter-row.visible {
+  opacity:        1;
+  pointer-events: all;
+}
+
+.liked-subfilter-btn {
+  background:    transparent;
+  border:        1px solid var(--glass-border);
+  border-radius: 50px;
+  color:         var(--text-dim);
+  cursor:        pointer;
+  font-family:   'Inter', sans-serif;
+  font-size:     0.68rem;
+  font-weight:   600;
+  letter-spacing: 2px;
+  padding:       6px 18px;
+  text-transform: uppercase;
+  transition:    all 0.25s ease;
+}
+
+.liked-subfilter-btn:hover  { color: var(--accent-gold); border-color: var(--accent-gold-line); }
+.liked-subfilter-btn.active { background: var(--accent-gold-dim); color: var(--accent-gold); border-color: var(--accent-gold-line); }
+
+/* No results message */
+.no-results-msg {
+  display:    none;
+  text-align: center;
+  color:      var(--text-dim);
+  font-size:  0.9rem;
+  font-style: italic;
+  padding:    48px 0;
+}
+
+.no-results-msg.visible { display: block; }
+
 /* ============================================================
    ARTICLE FEED
    ============================================================ */
@@ -746,6 +891,7 @@ h1, h2, h3, h4 {
   align-items: center;
   gap:         14px;
   margin-bottom: 12px;
+  flex-wrap:   wrap;
 }
 
 .article-meta .category {
@@ -815,6 +961,30 @@ h1, h2, h3, h4 {
   opacity:   1;
   transform: translateX(0);
 }
+
+/* Index like count */
+.index-like-count {
+  color:          var(--text-dim);
+  font-size:      0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* Liked badge on card */
+.liked-badge {
+  display:      none;
+  align-items:  center;
+  gap:          4px;
+  font-size:    0.68rem;
+  font-weight:  600;
+  color:        var(--accent-gold);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  opacity:      0.9;
+}
+
+.liked-badge.visible { display: flex; }
+.liked-badge-heart   { font-size: 0.8rem; }
 
 /* ============================================================
    FOOTER
@@ -1064,7 +1234,7 @@ h1, h2, h3, h4 {
   font-style:    italic;
   font-size:     1.15rem;
   line-height:   1.7;
-  background:    rgba(201, 168, 76, 0.04);
+  background:    var(--accent-gold-dim);
   border-radius: 0 8px 8px 0;
 }
 
@@ -1121,9 +1291,9 @@ h1, h2, h3, h4 {
 }
 
 .like-btn:hover {
-  border-color: rgba(201, 168, 76, 0.4);
+  border-color: var(--accent-gold-line);
   color:        var(--accent-gold);
-  background:   rgba(201, 168, 76, 0.07);
+  background:   var(--accent-gold-dim);
   transform:    translateY(-2px);
   box-shadow:   0 8px 28px rgba(0, 0, 20, 0.45);
 }
@@ -1135,9 +1305,9 @@ h1, h2, h3, h4 {
 }
 
 .like-btn.liked {
-  border-color: rgba(201, 168, 76, 0.55);
+  border-color: var(--accent-gold-line);
   color:        var(--accent-gold);
-  background:   rgba(201, 168, 76, 0.1);
+  background:   var(--accent-gold-dim);
 }
 
 .like-heart {
@@ -1228,8 +1398,8 @@ h1, h2, h3, h4 {
 
 .comment-input:focus,
 .comment-textarea:focus {
-  border-color: rgba(201, 168, 76, 0.4);
-  box-shadow:   0 0 0 3px rgba(201, 168, 76, 0.07);
+  border-color: var(--accent-gold-line);
+  box-shadow:   0 0 0 3px var(--accent-gold-dim);
 }
 
 .comment-form-footer {
@@ -1308,7 +1478,12 @@ h1, h2, h3, h4 {
   border-radius:  16px;
   box-shadow:     0 8px 24px rgba(0, 0, 15, 0.3);
   animation:      commentIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
-  transition:     transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  transition:     transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, opacity 0.3s ease;
+}
+
+@keyframes commentIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .comment-item:hover {
@@ -1316,7 +1491,13 @@ h1, h2, h3, h4 {
   border-color: var(--accent-gold);
   box-shadow:
     0 12px 30px rgba(0, 0, 0, 0.5),
-    0 0 15px rgba(201, 168, 76, 0.15);
+    0 0 15px var(--accent-gold-dim);
+}
+
+.comment-top-row {
+  display:     flex;
+  align-items: flex-start;
+  gap:         12px;
 }
 
 .comment-meta-row {
@@ -1369,6 +1550,73 @@ h1, h2, h3, h4 {
   line-height: 1.7;
   word-break:  break-word;
 }
+
+/* Comment actions row */
+.comment-actions {
+  display:     flex;
+  align-items: center;
+  gap:         16px;
+  margin-top:  8px;
+}
+
+/* Comment like button */
+.comment-like-btn {
+  background:  none;
+  border:      1px solid transparent;
+  border-radius: 50px;
+  cursor:      pointer;
+  color:       var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size:   0.82rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding:     6px 14px;
+  display:     flex;
+  align-items: center;
+  gap:         7px;
+  transition:  color 0.2s, background 0.2s, border-color 0.2s;
+}
+
+.comment-like-btn:hover {
+  color:        var(--accent-gold);
+  background:   var(--accent-gold-dim);
+  border-color: var(--accent-gold-line);
+}
+
+.comment-like-btn.liked {
+  color:        var(--accent-gold);
+  background:   var(--accent-gold-dim);
+  border-color: var(--accent-gold-line);
+}
+
+.comment-like-btn .clheart {
+  font-size:  1.15rem;
+  transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+.comment-like-btn:hover .clheart,
+.comment-like-btn.liked .clheart {
+  transform: scale(1.3);
+}
+
+/* Comment delete button */
+.comment-delete-btn {
+  background:  none;
+  border:      none;
+  cursor:      pointer;
+  color:       var(--text-dim);
+  font-family: 'Inter', sans-serif;
+  font-size:   0.72rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding:     6px 0;
+  transition:  color 0.2s;
+  opacity:     0.7;
+}
+
+.comment-delete-btn:hover { color: #e07070; opacity: 1; }
 
 /* Loading dots */
 .comments-loading {
@@ -1446,6 +1694,23 @@ h1, h2, h3, h4 {
     grid-template-columns: 1fr;
   }
 
+  .book-card {
+    flex-direction: column;
+  }
+
+  .book-image-wrapper {
+    flex:   none;
+    width:  100%;
+    border-right:  none;
+    border-bottom: 1px solid var(--glass-border);
+    padding: 28px 20px;
+  }
+
+  .book-cover {
+    max-width: 60%;
+    width:     auto;
+  }
+
   .article-card {
     padding: 24px 20px;
   }
@@ -1499,25 +1764,19 @@ h1, h2, h3, h4 {
     padding:   10px 22px;
   }
 
-   /* Fix Search Input size */
-.search-input {
-    padding: 12px 20px;
-    font-size: 1rem;
+  /* Search input sizing on mobile */
+  .search-input {
+    padding:       12px 16px;
+    font-size:     1rem;
     border-radius: 8px;
-    background: var(--bg-base);
-    border: 1px solid var(--glass-border);
-    color: var(--text-main);
-    width: 300px; /* Increased size */
-}
+    background:    var(--bg-base);
+  }
 
-/* Bigger Like Buttons */
-.like-btn {
-    padding: 14px 30px;
+  .search-box { width: 240px; }
+
+  /* Bigger like buttons */
+  .like-btn {
+    padding:   14px 30px;
     font-size: 0.9rem;
-}
-
-/* Ensure these are used for dynamic coloring */
-.theme-aware {
-    transition: background 0.3s ease, color 0.3s ease;
-}
+  }
 }
