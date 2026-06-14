@@ -3,11 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-site-verification" content="pvEqpTOogXhfCdC85sQZbjvLQp6gPupMCs62PZL1urA" />
-    <title>The Sahai Analogy</title>
+
+    <title>{{ site.data.PageInfo.PageTitle }}</title>
+
+    <meta name="description"
+          content="{{ site.data.PageInfo.Desciption | strip_html | strip_newlines }}">
+
+    <meta property="og:title"
+          content="{{ site.data.PageInfo.PageTitle }}">
+
+    <meta property="og:description"
+          content="{{ site.data.PageInfo.Desciption | strip_html | strip_newlines }}">
+
+    <meta property="og:image"
+          content="{{ site.url }}{{ site.data.PageInfo.Pic }}">
+
+    <meta property="og:type"
+          content="website">
+
+    <link rel="icon"
+          href="{{ site.data.PageInfo.Pic }}">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,700&display=swap"
+          rel="stylesheet">
+
     <link rel="stylesheet" href="MainCode/style.css">
 </head>
 <body>
