@@ -2,7 +2,7 @@
 //  CONFIGURATION — edit these values freely
 // ============================================================
 
-const ROTATION_INTERVAL_MS   = 15000;   // how often themes rotate (ms)
+const ROTATION_INTERVAL_MS   = 20000;   // how often themes rotate (ms)
 const ORB_TRANSITION_SECS    = 10.0;    // how long orb color transition takes (seconds)
 
 // ============================================================
@@ -497,6 +497,8 @@ function updateActiveOrbSkins(themeTokens, durationMs) {
 // ============================================================
 //  MOUSE GLOW
 // ============================================================
+// Made subtler: lower base/peak opacity and a steeper falloff curve so
+// the glow only shows a soft hint near the cursor instead of a harsh halo.
 
 function initMouseGlow() {
     document.querySelectorAll('.glass-card').forEach(card => {
@@ -527,10 +529,12 @@ function initMouseGlow() {
 
             const { r, g, b } = closest.currentRgb;
             const maxDist = Math.sqrt(window.innerWidth**2 + window.innerHeight**2);
-            const weight  = Math.max(0, 1 - (minDist / (maxDist * 0.55)));
+            // Steeper falloff (0.35 instead of 0.55) so the glow fades out faster
+            const weight  = Math.max(0, 1 - (minDist / (maxDist * 0.35)));
+            // Lower base + peak alpha for a much softer effect
             const isWarm  = r > g + 30;
-            const peak    = isWarm ? 0.14 : 0.12;
-            const alpha   = (0.06 + weight * peak).toFixed(3);
+            const peak    = isWarm ? 0.06 : 0.05;
+            const alpha   = (0.02 + weight * peak).toFixed(3);
 
             blob.style.background = `radial-gradient(circle, rgba(${r},${g},${b},${alpha}) 0%, transparent 90%)`;
         });
@@ -558,40 +562,12 @@ function initScrollReveal() {
 }
 
 // ============================================================
-//  CATEGORY FILTER
-// ============================================================
-
-function initCategoryFilter() {
-    const buttons  = document.querySelectorAll('.category-btn');
-    const articles = document.querySelectorAll('.article-feed .article-card');
-
-    buttons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            e.preventDefault();
-            buttons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-
-            const targetFilter = button.getAttribute('data-filter');
-
-            articles.forEach(article => {
-                const cat = article.getAttribute('data-category');
-                if (targetFilter === 'all' || cat === targetFilter) {
-                    article.style.display = 'block';
-                    setTimeout(() => {
-                        article.style.opacity   = '1';
-                        article.style.transform = 'translateY(0)';
-                    }, 10);
-                } else {
-                    article.style.display = 'none';
-                }
-            });
-        });
-    });
-}
-
-// ============================================================
 //  BOOT
 // ============================================================
+// NOTE: Category/article filtering (including the "Liked" filter) is
+// handled by the inline script on index.html, which has access to the
+// liked-article state in localStorage. It is intentionally NOT duplicated
+// here to avoid the two handlers fighting over .category-btn clicks.
 
 document.addEventListener('DOMContentLoaded', () => {
     initBackground();
@@ -599,5 +575,4 @@ document.addEventListener('DOMContentLoaded', () => {
     setInterval(applyRandomTheme, ROTATION_INTERVAL_MS);
     initMouseGlow();
     initScrollReveal();
-    initCategoryFilter();
 });
