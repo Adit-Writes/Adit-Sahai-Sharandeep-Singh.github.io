@@ -18,7 +18,6 @@ content:
 
       - name: Desciption
         type: rich-text
-        required: true
         options:
           switcher: false
 
