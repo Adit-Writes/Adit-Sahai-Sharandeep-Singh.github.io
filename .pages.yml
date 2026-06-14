@@ -135,6 +135,10 @@ content:
       - name: Files
         type: file
         list: true
+
+      - name: Links
+        type: string
+        list: true
         
       - name: Published
         type: boolean
