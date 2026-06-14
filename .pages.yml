@@ -42,7 +42,7 @@ content:
 
   - name: MentionedLinks
     type: collection
-    path: _data/categories
+    path: _data/MentionedLinks
     format: json
     filename: "{slug}.json"
     view:
