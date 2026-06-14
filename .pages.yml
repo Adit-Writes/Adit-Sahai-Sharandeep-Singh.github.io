@@ -127,6 +127,14 @@ content:
         options:
           collection: ArticleCategories 
           field: name 
+
+      - name: Pics
+        type: image
+        list: true
+
+      - name: Files
+        type: file
+        list: true
         
       - name: Published
         type: boolean
@@ -140,11 +148,6 @@ content:
         type: boolean
         default: true
 
-      - name: ReadTime
-        type: number
-        options:
-          min: 1
-        
       - name: Description
         type: rich-text
         options:
@@ -156,6 +159,11 @@ content:
         options:
           switcher: false
         
+      - name: ReadTime
+        type: number
+        options:
+          min: 1
+          
       - name: ReleaseDate
         type: date
         required: true
