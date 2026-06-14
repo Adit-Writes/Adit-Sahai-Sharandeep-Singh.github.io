@@ -1,5 +1,5 @@
 // ============================================================
-//  CONFIGURATION — edit these values freely
+//  CONFIGURATION
 // ============================================================
 
 const ROTATION_INTERVAL_MS   = 20000;   // how often themes rotate (ms)
@@ -506,7 +506,7 @@ function initMouseGlow() {
         const blob = card.querySelector('.glow-blob');
         if (!blob) return;
 
-        card.addEventListener('mouseenter', () => { blob.style.opacity = '1'; });
+        card.addEventListener('mouseenter', () => { blob.style.opacity = '0.5'; });
         card.addEventListener('mouseleave', () => { blob.style.opacity = '0'; });
 
         card.addEventListener('mousemove', (e) => {
