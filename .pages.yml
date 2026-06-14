@@ -29,12 +29,17 @@ content:
       - name: Expertise
         type: string
 
+      - name: Links
+        type: list
+        fields:
+          - name: Label
+            type: string
+      
+          - name: URL
+            type: string
+
       - name: Pic
         type: image
-
-      - name: ACC_Links
-        type: string
-        list: true
         
       - name: Desciption
         type: rich-text
