@@ -1498,4 +1498,26 @@ h1, h2, h3, h4 {
     font-size: 0.75rem;
     padding:   10px 22px;
   }
+
+   /* Fix Search Input size */
+.search-input {
+    padding: 12px 20px;
+    font-size: 1rem;
+    border-radius: 8px;
+    background: var(--bg-base);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    width: 300px; /* Increased size */
+}
+
+/* Bigger Like Buttons */
+.like-btn {
+    padding: 14px 30px;
+    font-size: 0.9rem;
+}
+
+/* Ensure these are used for dynamic coloring */
+.theme-aware {
+    transition: background 0.3s ease, color 0.3s ease;
+}
 }
