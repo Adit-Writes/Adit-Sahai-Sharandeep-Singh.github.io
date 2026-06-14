@@ -13,8 +13,8 @@ content:
         required: true
 
       - name: Pic
-        type: image
         required: true
+        type: image
 
       - name: Desciption
         type: rich-text
