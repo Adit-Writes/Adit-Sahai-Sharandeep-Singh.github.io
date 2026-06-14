@@ -4,33 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>{{ site.data.PageInfo.PageTitle }}</title>
+    <!-- SEO -->
+    <title>{{ PageInfo.PageTitle }}</title>
 
     <meta name="description"
-          content="{{ site.data.PageInfo.Desciption | strip_html | strip_newlines }}">
+          content="{{ PageInfo.Desciption | striptags }}">
 
+    <meta name="robots"
+          content="index, follow">
+
+    <!-- Open Graph (Facebook, LinkedIn, Discord, etc.) -->
     <meta property="og:title"
-          content="{{ site.data.PageInfo.PageTitle }}">
+          content="{{ PageInfo.PageTitle }}">
 
     <meta property="og:description"
-          content="{{ site.data.PageInfo.Desciption | strip_html | strip_newlines }}">
+          content="{{ PageInfo.Desciption | striptags }}">
 
     <meta property="og:image"
-          content="{{ site.url }}{{ site.data.PageInfo.Pic }}">
+          content="{{ PageInfo.Pic }}">
 
     <meta property="og:type"
           content="website">
 
-    <link rel="icon"
-          href="{{ site.data.PageInfo.Pic }}">
+    <!-- Twitter/X -->
+    <meta name="twitter:card"
+          content="summary_large_image">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="twitter:title"
+          content="{{ PageInfo.PageTitle }}">
+
+    <meta name="twitter:description"
+          content="{{ PageInfo.Desciption | striptags }}">
+
+    <meta name="twitter:image"
+          content="{{ PageInfo.Pic }}">
+
+    <!-- Favicon -->
+    <link rel="icon"
+          type="image/png"
+          href="{{ PageInfo.Pic }}">
+
+    <!-- Google Search Console -->
+    <meta name="google-site-verification"
+          content="pvEqpTOogXhfCdC85sQZbjvLQp6gPupMCs62PZL1urA">
+
+    <!-- Fonts -->
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,700&display=swap"
           rel="stylesheet">
 
-    <link rel="stylesheet" href="MainCode/style.css">
+    <!-- Styles -->
+    <link rel="stylesheet"
+          href="MainCode/style.css">
 </head>
 <body>
 
@@ -87,12 +118,15 @@
     </section>
 
     {# ── Books ─────────────────────────────────────────── #}
+    
+    {# ── Books section divider ─────────────────────────────── #}
     <div id="books" class="section-divider reveal">
         <h2>Published Works</h2>
         <div class="section-title-large">Books</div>
+        <p class="section-divider-subtitle">Long-form explorations of the ideas that matter</p>
         <div class="gold-line"></div>
     </div>
-
+    
     <section class="book-grid">
         {% for book in Books %}
         <div class="book-card glass-card reveal">
@@ -112,9 +146,12 @@
     </section>
 
     {# ── Articles ──────────────────────────────────────── #}
+    
+     {# ── Articles section divider ──────────────────────────── #}
     <div id="articles" class="section-divider reveal">
-        <h2>Essays & Perspectives</h2>
+        <h2>Essays &amp; Perspectives</h2>
         <div class="section-title-large">Writing</div>
+        <p class="section-divider-subtitle">Critical takes on science, politics, and sports culture</p>
         <div class="gold-line"></div>
     </div>
 
