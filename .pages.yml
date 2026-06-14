@@ -4,7 +4,7 @@ media:
 
 content:
 
-  - name: WebPageINFO
+  - name: WebSite
     type: file
     path: _data/PageInfo.json
     fields:
