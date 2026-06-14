@@ -40,6 +40,22 @@ content:
         options:
           switcher: false
 
+  - name: MentionedLinks
+    type: collection
+    path: _data/categories
+    format: json
+    filename: "{slug}.json"
+    view:
+      primary: name
+    fields:
+      - name: Name
+        type: string
+        required: true
+
+      - name: Link
+        type: string
+        required: true
+
   - name: Books
     path: _data/BooksData
     type: collection
@@ -83,7 +99,7 @@ content:
     format: json
     filename: "{slug}.json"
     view:
-      primary: name # This fixes the connection!
+      primary: name
     fields:
       - name: name
         type: string
