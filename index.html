@@ -396,7 +396,7 @@
     <!-- No results -->
     <p class="no-results-msg" id="noResultsMsg">No articles found.</p>
 
-    {# ── Links / ACC_Links ─────────────────────────────── #}
+    {# ── Links / MentionedLinks ────────────────────────── #}
 
     {# ── Links section divider ────────────────────────────── #}
     <div id="links" class="section-divider reveal">
@@ -407,17 +407,17 @@
     </div>
 
     <div class="links-grid reveal">
-        {% for url in AboutAuthor.ACC_Links %}
+        {% for item in MentionedLinks %}
         <a
-            href="{{ url }}"
+            href="{{ item.Link }}"
             class="link-card"
             target="_blank"
             rel="noopener noreferrer"
         >
             <div class="link-card-icon">&#x279A;</div>
             <div class="link-card-text">
-                <span class="link-card-label">{{ url | replace('https://', '') | replace('http://', '') | truncate(38, true, '…') }}</span>
-                <span class="link-card-url">{{ url }}</span>
+                <span class="link-card-label">{{ item.Name }}</span>
+                <span class="link-card-url">{{ item.Link }}</span>
             </div>
             <span class="link-card-arrow">→</span>
         </a>
