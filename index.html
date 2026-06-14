@@ -62,6 +62,174 @@
     <!-- Styles -->
     <link rel="stylesheet"
           href="MainCode/style.css">
+
+    <style>
+        /* ── Inline Article Search Bar ─────────────────────────────── */
+        .article-search-bar {
+            width: 100%;
+            max-width: var(--max-w);
+            margin: 0 auto 36px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            background: var(--glass-bg-strong);
+            border: 1px solid var(--glass-border);
+            border-radius: 50px;
+            padding: 10px 22px;
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            transition: border-color 0.3s ease, background 2.5s ease-in-out;
+        }
+
+        .article-search-bar:focus-within {
+            border-color: var(--glass-border-hover);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.65), 0 0 16px var(--accent-gold-dim);
+        }
+
+        .article-search-icon {
+            color: var(--accent-gold);
+            font-size: 1.25rem;
+            line-height: 1;
+            flex-shrink: 0;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        .article-search-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.92rem;
+            font-weight: 300;
+            caret-color: var(--accent-gold);
+            scroll-margin: 0;
+        }
+
+        .article-search-input::placeholder {
+            color: var(--text-dim);
+        }
+
+        .article-search-clear {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            cursor: pointer;
+            font-size: 1rem;
+            line-height: 1;
+            padding: 4px 8px;
+            border-radius: 50%;
+            transition: color 0.2s ease, background 0.2s ease;
+            display: none;
+        }
+
+        .article-search-clear.visible {
+            display: block;
+        }
+
+        .article-search-clear:hover {
+            color: var(--text-main);
+            background: rgba(255,255,255,0.07);
+        }
+
+        /* ── Links / ACC_Links section ─────────────────────────────── */
+        #links {
+            width: 100%;
+            max-width: var(--max-w);
+            margin: 0 auto 30px;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin-bottom: 60px;
+        }
+
+        .link-card {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 18px 24px;
+            text-decoration: none;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            transition:
+                background     2.5s ease-in-out,
+                border-color   0.3s ease,
+                transform      0.35s cubic-bezier(0.25,1,0.5,1),
+                box-shadow     0.35s ease;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .link-card:hover {
+            border-color: var(--glass-border-hover);
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 14px 40px rgba(0,0,0,0.6), 0 0 14px var(--accent-gold-dim);
+        }
+
+        .link-card-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--accent-gold-dim);
+            border: 1px solid var(--accent-gold-line);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1rem;
+            color: var(--accent-gold);
+            transition: background 2.5s ease-in-out, border-color 2.5s ease-in-out, color 1.5s ease-in-out;
+        }
+
+        .link-card-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .link-card-label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-main);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 2px;
+            transition: color 1.5s ease-in-out;
+        }
+
+        .link-card-url {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 1.5s ease-in-out;
+        }
+
+        .link-card-arrow {
+            color: var(--accent-gold);
+            opacity: 0;
+            font-size: 0.85rem;
+            transition: opacity 0.25s ease, transform 0.25s ease, color 1.5s ease-in-out;
+            flex-shrink: 0;
+        }
+
+        .link-card:hover .link-card-arrow {
+            opacity: 1;
+            transform: translateX(3px);
+        }
+    </style>
 </head>
 <body>
 
@@ -78,7 +246,7 @@
             <a href="#books">Books</a>
             <a href="#articles">Articles</a>
         </div>
-        <!-- Search -->
+        <!-- Search — navbar version: scrolls to articles, then filters -->
         <div class="search-wrap" id="searchWrap">
             <button class="search-toggle" id="searchToggle" aria-label="Search articles" title="Search articles">
                 &#x2315;
@@ -147,7 +315,7 @@
 
     {# ── Articles ──────────────────────────────────────── #}
     
-     {# ── Articles section divider ──────────────────────────── #}
+    {# ── Articles section divider ──────────────────────────── #}
     <div id="articles" class="section-divider reveal">
         <h2>Essays &amp; Perspectives</h2>
         <div class="section-title-large">Writing</div>
@@ -173,6 +341,20 @@
         <button class="liked-subfilter-btn" id="likedSubfilterBtn">
             ♥ &nbsp;Show only liked
         </button>
+    </div>
+
+    <!-- ── Inline article search bar (always visible in articles section) ── -->
+    <div class="article-search-bar reveal" id="articleSearchBar">
+        <span class="article-search-icon">&#x2315;</span>
+        <input
+            class="article-search-input"
+            id="articleSearchInput"
+            type="text"
+            placeholder="Search articles by title or topic…"
+            autocomplete="off"
+            spellcheck="false"
+        />
+        <button class="article-search-clear" id="articleSearchClear" aria-label="Clear search">&#x2715;</button>
     </div>
 
     <section class="article-feed">
@@ -214,6 +396,34 @@
     <!-- No results -->
     <p class="no-results-msg" id="noResultsMsg">No articles found.</p>
 
+    {# ── Links / ACC_Links ─────────────────────────────── #}
+
+    {# ── Links section divider ────────────────────────────── #}
+    <div id="links" class="section-divider reveal">
+        <h2>Around the Web</h2>
+        <div class="section-title-large">Links</div>
+        <p class="section-divider-subtitle">Find me elsewhere on the internet</p>
+        <div class="gold-line"></div>
+    </div>
+
+    <div class="links-grid reveal">
+        {% for url in AboutAuthor.ACC_Links %}
+        <a
+            href="{{ url }}"
+            class="link-card"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            <div class="link-card-icon">&#x279A;</div>
+            <div class="link-card-text">
+                <span class="link-card-label">{{ url | replace('https://', '') | replace('http://', '') | truncate(38, true, '…') }}</span>
+                <span class="link-card-url">{{ url }}</span>
+            </div>
+            <span class="link-card-arrow">→</span>
+        </a>
+        {% endfor %}
+    </div>
+
     <footer class="footer">
         <p>&copy; 2026 The Sahai Analogy. All rights reserved.</p>
     </footer>
@@ -227,7 +437,15 @@
     // ── State ────────────────────────────────────────────────────
     let activeFilter     = 'all';
     let likedSubActive   = false;
-    let searchQuery      = '';
+    // Two independent search queries: navbar and inline
+    let navSearchQuery     = '';
+    let inlineSearchQuery  = '';
+
+    // The active search query is whichever one is non-empty.
+    // If both are set (edge case), inline wins since it's closer to the articles.
+    function getSearchQuery() {
+        return inlineSearchQuery || navSearchQuery;
+    }
 
     // Collect all liked slugs from localStorage
     function getLikedSlugs() {
@@ -235,7 +453,7 @@
         for (let i = 0; i < localStorage.length; i++) {
             const key = localStorage.key(i);
             if (key && key.startsWith('liked:')) {
-                liked.push(key.slice(6)); // strip "liked:" prefix
+                liked.push(key.slice(6));
             }
         }
         return liked;
@@ -270,7 +488,7 @@
         const likedSlugs = new Set(getLikedSlugs());
         document.querySelectorAll('.liked-badge').forEach(badge => {
             const slug = badge.getAttribute('data-slug');
-            const sep  = badge.previousElementSibling; // .liked-badge-sep
+            const sep  = badge.previousElementSibling;
             if (likedSlugs.has(slug)) {
                 badge.classList.add('visible');
                 if (sep) sep.style.display = '';
@@ -286,6 +504,7 @@
         const likedSlugs  = new Set(getLikedSlugs());
         const cards       = document.querySelectorAll('.article-feed .article-card');
         const noResults   = document.getElementById('noResultsMsg');
+        const searchQuery = getSearchQuery();
         let   anyVisible  = false;
 
         cards.forEach(card => {
@@ -320,9 +539,9 @@
 
     // ── Category buttons ─────────────────────────────────────────
     function initCategoryFilter() {
-        const buttons          = document.querySelectorAll('.category-btn');
-        const subfilterRow     = document.getElementById('likedSubfilterRow');
-        const subfilterBtn     = document.getElementById('likedSubfilterBtn');
+        const buttons      = document.querySelectorAll('.category-btn');
+        const subfilterRow = document.getElementById('likedSubfilterRow');
+        const subfilterBtn = document.getElementById('likedSubfilterBtn');
 
         buttons.forEach(btn => {
             btn.addEventListener('click', e => {
@@ -333,7 +552,6 @@
                 likedSubActive = false;
                 subfilterBtn.classList.remove('active');
 
-                // Show sub-filter row for any non-"all" / non-"liked" category
                 const showSub = activeFilter !== 'all' && activeFilter !== '__liked__';
                 subfilterRow.classList.toggle('visible', showSub);
 
@@ -348,56 +566,146 @@
         });
     }
 
-    // ── Search ───────────────────────────────────────────────────
-    function initSearch() {
-        const toggle    = document.getElementById('searchToggle');
-        const box       = document.getElementById('searchBox');
-        const input     = document.getElementById('searchInput');
+    // ── Navbar search ────────────────────────────────────────────
+    // Behaviour: opens box, scrolls viewport to articles section,
+    // lets user type to filter. Does NOT steal focus-scroll.
+    function initNavSearch() {
+        const toggle     = document.getElementById('searchToggle');
+        const box        = document.getElementById('searchBox');
+        const input      = document.getElementById('searchInput');
         const searchWrap = document.getElementById('searchWrap');
+        const articlesEl = document.getElementById('articles');
+
+        if (!toggle || !box || !input) return;
+
+        function openNavSearch() {
+            box.classList.add('open');
+
+            // Scroll the articles section into view FIRST, then focus
+            // without triggering another scroll (preventScroll: true).
+            if (articlesEl) {
+                articlesEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+            // Small delay so the smooth scroll has started before we focus,
+            // preventing the browser from "correcting" scroll position.
+            setTimeout(() => {
+                input.focus({ preventScroll: true });
+            }, 60);
+        }
+
+        function closeNavSearch() {
+            box.classList.remove('open');
+            input.value  = '';
+            navSearchQuery = '';
+            applyFilters();
+        }
 
         toggle.addEventListener('click', e => {
             e.stopPropagation();
-            const isOpen = box.classList.toggle('open');
-            if (isOpen) {
-                input.focus();
+            // Toggle: if already open, close; otherwise open & scroll
+            if (box.classList.contains('open')) {
+                closeNavSearch();
             } else {
-                input.value = '';
-                searchQuery = '';
-                applyFilters();
+                openNavSearch();
             }
         });
 
         // Close when clicking outside
         document.addEventListener('click', e => {
             if (!searchWrap.contains(e.target)) {
-                box.classList.remove('open');
-                input.value = '';
-                searchQuery = '';
-                applyFilters();
+                closeNavSearch();
             }
         });
 
         input.addEventListener('input', () => {
-            searchQuery = input.value.trim().toLowerCase();
+            navSearchQuery = input.value.trim().toLowerCase();
+            // Mirror value to inline bar for visual consistency
+            const inlineInput = document.getElementById('articleSearchInput');
+            if (inlineInput) {
+                inlineInput.value  = input.value;
+                inlineSearchQuery  = navSearchQuery;
+                syncInlineClearBtn();
+            }
             applyFilters();
         });
 
-        // Close on Escape
+        input.addEventListener('keydown', e => {
+            if (e.key === 'Escape') closeNavSearch();
+        });
+
+        // Prevent focus from scrolling page on re-focus
+        input.addEventListener('focus', e => {
+            e.preventDefault();
+        }, { passive: false });
+    }
+
+    // ── Inline article search (always visible in the articles section) ──
+    function syncInlineClearBtn() {
+        const clearBtn = document.getElementById('articleSearchClear');
+        const input    = document.getElementById('articleSearchInput');
+        if (!clearBtn || !input) return;
+        clearBtn.classList.toggle('visible', input.value.length > 0);
+    }
+
+    function initInlineSearch() {
+        const input    = document.getElementById('articleSearchInput');
+        const clearBtn = document.getElementById('articleSearchClear');
+
+        if (!input) return;
+
+        input.addEventListener('input', () => {
+            inlineSearchQuery = input.value.trim().toLowerCase();
+            // Mirror to navbar input
+            const navInput = document.getElementById('searchInput');
+            if (navInput) {
+                navInput.value = input.value;
+                navSearchQuery = inlineSearchQuery;
+            }
+            syncInlineClearBtn();
+            applyFilters();
+        });
+
         input.addEventListener('keydown', e => {
             if (e.key === 'Escape') {
-                box.classList.remove('open');
-                input.value = '';
-                searchQuery = '';
+                input.value       = '';
+                inlineSearchQuery = '';
+                navSearchQuery    = '';
+                const navInput    = document.getElementById('searchInput');
+                if (navInput) navInput.value = '';
+                syncInlineClearBtn();
                 applyFilters();
             }
         });
+
+        // Prevent focus from hijacking the scroll position
+        input.addEventListener('focus', e => {
+            e.preventDefault();
+        }, { passive: false });
+
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => {
+                input.value       = '';
+                inlineSearchQuery = '';
+                navSearchQuery    = '';
+                const navInput    = document.getElementById('searchInput');
+                if (navInput) navInput.value = '';
+                syncInlineClearBtn();
+                applyFilters();
+                input.focus({ preventScroll: true });
+            });
+        }
     }
+
+    // ── Active nav link ──────────────────────────────────────────
+    // (kept from original script.js; this inline version handles
+    //  the index-page-specific wiring)
 
     // ── Init ─────────────────────────────────────────────────────
     loadIndexLikes();
     applyLikedBadges();
     initCategoryFilter();
-    initSearch();
+    initNavSearch();
+    initInlineSearch();
     </script>
 </body>
 </html>
