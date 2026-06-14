@@ -259,6 +259,101 @@
             opacity: 1;
             transform: translateX(3px);
         }
+
+        /* ── Article Card Thumbnail ────────────────────────────────── */
+        .article-card {
+            /* Override to allow image + text layout */
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .article-card.has-thumb {
+            grid-template-columns: 200px 1fr;
+        }
+
+        .article-card-thumb {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px 0 0 18px;
+            border-right: 1px solid var(--glass-border);
+            flex-shrink: 0;
+            background: rgba(3, 7, 18, 0.8);
+        }
+
+        .article-card-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition:
+                transform   0.6s cubic-bezier(0.25, 1, 0.5, 1),
+                filter      0.6s ease,
+                border-color 2.5s ease-in-out;
+            filter: brightness(0.88) saturate(0.9);
+        }
+
+        .article-card.has-thumb:hover .article-card-thumb img {
+            transform: scale(1.06);
+            filter: brightness(1) saturate(1.05);
+        }
+
+        /* Subtle gradient fade on right edge of thumb */
+        .article-card-thumb::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to right,
+                transparent 55%,
+                rgba(6, 15, 30, 0.7) 100%
+            );
+            pointer-events: none;
+        }
+
+        /* Category chip overlaid on thumb */
+        .article-card-thumb .thumb-category {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            font-size: 0.62rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #000;
+            background: var(--accent-gold);
+            padding: 4px 10px;
+            border-radius: 100px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .article-card-body {
+            padding: 30px 36px;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        /* When no thumb — body fills the whole card as before */
+        .article-card:not(.has-thumb) .article-card-body {
+            padding: 30px 36px;
+        }
+
+        /* ── Responsive: stack thumb on top on mobile ─────────────── */
+        @media (max-width: 640px) {
+            .article-card.has-thumb {
+                grid-template-columns: 1fr;
+                grid-template-rows: 160px auto;
+            }
+
+            .article-card-thumb {
+                border-radius: 18px 18px 0 0;
+                border-right: none;
+                border-bottom: 1px solid var(--glass-border);
+            }
+        }
     </style>
 </head>
 <body>
@@ -317,8 +412,6 @@
     </section>
 
     {# ── Books ─────────────────────────────────────────── #}
-    
-    {# ── Books section divider ─────────────────────────────── #}
     <div id="books" class="section-divider reveal">
         <h2>Published Works</h2>
         <div class="section-title-large">Books</div>
@@ -345,8 +438,6 @@
     </section>
 
     {# ── Articles ──────────────────────────────────────── #}
-    
-    {# ── Articles section divider ──────────────────────────── #}
     <div id="articles" class="section-divider reveal">
         <h2>Essays &amp; Perspectives</h2>
         <div class="section-title-large">Writing</div>
@@ -391,33 +482,55 @@
     <section class="article-feed">
         {% for article in Articles %}
         {% if article.Published %}
+
+        {# Grab first pic if available #}
+        {% set firstPic = article.Pics[0] if article.Pics and article.Pics.length > 0 else null %}
+
         <article
-            class="article-card glass-card reveal"
+            class="article-card glass-card reveal{% if firstPic %} has-thumb{% endif %}"
             data-category="{{ article.Topic | default('') | lower }}"
             data-slug="{{ article.Title | slug }}"
             data-title="{{ article.Title | lower }}"
             data-description="{{ article.Description | lower | striptags }}"
         >
             <div class="glow-blob"></div>
-            <div class="article-meta">
-                <span class="category">{{ article.Topic }}</span>
-                <span class="meta-sep"></span>
-                <span class="read-time">{{ article.ReadTime }} min read</span>
-                {% if article.Likes !== false and article.Likes !== 'false' %}
-                <span class="meta-sep"></span>
-                <span class="index-like-count" data-slug="{{ article.Title | slug }}">0 likes</span>
-                {% endif %}
-                <!-- Liked badge — shown when user has liked this article -->
-                <span class="meta-sep liked-badge-sep" style="display:none"></span>
-                <span class="liked-badge" data-slug="{{ article.Title | slug }}">
-                    <span class="liked-badge-heart">♥</span> Liked
-                </span>
+
+            {# ── Thumbnail (only if firstPic exists) ── #}
+            {% if firstPic %}
+            <div class="article-card-thumb">
+                <span class="thumb-category">{{ article.Topic }}</span>
+                <img
+                    src="/Adit-Sahai.github.io{{ firstPic }}"
+                    alt="{{ article.Title }}"
+                    loading="lazy"
+                >
             </div>
-            <h3 class="article-title">{{ article.Title }}</h3>
-            <p class="article-excerpt">{{ article.Description | safe }}</p>
-            <div class="article-footer">
-                <span class="date">{{ article.ReleaseDate }}</span>
-                <a href="/Adit-Sahai.github.io/articles/{{ article.Title | slug }}/" class="read-link">Read Essay →</a>
+            {% endif %}
+
+            {# ── Card body ── #}
+            <div class="article-card-body">
+                <div class="article-meta">
+                    {% if not firstPic %}
+                    <span class="category">{{ article.Topic }}</span>
+                    <span class="meta-sep"></span>
+                    {% endif %}
+                    <span class="read-time">{{ article.ReadTime }} min read</span>
+                    {% if article.Likes !== false and article.Likes !== 'false' %}
+                    <span class="meta-sep"></span>
+                    <span class="index-like-count" data-slug="{{ article.Title | slug }}">0 likes</span>
+                    {% endif %}
+                    <!-- Liked badge — shown when user has liked this article -->
+                    <span class="meta-sep liked-badge-sep" style="display:none"></span>
+                    <span class="liked-badge" data-slug="{{ article.Title | slug }}">
+                        <span class="liked-badge-heart">♥</span> Liked
+                    </span>
+                </div>
+                <h3 class="article-title">{{ article.Title }}</h3>
+                <p class="article-excerpt">{{ article.Description | safe }}</p>
+                <div class="article-footer">
+                    <span class="date">{{ article.ReleaseDate }}</span>
+                    <a href="/Adit-Sahai.github.io/articles/{{ article.Title | slug }}/" class="read-link">Read Essay →</a>
+                </div>
             </div>
         </article>
         {% endif %}
@@ -428,8 +541,6 @@
     <p class="no-results-msg" id="noResultsMsg">No articles found.</p>
 
     {# ── Links / MentionedLinks ────────────────────────── #}
-
-    {# ── Links section divider ────────────────────────────── #}
     <div id="links" class="section-divider reveal">
         <h2>Around the Web</h2>
         <div class="section-title-large">Links</div>
@@ -469,17 +580,13 @@
     // ── State ────────────────────────────────────────────────────
     let activeFilter     = 'all';
     let likedSubActive   = false;
-    // Two independent search queries: navbar and inline
     let navSearchQuery     = '';
     let inlineSearchQuery  = '';
 
-    // The active search query is whichever one is non-empty.
-    // If both are set (edge case), inline wins since it's closer to the articles.
     function getSearchQuery() {
         return inlineSearchQuery || navSearchQuery;
     }
 
-    // Collect all liked slugs from localStorage
     function getLikedSlugs() {
         const liked = [];
         for (let i = 0; i < localStorage.length; i++) {
@@ -545,7 +652,6 @@
             const title    = card.getAttribute('data-title')    || '';
             const desc     = card.getAttribute('data-description') || '';
 
-            // 1. Category / liked filter
             let passCategory = false;
             if (activeFilter === 'all') {
                 passCategory = likedSubActive ? likedSlugs.has(slug) : true;
@@ -556,7 +662,6 @@
                                (!likedSubActive || likedSlugs.has(slug));
             }
 
-            // 2. Search
             const passSearch = searchQuery === '' ||
                                title.includes(searchQuery) ||
                                desc.includes(searchQuery);
@@ -599,8 +704,6 @@
     }
 
     // ── Navbar search ────────────────────────────────────────────
-    // Behaviour: opens box, scrolls viewport to articles section,
-    // lets user type to filter. Does NOT steal focus-scroll.
     function initNavSearch() {
         const toggle     = document.getElementById('searchToggle');
         const box        = document.getElementById('searchBox');
@@ -612,14 +715,9 @@
 
         function openNavSearch() {
             box.classList.add('open');
-
-            // Scroll the articles section into view FIRST, then focus
-            // without triggering another scroll (preventScroll: true).
             if (articlesEl) {
                 articlesEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
-            // Small delay so the smooth scroll has started before we focus,
-            // preventing the browser from "correcting" scroll position.
             setTimeout(() => {
                 input.focus({ preventScroll: true });
             }, 60);
@@ -634,7 +732,6 @@
 
         toggle.addEventListener('click', e => {
             e.stopPropagation();
-            // Toggle: if already open, close; otherwise open & scroll
             if (box.classList.contains('open')) {
                 closeNavSearch();
             } else {
@@ -642,7 +739,6 @@
             }
         });
 
-        // Close when clicking outside
         document.addEventListener('click', e => {
             if (!searchWrap.contains(e.target)) {
                 closeNavSearch();
@@ -651,7 +747,6 @@
 
         input.addEventListener('input', () => {
             navSearchQuery = input.value.trim().toLowerCase();
-            // Mirror value to inline bar for visual consistency
             const inlineInput = document.getElementById('articleSearchInput');
             if (inlineInput) {
                 inlineInput.value  = input.value;
@@ -665,13 +760,12 @@
             if (e.key === 'Escape') closeNavSearch();
         });
 
-        // Prevent focus from scrolling page on re-focus
         input.addEventListener('focus', e => {
             e.preventDefault();
         }, { passive: false });
     }
 
-    // ── Inline article search (always visible in the articles section) ──
+    // ── Inline article search ────────────────────────────────────
     function syncInlineClearBtn() {
         const clearBtn = document.getElementById('articleSearchClear');
         const input    = document.getElementById('articleSearchInput');
@@ -687,7 +781,6 @@
 
         input.addEventListener('input', () => {
             inlineSearchQuery = input.value.trim().toLowerCase();
-            // Mirror to navbar input
             const navInput = document.getElementById('searchInput');
             if (navInput) {
                 navInput.value = input.value;
@@ -709,7 +802,6 @@
             }
         });
 
-        // Prevent focus from hijacking the scroll position
         input.addEventListener('focus', e => {
             e.preventDefault();
         }, { passive: false });
@@ -728,10 +820,6 @@
         }
     }
 
-    // ── Active nav link ──────────────────────────────────────────
-    // (kept from original script.js; this inline version handles
-    //  the index-page-specific wiring)
-
     // ── Init ─────────────────────────────────────────────────────
     loadIndexLikes();
     applyLikedBadges();
@@ -742,7 +830,6 @@
 
     <script>
     // ── Link card icons ───────────────────────────────────────────
-    // Maps hostname keywords → { svg path data, brand bg color, icon fill }
     const LINK_ICONS = {
         'instagram': {
             color: 'rgba(193,53,132,0.18)',
@@ -828,7 +915,6 @@
         }
     };
 
-    // Fallback globe icon for unknown domains
     const FALLBACK_ICON = {
         color: 'var(--accent-gold-dim)',
         border: 'var(--accent-gold-line)',
