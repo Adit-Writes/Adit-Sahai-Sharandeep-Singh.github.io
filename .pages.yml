@@ -46,7 +46,7 @@ content:
     format: json
     filename: "{slug}.json"
     view:
-      primary: name
+      primary: Name
     fields:
       - name: Name
         type: string
