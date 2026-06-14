@@ -199,7 +199,6 @@ function lerpRgba(a, b, t) {
     };
 }
 
-// One entry per CSS variable currently being lerped
 const _tokenLerps = new Map();
 let _tokenLerpRunning = false;
 
@@ -233,7 +232,6 @@ function startTokenLerpLoop() {
     requestAnimationFrame(tick);
 }
 
-// Tokens that are numbers/lists — can't lerp, apply instantly
 const INSTANT_TOKENS = new Set([
     '--orb-blur-factor',
     '--orb-speed-multiplier',
@@ -302,9 +300,8 @@ function applyRandomTheme() {
 // ============================================================
 
 function initBackground() {
-    const canvas = document.createElement('div');
-    canvas.id = 'bg-canvas';
-    document.body.prepend(canvas);
+    const canvas = document.getElementById('bg-canvas');
+    if (!canvas) return;
 
     const vw = window.innerWidth;
     const vh = window.innerHeight;
@@ -336,21 +333,18 @@ function initBackground() {
             ox: startX,  oy: startY,
             duration: 1, elapsed: 0,
 
-            // Color lerp — fromRgb is snapshot at transition start, never mutated mid-lerp
             fromRgb:       { r: 80, g: 0, b: 80 },
             currentRgb:    { r: 80, g: 0, b: 80 },
             targetRgb:     { r: 80, g: 0, b: 80 },
             colorT:        1,
             colorDuration: ORB_TRANSITION_SECS * 1000,
 
-            // Size lerp (in px) — fromSizePx is snapshot at transition start
             fromSizePx:    0,
             currentSizePx: 0,
             targetSizePx:  0,
             sizeT:         1,
             sizeDuration:  ORB_TRANSITION_SECS * 1000,
 
-            // Blur lerp (in px) — fromBlurPx is snapshot at transition start
             fromBlurPx:    cfg.blurBase,
             currentBlurPx: cfg.blurBase,
             targetBlurPx:  cfg.blurBase,
@@ -361,10 +355,8 @@ function initBackground() {
         el.style.position      = 'absolute';
         el.style.pointerEvents = 'none';
         el.style.opacity       = '0';
-        // No CSS transition on size/filter — we drive them from JS every frame
         el.style.transition    = `opacity ${ORB_TRANSITION_SECS}s ease`;
 
-        // Seed actual size so first lerp starts from a real value
         const initialStyles    = getComputedStyle(document.documentElement);
         const initScale        = parseFloat(initialStyles.getPropertyValue('--orb-scale-multiplier')) || 1.0;
         const initBlurFactor   = parseFloat(initialStyles.getPropertyValue('--orb-blur-factor'))      || 1.0;
@@ -405,7 +397,6 @@ function initBackground() {
         last = now;
 
         orbs.forEach(state => {
-            // ---- Position ----
             state.elapsed += dt;
             const t = Math.min(state.elapsed / state.duration, 1);
             const e = easeInOut(t);
@@ -414,7 +405,6 @@ function initBackground() {
 
             if (t >= 1) pickTarget(state, window.innerWidth, window.innerHeight);
 
-            // ---- Color lerp ----
             if (state.colorT < 1) {
                 state.colorT     = Math.min(state.colorT + dt / state.colorDuration, 1);
                 const easedColor = easeInOut(state.colorT);
@@ -422,21 +412,18 @@ function initBackground() {
                 state.el.style.background = orbGradient(state.currentRgb);
             }
 
-            // ---- Size lerp ----
             if (state.sizeT < 1) {
                 state.sizeT = Math.min(state.sizeT + dt / state.sizeDuration, 1);
                 const easedSize = easeInOut(state.sizeT);
                 state.currentSizePx = state.fromSizePx + (state.targetSizePx - state.fromSizePx) * easedSize;
             }
 
-            // ---- Blur lerp ----
             if (state.blurT < 1) {
                 state.blurT = Math.min(state.blurT + dt / state.blurDuration, 1);
                 const easedBlur = easeInOut(state.blurT);
                 state.currentBlurPx = state.fromBlurPx + (state.targetBlurPx - state.fromBlurPx) * easedBlur;
             }
 
-            // ---- Write to DOM ----
             const sizePx = Math.round(state.currentSizePx);
             state.el.style.left   = (state.x - sizePx / 2) + 'px';
             state.el.style.top    = (state.y - sizePx / 2) + 'px';
@@ -452,7 +439,7 @@ function initBackground() {
 }
 
 // ============================================================
-//  ORB SKIN UPDATE — kick off lerps for color, size, blur
+//  ORB SKIN UPDATE
 // ============================================================
 
 function updateActiveOrbSkins(themeTokens, durationMs) {
@@ -471,23 +458,19 @@ function updateActiveOrbSkins(themeTokens, durationMs) {
     const transitionMs = durationMs || ORB_TRANSITION_SECS * 1000;
 
     states.forEach(state => {
-        // Snapshot current values as lerp start points — must happen before T resets
         state.fromRgb      = { ...state.currentRgb };
         state.fromSizePx   = state.currentSizePx;
         state.fromBlurPx   = state.currentBlurPx;
 
-        // Color
         const rawTarget = pickRandomColor(colorPool);
         state.targetRgb     = hexToRgb(rawTarget);
         state.colorT        = 0;
         state.colorDuration = transitionMs;
 
-        // Size
         state.targetSizePx  = Math.round(vw * (state.sizePercent * scaleMultiplier) / 100);
         state.sizeT         = 0;
         state.sizeDuration  = transitionMs;
 
-        // Blur
         state.targetBlurPx  = state.blurBase * blurFactor;
         state.blurT         = 0;
         state.blurDuration  = transitionMs;
@@ -495,10 +478,28 @@ function updateActiveOrbSkins(themeTokens, durationMs) {
 }
 
 // ============================================================
-//  MOUSE GLOW
+//  MOUSE GLOW — radial gradient that picks up the nearest orb
+//  color and blends smoothly via multi-stop gradient.
+//  Intensity is controlled by --glow-blob-intensity CSS var.
 // ============================================================
-// Made subtler: lower base/peak opacity and a steeper falloff curve so
-// the glow only shows a soft hint near the cursor instead of a harsh halo.
+
+function getGlowIntensity() {
+    const raw = getComputedStyle(document.documentElement)
+        .getPropertyValue('--glow-blob-intensity').trim();
+    return Math.max(0, parseFloat(raw) || 0.72);
+}
+
+function buildGlowGradient(r, g, b, intensity) {
+    // Multi-stop radial gradient: bright core → soft halo → fully transparent
+    return `radial-gradient(
+        circle,
+        rgba(${r},${g},${b},${(intensity * 0.50).toFixed(3)})  0%,
+        rgba(${r},${g},${b},${(intensity * 0.28).toFixed(3)}) 25%,
+        rgba(${r},${g},${b},${(intensity * 0.12).toFixed(3)}) 50%,
+        rgba(${r},${g},${b},${(intensity * 0.04).toFixed(3)}) 70%,
+        transparent 88%
+    )`;
+}
 
 function initMouseGlow() {
     document.querySelectorAll('.glass-card').forEach(card => {
@@ -513,6 +514,7 @@ function initMouseGlow() {
             blob.style.left = (e.clientX - rect.left) + 'px';
             blob.style.top  = (e.clientY - rect.top)  + 'px';
 
+            // Find the nearest orb and sample its current color
             const states = window._orbStates;
             if (!states || !states.length) return;
 
@@ -528,15 +530,8 @@ function initMouseGlow() {
             if (!closest || !closest.currentRgb) return;
 
             const { r, g, b } = closest.currentRgb;
-            const maxDist = Math.sqrt(window.innerWidth**2 + window.innerHeight**2);
-            // Steeper falloff (0.35 instead of 0.55) so the glow fades out faster
-            const weight  = Math.max(0, 1 - (minDist / (maxDist * 0.35)));
-            // Lower base + peak alpha for a much softer effect
-            const isWarm  = r > g + 30;
-            const peak    = isWarm ? 0.06 : 0.05;
-            const alpha   = (0.02 + weight * peak).toFixed(3);
-
-            blob.style.background = `radial-gradient(circle, rgba(${r},${g},${b},${alpha}) 0%, transparent 90%)`;
+            const intensity    = getGlowIntensity();
+            blob.style.background = buildGlowGradient(r, g, b, intensity);
         });
     });
 }
@@ -545,34 +540,139 @@ function initMouseGlow() {
 //  SCROLL REVEAL
 // ============================================================
 
-function initScrollReveal() {
-    const reveals = document.querySelectorAll('.reveal');
-    reveals.forEach(el => el.classList.remove('active'));
+function initReveal() {
+    const els = document.querySelectorAll('.reveal');
+    if (!els.length) return;
 
-    const observer = new IntersectionObserver((entries) => {
+    const io = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
-                observer.unobserve(entry.target);
+                io.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+    }, { threshold: 0.08 });
 
-    reveals.forEach(el => observer.observe(el));
+    els.forEach(el => io.observe(el));
 }
 
 // ============================================================
-//  BOOT
+//  SEARCH (article pages) — with NO page-scroll on focus
 // ============================================================
-// NOTE: Category/article filtering (including the "Liked" filter) is
-// handled by the inline script on index.html, which has access to the
-// liked-article state in localStorage. It is intentionally NOT duplicated
-// here to avoid the two handlers fighting over .category-btn clicks.
+
+function initArticleSearch() {
+    const toggle      = document.getElementById('searchToggle');
+    const box         = document.getElementById('searchBox');
+    const input       = document.getElementById('searchInput');
+    const resultsEl   = document.getElementById('searchResults');
+    const searchWrap  = document.getElementById('searchWrap');
+
+    if (!toggle || !box || !input) return;
+
+    // Collect all article cards data from the DOM (index page)
+    // On article pages this falls back to nothing (no article-card elements)
+    const articleData = Array.from(
+        document.querySelectorAll('.article-feed .article-card')
+    ).map(card => ({
+        title:    card.getAttribute('data-title')       || '',
+        desc:     card.getAttribute('data-description') || '',
+        category: card.getAttribute('data-category')   || '',
+        slug:     card.getAttribute('data-slug')        || '',
+        rawTitle: card.querySelector('.article-title')?.textContent || '',
+        rawCat:   card.querySelector('.category')?.textContent      || '',
+    }));
+
+    function openSearch() {
+        box.classList.add('open');
+        // Use preventScroll so opening the search box doesn't jump the page
+        input.focus({ preventScroll: true });
+    }
+
+    function closeSearch() {
+        box.classList.remove('open');
+        input.value = '';
+        if (resultsEl) resultsEl.innerHTML = '';
+    }
+
+    toggle.addEventListener('click', e => {
+        e.stopPropagation();
+        box.classList.contains('open') ? closeSearch() : openSearch();
+    });
+
+    document.addEventListener('click', e => {
+        if (!searchWrap.contains(e.target)) closeSearch();
+    });
+
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeSearch();
+    });
+
+    // Article-page search: show dropdown results
+    if (resultsEl) {
+        input.addEventListener('input', () => {
+            const q = input.value.trim().toLowerCase();
+            resultsEl.innerHTML = '';
+            if (!q) return;
+
+            const hits = articleData.filter(a =>
+                a.title.includes(q) || a.desc.includes(q) || a.category.includes(q)
+            ).slice(0, 6);
+
+            if (!hits.length) {
+                resultsEl.innerHTML = '<p class="search-no-results">No articles found.</p>';
+                return;
+            }
+
+            hits.forEach(a => {
+                const link = document.createElement('a');
+                link.className = 'search-result-item';
+                link.href      = `/Adit-Sahai.github.io/articles/${a.slug}/`;
+                link.innerHTML = `
+                    <strong>${a.rawTitle}</strong>
+                    <span class="s-cat">${a.rawCat}</span>
+                `;
+                resultsEl.appendChild(link);
+            });
+        });
+    }
+}
+
+// ============================================================
+//  ACTIVE NAV LINK
+// ============================================================
+
+function initActiveNav() {
+    const links    = document.querySelectorAll('.nav-links a');
+    const sections = document.querySelectorAll('section[id], div[id]');
+
+    if (!sections.length) return;
+
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            links.forEach(link => {
+                link.classList.toggle('active',
+                    link.getAttribute('href')?.endsWith('#' + entry.target.id)
+                );
+            });
+        });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    sections.forEach(s => io.observe(s));
+}
+
+// ============================================================
+//  INIT
+// ============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
     initBackground();
+    initReveal();
+    initMouseGlow();
+    initArticleSearch();
+    initActiveNav();
+
+    // Start theme rotation
     applyRandomTheme();
     setInterval(applyRandomTheme, ROTATION_INTERVAL_MS);
-    initMouseGlow();
-    initScrollReveal();
 });
