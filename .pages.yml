@@ -9,7 +9,7 @@ content:
     items:
     - name: SiteHead
       type: file
-      path: _data/PageInfo.json
+      path: _data/Adit/PageInfo.json
       fields:
         - name: PageTitle
           type: string
@@ -24,7 +24,7 @@ content:
       
     - name: AboutAuthor
       type: file
-      path: _data/AboutAuthor.json
+      path: _data/Adit/AboutAuthor.json
       fields:
         - name: Name
           type: string
@@ -42,7 +42,7 @@ content:
   
     - name: MentionedLinks
       type: collection
-      path: _data/MentionedLinks
+      path: _data/Adit/MentionedLinks
       format: json
       filename: "{slug}.json"
       view:
@@ -57,7 +57,7 @@ content:
           required: true
   
     - name: Books
-      path: _data/BooksData
+      path: _data/Adit/BooksData
       type: collection
       format: json
       filename: "{slug}.json"
@@ -95,7 +95,7 @@ content:
     - name: ArticleCategories
       label: Categories
       type: collection
-      path: _data/categories
+      path: _data/Adit/categories
       format: json
       filename: "{slug}.json"
       view:
@@ -106,7 +106,7 @@ content:
           required: true
   
     - name: Articles
-      path: _data/ArticlesData
+      path: _data/Adit/ArticlesData
       type: collection
       format: json
       filename: "{slug}.json" # Changed to slug for cleaner URLs in your 11ty build
