@@ -1,427 +1,849 @@
-<!--
-  CENTRAL HUB — index.html
-  =========================
-  Data pulled from Pages CMS (matches pages.yml):
-    MainPage.PageInfo       -> _data/MainPage/PageInfo.json        (PageTitle, Pic, Description)
-    MainPage.MentionedLinks -> _data/MainPage/MentionedLinks/*.json (Name, Link)
-    Sharan.AboutPage        -> _data/Sharan/AboutPage.json          (Name, Pic, Expertise, Desciption)
-    Adit.AboutAuthor        -> _data/Adit/AboutAuthor.json          (Name, Pic, Expertise, Desciption)
-
-  THINGS TO CHECK / ADJUST BEFORE GOING LIVE:
-   1. The two card links point to /Sharan/SharanPage/ and /Adit/AditPage/
-      (Eleventy's default output for those source paths). Update if your
-      permalinks are different.
-   2. The CSS variables in :root below (--max-w, --glass-bg, --accent-gold, etc.)
-      are placeholders matching the names you've used elsewhere. If these are
-      already defined in a global stylesheet/layout, delete the :root block
-      here so nothing gets overridden.
-   3. The animated background blobs (.bg-orbs) are a simple stand-in. If you
-      already have your orb-background component/script, swap it in here for
-      full consistency.
-   4. Replace "https://your-domain.example" in the JSON-LD and OG tags with
-      your real site URL (for GitHub Pages this is usually
-      https://username.github.io/repo-name/).
-   5. "Desciption" (missing the second "r") is spelled that way on purpose —
-      it matches the actual field name in your CMS config for AboutAuthor /
-      AboutPage. If you ever rename the field in pages.yml, update it here too.
-   6. Description/Desciption fields are rich-text. If they come out as raw
-      Markdown instead of HTML, swap the `| safe` / `| striptags` filters for
-      whatever markdown filter your 11ty config exposes.
--->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>{{ MainPage.PageInfo.PageTitle | default("Welcome") }}</title>
-<meta name="description" content="{{ MainPage.PageInfo.PageTitle | default('Welcome') }} — the home of {{ Sharan.AboutPage.Name | default('Sharan') }} and {{ Adit.AboutAuthor.Name | default('Adit') }}. Pick a site to explore." />
-<meta name="keywords" content="{{ Sharan.AboutPage.Name | default('Sharan') }}, {{ Adit.AboutAuthor.Name | default('Adit') }}, {{ MainPage.PageInfo.PageTitle | default('Welcome') }}" />
+  <!--
+  ══════════════════════════════════════════════════════════════
+  PAGE CMS VARIABLES — ADD / EDIT THESE IN YOUR CMS
+  ══════════════════════════════════════════════════════════════
+  MainPage > MainSiteHeader:
+    PageTitle        → used as <title> and displayed site name
+    Description      → used as the hero tagline / SEO description
 
-{% if MainPage.PageInfo.Pic %}<link rel="icon" href="{{ MainPage.PageInfo.Pic }}" />{% endif %}
-<link rel="canonical" href="https://your-domain.example/" />
+  MainPage > MMentionedLinks (collection):
+    Name             → link label
+    Link             → URL
 
-<!-- Open Graph -->
-<meta property="og:type" content="website" />
-<meta property="og:title" content="{{ MainPage.PageInfo.PageTitle | default('Welcome') }}" />
-<meta property="og:description" content="The home of {{ Sharan.AboutPage.Name | default('Sharan') }} and {{ Adit.AboutAuthor.Name | default('Adit') }}." />
-{% if MainPage.PageInfo.Pic %}<meta property="og:image" content="{{ MainPage.PageInfo.Pic }}" />{% endif %}
-<meta property="og:url" content="https://your-domain.example/" />
+  Adit > AboutAuthor:
+    Name             → card name
+    Expertise        → badge text under name
+    Pic              → card portrait
+    Desciption       → card bio text
 
-<!-- Structured data: helps search engines associate both names with this hub -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "WebSite",
-      "name": "{{ MainPage.PageInfo.PageTitle | default('Welcome') }}",
-      "url": "https://your-domain.example/"
-    },
-    {
-      "@type": "Person",
-      "name": "{{ Sharan.AboutPage.Name | default('Sharan') }}",
-      "jobTitle": "{{ Sharan.AboutPage.Expertise | default('') }}",
-      "url": "https://your-domain.example/Sharan/SharanPage/"
-    },
-    {
-      "@type": "Person",
-      "name": "{{ Adit.AboutAuthor.Name | default('Adit') }}",
-      "jobTitle": "{{ Adit.AboutAuthor.Expertise | default('') }}",
-      "url": "https://your-domain.example/Adit/AditPage/"
+  Sharan > AboutPage:
+    Name             → card name
+    Expertise        → badge text under name
+    Pic              → card portrait
+    Desciption       → card bio text
+
+  NEW CMS VARIABLES YOU SHOULD ADD:
+  ────────────────────────────────────────────────────────────
+  MainPage > MainSiteHeader:
+    HeroTagline      → small uppercase text above the main title  (e.g. "Welcome to our world")
+    CtaAdit          → button label on Adit's card               (e.g. "Visit Adit's Page")
+    CtaSharan        → button label on Sharan's card             (e.g. "Visit Sharan's Page")
+    FooterNote       → tiny copyright / footer line              (e.g. "© 2025 Adit & Sharan")
+  ══════════════════════════════════════════════════════════════
+  In production replace every {{ ... }} with your 11ty / Nunjucks
+  data pipeline. Paths match your page-cms exactly.
+  ══════════════════════════════════════════════════════════════
+  -->
+
+  <!-- ── SEO / Discoverability ──────────────────────────────── -->
+  <!-- PageTitle  → _data/MainPage/PageInfo.json  .PageTitle    -->
+  <title>{{ MainPage.MainSiteHeader.PageTitle | default("Adit & Sharan") }}</title>
+
+  <!-- Description → _data/MainPage/PageInfo.json .Description  -->
+  <meta name="description"
+        content="{{ MainPage.MainSiteHeader.Description | default('Welcome — explore Adit and Sharan\'s personal pages.') | striptags }}" />
+
+  <!-- Searchable by both author names AND the site title -->
+  <meta name="keywords"
+        content="{{ Adit.AboutAuthor.Name | default('Adit') }}, {{ Sharan.AboutPage.Name | default('Sharan') }}, {{ MainPage.MainSiteHeader.PageTitle | default('Adit and Sharan') }}, blog, articles" />
+
+  <!-- Open Graph -->
+  <meta property="og:title"
+        content="{{ MainPage.MainSiteHeader.PageTitle | default('Adit & Sharan') }}" />
+  <meta property="og:description"
+        content="{{ MainPage.MainSiteHeader.Description | default('Two minds, two pages.') | striptags }}" />
+  <meta property="og:type" content="website" />
+
+  <!-- Canonical — update to your real domain -->
+  <!-- <link rel="canonical" href="https://yourdomain.com/" /> -->
+
+  <!-- ── Fonts ──────────────────────────────────────────────── -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap"
+        rel="stylesheet" />
+
+  <style>
+    /* ════════════════════════════════════════════════════════════
+       DESIGN TOKENS  (same as your shared CSS)
+    ════════════════════════════════════════════════════════════ */
+    :root {
+      --bg-base:            #020617;
+      --glass-bg:           rgba(10, 25, 50, 0.60);
+      --glass-bg-strong:    rgba(6, 15, 30, 0.90);
+      --glass-border:       rgba(0, 180, 200, 0.25);
+      --glass-border-hover: rgba(0, 180, 200, 0.85);
+      --text-main:          #e6f7ff;
+      --text-muted:         #9cc7d8;
+      --text-dim:           #4f7c8a;
+      --accent-gold:        #00b4d8;
+      --accent-gold-dim:    rgba(0, 180, 216, 0.15);
+      --accent-gold-line:   rgba(0, 180, 216, 0.35);
+      --max-w:              1020px;
+      --orb-secondary-color:  #0077b6;
+      --orb-blur-factor:      0.95;
+      --orb-speed-multiplier: 1.2;
+      --orb-scale-multiplier: 1.1;
+      --glow-blob-intensity:  0.65;
     }
-  ]
-}
-</script>
 
-<style>
-  :root {
-    --max-w: 1100px;
-    --bg-0: #0b0b0f;
-    --glass-bg: rgba(255,255,255,0.04);
-    --glass-border: rgba(255,255,255,0.08);
-    --glass-border-hover: rgba(255,255,255,0.2);
-    --accent-gold: #d4af37;
-    --accent-gold-dim: rgba(212,175,55,0.12);
-    --accent-gold-line: rgba(212,175,55,0.35);
-    --text-main: #f2f0eb;
-    --text-dim: #9b97a6;
-  }
+    /* ════════════════════════════════════════════════════════════
+       RESET
+    ════════════════════════════════════════════════════════════ */
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  body {
-    min-height: 100vh;
-    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    background: var(--bg-0);
-    color: var(--text-main);
-    position: relative;
-    overflow-x: hidden;
-  }
+    html { scroll-behavior:smooth; }
 
-  /* ── Layout ───────────────────────────────────────────────────── */
-  main.hub {
-    max-width: var(--max-w);
-    margin: 0 auto;
-    padding: 80px 24px 40px;
-    position: relative;
-    z-index: 1;
-  }
+    ::-webkit-scrollbar { width:8px; height:8px; }
+    ::-webkit-scrollbar-track { background:transparent; }
+    ::-webkit-scrollbar-thumb {
+      background:var(--accent-gold-line); border-radius:100px;
+      border:2px solid transparent; background-clip:padding-box;
+    }
+    ::-webkit-scrollbar-thumb:hover { background:var(--accent-gold); border:2px solid transparent; background-clip:padding-box; }
+    * { scrollbar-width:thin; scrollbar-color:var(--accent-gold-line) transparent; }
 
-  .hub-header { text-align: center; margin-bottom: 64px; }
-  .hub-logo {
-    width: 84px; height: 84px; border-radius: 50%;
-    object-fit: cover; border: 1px solid var(--accent-gold-line);
-    margin-bottom: 20px;
-  }
-  .hub-header h1 {
-    font-size: 2.4rem; margin: 0 0 14px; letter-spacing: 0.02em; font-weight: 700;
-  }
-  .hub-desc {
-    color: var(--text-dim); max-width: 560px; margin: 0 auto; line-height: 1.6; font-size: 0.98rem;
-  }
-  .hub-desc p { margin: 0; }
+    /* ════════════════════════════════════════════════════════════
+       BODY & BACKGROUND
+    ════════════════════════════════════════════════════════════ */
+    body {
+      background-color: var(--bg-base);
+      color:            var(--text-main);
+      font-family:      'Inter', sans-serif;
+      line-height:      1.6;
+      padding:          0 5%;
+      min-height:       100vh;
+      overflow-x:       hidden;
+      position:         relative;
+      transition: background-color 2.5s ease-in-out, color 1.5s ease-in-out;
+    }
 
-  /* ── Selector cards ───────────────────────────────────────────── */
-  .selector-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 28px;
-    margin-bottom: 70px;
-  }
-  @media (max-width: 720px) {
-    .selector-grid { grid-template-columns: 1fr; }
-  }
+    body::before {
+      content:''; position:fixed; inset:0; z-index:-2;
+      background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, var(--bg-base) 100%), var(--bg-base);
+      pointer-events:none;
+    }
 
-  .selector-card {
-    position: relative;
-    display: block;
-    border-radius: 24px;
-    overflow: hidden;
-    isolation: isolate;
-    text-decoration: none;
-    color: inherit;
-  }
+    body::after {
+      content:''; position:fixed; inset:0; z-index:-1; pointer-events:none;
+      background-image:
+        radial-gradient(1.5px 1.5px at 12% 18%, rgba(200,220,255,.22) 0%, transparent 100%),
+        radial-gradient(1px   1px   at 72% 28%, rgba(200,220,255,.15) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 45% 62%, rgba(200,220,255,.18) 0%, transparent 100%),
+        radial-gradient(1px   1px   at  8% 82%, rgba(200,220,255,.12) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 85% 70%, rgba(200,220,255,.16) 0%, transparent 100%),
+        radial-gradient(1px   1px   at 55%  5%, rgba(200,220,255,.10) 0%, transparent 100%),
+        radial-gradient(1px   1px   at 90% 45%, rgba(200,220,255,.13) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 30% 90%, rgba(200,220,255,.14) 0%, transparent 100%),
+        radial-gradient(1px   1px   at 65% 52%, rgba(200,220,255,.10) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 22% 47%, rgba(200,220,255,.12) 0%, transparent 100%);
+      animation:starsPulse 9s ease-in-out infinite alternate;
+    }
+    @keyframes starsPulse { from{opacity:.45} to{opacity:.90} }
 
-  /* Rotating radial-gradient glow — the signature hover effect */
-  .selector-card::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 160%;
-    height: 160%;
-    background: radial-gradient(circle at 50% 12%, var(--accent-gold) 0%, transparent 55%);
-    transform: translate(-50%, -50%) rotate(0deg);
-    opacity: 0;
-    filter: blur(8px);
-    transition: opacity 0.6s ease;
-    animation: spin-glow 11s linear infinite;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .selector-card:hover::before { opacity: 0.45; }
-  @keyframes spin-glow { to { transform: translate(-50%, -50%) rotate(360deg); } }
+    #bg-pattern {
+      position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.28;
+      background-image:
+        repeating-linear-gradient(45deg,  transparent, transparent 38px, rgba(80,120,220,.09) 38px, rgba(80,120,220,.09) 39px),
+        repeating-linear-gradient(-45deg, transparent, transparent 38px, rgba(80,120,220,.07) 38px, rgba(80,120,220,.07) 39px);
+      animation:patternDrift 28s linear infinite;
+    }
+    @keyframes patternDrift { 0%{background-position:0 0,0 0} 100%{background-position:78px 78px,-78px 78px} }
 
-  .selector-card-inner {
-    position: relative;
-    z-index: 1;
-    height: 100%;
-    padding: 36px 28px;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    text-align: center;
-    transition:
-      border-color 0.35s ease,
-      transform 0.35s cubic-bezier(0.25,1,0.5,1),
-      box-shadow 0.35s ease;
-  }
-  .selector-card:hover .selector-card-inner {
-    border-color: var(--glass-border-hover);
-    transform: translateY(-6px);
-    box-shadow: 0 16px 44px rgba(0,0,0,0.55);
-  }
+    #bg-dots {
+      position:fixed; inset:0; z-index:-1; pointer-events:none;
+      background-image:radial-gradient(circle,rgba(120,160,255,.12) 1px,transparent 1px);
+      background-size:32px 32px; opacity:0; animation:dotsReveal 3s ease .5s forwards;
+    }
+    @keyframes dotsReveal { to{opacity:1} }
 
-  .selector-pic {
-    width: 96px; height: 96px; border-radius: 50%;
-    object-fit: cover; border: 1px solid var(--accent-gold-line);
-    margin-bottom: 18px;
-  }
-  .selector-card h2 { margin: 0 0 8px; font-size: 1.4rem; font-weight: 700; }
-  .selector-expertise {
-    display: inline-block;
-    font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--accent-gold); background: var(--accent-gold-dim);
-    border: 1px solid var(--accent-gold-line);
-    padding: 4px 12px; border-radius: 999px; margin-bottom: 16px;
-  }
-  .selector-desc {
-    color: var(--text-dim); font-size: 0.92rem; line-height: 1.6;
-    margin: 0 0 22px;
-  }
-  .selector-cta {
-    color: var(--accent-gold); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.03em;
-  }
-  .selector-card:hover .selector-cta { text-decoration: underline; }
+    #bg-canvas { position:fixed; inset:0; z-index:-2; pointer-events:none; overflow:hidden; }
+    .bg-orb    { position:absolute; border-radius:50%; will-change:transform,background,filter; }
 
-  /* ── Links / Mentioned Links section ─────────────────────────── */
-  #links { width: 100%; max-width: var(--max-w); margin: 0 auto; }
-  #links h3 {
-    text-align: center; color: var(--text-dim); font-size: 0.8rem;
-    letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 24px;
-  }
-  .links-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 16px;
-    margin-bottom: 60px;
-  }
-  .link-card {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 18px 24px;
-    text-decoration: none;
-    background: var(--glass-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    transition:
-      background     2.5s ease-in-out,
-      border-color   0.3s ease,
-      transform      0.35s cubic-bezier(0.25,1,0.5,1),
-      box-shadow     0.35s ease;
-    overflow: hidden;
-    position: relative;
-  }
-  .link-card:hover {
-    border-color: var(--glass-border-hover);
-    transform: translateY(-4px) scale(1.01);
-    box-shadow: 0 14px 40px rgba(0,0,0,0.6), 0 0 14px var(--accent-gold-dim);
-  }
-  .link-card-icon {
-    width: 42px; height: 42px; border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    background: rgba(var(--icon-rgb, 212,175,55), 0.15);
-    border: 1px solid rgba(var(--icon-rgb, 212,175,55), 0.4);
-    color: rgb(var(--icon-rgb, 212,175,55));
-    transition: filter 0.35s ease, transform 0.35s ease, background 0.35s ease, border-color 0.35s ease;
-    position: relative;
-    overflow: hidden;
-  }
-  .link-card:hover .link-card-icon { filter: brightness(1.15); transform: scale(1.07); }
-  .link-card-icon svg { width: 22px; height: 22px; display: block; flex-shrink: 0; }
-  .link-card-text { flex: 1; min-width: 0; }
-  .link-card-label {
-    display: block; font-size: 0.82rem; font-weight: 600; color: var(--text-main);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px;
-  }
-  .link-card-url {
-    display: block; font-size: 0.7rem; color: var(--text-dim);
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  }
-  .link-card-arrow {
-    color: var(--accent-gold); opacity: 0; font-size: 0.85rem;
-    transition: opacity 0.25s ease, transform 0.25s ease; flex-shrink: 0;
-  }
-  .link-card:hover .link-card-arrow { opacity: 1; transform: translateX(3px); }
+    /* ════════════════════════════════════════════════════════════
+       TYPOGRAPHY
+    ════════════════════════════════════════════════════════════ */
+    h1,h2,h3,h4 {
+      font-family:'Playfair Display',serif; font-weight:700;
+      letter-spacing:-.02em; line-height:1.15;
+    }
 
-  @media (prefers-reduced-motion: reduce) {
-    .orb, .selector-card::before { animation: none; }
-  }
-</style>
+    /* ════════════════════════════════════════════════════════════
+       NAVBAR
+    ════════════════════════════════════════════════════════════ */
+    .navbar {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:0 36px; margin-top:24px; margin-bottom:8px; height:64px;
+      position:sticky; top:20px; z-index:100; border-radius:100px;
+      max-width:var(--max-w); margin-left:auto; margin-right:auto;
+      background:var(--glass-bg-strong); backdrop-filter:blur(40px);
+      -webkit-backdrop-filter:blur(40px); border:1px solid var(--glass-border);
+      box-shadow:0 10px 30px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.04);
+      transition:background 2.5s ease-in-out,border-color 2.5s ease-in-out,box-shadow 2.5s ease-in-out;
+    }
+    .navbar:hover {
+      border-color:var(--glass-border-hover);
+      box-shadow:0 12px 40px rgba(0,0,0,.8),0 0 15px var(--accent-gold-dim);
+    }
+    .logo {
+      font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:900;
+      font-style:italic; letter-spacing:4px;
+      background:linear-gradient(110deg,#fff 10%,var(--accent-gold) 40%,#fff 70%);
+      background-size:200% auto; -webkit-background-clip:text; background-clip:text;
+      -webkit-text-fill-color:transparent; color:var(--accent-gold);
+      animation:goldShine 5s linear infinite; transition:transform .3s ease; text-decoration:none;
+    }
+    .logo:hover { transform:scale(1.08); }
+    @keyframes goldShine { to{background-position:200% center} }
+
+    /* ════════════════════════════════════════════════════════════
+       HERO BANNER
+    ════════════════════════════════════════════════════════════ */
+    .hero-banner {
+      text-align:center; padding:90px 20px 50px;
+      max-width:var(--max-w); margin:0 auto;
+    }
+
+    .hero-eyebrow {
+      font-size:.72rem; color:var(--accent-gold); text-transform:uppercase;
+      letter-spacing:6px; font-weight:600; opacity:.8; margin-bottom:20px;
+      /* NEW CMS: MainPage > MainSiteHeader > HeroTagline */
+    }
+
+    .hero-title {
+      font-size:clamp(3rem,9vw,6rem); font-weight:900; letter-spacing:4px;
+      text-transform:uppercase;
+      color:rgba(255,255,255,.92);
+      background:linear-gradient(175deg,#ffffff 30%,rgba(255,255,255,.18) 100%);
+      -webkit-background-clip:text; background-clip:text;
+      -webkit-text-fill-color:transparent;
+      line-height:1.05; margin-bottom:22px;
+      /* CMS: MainPage > MainSiteHeader > PageTitle */
+    }
+    @supports not (-webkit-background-clip:text) {
+      .hero-title { color:rgba(255,255,255,.92); background:none; -webkit-text-fill-color:unset; }
+    }
+
+    .hero-sub {
+      font-size:.85rem; color:var(--text-muted); font-weight:300;
+      max-width:500px; margin:0 auto 36px; line-height:1.8;
+      /* CMS: MainPage > MainSiteHeader > Description */
+    }
+
+    .hero-divider {
+      width:100px; height:1px; margin:0 auto 60px;
+      background:linear-gradient(90deg,transparent,var(--accent-gold-line),transparent);
+    }
+
+    /* ════════════════════════════════════════════════════════════
+       CHOOSE SECTION LABEL
+    ════════════════════════════════════════════════════════════ */
+    .choose-label {
+      text-align:center; margin-bottom:40px;
+    }
+    .choose-label span {
+      font-size:.68rem; color:var(--accent-gold); text-transform:uppercase;
+      letter-spacing:6px; font-weight:700;
+      background:var(--accent-gold-dim); border:1px solid var(--accent-gold-line);
+      padding:5px 18px; border-radius:100px;
+      transition:background 2.5s ease-in-out,border-color 2.5s ease-in-out;
+    }
+
+    /* ════════════════════════════════════════════════════════════
+       PERSON CARDS GRID
+    ════════════════════════════════════════════════════════════ */
+    .cards-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+      gap:32px;
+      max-width:var(--max-w); margin:0 auto 80px;
+    }
+
+    /* ── Base card ─────────────────────────────────────────── */
+    .person-card {
+      position:relative; overflow:hidden;
+      background:var(--glass-bg); border:1px solid var(--glass-border);
+      border-radius:28px;
+      backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+      box-shadow:0 8px 32px rgba(0,0,0,.45),inset 0 1px 0 rgba(140,180,255,.07);
+      padding:44px 40px 40px;
+      display:flex; flex-direction:column; align-items:center; text-align:center;
+      cursor:pointer; text-decoration:none; color:inherit;
+      transition:
+        border-color   .4s ease,
+        box-shadow     .4s ease,
+        transform      .4s cubic-bezier(.25,1,.5,1),
+        background     2.5s ease-in-out;
+      /* stagger reveal */
+    }
+
+    /* ── Rotating conic glow on hover ──────────────────────── */
+    .person-card::before {
+      content:'';
+      position:absolute;
+      inset:-2px;
+      border-radius:30px;
+      background:conic-gradient(
+        from var(--card-angle,0deg),
+        transparent 0deg,
+        var(--accent-gold) 60deg,
+        transparent 120deg
+      );
+      opacity:0;
+      transition:opacity .4s ease;
+      z-index:0;
+      pointer-events:none;
+    }
+
+    /* inner mask so the conic shows only as a border glow */
+    .person-card::after {
+      content:'';
+      position:absolute;
+      inset:1px;
+      border-radius:27px;
+      background:var(--glass-bg);
+      z-index:1;
+      transition:background 2.5s ease-in-out;
+    }
+
+    .person-card:hover::before { opacity:.9; }
+    .person-card:hover {
+      transform:translateY(-8px) scale(1.02);
+      border-color:var(--glass-border-hover);
+      box-shadow:
+        0 24px 60px rgba(0,0,0,.65),
+        0 0 40px var(--accent-gold-dim);
+    }
+
+    /* everything inside above the pseudo-layers */
+    .person-card > * { position:relative; z-index:2; }
+
+    /* ── Portrait ─────────────────────────────────────────── */
+    .card-portrait-wrap {
+      width:120px; height:120px; border-radius:50%; overflow:hidden;
+      border:2px solid var(--glass-border);
+      margin-bottom:24px; flex-shrink:0;
+      position:relative;
+      box-shadow:0 0 0 0 var(--accent-gold-dim);
+      transition:border-color .4s ease, box-shadow .4s ease;
+    }
+    .person-card:hover .card-portrait-wrap {
+      border-color:var(--accent-gold);
+      box-shadow:0 0 24px 4px var(--accent-gold-dim);
+    }
+    .card-portrait-wrap img {
+      width:100%; height:100%; object-fit:cover; object-position:top;
+      display:block;
+    }
+    /* placeholder when no pic */
+    .card-portrait-wrap .portrait-placeholder {
+      width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+      font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:900;
+      color:var(--accent-gold); background:var(--accent-gold-dim);
+    }
+
+    /* ── Name & expertise ─────────────────────────────────── */
+    .card-name {
+      font-size:1.8rem; font-weight:900; color:#fff;
+      margin-bottom:8px; letter-spacing:-.02em;
+      /* CMS: Adit > AboutAuthor > Name  /  Sharan > AboutPage > Name */
+    }
+
+    .card-expertise {
+      font-size:.68rem; color:var(--accent-gold); text-transform:uppercase;
+      letter-spacing:3.5px; font-weight:700; opacity:.9;
+      background:var(--accent-gold-dim); border:1px solid var(--accent-gold-line);
+      padding:4px 14px; border-radius:100px; margin-bottom:22px; display:inline-block;
+      /* CMS: Adit > AboutAuthor > Expertise  /  Sharan > AboutPage > Expertise */
+    }
+
+    .card-bio {
+      color:var(--text-muted); font-size:.9rem; font-weight:300; line-height:1.75;
+      flex:1; margin-bottom:32px;
+      /* CMS: Adit > AboutAuthor > Desciption  /  Sharan > AboutPage > Desciption */
+    }
+
+    /* ── CTA button ───────────────────────────────────────── */
+    .card-btn {
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding:13px 28px; border:1px solid var(--accent-gold-line);
+      border-radius:12px; text-decoration:none;
+      color:var(--accent-gold); font-size:.75rem; font-weight:700;
+      text-transform:uppercase; letter-spacing:2.5px;
+      background:transparent;
+      transition:background .3s ease,color .3s ease,border-color .3s ease,transform .3s ease;
+      pointer-events:all;
+    }
+    .card-btn:hover {
+      background:var(--accent-gold); color:var(--bg-base);
+      border-color:var(--accent-gold); transform:translateY(-2px);
+    }
+    .card-btn svg { width:14px; height:14px; transition:transform .25s ease; }
+    .card-btn:hover svg { transform:translateX(3px); }
+
+    /* ═══ REVEAL ANIMATION ════════════════════════════════════ */
+    .reveal {
+      opacity:0; transform:translateY(28px);
+      transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);
+    }
+    .reveal.active { opacity:1; transform:translateY(0); }
+    .cards-grid > .reveal:nth-child(2) { transition-delay:.15s; }
+
+    /* ════════════════════════════════════════════════════════════
+       LINKS SECTION  (same logic as AditPage)
+    ════════════════════════════════════════════════════════════ */
+    #links {
+      width:100%; max-width:var(--max-w); margin:0 auto 30px;
+    }
+    .links-section-label {
+      text-align:center; margin-bottom:28px;
+    }
+    .links-section-label span {
+      font-size:.68rem; color:var(--accent-gold); text-transform:uppercase;
+      letter-spacing:6px; font-weight:700;
+      background:var(--accent-gold-dim); border:1px solid var(--accent-gold-line);
+      padding:5px 18px; border-radius:100px;
+    }
+
+    .links-grid {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:16px; margin-bottom:60px;
+    }
+    .link-card {
+      display:flex; align-items:center; gap:14px; padding:18px 24px;
+      text-decoration:none; background:var(--glass-bg);
+      border:1px solid var(--glass-border); border-radius:16px;
+      backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px);
+      transition:
+        background     2.5s ease-in-out, border-color .3s ease,
+        transform      .35s cubic-bezier(.25,1,.5,1), box-shadow .35s ease;
+      overflow:hidden; position:relative;
+    }
+    .link-card:hover {
+      border-color:var(--glass-border-hover);
+      transform:translateY(-4px) scale(1.01);
+      box-shadow:0 14px 40px rgba(0,0,0,.6),0 0 14px var(--accent-gold-dim);
+    }
+    .link-card-icon {
+      width:42px; height:42px; border-radius:12px; display:flex; align-items:center;
+      justify-content:center; flex-shrink:0; background:var(--accent-gold-dim);
+      border:1px solid var(--accent-gold-line);
+      transition:filter .35s ease,transform .35s ease; position:relative; overflow:hidden;
+    }
+    .link-card-icon::after {
+      content:''; position:absolute; inset:0; border-radius:inherit;
+      background:var(--accent-gold); opacity:.08; mix-blend-mode:screen;
+      transition:opacity .35s ease,background 2.5s ease-in-out; pointer-events:none;
+    }
+    .link-card:hover .link-card-icon::after { opacity:.18; }
+    .link-card:hover .link-card-icon { filter:brightness(1.15); transform:scale(1.07); }
+    .link-card-icon svg { width:22px; height:22px; display:block; flex-shrink:0; position:relative; z-index:1; }
+    .link-card-text { flex:1; min-width:0; }
+    .link-card-label {
+      display:block; font-size:.82rem; font-weight:600; color:var(--text-main);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:2px;
+      transition:color 1.5s ease-in-out;
+    }
+    .link-card-url {
+      display:block; font-size:.7rem; color:var(--text-dim);
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+      transition:color 1.5s ease-in-out;
+    }
+    .link-card-arrow {
+      color:var(--accent-gold); opacity:0; font-size:.85rem;
+      transition:opacity .25s ease,transform .25s ease,color 1.5s ease-in-out; flex-shrink:0;
+    }
+    .link-card:hover .link-card-arrow { opacity:1; transform:translateX(3px); }
+
+    /* ════════════════════════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════════════════════════ */
+    .footer {
+      text-align:center; padding:50px 20px; color:var(--text-dim);
+      font-size:.75rem; text-transform:uppercase; letter-spacing:2px;
+      /* CMS: MainPage > MainSiteHeader > FooterNote */
+    }
+
+    /* ════════════════════════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════════════════════════ */
+    @media (max-width:768px) {
+      body { padding:0 4%; }
+      .navbar { padding:0 20px; border-radius:60px; }
+      .cards-grid { grid-template-columns:1fr; }
+      .person-card { padding:32px 24px 28px; }
+      .hero-title { -webkit-text-fill-color:rgba(255,255,255,.92); }
+    }
+  </style>
 </head>
 <body>
 
-<div class="bg-orbs" aria-hidden="true">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-</div>
+  <!-- ── Background layers ───────────────────────────────────── -->
+  <div id="bg-pattern"></div>
+  <div id="bg-dots"></div>
+  <div id="bg-canvas"></div>
 
-<!-- Hidden SVG sprite — icons referenced by link cards via <use> -->
-<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
-  <symbol id="icon-instagram" viewBox="0 0 24 24" fill="none">
-    <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="currentColor" stroke-width="1.8"/>
-    <circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.8"/>
-    <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
-  </symbol>
-  <symbol id="icon-x" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.961l4.259 5.631 4.774-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-  </symbol>
-  <symbol id="icon-youtube" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-  </symbol>
-  <symbol id="icon-linkedin" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-  </symbol>
-  <symbol id="icon-github" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-  </symbol>
-  <symbol id="icon-facebook" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-  </symbol>
-  <symbol id="icon-tiktok" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
-  </symbol>
-  <symbol id="icon-substack" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/>
-  </symbol>
-  <symbol id="icon-medium" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M13.54 12a6.8 6.8 0 0 1-6.77 6.82A6.8 6.8 0 0 1 0 12a6.8 6.8 0 0 1 6.77-6.82A6.8 6.8 0 0 1 13.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
-  </symbol>
-  <symbol id="icon-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-    <circle cx="12" cy="12" r="10"/>
-    <line x1="2" y1="12" x2="22" y2="12"/>
-    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-  </symbol>
-</svg>
+  <!-- ════════════════════════════════════════════════════════════
+       NAVBAR
+  ════════════════════════════════════════════════════════════ -->
+  <nav class="navbar reveal">
+    <!-- CMS: MainPage > MainSiteHeader > PageTitle -->
+    <a href="/" class="logo">{{ MainPage.MainSiteHeader.PageTitle | default("A & S") }}</a>
+  </nav>
 
-<main class="hub">
+  <!-- ════════════════════════════════════════════════════════════
+       HERO BANNER
+  ════════════════════════════════════════════════════════════ -->
+  <section class="hero-banner">
+    <!-- CMS NEW VAR: MainPage > MainSiteHeader > HeroTagline -->
+    <p class="hero-eyebrow reveal">{{ MainPage.MainSiteHeader.HeroTagline | default("Two minds. One place.") }}</p>
 
-  <header class="hub-header">
-    {% if MainPage.PageInfo.Pic %}
-      <img class="hub-logo" src="{{ MainPage.PageInfo.Pic }}" alt="{{ MainPage.PageInfo.PageTitle | default('Site logo') }}" />
-    {% endif %}
-    <h1>{{ MainPage.PageInfo.PageTitle | default("Welcome") }}</h1>
-    {% if MainPage.PageInfo.Description %}
-      <div class="hub-desc">{{ MainPage.PageInfo.Description | safe }}</div>
-    {% endif %}
-  </header>
+    <!-- CMS: MainPage > MainSiteHeader > PageTitle -->
+    <h1 class="hero-title reveal">{{ MainPage.MainSiteHeader.PageTitle | default("Adit &amp; Sharan") }}</h1>
 
-  <section class="selector-grid">
+    <!-- CMS: MainPage > MainSiteHeader > Description -->
+    <p class="hero-sub reveal">
+      {{ MainPage.MainSiteHeader.Description | default("Two separate worlds — one shared corner of the internet. Pick a page and dive in.") | safe }}
+    </p>
 
-    <a class="selector-card" href="Sharan/">
-      <div class="selector-card-inner">
-          <img class="selector-pic" src="/Adit-Sahai.github.io{{ Sharan.AboutPage.Pic }}" alt="{{ Sharan.AboutPage.Name | default('Sharan') }}" />
-        {% if Sharan.AboutPage.Expertise %}
-          <span class="selector-expertise">{{ Sharan.AboutPage.Expertise }}</span>
-        {% endif %}
-        {% if Sharan.AboutPage.Desciption %}
-          <p class="selector-desc">{{ Sharan.AboutPage.Desciption | striptags | truncate(140) }}</p>
-        {% endif %}
-        <span class="selector-cta">Enter site →</span>
-      </div>
-    </a>
-
-    <a class="selector-card" href="Adit/AditPage">
-      <div class="selector-card-inner">
-          <img class="selector-pic" src="/Adit-Sahai.github.io{{ Adit.AboutAuthor.Pic }}" alt="{{ Adit.AboutAuthor.Name | default('Adit') }}" />
-        {% if Adit.AboutAuthor.Expertise %}
-          <span class="selector-expertise">{{ Adit.AboutAuthor.Expertise }}</span>
-        {% endif %}
-        {% if Adit.AboutAuthor.Desciption %}
-          <p class="selector-desc">{{ Adit.AboutAuthor.Desciption | striptags | truncate(140) }}</p>
-        {% endif %}
-        <span class="selector-cta">Enter site →</span>
-      </div>
-    </a>
-
+    <div class="hero-divider reveal"></div>
   </section>
 
-  {% set hubLinks = MainPage.MentionedLinks or {} %}
-  {% if hubLinks | length %}
-  <section id="links">
-    <h3>Find us</h3>
-    <div class="links-grid">
-      {% for key, link in hubLinks %}
-        <a class="link-card" href="{{ link.Link }}" target="_blank" rel="noopener">
-          <div class="link-card-icon" data-icon-url="{{ link.Link }}"></div>
-          <div class="link-card-text">
-            <span class="link-card-label">{{ link.Name }}</span>
-            <span class="link-card-url">{{ link.Link }}</span>
-          </div>
-          <span class="link-card-arrow">↗</span>
-        </a>
-      {% endfor %}
-    </div>
+  <!-- ════════════════════════════════════════════════════════════
+       PERSON SELECTOR CARDS
+  ════════════════════════════════════════════════════════════ -->
+  <div class="choose-label reveal">
+    <span>Choose Your Destination</span>
+  </div>
+
+  <div class="cards-grid">
+
+    <!-- ── ADIT'S CARD ─────────────────────────────────────── -->
+    <!-- CMS source: _data/Adit/AboutAuthor.json -->
+    <a href="/Adit/AditPage.html" class="person-card reveal" id="card-adit">
+      <div class="card-portrait-wrap">
+        {% if Adit.AboutAuthor.Pic %}
+          <img src="{{ Adit.AboutAuthor.Pic }}"
+               alt="Photo of {{ Adit.AboutAuthor.Name | default('Adit') }}"
+               loading="lazy" />
+        {% else %}
+          <div class="portrait-placeholder">A</div>
+        {% endif %}
+      </div>
+
+      <!-- CMS: Adit > AboutAuthor > Name -->
+      <h2 class="card-name">{{ Adit.AboutAuthor.Name | default("Adit") }}</h2>
+
+      <!-- CMS: Adit > AboutAuthor > Expertise -->
+      <span class="card-expertise">{{ Adit.AboutAuthor.Expertise | default("Writer & Thinker") }}</span>
+
+      <!-- CMS: Adit > AboutAuthor > Desciption -->
+      <p class="card-bio">
+        {{ Adit.AboutAuthor.Desciption | default("Articles, books, and ideas worth reading. Adit's corner of the web.") | striptags | truncate(160) }}
+      </p>
+
+      <!-- CMS NEW VAR: MainPage > MainSiteHeader > CtaAdit -->
+      <span class="card-btn">
+        {{ MainPage.MainSiteHeader.CtaAdit | default("Visit Adit's Page") }}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </span>
+    </a>
+
+    <!-- ── SHARAN'S CARD ───────────────────────────────────── -->
+    <!-- CMS source: _data/Sharan/AboutPage.json -->
+    <a href="/Sharan/SharanPage.html" class="person-card reveal" id="card-sharan">
+      <div class="card-portrait-wrap">
+        {% if Sharan.AboutPage.Pic %}
+          <img src="{{ Sharan.AboutPage.Pic }}"
+               alt="Photo of {{ Sharan.AboutPage.Name | default('Sharan') }}"
+               loading="lazy" />
+        {% else %}
+          <div class="portrait-placeholder">S</div>
+        {% endif %}
+      </div>
+
+      <!-- CMS: Sharan > AboutPage > Name -->
+      <h2 class="card-name">{{ Sharan.AboutPage.Name | default("Sharan") }}</h2>
+
+      <!-- CMS: Sharan > AboutPage > Expertise -->
+      <span class="card-expertise">{{ Sharan.AboutPage.Expertise | default("Creator & Explorer") }}</span>
+
+      <!-- CMS: Sharan > AboutPage > Desciption -->
+      <p class="card-bio">
+        {{ Sharan.AboutPage.Desciption | default("Sharan's personal space — projects, thoughts, and everything in between.") | striptags | truncate(160) }}
+      </p>
+
+      <!-- CMS NEW VAR: MainPage > MainSiteHeader > CtaSharan -->
+      <span class="card-btn">
+        {{ MainPage.MainSiteHeader.CtaSharan | default("Visit Sharan's Page") }}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </span>
+    </a>
+
+  </div><!-- /cards-grid -->
+
+  <!-- ════════════════════════════════════════════════════════════
+       MENTIONED LINKS  (CMS: MainPage > MMentionedLinks collection)
+       _data/MainPage/MentionedLinks/*.json
+  ════════════════════════════════════════════════════════════ -->
+  {% if MainPage.MMentionedLinks.length %}
+  <section id="links" class="reveal">
+    <div class="links-section-label"><span>Find Us Online</span></div>
+    <div class="links-grid" id="linksGrid"></div>
   </section>
+
+  <script>
+    /* ── Links data injected from CMS ───────────────────────────
+       In 11ty you'd loop with {% for link in MainPage.MMentionedLinks %}
+       and render server-side. Here we use a JS data block so the file
+       is fully self-contained for preview / testing.
+    ─────────────────────────────────────────────────────────── */
+    const MENTIONED_LINKS = {{ MainPage.MMentionedLinks | dump | safe }};
+    /* ── Fallback for static preview ──────────────────────── */
+  </script>
+  {% else %}
+  <section id="links" class="reveal">
+    <div class="links-section-label"><span>Find Us Online</span></div>
+    <div class="links-grid" id="linksGrid"></div>
+  </section>
+  <script>
+    /* Static preview fallback — replace with real CMS data via 11ty */
+    const MENTIONED_LINKS = [
+      { Name: "Adit on Instagram", Link: "https://instagram.com" },
+      { Name: "Sharan on Instagram", Link: "https://instagram.com" },
+      { Name: "Our YouTube Channel",  Link: "https://youtube.com" }
+    ];
+  </script>
   {% endif %}
 
-</main>
+  <!-- ════════════════════════════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════════════════════════ -->
+  <!-- CMS NEW VAR: MainPage > MainSiteHeader > FooterNote -->
+  <footer class="footer">
+    {{ MainPage.MainSiteHeader.FooterNote | default("© 2025 Adit &amp; Sharan · All rights reserved") | safe }}
+  </footer>
 
-<script>
-(function () {
-  // hostname keyword -> icon id + "r,g,b" tint
-  var ICONS = {
-    instagram: { icon: 'instagram', rgb: '193,53,132' },
-    twitter:   { icon: 'x',         rgb: '231,233,234' },
-    'x.com':   { icon: 'x',         rgb: '231,233,234' },
-    youtube:   { icon: 'youtube',   rgb: '255,0,0' },
-    linkedin:  { icon: 'linkedin',  rgb: '0,119,181' },
-    github:    { icon: 'github',    rgb: '201,209,217' },
-    facebook:  { icon: 'facebook',  rgb: '24,119,242' },
-    tiktok:    { icon: 'tiktok',    rgb: '0,242,234' },
-    substack:  { icon: 'substack',  rgb: '255,106,0' },
-    medium:    { icon: 'medium',    rgb: '255,255,255' }
-  };
-  var FALLBACK = { icon: 'link', rgb: '212,175,55' };
+  <!-- ════════════════════════════════════════════════════════════
+       JAVASCRIPT
+  ════════════════════════════════════════════════════════════ -->
+  <script>
+    /* ── Shared config (mirrors your existing JS) ─────────────── */
+    const ROTATION_INTERVAL_MS = 30000;
+    const ORB_TRANSITION_SECS  = 10.0;
 
-  function lookup(url) {
-    try {
-      var host = new URL(url).hostname.toLowerCase().replace(/^www\./, '');
-      for (var key in ICONS) {
-        if (host.indexOf(key) !== -1) return ICONS[key];
+    /* ══ THEME DEFINITIONS ══════════════════════════════════════ */
+    const MY_FAVORITE_THEMES = [
+      { name:"Crimson Ember", tokens:{'--bg-base':'#0a0506','--glass-bg':'rgba(28,8,10,0.65)','--glass-bg-strong':'rgba(18,4,6,0.88)','--glass-border':'rgba(255,60,80,0.25)','--glass-border-hover':'rgba(255,60,80,0.85)','--text-main':'#fff1f2','--text-muted':'#d7a7ad','--text-dim':'#7a4a50','--accent-gold':'#ff3b4d','--accent-gold-dim':'rgba(255,59,77,0.15)','--accent-gold-line':'rgba(255,59,77,0.35)','--orb-colors':'#ff2a2a,#ff6b3d,#ff3b8d,#ffb347,#c1121f','--orb-blur-factor':'1.05','--orb-speed-multiplier':'1.25','--orb-scale-multiplier':'1.05'}},
+      { name:"Aurora Ice",    tokens:{'--bg-base':'#050814','--glass-bg':'rgba(10,18,40,0.65)','--glass-bg-strong':'rgba(6,12,30,0.88)','--glass-border':'rgba(80,140,255,0.25)','--glass-border-hover':'rgba(80,140,255,0.85)','--text-main':'#eef4ff','--text-muted':'#a9b9d6','--text-dim':'#5a6f93','--accent-gold':'#4da3ff','--accent-gold-dim':'rgba(77,163,255,0.15)','--accent-gold-line':'rgba(77,163,255,0.35)','--orb-colors':'#1e90ff,#00c2ff,#7a5cff,#00ffd0,#3b82f6','--orb-blur-factor':'0.95','--orb-speed-multiplier':'1.3','--orb-scale-multiplier':'1.1'}},
+      { name:"Sand & Ivory",  tokens:{'--bg-base':'#0e0b08','--glass-bg':'rgba(40,30,24,0.6)','--glass-bg-strong':'rgba(28,20,16,0.88)','--glass-border':'rgba(210,190,160,0.25)','--glass-border-hover':'rgba(210,190,160,0.85)','--text-main':'#f7f1e6','--text-muted':'#cbbba4','--text-dim':'#8a7a66','--accent-gold':'#d6b48a','--accent-gold-dim':'rgba(214,180,138,0.15)','--accent-gold-line':'rgba(214,180,138,0.35)','--orb-colors':'#d6b48a,#f2d2a9,#a68a64,#ffe0b2,#c8a27a','--orb-blur-factor':'1.0','--orb-speed-multiplier':'0.95','--orb-scale-multiplier':'1.08'}},
+      { name:"Neon Forest",   tokens:{'--bg-base':'#050a07','--glass-bg':'rgba(10,26,18,0.65)','--glass-bg-strong':'rgba(6,18,12,0.88)','--glass-border':'rgba(0,255,140,0.22)','--glass-border-hover':'rgba(0,255,140,0.85)','--text-main':'#eafff3','--text-muted':'#a7d6bc','--text-dim':'#5a8f73','--accent-gold':'#00ff9a','--accent-gold-dim':'rgba(0,255,154,0.15)','--accent-gold-line':'rgba(0,255,154,0.35)','--orb-colors':'#00ff9a,#39ff14,#00d4ff,#7cffcb,#2bff88','--orb-blur-factor':'0.9','--orb-speed-multiplier':'1.45','--orb-scale-multiplier':'1.05'}},
+      { name:"Velvet Void",   tokens:{'--bg-base':'#07040b','--glass-bg':'rgba(24,10,32,0.65)','--glass-bg-strong':'rgba(14,6,22,0.88)','--glass-border':'rgba(170,90,255,0.25)','--glass-border-hover':'rgba(170,90,255,0.85)','--text-main':'#f5ecff','--text-muted':'#c7b3e6','--text-dim':'#7a5a9a','--accent-gold':'#b56cff','--accent-gold-dim':'rgba(181,108,255,0.15)','--accent-gold-line':'rgba(181,108,255,0.35)','--orb-colors':'#b56cff,#7c3aed,#00d9ff,#ff4fd8,#9b5cff','--orb-blur-factor':'1.05','--orb-speed-multiplier':'1.35','--orb-scale-multiplier':'1.1'}},
+      { name:"Deep Ocean",    tokens:{'--bg-base':'#020617','--glass-bg':'rgba(10,25,50,0.6)','--glass-bg-strong':'rgba(6,15,30,0.9)','--glass-border':'rgba(0,180,200,0.25)','--glass-border-hover':'rgba(0,180,200,0.85)','--text-main':'#e6f7ff','--text-muted':'#9cc7d8','--text-dim':'#4f7c8a','--accent-gold':'#00b4d8','--accent-gold-dim':'rgba(0,180,216,0.15)','--accent-gold-line':'rgba(0,180,216,0.35)','--orb-colors':'#00b4d8,#0077b6,#90e0ef,#48cae4,#0096c7','--orb-blur-factor':'0.95','--orb-speed-multiplier':'1.2','--orb-scale-multiplier':'1.1'}},
+      { name:"Golden Dusk",   tokens:{'--bg-base':'#0e0a06','--glass-bg':'rgba(40,26,12,0.62)','--glass-bg-strong':'rgba(25,16,8,0.9)','--glass-border':'rgba(255,190,90,0.22)','--glass-border-hover':'rgba(255,190,90,0.85)','--text-main':'#fff7e6','--text-muted':'#e2c9a3','--text-dim':'#9b7a4f','--accent-gold':'#ffbe5a','--accent-gold-dim':'rgba(255,190,90,0.15)','--accent-gold-line':'rgba(255,190,90,0.35)','--orb-colors':'#ffbe5a,#ff9f1c,#e85d04,#ffd166,#f48c06','--orb-blur-factor':'1.0','--orb-speed-multiplier':'1.15','--orb-scale-multiplier':'1.08'}},
+      { name:"Cyber Magenta", tokens:{'--bg-base':'#07000a','--glass-bg':'rgba(30,8,40,0.65)','--glass-bg-strong':'rgba(18,4,24,0.9)','--glass-border':'rgba(255,0,180,0.25)','--glass-border-hover':'rgba(255,0,180,0.85)','--text-main':'#ffe9fb','--text-muted':'#d7a0cc','--text-dim':'#8a4f7a','--accent-gold':'#ff2bd6','--accent-gold-dim':'rgba(255,43,214,0.15)','--accent-gold-line':'rgba(255,43,214,0.35)','--orb-colors':'#ff2bd6,#ff6bd6,#9b5cff,#00e5ff,#ff0080','--orb-blur-factor':'1.1','--orb-speed-multiplier':'1.4','--orb-scale-multiplier':'1.1'}},
+    ];
+
+    /* ══ HELPERS ════════════════════════════════════════════════ */
+    function hexToRgb(hex){hex=hex.trim().replace('#','');if(hex.length===3)hex=hex.split('').map(c=>c+c).join('');return{r:parseInt(hex.slice(0,2),16),g:parseInt(hex.slice(2,4),16),b:parseInt(hex.slice(4,6),16)};}
+    function lerpColor(a,b,t){return{r:Math.round(a.r+(b.r-a.r)*t),g:Math.round(a.g+(b.g-a.g)*t),b:Math.round(a.b+(b.b-a.b)*t)};}
+    function easeInOut(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
+    function orbGradient(rgb){return`radial-gradient(circle,rgb(${rgb.r},${rgb.g},${rgb.b}) 0%,rgba(0,0,0,0) 70%)`;}
+    function parseOrbColors(styles){const raw=styles.getPropertyValue('--orb-colors').trim();return raw.split(',').map(s=>s.trim()).filter(Boolean);}
+    function pickRandomColor(colors){return colors[Math.floor(Math.random()*colors.length)];}
+
+    /* ══ TOKEN LERPER ═══════════════════════════════════════════ */
+    function parseColorToken(raw){raw=raw.trim();if(raw.startsWith('#')){const rgb=hexToRgb(raw);return{...rgb,a:1};}const m=raw.match(/rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)(?:\s*,\s*([\d.]+))?\s*\)/);if(m)return{r:+m[1],g:+m[2],b:+m[3],a:m[4]!==undefined?+m[4]:1};return null;}
+    function serializeColor(rgba,originalRaw){const{r,g,b,a}=rgba;const isHex=originalRaw.trim().startsWith('#')&&a===1;if(isHex)return'#'+[r,g,b].map(v=>Math.round(v).toString(16).padStart(2,'0')).join('');return`rgba(${Math.round(r)},${Math.round(g)},${Math.round(b)},${a.toFixed(4)})`;}
+    function lerpRgba(a,b,t){return{r:a.r+(b.r-a.r)*t,g:a.g+(b.g-a.g)*t,b:a.b+(b.b-a.b)*t,a:a.a+(b.a-a.a)*t};}
+
+    const _tokenLerps=new Map();let _tokenLerpRunning=false;
+    function startTokenLerpLoop(){if(_tokenLerpRunning)return;_tokenLerpRunning=true;let last=performance.now();function tick(now){const dt=now-last;last=now;const root=document.documentElement;_tokenLerps.forEach((state,variable)=>{state.elapsed=Math.min(state.elapsed+dt,state.duration);const t=easeInOut(state.elapsed/state.duration);const cur=lerpRgba(state.fromColor,state.toColor,t);root.style.setProperty(variable,serializeColor(cur,state.rawTarget));if(state.elapsed>=state.duration)_tokenLerps.delete(variable);});if(_tokenLerps.size>0)requestAnimationFrame(tick);else _tokenLerpRunning=false;}requestAnimationFrame(tick);}
+    const INSTANT_TOKENS=new Set(['--orb-blur-factor','--orb-speed-multiplier','--orb-scale-multiplier','--orb-colors']);
+    function applyThemeTokensSmooth(tokens,durationMs){const root=document.documentElement;const styles=getComputedStyle(root);Object.entries(tokens).forEach(([variable,rawTarget])=>{if(INSTANT_TOKENS.has(variable)){root.style.setProperty(variable,rawTarget);return;}const toColor=parseColorToken(rawTarget);if(!toColor){root.style.setProperty(variable,rawTarget);return;}const currentRaw=styles.getPropertyValue(variable).trim();const fromColor=parseColorToken(currentRaw)||toColor;_tokenLerps.set(variable,{variable,fromColor,toColor,rawTarget,elapsed:0,duration:durationMs});});startTokenLerpLoop();}
+
+    let currentThemeName=null;
+    function applyRandomTheme(){if(!MY_FAVORITE_THEMES.length)return;const available=MY_FAVORITE_THEMES.filter(t=>t.name!==currentThemeName);const pool=available.length>0?available:MY_FAVORITE_THEMES;const randomTheme=pool[Math.floor(Math.random()*pool.length)];currentThemeName=randomTheme.name;const durationMs=ORB_TRANSITION_SECS*1000;requestAnimationFrame(()=>{applyThemeTokensSmooth(randomTheme.tokens,durationMs);updateActiveOrbSkins(randomTheme.tokens,durationMs);});}
+
+    /* ══ BACKGROUND ORBS ════════════════════════════════════════ */
+    function initBackground(){
+      const canvas=document.getElementById('bg-canvas');if(!canvas)return;
+      const vw=window.innerWidth,vh=window.innerHeight;
+      const BASE_CONFIGS=[
+        {sizePercent:38,blurBase:110,opacity:.40},{sizePercent:32,blurBase:100,opacity:.55},
+        {sizePercent:28,blurBase:90, opacity:.30},{sizePercent:25,blurBase:85, opacity:.45},
+        {sizePercent:24,blurBase:80, opacity:.35},{sizePercent:30,blurBase:95, opacity:.50}
+      ];
+      const orbs=BASE_CONFIGS.map((cfg,i)=>{
+        const el=document.createElement('div');el.className='bg-orb';canvas.appendChild(el);
+        const startX=Math.random()*vw,startY=Math.random()*vh;
+        const state={el,sizePercent:cfg.sizePercent,blurBase:cfg.blurBase,opacity:cfg.opacity,
+          x:startX,y:startY,tx:0,ty:0,ox:startX,oy:startY,duration:1,elapsed:0,
+          fromRgb:{r:80,g:0,b:80},currentRgb:{r:80,g:0,b:80},targetRgb:{r:80,g:0,b:80},
+          colorT:1,colorDuration:ORB_TRANSITION_SECS*1000,
+          fromSizePx:0,currentSizePx:0,targetSizePx:0,sizeT:1,sizeDuration:ORB_TRANSITION_SECS*1000,
+          fromBlurPx:cfg.blurBase,currentBlurPx:cfg.blurBase,targetBlurPx:cfg.blurBase,
+          blurT:1,blurDuration:ORB_TRANSITION_SECS*1000};
+        el.style.cssText='position:absolute;pointer-events:none;opacity:0;border-radius:50%;';
+        const initStyles=getComputedStyle(document.documentElement);
+        const initScale=parseFloat(initStyles.getPropertyValue('--orb-scale-multiplier'))||1;
+        const initBlur=parseFloat(initStyles.getPropertyValue('--orb-blur-factor'))||1;
+        state.currentSizePx=Math.round(vw*(cfg.sizePercent*initScale)/100);
+        state.fromSizePx=state.targetSizePx=state.currentSizePx;
+        state.currentBlurPx=cfg.blurBase*initBlur;
+        state.fromBlurPx=state.targetBlurPx=state.currentBlurPx;
+        el.style.width=`${state.currentSizePx}px`;el.style.height=`${state.currentSizePx}px`;
+        el.style.filter=`blur(${state.currentBlurPx}px)`;
+        el.style.transition=`opacity ${ORB_TRANSITION_SECS}s ease`;
+        setTimeout(()=>{el.style.opacity=cfg.opacity;},i*200);
+        pickTarget(state,vw,vh);return state;
+      });
+      window._orbStates=orbs;
+
+      function pickTarget(state,width,height){
+        const styles=getComputedStyle(document.documentElement);
+        const sm=parseFloat(styles.getPropertyValue('--orb-speed-multiplier'))||1;
+        state.ox=state.x;state.oy=state.y;
+        state.tx=Math.random()*(width*1.3)-width*.15;
+        state.ty=Math.random()*(height*1.3)-height*.15;
+        const base=24000+Math.random()*24000;state.duration=base/sm;state.elapsed=0;
       }
-    } catch (e) {}
-    return FALLBACK;
-  }
 
-  function initLinkIcons() {
-    document.querySelectorAll('.link-card-icon[data-icon-url]').forEach(function (el) {
-      var meta = lookup(el.getAttribute('data-icon-url'));
-      el.style.setProperty('--icon-rgb', meta.rgb);
-      el.innerHTML = '<svg viewBox="0 0 24 24"><use href="#icon-' + meta.icon + '"></use></svg>';
+      let last=performance.now();
+      function tick(now){
+        const dt=now-last;last=now;
+        orbs.forEach(state=>{
+          state.elapsed+=dt;
+          const t=Math.min(state.elapsed/state.duration,1);
+          const e=easeInOut(t);
+          state.x=state.ox+(state.tx-state.ox)*e;
+          state.y=state.oy+(state.ty-state.oy)*e;
+          if(t>=1)pickTarget(state,window.innerWidth,window.innerHeight);
+          if(state.colorT<1){state.colorT=Math.min(state.colorT+dt/state.colorDuration,1);state.currentRgb=lerpColor(state.fromRgb,state.targetRgb,easeInOut(state.colorT));state.el.style.background=orbGradient(state.currentRgb);}
+          if(state.sizeT<1){state.sizeT=Math.min(state.sizeT+dt/state.sizeDuration,1);state.currentSizePx=state.fromSizePx+(state.targetSizePx-state.fromSizePx)*easeInOut(state.sizeT);}
+          if(state.blurT<1){state.blurT=Math.min(state.blurT+dt/state.blurDuration,1);state.currentBlurPx=state.fromBlurPx+(state.targetBlurPx-state.fromBlurPx)*easeInOut(state.blurT);}
+          const sizePx=Math.round(state.currentSizePx);
+          state.el.style.left=(state.x-sizePx/2)+'px';state.el.style.top=(state.y-sizePx/2)+'px';
+          state.el.style.width=`${sizePx}px`;state.el.style.height=`${sizePx}px`;
+          state.el.style.filter=`blur(${state.currentBlurPx.toFixed(1)}px)`;
+        });
+        requestAnimationFrame(tick);
+      }
+      requestAnimationFrame(tick);
+    }
+
+    function updateActiveOrbSkins(themeTokens,durationMs){
+      const states=window._orbStates;if(!states||!states.length)return;
+      const styles=getComputedStyle(document.documentElement);
+      const orbColors=parseOrbColors(styles);
+      const blurFactor=parseFloat(styles.getPropertyValue('--orb-blur-factor'))||1;
+      const scaleMultiplier=parseFloat(styles.getPropertyValue('--orb-scale-multiplier'))||1;
+      const vw=window.innerWidth;
+      const colorPool=orbColors.length>=1?orbColors:['#ffffff'];
+      const tMs=durationMs||ORB_TRANSITION_SECS*1000;
+      states.forEach(state=>{
+        state.fromRgb={...state.currentRgb};state.fromSizePx=state.currentSizePx;state.fromBlurPx=state.currentBlurPx;
+        state.targetRgb=hexToRgb(pickRandomColor(colorPool));state.colorT=0;state.colorDuration=tMs;
+        state.targetSizePx=Math.round(vw*(state.sizePercent*scaleMultiplier)/100);state.sizeT=0;state.sizeDuration=tMs;
+        state.targetBlurPx=state.blurBase*blurFactor;state.blurT=0;state.blurDuration=tMs;
+      });
+    }
+
+    /* ══ SCROLL REVEAL ══════════════════════════════════════════ */
+    function initReveal(){
+      const els=document.querySelectorAll('.reveal');if(!els.length)return;
+      const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('active');io.unobserve(e.target);}});},{threshold:.08});
+      els.forEach(el=>io.observe(el));
+    }
+
+    /* ══ ROTATING CONIC GLOW ════════════════════════════════════
+       Animates --card-angle CSS variable on each person-card
+       so the conic-gradient border sweeps around on hover.
+    ════════════════════════════════════════════════════════════ */
+    function initCardGlow(){
+      const cards=document.querySelectorAll('.person-card');
+      cards.forEach(card=>{
+        let angle=0;let raf=null;
+        function rotate(){
+          angle=(angle+1.2)%360;
+          card.style.setProperty('--card-angle',angle+'deg');
+          raf=requestAnimationFrame(rotate);
+        }
+        card.addEventListener('mouseenter',()=>{if(!raf)raf=requestAnimationFrame(rotate);});
+        card.addEventListener('mouseleave',()=>{if(raf){cancelAnimationFrame(raf);raf=null;}card.style.setProperty('--card-angle','0deg');});
+      });
+    }
+
+    /* ══ LINK CARDS ═════════════════════════════════════════════
+       Auto-detects platform from URL and renders the right SVG icon.
+       Reads from the MENTIONED_LINKS array injected above.
+    ════════════════════════════════════════════════════════════ */
+    const LINK_ICONS = {
+      instagram: `<svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>`,
+      youtube:   `<svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42A2.78 2.78 0 0 0 20.6 4.47C18.88 4 12 4 12 4s-6.88 0-8.6.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.53C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>`,
+      twitter:   `<svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53A4.48 4.48 0 0 0 22.43.36a9 9 0 0 1-2.88 1.1 4.52 4.52 0 0 0-7.69 4.11A12.83 12.83 0 0 1 1.64 1a4.51 4.51 0 0 0 1.4 6 4.47 4.47 0 0 1-2-.56v.06a4.52 4.52 0 0 0 3.62 4.43 4.53 4.53 0 0 1-2 .08 4.53 4.53 0 0 0 4.22 3.14A9.05 9.05 0 0 1 1 19.54a12.8 12.8 0 0 0 6.92 2"/></svg>`,
+      github:    `<svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>`,
+      linkedin:  `<svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>`,
+      spotify:   `<svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 13.5a8 8 0 0 1 8 0M7 10.5a11 11 0 0 1 10 0M9 16.5a5 5 0 0 1 6 0"/></svg>`,
+      default:   `<svg viewBox="0 0 24 24" fill="none" stroke="var(--accent-gold)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>`,
+    };
+
+    function detectPlatform(url){
+      const u=url.toLowerCase();
+      if(u.includes('instagram')) return 'instagram';
+      if(u.includes('youtube') || u.includes('youtu.be')) return 'youtube';
+      if(u.includes('twitter') || u.includes('x.com')) return 'twitter';
+      if(u.includes('github')) return 'github';
+      if(u.includes('linkedin')) return 'linkedin';
+      if(u.includes('spotify')) return 'spotify';
+      return 'default';
+    }
+
+    function displayUrl(url){
+      try{const u=new URL(url);return u.hostname.replace('www.','')+(u.pathname!=='/'?u.pathname:'');}
+      catch{return url;}
+    }
+
+    function renderLinks(){
+      const grid=document.getElementById('linksGrid');
+      if(!grid||!window.MENTIONED_LINKS||!window.MENTIONED_LINKS.length) return;
+      grid.innerHTML='';
+      MENTIONED_LINKS.forEach(item=>{
+        const platform=detectPlatform(item.Link||'');
+        const icon=LINK_ICONS[platform]||LINK_ICONS.default;
+        const a=document.createElement('a');
+        a.className='link-card'; a.href=item.Link||'#'; a.target='_blank'; a.rel='noopener noreferrer';
+        a.innerHTML=`
+          <div class="link-card-icon">${icon}</div>
+          <div class="link-card-text">
+            <span class="link-card-label">${item.Name||''}</span>
+            <span class="link-card-url">${displayUrl(item.Link||'')}</span>
+          </div>
+          <span class="link-card-arrow">→</span>`;
+        grid.appendChild(a);
+      });
+    }
+
+    /* ══ INIT ═══════════════════════════════════════════════════ */
+    document.addEventListener('DOMContentLoaded',()=>{
+      initBackground();
+      initReveal();
+      initCardGlow();
+      renderLinks();
+      applyRandomTheme();
+      setInterval(applyRandomTheme, ROTATION_INTERVAL_MS);
     });
-  }
-
-  document.addEventListener('DOMContentLoaded', initLinkIcons);
-})();
-</script>
+  </script>
 
 </body>
 </html>
