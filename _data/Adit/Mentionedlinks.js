@@ -1,5 +1,6 @@
 const fs   = require('fs');
 const path = require('path');
+
 module.exports = function() {
     const dir = path.join(__dirname, 'MentionedLinks');
     if (!fs.existsSync(dir)) return [];
