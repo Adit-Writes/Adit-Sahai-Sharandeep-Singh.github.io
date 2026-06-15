@@ -4,173 +4,176 @@ media:
 
 content:
 
-  - name: WebSite
-    type: file
-    path: _data/PageInfo.json
-    fields:
-      - name: PageTitle
-        type: string
-
-      - name: Pic
-        type: image
-
-      - name: Description
-        type: rich-text
-        options:
-          switcher: false
-
-  - name: AboutAuthor
-    type: file
-    path: _data/AboutAuthor.json
-    fields:
-      - name: Name
-        type: string
-
-      - name: Expertise
-        type: string
-
-      - name: Pic
-        type: image
-        
-      - name: Desciption
-        type: rich-text
-        options:
-          switcher: false
-
-  - name: MentionedLinks
-    type: collection
-    path: _data/MentionedLinks
-    format: json
-    filename: "{slug}.json"
-    view:
-      primary: Name
-    fields:
-      - name: Name
-        type: string
-        required: true
-
-      - name: Link
-        type: string
-        required: true
-
-  - name: Books
-    path: _data/BooksData
-    type: collection
-    format: json
-    filename: "{slug}.json"
-    view:
-      fields: [Name, Pic, Topic, PublishedDate, Link]
-      primary: Name
-      sort: [PublishedDate, Name, Topic]
-      default:
-        sort: PublishedDate
-        order: desc
-
-    fields:
-      - name: Name
-        type: string
-        required: true
+  - name: Adit
+    type: group
+    items:
+    - name: WebSite
+      type: file
+      path: _data/PageInfo.json
+      fields:
+        - name: PageTitle
+          type: string
+  
+        - name: Pic
+          type: image
+  
+        - name: Description
+          type: rich-text
+          options:
+            switcher: false
       
-      - name: PublishedDate
-        type: date
-        required: true
-        
-      - name: Pic
-        type: image
-
-      - name: Topic
-        type: string
-
-      - name: About
-        type: rich-text
-        options:
-          switcher: false
-
-      - name: Link
-        type: string
-
-  - name: ArticleCategories
-    label: Categories
-    type: collection
-    path: _data/categories
-    format: json
-    filename: "{slug}.json"
-    view:
-      primary: name
-    fields:
-      - name: name
-        type: string
-        required: true
-
-  - name: Articles
-    path: _data/ArticlesData
-    type: collection
-    format: json
-    filename: "{slug}.json" # Changed to slug for cleaner URLs in your 11ty build
-    
-    view:
-      fields: [Title, Topic, Published, ReleaseDate, LastUpdated]
-      primary: Title
-      sort: [ReleaseDate, Title]
-      default:
-          sort: ReleaseDate
-          order: desc
-        
-    fields:
-      - name: Title
-        type: string
-        required: true
-        
-      - name: Topic
-        type: reference 
-        required: true
-        options:
-          collection: ArticleCategories 
-          field: name 
-
-      - name: Pics
-        type: image
-        list: true
-
-      - name: Files
-        type: file
-        list: true
-
-      - name: Links
-        type: string
-        list: true
-        
-      - name: Published
-        type: boolean
-        default: false
-
-      - name: Comments
-        type: boolean
-        default: true
-        
-      - name: Likes
-        type: boolean
-        default: true
-
-      - name: Description
-        type: rich-text
-        options:
-          switcher: false
-        
-      - name: Body
-        type: rich-text
-        required: true
-        options:
-          switcher: false
-        
-      - name: ReadTime
-        type: number
-        options:
-          min: 1
+    - name: AboutAuthor
+      type: file
+      path: _data/AboutAuthor.json
+      fields:
+        - name: Name
+          type: string
+  
+        - name: Expertise
+          type: string
+  
+        - name: Pic
+          type: image
           
-      - name: ReleaseDate
-        type: date
-        required: true
+        - name: Desciption
+          type: rich-text
+          options:
+            switcher: false
+  
+    - name: MentionedLinks
+      type: collection
+      path: _data/MentionedLinks
+      format: json
+      filename: "{slug}.json"
+      view:
+        primary: Name
+      fields:
+        - name: Name
+          type: string
+          required: true
+  
+        - name: Link
+          type: string
+          required: true
+  
+    - name: Books
+      path: _data/BooksData
+      type: collection
+      format: json
+      filename: "{slug}.json"
+      view:
+        fields: [Name, Pic, Topic, PublishedDate, Link]
+        primary: Name
+        sort: [PublishedDate, Name, Topic]
+        default:
+          sort: PublishedDate
+          order: desc
+  
+      fields:
+        - name: Name
+          type: string
+          required: true
         
-      - name: LastUpdated
-        type: date
+        - name: PublishedDate
+          type: date
+          required: true
+          
+        - name: Pic
+          type: image
+  
+        - name: Topic
+          type: string
+  
+        - name: About
+          type: rich-text
+          options:
+            switcher: false
+  
+        - name: Link
+          type: string
+  
+    - name: ArticleCategories
+      label: Categories
+      type: collection
+      path: _data/categories
+      format: json
+      filename: "{slug}.json"
+      view:
+        primary: name
+      fields:
+        - name: name
+          type: string
+          required: true
+  
+    - name: Articles
+      path: _data/ArticlesData
+      type: collection
+      format: json
+      filename: "{slug}.json" # Changed to slug for cleaner URLs in your 11ty build
+      
+      view:
+        fields: [Title, Topic, Published, ReleaseDate, LastUpdated]
+        primary: Title
+        sort: [ReleaseDate, Title]
+        default:
+            sort: ReleaseDate
+            order: desc
+          
+      fields:
+        - name: Title
+          type: string
+          required: true
+          
+        - name: Topic
+          type: reference 
+          required: true
+          options:
+            collection: ArticleCategories 
+            field: name 
+  
+        - name: Pics
+          type: image
+          list: true
+  
+        - name: Files
+          type: file
+          list: true
+  
+        - name: Links
+          type: string
+          list: true
+          
+        - name: Published
+          type: boolean
+          default: false
+  
+        - name: Comments
+          type: boolean
+          default: true
+          
+        - name: Likes
+          type: boolean
+          default: true
+  
+        - name: Description
+          type: rich-text
+          options:
+            switcher: false
+          
+        - name: Body
+          type: rich-text
+          required: true
+          options:
+            switcher: false
+          
+        - name: ReadTime
+          type: number
+          options:
+            min: 1
+            
+        - name: ReleaseDate
+          type: date
+          required: true
+          
+        - name: LastUpdated
+          type: date
