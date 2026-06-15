@@ -7,7 +7,7 @@ content:
   - name: Adit
     type: group
     items:
-    - name: WebSite
+    - name: SiteHead
       type: file
       path: _data/PageInfo.json
       fields:
