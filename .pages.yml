@@ -10,6 +10,21 @@ content:
     type: group
     items:
 
+    - name: MainSiteHeader
+      type: file
+      path: _data/Adit/PageInfo.json
+      fields:
+        - name: PageTitle
+          type: string
+  
+        - name: Pic
+          type: image
+  
+        - name: Description
+          type: rich-text
+          options:
+            switcher: false
+
     - name: MMentionedLinks
       type: collection
       path: _data/MainPage/MentionedLinks
