@@ -414,9 +414,9 @@ permalink: /Adit/AditPage.html
         <p class="section-divider-subtitle">Long-form explorations of the ideas that matter</p>
         <div class="gold-line"></div>
     </div>
-    
+
     <section class="book-grid">
-        {% for filename, book in Adit.BooksData %}
+        {% for book in Adit.Books %}
         <div class="book-card glass-card reveal">
             <div class="glow-blob"></div>
             <div class="book-image-wrapper">
@@ -444,7 +444,7 @@ permalink: /Adit/AditPage.html
     <div class="category-menu-container reveal">
         <div class="category-menu">
             <button class="category-btn active" data-filter="all">All</button>
-            {% for filename, cat in Adit.categories %}
+            {% for cat in Adit.Categories %}
             <button class="category-btn" data-filter="{{ cat.name | lower }}">{{ cat.name }}</button>
             {% endfor %}
             <button class="category-btn liked-filter" data-filter="__liked__">
@@ -473,24 +473,16 @@ permalink: /Adit/AditPage.html
     </div>
 
    <section class="article-feed">
-        {% for filename, article in Adit.ArticlesData %}
+        {% for article in Adit.Articles %}
         {% if article.Published %}
 
-        {# 1. Extract clean identifier slug from the full CMS path string #}
-        {% set categorySlug = article.Topic | replace("_data/Adit/categories/", "") | replace(".json", "") %}
-        
-        {# 2. Look up matching key in your category data dictionary #}
-        {% set currentCategory = Adit.categories[categorySlug] %}
-        
-        {# 3. Use name property from data, or clean fallback string #}
-        {% set categoryName = currentCategory.name if currentCategory else (categorySlug | capitalize) %}
-
+        {# article.Topic is already resolved to the category display name by _data/Adit/Articles.js #}
         {% set firstPic = article.Pics[0] if article.Pics and article.Pics.length > 0 else null %}
 
         <article
             class="article-card glass-card reveal{% if firstPic %} has-thumb{% endif %}"
-            data-category="{{ categoryName | lower }}"
-            data-slug="{{ article.Title | slugify }}"
+            data-category="{{ article.Topic | default('') | lower }}"
+            data-slug="{{ article.Title | slug }}"
             data-title="{{ article.Title | lower }}"
             data-description="{{ article.Description | lower | striptags }}"
         >
@@ -499,7 +491,7 @@ permalink: /Adit/AditPage.html
             {# Line 1: The Category Badge overlaid on the picture #}
             {% if firstPic %}
             <div class="article-card-thumb">
-                <span class="thumb-category">{{ categoryName }}</span>
+                <span class="thumb-category">{{ article.Topic }}</span>
                 <img
                     src="/Adit-Sahai.github.io{{ firstPic }}"
                     alt="{{ article.Title }}"
@@ -512,19 +504,19 @@ permalink: /Adit/AditPage.html
                 <div class="article-meta">
                     {# Line 2: The Metadata text copy - ONLY displays if there is NO thumbnail image #}
                     {% if not firstPic %}
-                    <span class="category">{{ categoryName }}</span>
+                    <span class="category">{{ article.Topic }}</span>
                     <span class="meta-sep"></span>
                     {% endif %}
-                    
+
                     <span class="read-time">{{ article.ReadTime }} min read</span>
-                    
+
                     {% if article.Likes !== false and article.Likes !== 'false' %}
                     <span class="meta-sep"></span>
-                    <span class="index-like-count" data-slug="{{ article.Title | slugify }}">0 likes</span>
+                    <span class="index-like-count" data-slug="{{ article.Title | slug }}">0 likes</span>
                     {% endif %}
-                    
+
                     <span class="meta-sep liked-badge-sep" style="display:none"></span>
-                    <span class="liked-badge" data-slug="{{ article.Title | slugify }}">
+                    <span class="liked-badge" data-slug="{{ article.Title | slug }}">
                         <span class="liked-badge-heart">♥</span> Liked
                     </span>
                 </div>
@@ -532,7 +524,7 @@ permalink: /Adit/AditPage.html
                 <p class="article-excerpt">{{ article.Description | safe }}</p>
                 <div class="article-footer">
                     <span class="date">{{ article.ReleaseDate }}</span>
-                    <a href="articles/{{ article.Title | slugify }}/" class="read-link">Read Article →</a>
+                    <a href="/Adit-Sahai.github.io/Adit/articles/{{ article.Title | slug }}/" class="read-link">Read Article →</a>
                 </div>
             </div>
         </article>
@@ -551,7 +543,7 @@ permalink: /Adit/AditPage.html
     </div>
 
     <div class="links-grid reveal">
-        {% for filename, item in Adit.MentionedLinks %}
+        {% for item in Adit.Mentionedlinks %}
         <a
             href="{{ item.Link }}"
             class="link-card"
@@ -574,7 +566,7 @@ permalink: /Adit/AditPage.html
     </footer>
 
     <script src="/Adit-Sahai.github.io/MainCode/script.js"></script>
-    
+
     <script>
     const SUPABASE_URL = 'https://mpeqripywqiotselpyut.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wZXFyaXB5d3Fpb3RzZWxweXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTE4MzUsImV4cCI6MjA5Njg4NzgzNX0.1lTHIY3M1xk5FmnTC2YMbSMNpi7vhWDuGGXUSNkwkm8';
