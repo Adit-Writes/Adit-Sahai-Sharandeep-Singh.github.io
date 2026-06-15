@@ -5,23 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- SEO -->
-    <title>{{ PageInfo.PageTitle }}</title>
+    <title>{{ Adit.PageInfo.PageTitle }}</title>
 
     <meta name="description"
-          content="{{ PageInfo.Description | striptags }}">
+          content="{{ Adit.PageInfo.Description | striptags }}">
 
     <meta name="robots"
           content="index, follow">
 
     <!-- Open Graph (Facebook, LinkedIn, Discord, etc.) -->
     <meta property="og:title"
-          content="{{ PageInfo.PageTitle }}">
+          content="{{ Adit.PageInfo.PageTitle }}">
 
     <meta property="og:description"
-          content="{{ PageInfo.Description | striptags }}">
+          content="{{ Adit.PageInfo.Description | striptags }}">
 
     <meta property="og:image"
-          content="{{ PageInfo.Pic }}">
+          content="{{ Adit.PageInfo.Pic }}">
 
     <meta property="og:type"
           content="website">
@@ -31,18 +31,18 @@
           content="summary_large_image">
 
     <meta name="twitter:title"
-          content="{{ PageInfo.PageTitle }}">
+          content="{{ Adit.PageInfo.PageTitle }}">
 
     <meta name="twitter:description"
-          content="{{ PageInfo.Description | striptags }}">
+          content="{{ Adit.PageInfo.Description | striptags }}">
 
     <meta name="twitter:image"
-          content="{{ PageInfo.Pic }}">
+          content="{{ Adit.PageInfo.Pic }}">
 
     <!-- Favicon -->
     <link rel="icon"
           type="image/png"
-          href="{{ PageInfo.Pic }}">
+          href="{{ Adit.PageInfo.Pic }}">
 
     <!-- Google Search Console -->
     <meta name="google-site-verification"
@@ -59,9 +59,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,700&display=swap"
           rel="stylesheet">
 
-    <!-- Styles -->
+    <!-- Styles — absolute path so it works from Adit/ subfolder -->
     <link rel="stylesheet"
-          href="MainCode/style.css">
+          href="/Adit-Sahai.github.io/MainCode/style.css">
 
     <style>
         /* ── Inline Article Search Bar ─────────────────────────────── */
@@ -262,7 +262,6 @@
 
         /* ── Article Card Thumbnail ────────────────────────────────── */
         .article-card {
-            /* Override to allow image + text layout */
             display: grid;
             grid-template-columns: 1fr;
             gap: 0;
@@ -299,7 +298,6 @@
             filter: brightness(1) saturate(1.05);
         }
 
-        /* Subtle gradient fade on right edge of thumb */
         .article-card-thumb::after {
             content: '';
             position: absolute;
@@ -312,7 +310,6 @@
             pointer-events: none;
         }
 
-        /* Category chip overlaid on thumb */
         .article-card-thumb .thumb-category {
             position: absolute;
             top: 14px;
@@ -336,12 +333,10 @@
             min-width: 0;
         }
 
-        /* When no thumb — body fills the whole card as before */
         .article-card:not(.has-thumb) .article-card-body {
             padding: 30px 36px;
         }
 
-        /* ── Responsive: stack thumb on top on mobile ─────────────── */
         @media (max-width: 640px) {
             .article-card.has-thumb {
                 grid-template-columns: 1fr;
@@ -372,7 +367,6 @@
             <a href="#articles">Articles</a>
             <a href="#links">Links</a>
         </div>
-        <!-- Search — navbar version: scrolls to articles, then filters -->
         <div class="search-wrap" id="searchWrap">
             <button class="search-toggle" id="searchToggle" aria-label="Search articles" title="Search articles">
                 &#x2315;
@@ -401,12 +395,12 @@
         <div class="glow-blob"></div>
         <div class="hero-content">
             <div class="hero-text">
-                <p class="subtitle">{{ AboutAuthor.Expertise }}</p>
-                <h1>{{ AboutAuthor.Name }}</h1>
-                <p class="bio">{{ AboutAuthor.Desciption | safe }}</p>
+                <p class="subtitle">{{ Adit.AboutAuthor.Expertise }}</p>
+                <h1>{{ Adit.AboutAuthor.Name }}</h1>
+                <p class="bio">{{ Adit.AboutAuthor.Desciption | safe }}</p>
             </div>
             <div class="hero-visual">
-                <img src="/Adit-Sahai.github.io{{ AboutAuthor.Pic }}" alt="{{ AboutAuthor.Name }}">
+                <img src="/Adit-Sahai.github.io{{ Adit.AboutAuthor.Pic }}" alt="{{ Adit.AboutAuthor.Name }}">
             </div>
         </div>
     </section>
@@ -420,7 +414,7 @@
     </div>
     
     <section class="book-grid">
-        {% for book in Books %}
+        {% for book in Adit.BooksData %}
         <div class="book-card glass-card reveal">
             <div class="glow-blob"></div>
             <div class="book-image-wrapper">
@@ -448,24 +442,21 @@
     <div class="category-menu-container reveal">
         <div class="category-menu">
             <button class="category-btn active" data-filter="all">All</button>
-            {% for cat in Categories %}
+            {% for cat in Adit.categories %}
             <button class="category-btn" data-filter="{{ cat.name | lower }}">{{ cat.name }}</button>
             {% endfor %}
-            <!-- Liked articles filter — always last -->
             <button class="category-btn liked-filter" data-filter="__liked__">
                 <span>♥</span> Liked
             </button>
         </div>
     </div>
 
-    <!-- Sub-filter: show only liked within current category -->
     <div class="liked-subfilter-row" id="likedSubfilterRow">
         <button class="liked-subfilter-btn" id="likedSubfilterBtn">
             ♥ &nbsp;Show only liked
         </button>
     </div>
 
-    <!-- ── Inline article search bar (always visible in articles section) ── -->
     <div class="article-search-bar reveal" id="articleSearchBar">
         <span class="article-search-icon">&#x2315;</span>
         <input
@@ -480,10 +471,9 @@
     </div>
 
     <section class="article-feed">
-        {% for article in Articles %}
+        {% for article in Adit.ArticlesData %}
         {% if article.Published %}
 
-        {# Grab first pic if available #}
         {% set firstPic = article.Pics[0] if article.Pics and article.Pics.length > 0 else null %}
 
         <article
@@ -495,7 +485,6 @@
         >
             <div class="glow-blob"></div>
 
-            {# ── Thumbnail (only if firstPic exists) ── #}
             {% if firstPic %}
             <div class="article-card-thumb">
                 <span class="thumb-category">{{ article.Topic }}</span>
@@ -507,7 +496,6 @@
             </div>
             {% endif %}
 
-            {# ── Card body ── #}
             <div class="article-card-body">
                 <div class="article-meta">
                     {% if not firstPic %}
@@ -519,7 +507,6 @@
                     <span class="meta-sep"></span>
                     <span class="index-like-count" data-slug="{{ article.Title | slug }}">0 likes</span>
                     {% endif %}
-                    <!-- Liked badge — shown when user has liked this article -->
                     <span class="meta-sep liked-badge-sep" style="display:none"></span>
                     <span class="liked-badge" data-slug="{{ article.Title | slug }}">
                         <span class="liked-badge-heart">♥</span> Liked
@@ -537,7 +524,6 @@
         {% endfor %}
     </section>
 
-    <!-- No results -->
     <p class="no-results-msg" id="noResultsMsg">No articles found.</p>
 
     {# ── Links / MentionedLinks ────────────────────────── #}
@@ -549,7 +535,7 @@
     </div>
 
     <div class="links-grid reveal">
-        {% for item in Mentionedlinks %}
+        {% for item in Adit.MentionedLinks %}
         <a
             href="{{ item.Link }}"
             class="link-card"
@@ -571,7 +557,8 @@
         <p>&copy; 2026 The Sahai Analogy. All rights reserved.</p>
     </footer>
 
-    <script src="MainCode/script.js"></script>
+    <!-- Script — absolute path so it works from Adit/ subfolder -->
+    <script src="/Adit-Sahai.github.io/MainCode/script.js"></script>
 
     <script>
     const SUPABASE_URL = 'https://mpeqripywqiotselpyut.supabase.co';
