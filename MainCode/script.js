@@ -281,6 +281,15 @@ function easeInOut(t) {
     return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
 }
 
+function easeOutExpo(t) {
+    return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
+}
+
+function easeOutBack(t) {
+    const c1 = 1.70158, c3 = c1 + 1;
+    return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+}
+
 function orbGradient(rgb) {
     return `radial-gradient(circle, rgb(${rgb.r},${rgb.g},${rgb.b}) 0%, rgba(0,0,0,0) 70%)`;
 }
@@ -606,9 +615,7 @@ function updateActiveOrbSkins(themeTokens, durationMs) {
 }
 
 // ============================================================
-//  MOUSE GLOW — radial gradient that picks up the nearest orb
-//  color and blends smoothly via multi-stop gradient.
-//  Intensity is controlled by --glow-blob-intensity CSS var.
+//  MOUSE GLOW
 // ============================================================
 
 function getGlowIntensity() {
@@ -618,7 +625,6 @@ function getGlowIntensity() {
 }
 
 function buildGlowGradient(r, g, b, intensity) {
-    // Multi-stop radial gradient: bright core → soft halo → fully transparent
     return `radial-gradient(
         circle,
         rgba(${r},${g},${b},${(intensity * 0.50).toFixed(3)})  0%,
@@ -642,7 +648,6 @@ function initMouseGlow() {
             blob.style.left = (e.clientX - rect.left) + 'px';
             blob.style.top  = (e.clientY - rect.top)  + 'px';
 
-            // Find the nearest orb and sample its current color
             const states = window._orbStates;
             if (!states || !states.length) return;
 
@@ -665,7 +670,7 @@ function initMouseGlow() {
 }
 
 // ============================================================
-//  SCROLL REVEAL
+//  SCROLL REVEAL — enhanced with stagger, direction-aware
 // ============================================================
 
 function initReveal() {
@@ -685,6 +690,415 @@ function initReveal() {
 }
 
 // ============================================================
+//  HERO TITLE — letter-by-letter cinematic reveal
+// ============================================================
+
+function initHeroTitleReveal() {
+    const title = document.querySelector('.hero-title');
+    if (!title) return;
+
+    const text = title.textContent.trim();
+    title.innerHTML = '';
+    title.setAttribute('aria-label', text);
+
+    // Split into words, each word into letters
+    const words = text.split(/\s+/);
+    let letterIndex = 0;
+
+    words.forEach((word, wi) => {
+        const wordSpan = document.createElement('span');
+        wordSpan.style.cssText = 'display:inline-block; white-space:nowrap;';
+
+        word.split('').forEach(char => {
+            const span = document.createElement('span');
+            span.textContent = char;
+            span.style.cssText = `
+                display: inline-block;
+                opacity: 0;
+                transform: translateY(40px) rotateX(-30deg);
+                transition: opacity 0.55s cubic-bezier(0.16,1,0.3,1),
+                            transform 0.55s cubic-bezier(0.16,1,0.3,1);
+                transition-delay: ${letterIndex * 38}ms;
+                will-change: transform, opacity;
+            `;
+            wordSpan.appendChild(span);
+            letterIndex++;
+        });
+
+        title.appendChild(wordSpan);
+        // Add a regular space between words (not animated)
+        if (wi < words.length - 1) {
+            const space = document.createElement('span');
+            space.innerHTML = '&nbsp;';
+            space.style.display = 'inline-block';
+            title.appendChild(space);
+        }
+    });
+
+    // Trigger after a brief delay so orbs are rendering
+    setTimeout(() => {
+        title.querySelectorAll('span > span').forEach(span => {
+            span.style.opacity   = '1';
+            span.style.transform = 'translateY(0) rotateX(0)';
+        });
+    }, 200);
+}
+
+// ============================================================
+//  HERO EYEBROW — typewriter with blinking cursor
+// ============================================================
+
+function initEyebrowTypewriter() {
+    const el = document.querySelector('.hero-eyebrow');
+    if (!el) return;
+
+    const fullText = el.textContent.trim();
+    el.textContent = '';
+    el.style.opacity = '1';   // override reveal so we control it here
+    el.style.transform = 'none';
+
+    // Insert cursor
+    const cursor = document.createElement('span');
+    cursor.style.cssText = `
+        display: inline-block;
+        width: 2px;
+        height: 1em;
+        background: var(--accent-gold);
+        margin-left: 3px;
+        vertical-align: text-bottom;
+        animation: cursorBlink 0.8s step-end infinite;
+    `;
+    el.appendChild(cursor);
+
+    // Inject keyframe if not present
+    if (!document.getElementById('cursor-blink-kf')) {
+        const style = document.createElement('style');
+        style.id = 'cursor-blink-kf';
+        style.textContent = `
+            @keyframes cursorBlink {
+                0%, 100% { opacity: 1; }
+                50%       { opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
+    let i = 0;
+    const speed = 55;
+
+    function type() {
+        if (i < fullText.length) {
+            el.insertBefore(document.createTextNode(fullText[i]), cursor);
+            i++;
+            setTimeout(type, speed + Math.random() * 25);
+        } else {
+            // Remove cursor after done
+            setTimeout(() => {
+                cursor.style.animation = 'none';
+                cursor.style.opacity   = '0';
+            }, 1800);
+        }
+    }
+
+    setTimeout(type, 600);
+}
+
+// ============================================================
+//  HERO TAGLINE — fade in word by word
+// ============================================================
+
+function initTaglineReveal() {
+    const el = document.querySelector('.hero-tagline');
+    if (!el) return;
+
+    const text  = el.textContent.trim();
+    const words = text.split(/\s+/);
+    el.innerHTML = '';
+
+    words.forEach((word, i) => {
+        const span = document.createElement('span');
+        span.textContent = word + (i < words.length - 1 ? ' ' : '');
+        span.style.cssText = `
+            display: inline;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            transition-delay: ${800 + i * 55}ms;
+        `;
+        el.appendChild(span);
+    });
+
+    setTimeout(() => {
+        el.querySelectorAll('span').forEach(s => { s.style.opacity = '1'; });
+    }, 300);
+}
+
+// ============================================================
+//  HERO ACCENT LINE — draw in
+// ============================================================
+
+function initAccentLineDraw() {
+    const dot = document.querySelector('.hero-accent-dot');
+    if (!dot) return;
+
+    dot.style.transform = 'scale(0)';
+    dot.style.transition = 'transform 0.5s cubic-bezier(0.34,1.56,0.64,1)';
+
+    setTimeout(() => { dot.style.transform = 'scale(1)'; }, 1400);
+}
+
+// ============================================================
+//  PERSON CARDS — fly in from sides with spring
+// ============================================================
+
+function initCardFlyIn() {
+    const cards = document.querySelectorAll('.person-card');
+    if (!cards.length) return;
+
+    cards.forEach((card, i) => {
+        const fromRight = i % 2 === 1;
+        const xOffset   = fromRight ? 80 : -80;
+
+        card.style.cssText += `
+            opacity: 0;
+            transform: translateX(${xOffset}px) translateY(30px) rotate(${fromRight ? 2 : -2}deg);
+            transition:
+                opacity   0.8s cubic-bezier(0.16,1,0.3,1),
+                transform 0.8s cubic-bezier(0.16,1,0.3,1);
+            transition-delay: ${i * 140}ms;
+        `;
+    });
+
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity   = '1';
+                entry.target.style.transform = 'translateX(0) translateY(0) rotate(0deg)';
+                io.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15 });
+
+    cards.forEach(card => io.observe(card));
+}
+
+// ============================================================
+//  STAT CARDS — animated counter roll-up
+// ============================================================
+
+function animateCounter(el, target, duration, prefix, suffix) {
+    if (!el || isNaN(target)) return;
+
+    const start    = performance.now();
+    const startVal = 0;
+
+    function tick(now) {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased    = easeOutExpo(progress);
+        const current  = Math.round(startVal + (target - startVal) * eased);
+        el.textContent = (prefix || '') + current + (suffix || '');
+        if (progress < 1) requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+}
+
+function initStatCounters() {
+    const statCards = document.querySelectorAll('.stat-card');
+    if (!statCards.length) return;
+
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            io.unobserve(entry.target);
+
+            const numberEl = entry.target.querySelector('.stat-number');
+            if (!numberEl) return;
+
+            const raw    = numberEl.textContent.trim();
+            const parsed = parseInt(raw, 10);
+            if (isNaN(parsed)) return;
+
+            // Stagger based on card position
+            const delay = Array.from(statCards).indexOf(entry.target) * 150;
+            setTimeout(() => animateCounter(numberEl, parsed, 1200, '', ''), delay);
+        });
+    }, { threshold: 0.4 });
+
+    statCards.forEach(card => io.observe(card));
+}
+
+// ============================================================
+//  PARALLAX — hero title drifts on scroll
+// ============================================================
+
+function initParallax() {
+    const heroTitle   = document.querySelector('.hero-title');
+    const heroEyebrow = document.querySelector('.hero-eyebrow');
+    const heroTagline = document.querySelector('.hero-tagline');
+
+    if (!heroTitle) return;
+
+    let ticking = false;
+
+    window.addEventListener('scroll', () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+            const sy = window.scrollY;
+            if (heroTitle)   heroTitle.style.transform   = `translateY(${sy * 0.22}px)`;
+            if (heroEyebrow) heroEyebrow.style.transform = `translateY(${sy * 0.14}px)`;
+            if (heroTagline) heroTagline.style.transform = `translateY(${sy * 0.10}px)`;
+            ticking = false;
+        });
+    }, { passive: true });
+}
+
+// ============================================================
+//  SCROLL PROGRESS BAR
+// ============================================================
+
+function initScrollProgress() {
+    let bar = document.querySelector('.progress-bar');
+    if (!bar) {
+        bar = document.createElement('div');
+        bar.className = 'progress-bar';
+        document.body.prepend(bar);
+    }
+
+    window.addEventListener('scroll', () => {
+        const scrolled = window.scrollY;
+        const total    = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.width = total > 0 ? `${(scrolled / total) * 100}%` : '0%';
+    }, { passive: true });
+}
+
+// ============================================================
+//  SECTION FADE LABELS — eyebrow badges pop in
+// ============================================================
+
+function initSectionBadges() {
+    const badges = document.querySelectorAll('.section-eyebrow span, .section-divider h2');
+
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.style.transition = 'opacity 0.5s ease, transform 0.5s cubic-bezier(0.34,1.56,0.64,1)';
+            entry.target.style.opacity    = '1';
+            entry.target.style.transform  = 'scale(1) translateY(0)';
+            io.unobserve(entry.target);
+        });
+    }, { threshold: 0.5 });
+
+    badges.forEach(badge => {
+        badge.style.opacity   = '0';
+        badge.style.transform = 'scale(0.7) translateY(10px)';
+        io.observe(badge);
+    });
+}
+
+// ============================================================
+//  LINK CARDS — stagger slide-up
+// ============================================================
+
+function initLinkCardReveal() {
+    const linkCards = document.querySelectorAll('.link-card');
+    if (!linkCards.length) return;
+
+    linkCards.forEach((card, i) => {
+        card.style.cssText += `
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16,1,0.3,1);
+            transition-delay: ${i * 70}ms;
+        `;
+    });
+
+    const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            entry.target.style.opacity   = '1';
+            entry.target.style.transform = 'translateY(0)';
+            io.unobserve(entry.target);
+        });
+    }, { threshold: 0.1 });
+
+    linkCards.forEach(card => io.observe(card));
+}
+
+// ============================================================
+//  STAT CARD TILT — 3D tilt on hover
+// ============================================================
+
+function initStatCardTilt() {
+    document.querySelectorAll('.stat-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect   = card.getBoundingClientRect();
+            const cx     = rect.left + rect.width  / 2;
+            const cy     = rect.top  + rect.height / 2;
+            const dx     = (e.clientX - cx) / (rect.width  / 2);
+            const dy     = (e.clientY - cy) / (rect.height / 2);
+            const tiltX  = dy * -8;
+            const tiltY  = dx *  8;
+            card.style.transform = `translateY(-4px) perspective(600px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform   = '';
+            card.style.transition  = 'transform 0.4s ease';
+        });
+    });
+}
+
+// ============================================================
+//  ARTICLE CARD TILT (for article pages)
+// ============================================================
+
+function initArticleCardTilt() {
+    document.querySelectorAll('.article-card, .book-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect  = card.getBoundingClientRect();
+            const cx    = rect.left + rect.width  / 2;
+            const cy    = rect.top  + rect.height / 2;
+            const dx    = (e.clientX - cx) / (rect.width  / 2);
+            const dy    = (e.clientY - cy) / (rect.height / 2);
+            const tiltX = dy * -5;
+            const tiltY = dx *  5;
+            card.style.transform = `translateY(-6px) scale(1.01) perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+        });
+
+        card.addEventListener('mouseleave', () => {
+            card.style.transform  = '';
+            card.style.transition = 'transform 0.4s cubic-bezier(0.25,1,0.5,1)';
+        });
+    });
+}
+
+// ============================================================
+//  SCROLL VELOCITY WARP — orbs speed up when scrolling fast
+// ============================================================
+
+function initScrollVelocityWarp() {
+    let lastY    = window.scrollY;
+    let velocity = 0;
+
+    window.addEventListener('scroll', () => {
+        const currentY = window.scrollY;
+        velocity = Math.abs(currentY - lastY);
+        lastY    = currentY;
+
+        const states = window._orbStates;
+        if (!states) return;
+
+        const boost = Math.min(velocity / 20, 3.5);
+
+        states.forEach(s => {
+            s.el.style.filter = `blur(${(s.currentBlurPx * (1 - boost * 0.12)).toFixed(1)}px)`;
+        });
+    }, { passive: true });
+}
+
+// ============================================================
 //  SEARCH (article pages) — with NO page-scroll on focus
 // ============================================================
 
@@ -697,8 +1111,6 @@ function initArticleSearch() {
 
     if (!toggle || !box || !input) return;
 
-    // Collect all article cards data from the DOM (index page)
-    // On article pages this falls back to nothing (no article-card elements)
     const articleData = Array.from(
         document.querySelectorAll('.article-feed .article-card')
     ).map(card => ({
@@ -712,7 +1124,6 @@ function initArticleSearch() {
 
     function openSearch() {
         box.classList.add('open');
-        // Use preventScroll so opening the search box doesn't jump the page
         input.focus({ preventScroll: true });
     }
 
@@ -735,7 +1146,6 @@ function initArticleSearch() {
         if (e.key === 'Escape') closeSearch();
     });
 
-    // Article-page search: show dropdown results
     if (resultsEl) {
         input.addEventListener('input', () => {
             const q = input.value.trim().toLowerCase();
@@ -790,6 +1200,47 @@ function initActiveNav() {
 }
 
 // ============================================================
+//  SECTION TITLE LARGE — split-word stagger reveal
+// ============================================================
+
+function initSectionTitles() {
+    document.querySelectorAll('.section-title-large').forEach(el => {
+        const text  = el.textContent.trim();
+        const words = text.split(/\s+/);
+        el.innerHTML = '';
+        el.setAttribute('aria-label', text);
+
+        words.forEach((word, i) => {
+            const span = document.createElement('span');
+            span.textContent = word + (i < words.length - 1 ? ' ' : '');
+            span.style.cssText = `
+                display: inline-block;
+                opacity: 0;
+                transform: translateY(20px);
+                transition:
+                    opacity   0.6s cubic-bezier(0.16,1,0.3,1),
+                    transform 0.6s cubic-bezier(0.16,1,0.3,1);
+                transition-delay: ${i * 80}ms;
+            `;
+            el.appendChild(span);
+        });
+
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.querySelectorAll('span').forEach(s => {
+                    s.style.opacity   = '1';
+                    s.style.transform = 'translateY(0)';
+                });
+                io.unobserve(entry.target);
+            });
+        }, { threshold: 0.3 });
+
+        io.observe(el);
+    });
+}
+
+// ============================================================
 //  INIT
 // ============================================================
 
@@ -799,6 +1250,22 @@ document.addEventListener('DOMContentLoaded', () => {
     initMouseGlow();
     initArticleSearch();
     initActiveNav();
+
+    // Enhanced animations
+    initHeroTitleReveal();
+    initEyebrowTypewriter();
+    initTaglineReveal();
+    initAccentLineDraw();
+    initCardFlyIn();
+    initStatCounters();
+    initParallax();
+    initScrollProgress();
+    initSectionBadges();
+    initLinkCardReveal();
+    initStatCardTilt();
+    initArticleCardTilt();
+    initScrollVelocityWarp();
+    initSectionTitles();
 
     // Start theme rotation
     applyRandomTheme();
