@@ -1,9 +1,9 @@
 ---
 pagination:
-  data: Adit.ArticlesData
+  data: Adit.Articles
   size: 1
   alias: article
-permalink: "Adit/articles/{{ article.Title | slugify }}/index.html"
+permalink: "/Adit-Sahai.github.io/Adit/articles/{{ article.Title | slug }}/index.html"
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -674,10 +674,7 @@ permalink: "Adit/articles/{{ article.Title | slugify }}/index.html"
         </div>
     </nav>
 
-    {# ── Resolve category name from Adit.categories, same as AditPage ── #}
-    {%- set categorySlug = article.Topic | replace("_data/Adit/categories/", "") | replace(".json", "") -%}
-    {%- set currentCategory = Adit.categories[categorySlug] -%}
-    {%- set categoryName = currentCategory.name if currentCategory else (categorySlug | capitalize) -%}
+    {# article.Topic is already resolved to the category display name by _data/Adit/Articles.js #}
 
     <div class="article-page">
         <a href="/Adit-Sahai.github.io/Adit/AditPage#articles" class="back-link">Back to Essays</a>
@@ -685,7 +682,7 @@ permalink: "Adit/articles/{{ article.Title | slugify }}/index.html"
         <!-- Hero -->
         <article class="article-hero reveal">
             <div class="article-hero-meta">
-                <span class="category">{{ categoryName }}</span>
+                <span class="category">{{ article.Topic }}</span>
                 <span class="meta-dot"></span>
                 <span class="read-time">{{ article.ReadTime }} min read</span>
                 <span class="meta-dot"></span>
@@ -960,7 +957,7 @@ permalink: "Adit/articles/{{ article.Title | slugify }}/index.html"
         // ── Config ────────────────────────────────────────────────
         const SUPABASE_URL = 'https://mpeqripywqiotselpyut.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wZXFyaXB5d3Fpb3RzZWxweXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTE4MzUsImV4cCI6MjA5Njg4NzgzNX0.1lTHIY3M1xk5FmnTC2YMbSMNpi7vhWDuGGXUSNkwkm8';
-        const ARTICLE_ID   = '{{ article.Title | slugify }}';
+        const ARTICLE_ID   = '{{ article.Title | slug }}';
 
         async function sb(path, opts = {}) {
             const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
@@ -1368,12 +1365,12 @@ permalink: "Adit/articles/{{ article.Title | slugify }}/index.html"
         // ARTICLE SEARCH
         // ══════════════════════════════════════════════════════════
         const ALL_ARTICLES = [
-            {% for a in Adit.ArticlesData %}
+            {% for a in Adit.Articles %}
             {% if a.Published %}
             {
                 title:    {{ (a.Title | default("")) | dump | safe }},
                 category: {{ (a.Topic | default("")) | dump | safe }},
-                slug:     {{ (a.Title | default("") | slugify) | dump | safe }},
+                slug:     {{ (a.Title | default("") | slug) | dump | safe }},
                 excerpt:  {{ (a.Description | default("")) | striptags | dump | safe }}
             },
             {% endif %}
