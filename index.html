@@ -8,13 +8,8 @@ permalink: /index.html
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>{{ MainPage.PageInfo.PageTitle }}</title>
-
-  <meta name="description"
-        content="{{ MainPage.PageInfo.Description | striptags }}" />
-
-  <meta name="keywords"
-        content="{{ Adit.AboutAuthor.Name }}, {{ Sharan.AboutPage.Name }}, {{ MainPage.PageInfo.PageTitle }}, blog, articles" />
-
+  <meta name="description" content="{{ MainPage.PageInfo.Description | striptags }}" />
+  <meta name="keywords" content="{{ Adit.AboutAuthor.Name }}, {{ Sharan.AboutPage.Name }}, {{ MainPage.PageInfo.PageTitle }}, blog, articles" />
   <meta property="og:title" content="{{ MainPage.PageInfo.PageTitle }}" />
   <meta property="og:description" content="{{ MainPage.PageInfo.Description | striptags }}" />
   <meta property="og:type" content="website" />
@@ -22,118 +17,482 @@ permalink: /index.html
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet" />
-
-  <!-- Shared styles — same as AditPage -->
   <link rel="stylesheet" href="/Adit-Sahai.github.io/MainCode/style.css" />
 
   <style>
-    /* ════════════════════════════════════════════════════════════
-       PAGE-SPECIFIC STYLES (index only)
-    ════════════════════════════════════════════════════════════ */
+    /* ── RESET / BASE ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    /* HERO BANNER */
-    .hero-banner { text-align:center; padding:90px 20px 50px; max-width:var(--max-w); margin:0 auto; }
-    .hero-eyebrow { font-size:.72rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:6px; font-weight:600; opacity:.8; margin-bottom:20px; transition:color 1.5s ease-in-out; }
-    .hero-title { font-size:clamp(3rem,9vw,6rem); font-weight:900; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,.92); background:linear-gradient(175deg,#ffffff 30%,rgba(255,255,255,.18) 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; line-height:1.05; margin-bottom:22px; }
-    @supports not (-webkit-background-clip:text) { .hero-title { color:rgba(255,255,255,.92); background:none; -webkit-text-fill-color:unset; } }
-    .hero-sub { font-size:.85rem; color:var(--text-muted); font-weight:300; max-width:500px; margin:0 auto 36px; line-height:1.8; transition:color 1.5s ease-in-out; }
-    .hero-divider { width:100px; height:1px; margin:0 auto 60px; background:linear-gradient(90deg,transparent,var(--accent-gold-line),transparent); transition:background 2.5s ease-in-out; }
-
-    /* CHOOSE SECTION LABEL */
-    .choose-label { text-align:center; margin-bottom:40px; }
-    .choose-label span { font-size:.68rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:6px; font-weight:700; background:var(--accent-gold-dim); border:1px solid var(--accent-gold-line); padding:5px 18px; border-radius:100px; transition:background 2.5s ease-in-out,border-color 2.5s ease-in-out,color 1.5s ease-in-out; }
-
-    /* PERSON CARDS GRID */
-    .cards-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:32px; max-width:var(--max-w); margin:0 auto 80px; }
-
-    .person-card {
-      position:relative; overflow:hidden;
-      border-radius:28px;
-      padding:44px 40px 40px;
-      display:flex; flex-direction:column; align-items:center; text-align:center;
-      cursor:pointer; text-decoration:none; color:inherit;
+    /* ── TOP NAV ──────────────────────────────────────────────── */
+    .index-nav {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--glass-bg-strong);
+      border: 1px solid var(--glass-border);
+      border-radius: 100px;
+      padding: 8px 20px;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      transition: border-color 2.5s ease-in-out, background 2.5s ease-in-out;
+    }
+    .index-nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1rem;
+      color: var(--accent-gold);
+      letter-spacing: 1px;
+      margin-right: 8px;
+      transition: color 1.5s ease-in-out;
+    }
+    .index-nav-divider {
+      width: 1px;
+      height: 18px;
+      background: var(--glass-border);
+      margin: 0 6px;
+      transition: background 2.5s ease-in-out;
+    }
+    .index-nav a {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 5px 12px;
+      border-radius: 100px;
+      transition: color 0.25s ease, background 0.25s ease;
+    }
+    .index-nav a:hover {
+      color: var(--accent-gold);
+      background: var(--accent-gold-dim);
     }
 
-    /* Rotating spherical gradient glow — sits BEHIND content, doesn't interfere with text */
+    /* ── HERO ─────────────────────────────────────────────────── */
+    .hero-section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 60px;
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.68rem;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 7px;
+      font-weight: 700;
+      opacity: 0.85;
+      margin-bottom: 28px;
+      transition: color 1.5s ease-in-out;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.2rem, 10vw, 7rem);
+      font-weight: 900;
+      line-height: 1.0;
+      letter-spacing: -0.02em;
+      color: rgba(255,255,255,0.95);
+      margin-bottom: 28px;
+      /* Subtle gradient shimmer on text */
+      background: linear-gradient(160deg, #ffffff 40%, rgba(255,255,255,0.4) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    @supports not (-webkit-background-clip: text) {
+      .hero-title { color: rgba(255,255,255,0.95); background: none; -webkit-text-fill-color: unset; }
+    }
+
+    .hero-tagline {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      max-width: 460px;
+      line-height: 1.9;
+      margin-bottom: 20px;
+      transition: color 1.5s ease-in-out;
+    }
+
+    /* Animated accent line under title */
+    .hero-accent-line {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin: 0 auto 56px;
+      width: 220px;
+    }
+    .hero-accent-line::before,
+    .hero-accent-line::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-gold-line));
+      transition: background 2.5s ease-in-out;
+    }
+    .hero-accent-line::after {
+      background: linear-gradient(90deg, var(--accent-gold-line), transparent);
+    }
+    .hero-accent-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-gold);
+      box-shadow: 0 0 10px var(--accent-gold);
+      transition: background 1.5s ease-in-out, box-shadow 1.5s ease-in-out;
+    }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.45;
+      animation: scrollBounce 2.2s ease-in-out infinite;
+    }
+    .hero-scroll-hint span {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--text-dim);
+      transition: color 1.5s ease-in-out;
+    }
+    .hero-scroll-hint svg {
+      color: var(--accent-gold);
+      transition: color 1.5s ease-in-out;
+    }
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ── CHOOSE SECTION ───────────────────────────────────────── */
+    .choose-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 100px;
+    }
+
+    .section-eyebrow {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .section-eyebrow span {
+      font-size: 0.65rem;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 6px;
+      font-weight: 700;
+      background: var(--accent-gold-dim);
+      border: 1px solid var(--accent-gold-line);
+      padding: 5px 18px;
+      border-radius: 100px;
+      transition: background 2.5s ease-in-out, border-color 2.5s ease-in-out, color 1.5s ease-in-out;
+    }
+
+    /* ── PERSON CARDS ─────────────────────────────────────────── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 28px;
+      margin-bottom: 100px;
+    }
+
+    .person-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 24px;
+      padding: 48px 40px 44px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.4s cubic-bezier(0.25,1,0.5,1);
+    }
+    .person-card:hover { transform: translateY(-10px) scale(1.015); }
+
+    /* Ambient glow layer */
     .person-card-glow {
-      position:absolute;
-      inset:-60%;
-      z-index:0;
-      pointer-events:none;
-      opacity:0;
-      transition:opacity .6s ease;
-      background:conic-gradient(
+      position: absolute;
+      inset: -60%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+      background: conic-gradient(
         from 0deg,
         transparent 0deg,
         var(--accent-gold) 50deg,
         transparent 130deg,
         transparent 230deg,
-        var(--orb-secondary-color, var(--accent-gold)) 290deg,
+        var(--accent-gold) 290deg,
         transparent 360deg
       );
-      filter:blur(50px);
-      animation:cardGlowSpin 10s linear infinite;
-      animation-play-state:paused;
+      filter: blur(55px);
+      animation: cardGlowSpin 10s linear infinite;
+      animation-play-state: paused;
     }
     .person-card:hover .person-card-glow {
-      opacity:.9;
-      animation-play-state:running;
+      opacity: 0.85;
+      animation-play-state: running;
     }
     @keyframes cardGlowSpin {
-      from { transform:rotate(0deg); }
-      to   { transform:rotate(360deg); }
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
     }
 
-    /* Inner panel sits above the glow, holds the actual glass look */
-    .person-card-inner {
-      position:relative; z-index:2;
-      width:100%; height:100%;
-      display:flex; flex-direction:column; align-items:center; text-align:center;
-    }
-
+    /* Glass panel above glow */
     .person-card::before {
-      content:''; position:absolute; inset:0; z-index:1; border-radius:28px;
-      background:var(--glass-bg);
-      border:1px solid var(--glass-border);
-      backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
-      box-shadow:0 8px 32px rgba(0,0,0,.45),inset 0 1px 0 rgba(140,180,255,.07);
-      transition:background 2.5s ease-in-out, border-color .4s ease, box-shadow .4s ease;
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      border-radius: 24px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.05);
+      transition: background 2.5s ease-in-out, border-color 0.4s ease, box-shadow 0.4s ease;
     }
     .person-card:hover::before {
-      border-color:var(--glass-border-hover);
-      box-shadow:0 24px 60px rgba(0,0,0,.65), 0 0 40px var(--accent-gold-dim);
+      border-color: var(--glass-border-hover);
+      box-shadow: 0 28px 70px rgba(0,0,0,0.65), 0 0 40px var(--accent-gold-dim);
     }
 
-    .person-card {
-      transition:transform .4s cubic-bezier(.25,1,.5,1);
+    .person-card-inner {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    .person-card:hover { transform:translateY(-8px) scale(1.02); }
 
-    .card-portrait-wrap { width:160px; height:160px; border-radius:50%; overflow:hidden; border:2px solid var(--glass-border); margin-bottom:24px; flex-shrink:0; position:relative; transition:border-color .4s ease, box-shadow .4s ease; }
-    .person-card:hover .card-portrait-wrap { border-color:var(--accent-gold); box-shadow:0 0 24px 4px var(--accent-gold-dim); }
-    .card-portrait-wrap img { width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
-    .card-portrait-wrap .portrait-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:900; color:var(--accent-gold); background:var(--accent-gold-dim); }
+    /* Portrait */
+    .card-portrait-wrap {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid var(--glass-border);
+      margin-bottom: 26px;
+      flex-shrink: 0;
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+      position: relative;
+    }
+    /* Ring pulse on hover */
+    .card-portrait-wrap::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1px solid var(--accent-gold);
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .person-card:hover .card-portrait-wrap::after {
+      opacity: 0.6;
+      transform: scale(1);
+    }
+    .person-card:hover .card-portrait-wrap {
+      border-color: var(--accent-gold);
+      box-shadow: 0 0 28px 4px var(--accent-gold-dim);
+    }
+    .card-portrait-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .person-card:hover .card-portrait-wrap img { transform: scale(1.05); }
+    .portrait-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.6rem;
+      font-weight: 900;
+      color: var(--accent-gold);
+      background: var(--accent-gold-dim);
+    }
 
-    .card-name { font-size:1.8rem; font-weight:900; color:#fff; margin-bottom:8px; letter-spacing:-.02em; }
-    .card-expertise { font-size:.68rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:3.5px; font-weight:700; opacity:.9; background:var(--accent-gold-dim); border:1px solid var(--accent-gold-line); padding:4px 14px; border-radius:100px; margin-bottom:22px; display:inline-block; transition:background 2.5s ease-in-out,border-color 2.5s ease-in-out,color 1.5s ease-in-out; }
-    .card-bio { color:var(--text-muted); font-size:.9rem; font-weight:300; line-height:1.75; flex:1; margin-bottom:32px; transition:color 1.5s ease-in-out; }
+    .card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.9rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+    .card-expertise {
+      font-size: 0.65rem;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 3.5px;
+      font-weight: 700;
+      background: var(--accent-gold-dim);
+      border: 1px solid var(--accent-gold-line);
+      padding: 4px 14px;
+      border-radius: 100px;
+      margin-bottom: 20px;
+      display: inline-block;
+      transition: background 2.5s ease-in-out, border-color 2.5s ease-in-out, color 1.5s ease-in-out;
+    }
 
-    .card-btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:13px 28px; border:1px solid var(--accent-gold-line); border-radius:12px; text-decoration:none; color:var(--accent-gold); font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:2.5px; background:transparent; transition:background .3s ease,color .3s ease,border-color .3s ease,transform .3s ease; pointer-events:all; }
-    .card-btn:hover { background:var(--accent-gold); color:var(--bg-base); border-color:var(--accent-gold); transform:translateY(-2px); }
-    .card-btn svg { width:14px; height:14px; transition:transform .25s ease; }
-    .card-btn:hover svg { transform:translateX(3px); }
+    /* Thin divider under expertise tag */
+    .card-sep {
+      width: 40px;
+      height: 1px;
+      background: var(--accent-gold-line);
+      margin: 0 auto 20px;
+      transition: background 2.5s ease-in-out;
+    }
 
-    .cards-grid > .reveal:nth-child(2) { transition-delay:.15s; }
+    .card-bio {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.8;
+      flex: 1;
+      margin-bottom: 32px;
+      transition: color 1.5s ease-in-out;
+    }
 
-    /* LINKS SECTION */
-    #links { width:100%; max-width:var(--max-w); margin:0 auto 30px; }
-    .links-section-label { text-align:center; margin-bottom:28px; }
-    .links-section-label span { font-size:.68rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:6px; font-weight:700; background:var(--accent-gold-dim); border:1px solid var(--accent-gold-line); padding:5px 18px; border-radius:100px; transition:background 2.5s ease-in-out,border-color 2.5s ease-in-out,color 1.5s ease-in-out; }
+    .card-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 26px;
+      border: 1px solid var(--accent-gold-line);
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--accent-gold);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      background: transparent;
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
+    }
+    .card-btn:hover {
+      background: var(--accent-gold);
+      color: var(--bg-base);
+      border-color: var(--accent-gold);
+      transform: translateY(-2px);
+    }
+    .card-btn svg { width: 13px; height: 13px; transition: transform 0.25s ease; }
+    .card-btn:hover svg { transform: translateX(3px); }
 
-    @media (max-width:768px) {
-      .cards-grid { grid-template-columns:1fr; }
-      .person-card { padding:32px 24px 28px; }
-      .hero-title { -webkit-text-fill-color:rgba(255,255,255,.92); }
+    /* ── STATS ROW ────────────────────────────────────────────── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      max-width: 1100px;
+      margin: 0 auto 100px;
+      padding: 0 24px;
+    }
+    .stat-card {
+      text-align: center;
+      padding: 32px 20px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: background 2.5s ease-in-out, border-color 0.3s ease, transform 0.3s ease;
+    }
+    .stat-card:hover {
+      border-color: var(--glass-border-hover);
+      transform: translateY(-4px);
+    }
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: var(--accent-gold);
+      line-height: 1;
+      margin-bottom: 8px;
+      transition: color 1.5s ease-in-out;
+    }
+    .stat-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--text-dim);
+      font-weight: 600;
+      transition: color 1.5s ease-in-out;
+    }
+
+    /* ── LINKS SECTION ────────────────────────────────────────── */
+    .links-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 100px;
+    }
+    .links-section-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .links-section-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 10px;
+    }
+    .links-section-header p {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      font-weight: 300;
+      transition: color 1.5s ease-in-out;
+    }
+
+    /* Re-use .links-grid and .link-card from style.css */
+
+    /* ── FOOTER ───────────────────────────────────────────────── */
+    .index-footer {
+      text-align: center;
+      padding: 40px 24px;
+      border-top: 1px solid var(--glass-border);
+      color: var(--text-dim);
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+      transition: border-color 2.5s ease-in-out, color 1.5s ease-in-out;
+    }
+
+    /* ── RESPONSIVE ───────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .cards-grid { grid-template-columns: 1fr; }
+      .stats-row  { grid-template-columns: 1fr; gap: 14px; }
+      .person-card { padding: 36px 24px 32px; }
+      .index-nav { padding: 6px 14px; gap: 2px; }
+      .index-nav a { padding: 4px 8px; font-size: 0.65rem; }
+      .hero-title { -webkit-text-fill-color: rgba(255,255,255,0.95); }
     }
   </style>
 </head>
@@ -143,79 +502,112 @@ permalink: /index.html
   <div id="bg-dots"></div>
   <div id="bg-canvas"></div>
 
-  <section class="hero-banner">
+  <!-- ── TOP NAV ────────────────────────────────────────────── -->
+  <nav class="index-nav">
+    <span class="index-nav-logo">A&S</span>
+    <div class="index-nav-divider"></div>
+    <a href="#about">About</a>
+    <a href="#links">Links</a>
+  </nav>
+
+  <!-- ── HERO ───────────────────────────────────────────────── -->
+  <section class="hero-section" id="hero">
     <p class="hero-eyebrow reveal">{{ MainPage.PageInfo.HeroTagline }}</p>
     <h1 class="hero-title reveal">{{ MainPage.PageInfo.PageTitle }}</h1>
-    <p class="hero-sub reveal">
-      {{ MainPage.PageInfo.Description | safe }}
-    </p>
-    <div class="hero-divider reveal"></div>
+    <p class="hero-tagline reveal">{{ MainPage.PageInfo.Description | safe }}</p>
+    <div class="hero-accent-line reveal">
+      <div class="hero-accent-dot"></div>
+    </div>
+
+    <div class="hero-scroll-hint">
+      <span>Scroll</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+      </svg>
+    </div>
   </section>
 
-  <div class="choose-label reveal">
-    <span>{{ MainPage.PageInfo.ChooseLabel }}</span>
-  </div>
+  <!-- ── CHOOSE ─────────────────────────────────────────────── -->
+  <section class="choose-section" id="about">
+    <div class="section-eyebrow reveal">
+      <span>{{ MainPage.PageInfo.ChooseLabel }}</span>
+    </div>
 
-  <div class="cards-grid">
+    <div class="cards-grid">
 
-    <a href="Adit/AditPage.html" class="person-card reveal" id="card-adit">
-      <div class="person-card-glow"></div>
-      <div class="person-card-inner">
-        <div class="card-portrait-wrap">
-          {% if Adit.AboutAuthor.Pic %}
-            <img src="/Adit-Sahai.github.io{{ Adit.AboutAuthor.Pic }}" alt="Photo of {{ Adit.AboutAuthor.Name }}" loading="lazy" />
-          {% else %}
-            <div class="portrait-placeholder">A</div>
-          {% endif %}
+      <a href="/Adit-Sahai.github.io/Adit/AditPage.html" class="person-card reveal">
+        <div class="person-card-glow"></div>
+        <div class="person-card-inner">
+          <div class="card-portrait-wrap">
+            {% if Adit.AboutAuthor.Pic %}
+              <img src="/Adit-Sahai.github.io{{ Adit.AboutAuthor.Pic }}" alt="Photo of {{ Adit.AboutAuthor.Name }}" loading="lazy" />
+            {% else %}
+              <div class="portrait-placeholder">A</div>
+            {% endif %}
+          </div>
+          <h2 class="card-name">{{ Adit.AboutAuthor.Name }}</h2>
+          <span class="card-expertise">{{ Adit.AboutAuthor.Expertise }}</span>
+          <div class="card-sep"></div>
+          <p class="card-bio">{{ Adit.AboutAuthor.Desciption | striptags | truncate(160) }}</p>
+          <span class="card-btn">
+            {{ MainPage.PageInfo.CtaAdit }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </span>
         </div>
+      </a>
 
-        <h2 class="card-name">{{ Adit.AboutAuthor.Name }}</h2>
-        <span class="card-expertise">{{ Adit.AboutAuthor.Expertise }}</span>
-        <p class="card-bio">
-          {{ Adit.AboutAuthor.Desciption | striptags | truncate(160) }}
-        </p>
-
-        <span class="card-btn">
-          {{ MainPage.PageInfo.CtaAdit }}
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-          </svg>
-        </span>
-      </div>
-    </a>
-
-    <a href="Sharan/SharanPage.html" class="person-card reveal" id="card-sharan">
-      <div class="person-card-glow"></div>
-      <div class="person-card-inner">
-        <div class="card-portrait-wrap">
-          {% if Sharan.AboutPage.Pic %}
-            <img src="/Adit-Sahai.github.io{{ Sharan.AboutPage.Pic }}" alt="Photo of {{ Sharan.AboutPage.Name }}" loading="lazy" />
-          {% else %}
-            <div class="portrait-placeholder">S</div>
-          {% endif %}
+      <a href="/Adit-Sahai.github.io/Sharan/SharanPage.html" class="person-card reveal" style="transition-delay:.12s">
+        <div class="person-card-glow"></div>
+        <div class="person-card-inner">
+          <div class="card-portrait-wrap">
+            {% if Sharan.AboutPage.Pic %}
+              <img src="/Adit-Sahai.github.io{{ Sharan.AboutPage.Pic }}" alt="Photo of {{ Sharan.AboutPage.Name }}" loading="lazy" />
+            {% else %}
+              <div class="portrait-placeholder">S</div>
+            {% endif %}
+          </div>
+          <h2 class="card-name">{{ Sharan.AboutPage.Name }}</h2>
+          <span class="card-expertise">{{ Sharan.AboutPage.Expertise }}</span>
+          <div class="card-sep"></div>
+          <p class="card-bio">{{ Sharan.AboutPage.Desciption | striptags | truncate(160) }}</p>
+          <span class="card-btn">
+            {{ MainPage.PageInfo.CtaSharan }}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </span>
         </div>
+      </a>
 
-        <h2 class="card-name">{{ Sharan.AboutPage.Name }}</h2>
-        <span class="card-expertise">{{ Sharan.AboutPage.Expertise }}</span>
-        <p class="card-bio">
-          {{ Sharan.AboutPage.Desciption | striptags | truncate(160) }}
-        </p>
+    </div>
 
-        <span class="card-btn">
-          {{ MainPage.PageInfo.CtaSharan }}
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-          </svg>
-        </span>
+    <!-- ── STATS ROW ───────────────────────────────────────── -->
+    <div class="stats-row">
+      <div class="stat-card reveal">
+        <div class="stat-number">2</div>
+        <div class="stat-label">Authors</div>
       </div>
-    </a>
+      <div class="stat-card reveal" style="transition-delay:.08s">
+        <div class="stat-number" id="stat-articles">—</div>
+        <div class="stat-label">Articles Published</div>
+      </div>
+      <div class="stat-card reveal" style="transition-delay:.16s">
+        <div class="stat-number">{{ Adit.Books | length }}</div>
+        <div class="stat-label">Books Written</div>
+      </div>
+    </div>
+  </section>
 
-  </div>
-
-  <section id="links" class="reveal">
-    <div class="links-section-label"><span>{{ MainPage.PageInfo.LinksLabel }}</span></div>
-    <div class="links-grid" id="linksGrid">
-      {% for filename, link in MainPage.MMentionedLinks %}
+  <!-- ── LINKS ──────────────────────────────────────────────── -->
+  <section class="links-section" id="links">
+    <div class="links-section-header reveal">
+      <h2>{{ MainPage.PageInfo.LinksLabel }}</h2>
+      <p>Find us elsewhere on the internet</p>
+    </div>
+    <div class="links-grid reveal">
+      {% for link in MainPage.MMentionedLinks %}
       <a
         href="{{ link.Link }}"
         class="link-card"
@@ -234,132 +626,51 @@ permalink: /index.html
     </div>
   </section>
 
-  <footer class="footer">
+  <footer class="index-footer">
     {{ MainPage.PageInfo.FooterNote | safe }}
   </footer>
 
   <script src="/Adit-Sahai.github.io/MainCode/script.js"></script>
 
   <script>
-    // ── Link card icons (same logic as AditPage) ─────────────────
+    // ── Article count stat ────────────────────────────────────
+    (function() {
+      const published = [
+        {% for a in Adit.Articles %}{% if a.Published %}1,{% endif %}{% endfor %}
+      ].length;
+      const el = document.getElementById('stat-articles');
+      if (el) el.textContent = published || '—';
+    })();
+
+    // ── Link card icons ───────────────────────────────────────
     const LINK_ICONS = {
-        'instagram': {
-            color: 'rgba(193,53,132,0.18)',
-            border: 'rgba(193,53,132,0.45)',
-            fill: '#e1306c',
-            svg: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="currentColor" stroke-width="1.8"/>
-                <circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.8"/>
-                <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
-            </svg>`
-        },
-        'twitter': {
-            color: 'rgba(29,161,242,0.15)',
-            border: 'rgba(29,161,242,0.4)',
-            fill: '#1da1f2',
-            svg: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.961l4.259 5.631 4.774-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-            </svg>`
-        },
-        'x.com': {
-            color: 'rgba(255,255,255,0.1)',
-            border: 'rgba(255,255,255,0.25)',
-            fill: '#e7e9ea',
-            svg: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.961l4.259 5.631 4.774-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-            </svg>`
-        },
-        'youtube': {
-            color: 'rgba(255,0,0,0.15)',
-            border: 'rgba(255,0,0,0.4)',
-            fill: '#ff0000',
-            svg: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-            </svg>`
-        },
-        'linkedin': {
-            color: 'rgba(0,119,181,0.15)',
-            border: 'rgba(0,119,181,0.4)',
-            fill: '#0077b5',
-            svg: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-            </svg>`
-        },
-        'github': {
-            color: 'rgba(110,118,129,0.15)',
-            border: 'rgba(110,118,129,0.4)',
-            fill: '#c9d1d9',
-            svg: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-            </svg>`
-        },
-        'facebook': {
-            color: 'rgba(24,119,242,0.15)',
-            border: 'rgba(24,119,242,0.4)',
-            fill: '#1877f2',
-            svg: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-            </svg>`
-        },
-        'tiktok': {
-            color: 'rgba(0,242,234,0.12)',
-            border: 'rgba(0,242,234,0.35)',
-            fill: '#00f2ea',
-            svg: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
-            </svg>`
-        },
-        'substack': {
-            color: 'rgba(255,106,0,0.15)',
-            border: 'rgba(255,106,0,0.4)',
-            fill: '#ff6600',
-            svg: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/>
-            </svg>`
-        },
-        'medium': {
-            color: 'rgba(255,255,255,0.08)',
-            border: 'rgba(255,255,255,0.2)',
-            fill: '#ffffff',
-            svg: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M13.54 12a6.8 6.8 0 0 1-6.77 6.82A6.8 6.8 0 0 1 0 12a6.8 6.8 0 0 1 6.77-6.82A6.8 6.8 0 0 1 13.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
-            </svg>`
-        }
+      'instagram': { color:'rgba(193,53,132,0.18)', border:'rgba(193,53,132,0.45)', fill:'#e1306c', svg:`<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="5.5" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>` },
+      'twitter':   { color:'rgba(29,161,242,0.15)',  border:'rgba(29,161,242,0.4)',  fill:'#1da1f2', svg:`<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.961l4.259 5.631 4.774-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>` },
+      'x.com':     { color:'rgba(255,255,255,0.1)',  border:'rgba(255,255,255,0.25)',fill:'#e7e9ea', svg:`<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.961l4.259 5.631 4.774-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>` },
+      'youtube':   { color:'rgba(255,0,0,0.15)',     border:'rgba(255,0,0,0.4)',     fill:'#ff0000', svg:`<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>` },
+      'linkedin':  { color:'rgba(0,119,181,0.15)',   border:'rgba(0,119,181,0.4)',   fill:'#0077b5', svg:`<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>` },
+      'github':    { color:'rgba(110,118,129,0.15)', border:'rgba(110,118,129,0.4)', fill:'#c9d1d9', svg:`<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>` },
+      'substack':  { color:'rgba(255,106,0,0.15)',   border:'rgba(255,106,0,0.4)',   fill:'#ff6600', svg:`<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/></svg>` },
+      'medium':    { color:'rgba(255,255,255,0.08)', border:'rgba(255,255,255,0.2)', fill:'#ffffff', svg:`<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M13.54 12a6.8 6.8 0 0 1-6.77 6.82A6.8 6.8 0 0 1 0 12a6.8 6.8 0 0 1 6.77-6.82A6.8 6.8 0 0 1 13.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg>` },
     };
-
     const FALLBACK_ICON = {
-        color: 'var(--accent-gold-dim)',
-        border: 'var(--accent-gold-line)',
-        fill: 'var(--accent-gold)',
-        svg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="2" y1="12" x2="22" y2="12"/>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>`
+      color:'var(--accent-gold-dim)', border:'var(--accent-gold-line)', fill:'var(--accent-gold)',
+      svg:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`
     };
-
     function getIconData(url) {
-        try {
-            const hostname = new URL(url).hostname.toLowerCase().replace('www.', '');
-            for (const [key, data] of Object.entries(LINK_ICONS)) {
-                if (hostname.includes(key)) return data;
-            }
-        } catch(e) {}
-        return FALLBACK_ICON;
+      try {
+        const h = new URL(url).hostname.toLowerCase().replace('www.','');
+        for (const [k,d] of Object.entries(LINK_ICONS)) { if (h.includes(k)) return d; }
+      } catch(e) {}
+      return FALLBACK_ICON;
     }
-
-    function initLinkIcons() {
-        document.querySelectorAll('.link-card-icon[data-icon-url]').forEach(el => {
-            const url  = el.getAttribute('data-icon-url');
-            const data = getIconData(url);
-            el.style.background  = data.color;
-            el.style.borderColor = data.border;
-            el.style.color       = data.fill;
-            el.innerHTML         = data.svg;
-        });
-    }
-
-    initLinkIcons();
+    document.querySelectorAll('.link-card-icon[data-icon-url]').forEach(el => {
+      const d = getIconData(el.getAttribute('data-icon-url'));
+      el.style.background  = d.color;
+      el.style.borderColor = d.border;
+      el.style.color       = d.fill;
+      el.innerHTML         = d.svg;
+    });
   </script>
 
 </body>
