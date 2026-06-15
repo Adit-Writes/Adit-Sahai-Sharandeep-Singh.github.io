@@ -4,6 +4,15 @@ media:
 
 content:
 
+# MainPage Stuff======================================================================
+
+  - name: MainPage
+    type: group
+    items:
+      
+
+# Adits Stuff======================================================================
+
   - name: Adit
     type: group
     items:
@@ -179,6 +188,8 @@ content:
         - name: LastUpdated
           type: date
 
+
+# Sharan's Stuff======================================================================
 
   - name: Sharan
     type: group
