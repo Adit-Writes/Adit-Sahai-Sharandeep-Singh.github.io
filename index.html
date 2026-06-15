@@ -57,7 +57,7 @@ permalink: /index.html
     /* Rotating spherical gradient glow — sits BEHIND content, doesn't interfere with text */
     .person-card-glow {
       position:absolute;
-      inset:-40%;
+      inset:-60%;
       z-index:0;
       pointer-events:none;
       opacity:0;
@@ -65,18 +65,18 @@ permalink: /index.html
       background:conic-gradient(
         from 0deg,
         transparent 0deg,
-        var(--accent-gold) 40deg,
-        transparent 110deg,
-        transparent 250deg,
-        var(--orb-secondary-color, var(--accent-gold)) 300deg,
+        var(--accent-gold) 50deg,
+        transparent 130deg,
+        transparent 230deg,
+        var(--orb-secondary-color, var(--accent-gold)) 290deg,
         transparent 360deg
       );
-      filter:blur(60px);
-      animation:cardGlowSpin 14s linear infinite;
+      filter:blur(50px);
+      animation:cardGlowSpin 10s linear infinite;
       animation-play-state:paused;
     }
     .person-card:hover .person-card-glow {
-      opacity:.55;
+      opacity:.9;
       animation-play-state:running;
     }
     @keyframes cardGlowSpin {
@@ -109,7 +109,7 @@ permalink: /index.html
     }
     .person-card:hover { transform:translateY(-8px) scale(1.02); }
 
-    .card-portrait-wrap { width:120px; height:120px; border-radius:50%; overflow:hidden; border:2px solid var(--glass-border); margin-bottom:24px; flex-shrink:0; position:relative; transition:border-color .4s ease, box-shadow .4s ease; }
+    .card-portrait-wrap { width:160px; height:160px; border-radius:50%; overflow:hidden; border:2px solid var(--glass-border); margin-bottom:24px; flex-shrink:0; position:relative; transition:border-color .4s ease, box-shadow .4s ease; }
     .person-card:hover .card-portrait-wrap { border-color:var(--accent-gold); box-shadow:0 0 24px 4px var(--accent-gold-dim); }
     .card-portrait-wrap img { width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
     .card-portrait-wrap .portrait-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:900; color:var(--accent-gold); background:var(--accent-gold-dim); }
