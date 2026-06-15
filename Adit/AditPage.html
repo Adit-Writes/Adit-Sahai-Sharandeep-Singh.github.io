@@ -472,15 +472,20 @@ permalink: /Adit/AditPage.html
         <button class="article-search-clear" id="articleSearchClear" aria-label="Clear search">&#x2715;</button>
     </div>
 
-    <section class="article-feed">
+   <section class="article-feed">
         {% for filename, article in Adit.ArticlesData %}
         {% if article.Published %}
+
+        {# Find the real category item using the reference path key #}
+        {% set currentCategory = Adit.categories[article.Topic] %}
+        {# Fallback to the raw string if it's not a path #}
+        {% set categoryName = currentCategory.name if currentCategory else (article.Topic | default('General')) %}
 
         {% set firstPic = article.Pics[0] if article.Pics and article.Pics.length > 0 else null %}
 
         <article
             class="article-card glass-card reveal{% if firstPic %} has-thumb{% endif %}"
-            data-category="{{ article.Topic | default('') | lower }}"
+            data-category="{{ categoryName | lower }}"
             data-slug="{{ article.Title | slugify }}"
             data-title="{{ article.Title | lower }}"
             data-description="{{ article.Description | lower | striptags }}"
@@ -489,7 +494,7 @@ permalink: /Adit/AditPage.html
 
             {% if firstPic %}
             <div class="article-card-thumb">
-                <span class="thumb-category">{{ article.Topic }}</span>
+                <span class="thumb-category">{{ categoryName }}</span>
                 <img
                     src="/Adit-Sahai.github.io{{ firstPic }}"
                     alt="{{ article.Title }}"
@@ -500,7 +505,7 @@ permalink: /Adit/AditPage.html
 
             <div class="article-card-body">
                 <div class="article-meta">
-                    <span class="category">{{ article.Topic }}</span>
+                    <span class="category">{{ categoryName }}</span>
                     <span class="meta-sep"></span>
                     
                     <span class="read-time">{{ article.ReadTime }} min read</span>
