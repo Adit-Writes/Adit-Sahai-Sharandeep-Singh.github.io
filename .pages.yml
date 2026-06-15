@@ -186,7 +186,7 @@ content:
     
     - name: SiteHead
       type: file
-      path: _data/Adit/PageInfo.json
+      path: _data/Sharan/SiteHead.json
       fields:
         - name: PageTitle
           type: string
