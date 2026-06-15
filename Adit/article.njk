@@ -3,7 +3,7 @@ pagination:
   data: Adit.ArticlesData
   size: 1
   alias: article
-permalink: "Adit/articles/{{ article.Title | slugify }}/index.html"
+permalink: "/Adit-Sahai.github.io/Adit/articles/{{ article.Title | slugify }}/index.html"
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -674,13 +674,18 @@ permalink: "Adit/articles/{{ article.Title | slugify }}/index.html"
         </div>
     </nav>
 
+    {# ── Resolve category name from Adit.categories, same as AditPage ── #}
+    {%- set categorySlug = article.Topic | replace("_data/Adit/categories/", "") | replace(".json", "") -%}
+    {%- set currentCategory = Adit.categories[categorySlug] -%}
+    {%- set categoryName = currentCategory.name if currentCategory else (categorySlug | capitalize) -%}
+
     <div class="article-page">
         <a href="/Adit-Sahai.github.io/Adit/AditPage#articles" class="back-link">Back to Essays</a>
 
         <!-- Hero -->
         <article class="article-hero reveal">
             <div class="article-hero-meta">
-                <span class="category">{{ article.Topic }}</span>
+                <span class="category">{{ categoryName }}</span>
                 <span class="meta-dot"></span>
                 <span class="read-time">{{ article.ReadTime }} min read</span>
                 <span class="meta-dot"></span>
@@ -955,7 +960,7 @@ permalink: "Adit/articles/{{ article.Title | slugify }}/index.html"
         // ── Config ────────────────────────────────────────────────
         const SUPABASE_URL = 'https://mpeqripywqiotselpyut.supabase.co';
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wZXFyaXB5d3Fpb3RzZWxweXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTE4MzUsImV4cCI6MjA5Njg4NzgzNX0.1lTHIY3M1xk5FmnTC2YMbSMNpi7vhWDuGGXUSNkwkm8';
-        const ARTICLE_ID   = '{{ article.Title | slug }}';
+        const ARTICLE_ID   = '{{ article.Title | slugify }}';
 
         async function sb(path, opts = {}) {
             const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
@@ -1368,7 +1373,7 @@ permalink: "Adit/articles/{{ article.Title | slugify }}/index.html"
             {
                 title:    {{ (a.Title | default("")) | dump | safe }},
                 category: {{ (a.Topic | default("")) | dump | safe }},
-                slug:     {{ (a.Title | default("") | slug) | dump | safe }},
+                slug:     {{ (a.Title | default("") | slugify) | dump | safe }},
                 excerpt:  {{ (a.Description | default("")) | striptags | dump | safe }}
             },
             {% endif %}
@@ -1427,7 +1432,7 @@ permalink: "Adit/articles/{{ article.Title | slugify }}/index.html"
                 matches.forEach(a => {
                     const link     = document.createElement('a');
                     link.className = 'search-result-item';
-                    link.href      = `/Adit-Sahai.github.io/articles/${a.slug}/`;
+                    link.href      = `/Adit-Sahai.github.io/Adit/articles/${a.slug}/`;
                     const likedTag = likedSlugs.has(a.slug) ? ' <span style="color:var(--accent-gold)">♥</span>' : '';
                     link.innerHTML = `<strong>${escHtml(a.title)}${likedTag}</strong><span class="s-cat">${escHtml(a.category)}</span>`;
                     results.appendChild(link);
