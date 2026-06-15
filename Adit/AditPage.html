@@ -500,15 +500,16 @@ permalink: /Adit/AditPage.html
 
             <div class="article-card-body">
                 <div class="article-meta">
-                    {% if not firstPic %}
                     <span class="category">{{ article.Topic }}</span>
                     <span class="meta-sep"></span>
-                    {% endif %}
+                    
                     <span class="read-time">{{ article.ReadTime }} min read</span>
+                    
                     {% if article.Likes !== false and article.Likes !== 'false' %}
                     <span class="meta-sep"></span>
                     <span class="index-like-count" data-slug="{{ article.Title | slugify }}">0 likes</span>
                     {% endif %}
+                    
                     <span class="meta-sep liked-badge-sep" style="display:none"></span>
                     <span class="liked-badge" data-slug="{{ article.Title | slugify }}">
                         <span class="liked-badge-heart">♥</span> Liked
