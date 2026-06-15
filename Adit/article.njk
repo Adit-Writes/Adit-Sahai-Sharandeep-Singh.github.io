@@ -26,7 +26,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             position: relative;
         }
 
-        /* Section label */
         .media-section-label {
             display: flex;
             align-items: center;
@@ -47,7 +46,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             background: var(--accent-gold-line);
         }
 
-        /* Track + overflow container */
         .gallery-viewport {
             position: relative;
             overflow: hidden;
@@ -64,11 +62,9 @@ permalink: "articles/{{ article.Title | slug }}/"
             will-change: transform;
         }
 
-        /* Each slide */
         .gallery-slide {
             flex: 0 0 100%;
             position: relative;
-            /* max height so very tall images don't dominate */
             max-height: 520px;
             overflow: hidden;
             display: flex;
@@ -92,7 +88,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             filter: brightness(1) saturate(1);
         }
 
-        /* Gradient overlays for depth */
         .gallery-slide::before {
             content: '';
             position: absolute;
@@ -104,7 +99,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             pointer-events: none;
         }
 
-        /* Counter badge */
         .gallery-counter {
             position: absolute;
             bottom: 16px;
@@ -123,7 +117,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             pointer-events: none;
         }
 
-        /* Prev / Next arrows */
         .gallery-btn {
             position: absolute;
             top: 50%;
@@ -164,13 +157,11 @@ permalink: "articles/{{ article.Title | slug }}/"
         .gallery-btn-prev { left: 14px; }
         .gallery-btn-next { right: 14px; }
 
-        /* Hide arrows when only 1 image */
         .gallery-viewport.single .gallery-btn,
         .gallery-viewport.single .gallery-counter,
         .gallery-dots { display: none; }
         .gallery-viewport.single .gallery-counter { display: none; }
 
-        /* Dot indicators */
         .gallery-dots {
             display: flex;
             justify-content: center;
@@ -196,7 +187,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             transform: scaleY(1.1);
         }
 
-        /* Lightbox */
         .gallery-lightbox {
             position: fixed;
             inset: 0;
@@ -257,7 +247,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             transform: scale(1.1) rotate(90deg);
         }
 
-        /* Cursor hint on slides */
         .gallery-slide {
             cursor: zoom-in;
         }
@@ -296,7 +285,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             overflow: hidden;
         }
 
-        /* Shimmer line on hover */
         .file-card::before {
             content: '';
             position: absolute;
@@ -323,7 +311,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             box-shadow: 0 12px 32px rgba(0,0,0,0.5), 0 0 12px var(--accent-gold-dim);
         }
 
-        /* File type icon badge */
         .file-icon {
             width: 42px;
             height: 42px;
@@ -343,7 +330,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             filter: brightness(1.15);
         }
 
-        /* Type-specific icon colours */
         .file-icon.type-video {
             background: rgba(255, 60, 80, 0.15);
             border: 1px solid rgba(255, 60, 80, 0.35);
@@ -414,7 +400,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             transform: translateX(3px);
         }
 
-        /* Video embed within article body area */
         .article-video-embed {
             margin-bottom: 40px;
         }
@@ -438,7 +423,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             background: #000;
         }
 
-        /* Audio player */
         .audio-player-wrap {
             display: flex;
             flex-direction: column;
@@ -461,7 +445,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             flex: 1;
             height: 36px;
             accent-color: var(--accent-gold);
-            /* Minor cross-browser normalization */
             outline: none;
         }
 
@@ -473,14 +456,12 @@ permalink: "articles/{{ article.Title | slug }}/"
             margin-bottom: 40px;
         }
 
-        /* Wrapper that holds all link items stacked */
         .links-embed-list {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
 
-        /* ── Generic iframe embed wrapper (YouTube, Vimeo, Twitter etc.) */
         .link-embed-frame {
             position: relative;
             width: 100%;
@@ -492,12 +473,10 @@ permalink: "articles/{{ article.Title | slug }}/"
             transition: border-color 2.5s ease-in-out;
         }
 
-        /* 16:9 for video iframes */
         .link-embed-frame.aspect-video {
             aspect-ratio: 16 / 9;
         }
 
-        /* Taller ratio for Twitter/X embeds */
         .link-embed-frame.aspect-twitter {
             aspect-ratio: unset;
             min-height: 220px;
@@ -513,7 +492,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             display: block;
         }
 
-        /* Twitter widget iframe overrides */
         .link-embed-frame.aspect-twitter iframe {
             position: static;
             width: 100%;
@@ -521,7 +499,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             min-height: 220px;
         }
 
-        /* ── Spotify / SoundCloud — fixed height iframes */
         .link-embed-frame.aspect-audio {
             aspect-ratio: unset;
             height: 152px;
@@ -532,7 +509,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             height: 152px;
         }
 
-        /* Spotify playlist / album taller */
         .link-embed-frame.aspect-spotify-large {
             aspect-ratio: unset;
             height: 380px;
@@ -543,7 +519,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             height: 380px;
         }
 
-        /* ── Plain link fallback card */
         .link-plain-card {
             display: flex;
             align-items: center;
@@ -629,7 +604,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             transform: translateX(3px);
         }
 
-        /* Loading skeleton while embed loads */
         .link-embed-frame::before {
             content: '';
             position: absolute;
@@ -647,7 +621,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             border-radius: inherit;
         }
 
-        /* Remove shimmer once iframe loads (toggled via JS class) */
         .link-embed-frame.loaded::before {
             display: none;
         }
@@ -657,7 +630,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             100% { background-position: -200% center; }
         }
 
-        /* ── Responsive ───────────────────────────────────────────── */
         @media (max-width: 640px) {
             .gallery-btn { width: 34px; height: 34px; font-size: 0.85rem; }
             .gallery-slide { max-height: 300px; }
@@ -679,9 +651,9 @@ permalink: "articles/{{ article.Title | slug }}/"
         <div class="logo">A.S.</div>
         <div class="navbar-divider"></div>
         <div class="nav-links">
-            <a href="/Adit-Sahai.github.io/#about">About</a>
-            <a href="/Adit-Sahai.github.io/#books">Books</a>
-            <a href="/Adit-Sahai.github.io/#articles">Articles</a>
+            <a href="/Adit-Sahai.github.io/Adit/AditPage">About</a>
+            <a href="/Adit-Sahai.github.io/Adit/AditPage#books">Books</a>
+            <a href="/Adit-Sahai.github.io/Adit/AditPage#articles">Articles</a>
         </div>
         <!-- Search -->
         <div class="search-wrap" id="searchWrap">
@@ -703,7 +675,7 @@ permalink: "articles/{{ article.Title | slug }}/"
     </nav>
 
     <div class="article-page">
-        <a href="/Adit-Sahai.github.io/#articles" class="back-link">Back to Essays</a>
+        <a href="/Adit-Sahai.github.io/Adit/AditPage#articles" class="back-link">Back to Essays</a>
 
         <!-- Hero -->
         <article class="article-hero reveal">
@@ -736,7 +708,6 @@ permalink: "articles/{{ article.Title | slug }}/"
                 <span>Images</span>
             </div>
             <div class="gallery-viewport{% if article.Pics.length === 1 %} single{% endif %}" id="galleryViewport">
-                <!-- Slides -->
                 <div class="gallery-track" id="galleryTrack">
                     {% for pic in article.Pics %}
                     <div class="gallery-slide" data-index="{{ loop.index0 }}">
@@ -749,17 +720,14 @@ permalink: "articles/{{ article.Title | slug }}/"
                     {% endfor %}
                 </div>
 
-                <!-- Controls (hidden for single image via .single class) -->
                 <button class="gallery-btn gallery-btn-prev" id="galleryPrev" aria-label="Previous image">&#8592;</button>
                 <button class="gallery-btn gallery-btn-next" id="galleryNext" aria-label="Next image">&#8594;</button>
 
-                <!-- Counter -->
                 <div class="gallery-counter" id="galleryCounter">
                     1 / {{ article.Pics.length }}
                 </div>
             </div>
 
-            <!-- Dot indicators -->
             {% if article.Pics.length > 1 %}
             <div class="gallery-dots" id="galleryDots">
                 {% for pic in article.Pics %}
@@ -773,7 +741,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             {% endif %}
         </div>
 
-        <!-- Lightbox (single, shared) -->
         <div class="gallery-lightbox" id="galleryLightbox" role="dialog" aria-label="Image lightbox">
             <button class="gallery-lightbox-close" id="lightboxClose" aria-label="Close">&#x2715;</button>
             <img id="lightboxImg" src="" alt="">
@@ -797,7 +764,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             {%- endfor -%}
         {%- endif -%}
 
-        <!-- Inline video players -->
         {% if videoFiles.length > 0 %}
         <div class="article-video-embed reveal">
             <div class="media-section-label">
@@ -815,7 +781,6 @@ permalink: "articles/{{ article.Title | slug }}/"
         </div>
         {% endif %}
 
-        <!-- Inline audio players -->
         {% if audioFiles.length > 0 %}
         <div class="reveal">
             <div class="media-section-label">
@@ -888,7 +853,6 @@ permalink: "articles/{{ article.Title | slug }}/"
                 <span>Links</span>
             </div>
             <div class="links-embed-list" id="linksEmbedList">
-                <!-- JS populates each link as an embed or plain card -->
                 {% for link in article.Links %}
                 <div class="link-embed-item" data-url="{{ link }}"></div>
                 {% endfor %}
@@ -914,7 +878,6 @@ permalink: "articles/{{ article.Title | slug }}/"
                 <span class="comments-count" id="commentsCount"></span>
             </div>
 
-            <!-- Comment form -->
             <div class="comment-form-card">
                 <div class="comment-form-fields">
                     <input
@@ -942,7 +905,6 @@ permalink: "articles/{{ article.Title | slug }}/"
                 <p class="comment-error" id="commentError"></p>
             </div>
 
-            <!-- Comment list -->
             <div id="commentsList" class="comments-list">
                 <div class="comments-loading" id="commentsLoading">
                     <span class="loading-dot"></span>
@@ -954,7 +916,7 @@ permalink: "articles/{{ article.Title | slug }}/"
         {% endif %}
 
         <div class="article-nav-footer">
-            <a href="/Adit-Sahai.github.io/#articles">← View all essays</a>
+            <a href="/Adit-Sahai.github.io/Adit/AditPage#articles">← View all essays</a>
         </div>
     </div>
 
@@ -966,7 +928,6 @@ permalink: "articles/{{ article.Title | slug }}/"
 <script>
     document.addEventListener('DOMContentLoaded', () => {
 
-        // ── Utilities ─────────────────────────────────────────────
         function escHtml(s) {
             return String(s || '')
                 .replace(/&/g, '&amp;')
@@ -996,7 +957,6 @@ permalink: "articles/{{ article.Title | slug }}/"
         const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wZXFyaXB5d3Fpb3RzZWxweXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTE4MzUsImV4cCI6MjA5Njg4NzgzNX0.1lTHIY3M1xk5FmnTC2YMbSMNpi7vhWDuGGXUSNkwkm8';
         const ARTICLE_ID   = '{{ article.Title | slug }}';
 
-        // ── Supabase helper ───────────────────────────────────────
         async function sb(path, opts = {}) {
             const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
                 headers: {
@@ -1034,13 +994,12 @@ permalink: "articles/{{ article.Title | slug }}/"
             const total  = slides.length;
             let   current = 0;
 
-            if (total <= 1) return; // no controls needed for single image (CSS handles)
+            if (total <= 1) return;
 
             function goTo(idx) {
                 current = (idx + total) % total;
                 track.style.transform = `translateX(-${current * 100}%)`;
                 if (counter) counter.textContent = `${current + 1} / ${total}`;
-                // Update dots
                 if (dotsWrap) {
                     dotsWrap.querySelectorAll('.gallery-dot').forEach((dot, i) => {
                         dot.classList.toggle('active', i === current);
@@ -1051,14 +1010,12 @@ permalink: "articles/{{ article.Title | slug }}/"
             prevBtn && prevBtn.addEventListener('click', () => goTo(current - 1));
             nextBtn && nextBtn.addEventListener('click', () => goTo(current + 1));
 
-            // Dot navigation
             if (dotsWrap) {
                 dotsWrap.querySelectorAll('.gallery-dot').forEach(dot => {
                     dot.addEventListener('click', () => goTo(parseInt(dot.dataset.dot)));
                 });
             }
 
-            // Swipe / touch support
             let touchStartX = 0;
             viewport && viewport.addEventListener('touchstart', e => {
                 touchStartX = e.touches[0].clientX;
@@ -1068,7 +1025,6 @@ permalink: "articles/{{ article.Title | slug }}/"
                 if (Math.abs(delta) > 40) goTo(current + (delta < 0 ? 1 : -1));
             });
 
-            // Keyboard
             document.addEventListener('keydown', e => {
                 if (lightbox && lightbox.classList.contains('open')) {
                     if (e.key === 'ArrowLeft')  goTo(current - 1);
@@ -1077,7 +1033,6 @@ permalink: "articles/{{ article.Title | slug }}/"
                 }
             });
 
-            // Lightbox
             function openLightbox(src, alt) {
                 lbImg.src = src;
                 lbImg.alt = alt;
@@ -1116,7 +1071,6 @@ permalink: "articles/{{ article.Title | slug }}/"
                 const all = await sb(`article_likes?article_id=eq.${ARTICLE_ID}&select=id`);
                 setLikeCount(all.length);
                 if (localStorage.getItem(LIKE_KEY)) activateLikeBtn();
-
                 likeBtn.addEventListener('click', toggleLike);
             } catch (e) { console.warn('Likes unavailable', e); }
         }
@@ -1409,7 +1363,7 @@ permalink: "articles/{{ article.Title | slug }}/"
         // ARTICLE SEARCH
         // ══════════════════════════════════════════════════════════
         const ALL_ARTICLES = [
-            {% for a in Articles %}
+            {% for a in Adit.ArticlesData %}
             {% if a.Published %}
             {
                 title:    {{ (a.Title | default("")) | dump | safe }},
@@ -1422,10 +1376,10 @@ permalink: "articles/{{ article.Title | slug }}/"
         ];
 
         function initSearch() {
-            const toggle   = document.getElementById('searchToggle');
-            const box      = document.getElementById('searchBox');
-            const input    = document.getElementById('searchInput');
-            const results  = document.getElementById('searchResults');
+            const toggle     = document.getElementById('searchToggle');
+            const box        = document.getElementById('searchBox');
+            const input      = document.getElementById('searchInput');
+            const results    = document.getElementById('searchResults');
             const searchWrap = document.getElementById('searchWrap');
 
             if (!toggle || !box || !input || !results || !searchWrap) return;
@@ -1435,7 +1389,7 @@ permalink: "articles/{{ article.Title | slug }}/"
                 const isOpen = box.classList.toggle('open');
                 if (isOpen) input.focus();
                 else {
-                    input.value     = '';
+                    input.value       = '';
                     results.innerHTML = '';
                 }
             });
@@ -1443,7 +1397,7 @@ permalink: "articles/{{ article.Title | slug }}/"
             document.addEventListener('click', e => {
                 if (!searchWrap.contains(e.target)) {
                     box.classList.remove('open');
-                    input.value     = '';
+                    input.value       = '';
                     results.innerHTML = '';
                 }
             });
@@ -1498,8 +1452,6 @@ permalink: "articles/{{ article.Title | slug }}/"
 
     // ══════════════════════════════════════════════════════════════
     // LINK AUTO-DETECTION & EMBED ENGINE
-    // Runs outside DOMContentLoaded so Twitter widget script can be
-    // injected at the right time.
     // ══════════════════════════════════════════════════════════════
 
     function initLinks() {
@@ -1515,7 +1467,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             let url;
             try { url = new URL(raw); }
             catch (_) {
-                // Not a valid URL — render as plain text link
                 item.appendChild(makePlainCard(raw, raw));
                 return;
             }
@@ -1523,7 +1474,6 @@ permalink: "articles/{{ article.Title | slug }}/"
             const host = url.hostname.replace('www.', '').toLowerCase();
             const path = url.pathname;
 
-            // ── YouTube ───────────────────────────────────────────
             if (host === 'youtube.com' || host === 'youtu.be' || host === 'm.youtube.com') {
                 let vid = null;
                 if (host === 'youtu.be') {
@@ -1541,7 +1491,6 @@ permalink: "articles/{{ article.Title | slug }}/"
                 }
             }
 
-            // ── Vimeo ─────────────────────────────────────────────
             if (host === 'vimeo.com' || host === 'player.vimeo.com') {
                 const match = path.match(/(\d{5,})/);
                 if (match) {
@@ -1551,10 +1500,7 @@ permalink: "articles/{{ article.Title | slug }}/"
                 }
             }
 
-            // ── Spotify ───────────────────────────────────────────
             if (host === 'open.spotify.com') {
-                // Convert share URL to embed URL
-                // e.g. /track/xxx → /embed/track/xxx
                 const embedPath = path.replace(/^\/(track|album|playlist|episode|show|artist)/, '/embed/$1');
                 const src       = `https://open.spotify.com${embedPath}?utm_source=generator&theme=0`;
                 const isPlaylist = path.includes('/playlist/') || path.includes('/album/');
@@ -1562,7 +1508,6 @@ permalink: "articles/{{ article.Title | slug }}/"
                 return;
             }
 
-            // ── SoundCloud ────────────────────────────────────────
             if (host === 'soundcloud.com') {
                 const encoded = encodeURIComponent(raw);
                 const src     = `https://w.soundcloud.com/player/?url=${encoded}&color=%2300b4d8&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false`;
@@ -1570,7 +1515,6 @@ permalink: "articles/{{ article.Title | slug }}/"
                 return;
             }
 
-            // ── Twitter / X ───────────────────────────────────────
             if (host === 'twitter.com' || host === 'x.com') {
                 const tweetMatch = path.match(/\/status\/(\d+)/);
                 if (tweetMatch) {
@@ -1596,19 +1540,11 @@ permalink: "articles/{{ article.Title | slug }}/"
                 }
             }
 
-            // ── Google Maps ───────────────────────────────────────
             if (host === 'maps.google.com' || host === 'google.com' && path.startsWith('/maps')) {
-                // Convert share link to embed
-                const q   = url.searchParams.get('q') || url.searchParams.get('query') || '';
-                const src = q
-                    ? `https://maps.google.com/maps?q=${encodeURIComponent(q)}&output=embed`
-                    : raw.replace('/maps/', '/maps/embed/v1/').replace('?', '?key=AIzaSyD-dummy&');
-                // Note: needs a Maps API key for full embed; fallback to link card
                 item.appendChild(makePlainCard(raw, 'Google Maps', '🗺️'));
                 return;
             }
 
-            // ── Generic direct video file ─────────────────────────
             const ext = path.split('.').pop().toLowerCase().split('?')[0];
             if (['mp4', 'webm', 'ogg', 'mov'].includes(ext)) {
                 const wrap  = document.createElement('div');
@@ -1629,7 +1565,6 @@ permalink: "articles/{{ article.Title | slug }}/"
                 return;
             }
 
-            // ── Generic direct audio file ─────────────────────────
             if (['mp3', 'wav', 'm4a', 'aac', 'flac', 'opus'].includes(ext)) {
                 const wrap  = document.createElement('div');
                 wrap.className = 'audio-player-item loaded';
@@ -1646,11 +1581,8 @@ permalink: "articles/{{ article.Title | slug }}/"
                 return;
             }
 
-            // ── Fallback: plain link card ─────────────────────────
             item.appendChild(makePlainCard(raw, url.hostname.replace('www.', '')));
         });
-
-        // ── Helpers ───────────────────────────────────────────────
 
         function makeIframe(src, aspectClass, title) {
             const wrap   = document.createElement('div');
