@@ -99,24 +99,6 @@
     overflow-x: hidden;
   }
 
-  /* ── Ambient background ──────────────────────────────────────── */
-  .bg-orbs { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
-  .orb {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(90px);
-    opacity: 0.35;
-    background: radial-gradient(circle, var(--accent-gold) 0%, transparent 70%);
-  }
-  .orb-1 { width: 480px; height: 480px; top: -160px; left: -140px; animation: drift1 30s ease-in-out infinite alternate; }
-  .orb-2 {
-    width: 560px; height: 560px; bottom: -220px; right: -180px;
-    background: radial-gradient(circle, #6a4fb0 0%, transparent 70%);
-    animation: drift2 36s ease-in-out infinite alternate;
-  }
-  @keyframes drift1 { from { transform: translate(0,0); } to { transform: translate(110px, 70px); } }
-  @keyframes drift2 { from { transform: translate(0,0); } to { transform: translate(-90px, -50px); } }
-
   /* ── Layout ───────────────────────────────────────────────────── */
   main.hub {
     max-width: var(--max-w);
@@ -353,12 +335,9 @@
 
   <section class="selector-grid">
 
-    <a class="selector-card" href="/Sharan/SharanPage/">
+    <a class="selector-card" href="/Sharan/SharanPage.html">
       <div class="selector-card-inner">
-        {% if Sharan.AboutPage.Pic %}
-          <img class="selector-pic" src="{{ Sharan.AboutPage.Pic }}" alt="{{ Sharan.AboutPage.Name | default('Sharan') }}" />
-        {% endif %}
-        <h2>{{ Sharan.AboutPage.Name | default("Sharan") }}</h2>
+          <img class="selector-pic" src="/Adit-Sahai.github.io{{ Sharan.AboutPage.Pic }}" alt="{{ Sharan.AboutPage.Name | default('Sharan') }}" />
         {% if Sharan.AboutPage.Expertise %}
           <span class="selector-expertise">{{ Sharan.AboutPage.Expertise }}</span>
         {% endif %}
@@ -369,12 +348,9 @@
       </div>
     </a>
 
-    <a class="selector-card" href="/Adit/AditPage/">
+    <a class="selector-card" href="/Adit/AditPage.html">
       <div class="selector-card-inner">
-        {% if Adit.AboutAuthor.Pic %}
-          <img class="selector-pic" src="{{ Adit.AboutAuthor.Pic }}" alt="{{ Adit.AboutAuthor.Name | default('Adit') }}" />
-        {% endif %}
-        <h2>{{ Adit.AboutAuthor.Name | default("Adit") }}</h2>
+          <img class="selector-pic" src="/Adit-Sahai.github.io{{ Adit.AboutAuthor.Pic }}" alt="{{ Adit.AboutAuthor.Name | default('Adit') }}" />
         {% if Adit.AboutAuthor.Expertise %}
           <span class="selector-expertise">{{ Adit.AboutAuthor.Expertise }}</span>
         {% endif %}
