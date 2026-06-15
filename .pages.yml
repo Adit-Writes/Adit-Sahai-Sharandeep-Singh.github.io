@@ -12,7 +12,7 @@ content:
 
     - name: MainSiteHeader
       type: file
-      path: _data/Adit/PageInfo.json
+      path: _data/MainPage/PageInfo.json
       fields:
         - name: PageTitle
           type: string
