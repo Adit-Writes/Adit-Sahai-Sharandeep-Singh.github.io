@@ -353,7 +353,6 @@
 </head>
 <body>
 
-    <!-- Background layers -->
     <div id="bg-canvas"></div>
     <div id="bg-pattern"></div>
     <div id="bg-dots"></div>
@@ -414,7 +413,7 @@
     </div>
     
     <section class="book-grid">
-        {% for book in Adit.BooksData %}
+        {% for book in Adit.BooksData | values %}
         <div class="book-card glass-card reveal">
             <div class="glow-blob"></div>
             <div class="book-image-wrapper">
@@ -442,7 +441,7 @@
     <div class="category-menu-container reveal">
         <div class="category-menu">
             <button class="category-btn active" data-filter="all">All</button>
-            {% for cat in Adit.categories %}
+            {% for cat in Adit.categories | values %}
             <button class="category-btn" data-filter="{{ cat.name | lower }}">{{ cat.name }}</button>
             {% endfor %}
             <button class="category-btn liked-filter" data-filter="__liked__">
@@ -471,7 +470,7 @@
     </div>
 
     <section class="article-feed">
-        {% for article in Adit.ArticlesData %}
+        {% for article in Adit.ArticlesData | values %}
         {% if article.Published %}
 
         {% set firstPic = article.Pics[0] if article.Pics and article.Pics.length > 0 else null %}
@@ -479,7 +478,7 @@
         <article
             class="article-card glass-card reveal{% if firstPic %} has-thumb{% endif %}"
             data-category="{{ article.Topic | default('') | lower }}"
-            data-slug="{{ article.Title | slug }}"
+            data-slug="{{ article.Title | slugify }}"
             data-title="{{ article.Title | lower }}"
             data-description="{{ article.Description | lower | striptags }}"
         >
@@ -505,10 +504,10 @@
                     <span class="read-time">{{ article.ReadTime }} min read</span>
                     {% if article.Likes !== false and article.Likes !== 'false' %}
                     <span class="meta-sep"></span>
-                    <span class="index-like-count" data-slug="{{ article.Title | slug }}">0 likes</span>
+                    <span class="index-like-count" data-slug="{{ article.Title | slugify }}">0 likes</span>
                     {% endif %}
                     <span class="meta-sep liked-badge-sep" style="display:none"></span>
-                    <span class="liked-badge" data-slug="{{ article.Title | slug }}">
+                    <span class="liked-badge" data-slug="{{ article.Title | slugify }}">
                         <span class="liked-badge-heart">♥</span> Liked
                     </span>
                 </div>
@@ -516,7 +515,7 @@
                 <p class="article-excerpt">{{ article.Description | safe }}</p>
                 <div class="article-footer">
                     <span class="date">{{ article.ReleaseDate }}</span>
-                    <a href="/Adit-Sahai.github.io/articles/{{ article.Title | slug }}/" class="read-link">Read Essay →</a>
+                    <a href="/Adit-Sahai.github.io/articles/{{ article.Title | slugify }}/" class="read-link">Read Essay →</a>
                 </div>
             </div>
         </article>
@@ -535,7 +534,7 @@
     </div>
 
     <div class="links-grid reveal">
-        {% for item in Adit.MentionedLinks %}
+        {% for item in Adit.MentionedLinks | values %}
         <a
             href="{{ item.Link }}"
             class="link-card"
@@ -557,9 +556,8 @@
         <p>&copy; 2026 The Sahai Analogy. All rights reserved.</p>
     </footer>
 
-    <!-- Script — absolute path so it works from Adit/ subfolder -->
     <script src="/Adit-Sahai.github.io/MainCode/script.js"></script>
-
+    
     <script>
     const SUPABASE_URL = 'https://mpeqripywqiotselpyut.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wZXFyaXB5d3Fpb3RzZWxweXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTE4MzUsImV4cCI6MjA5Njg4NzgzNX0.1lTHIY3M1xk5FmnTC2YMbSMNpi7vhWDuGGXUSNkwkm8';
