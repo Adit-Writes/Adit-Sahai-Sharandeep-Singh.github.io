@@ -10,7 +10,7 @@ content:
     type: group
     items:
 
-    - name: MentionedLinks
+    - name: MMentionedLinks
       type: collection
       path: _data/MainPage/MentionedLinks
       format: json
