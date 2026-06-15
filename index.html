@@ -1,204 +1,136 @@
+---
+permalink: /index.html
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>{{ MainPage['PageInfo'].PageTitle | default("Adit & Sharan") }}</title>
+  <title>{{ MainPage.SiteHead.PageTitle }}</title>
 
   <meta name="description"
-        content="{{ MainPage['PageInfo'].Description | default('Welcome — explore Adit and Sharan\'s personal pages.') | striptags }}" />
+        content="{{ MainPage.SiteHead.Description | striptags }}" />
 
   <meta name="keywords"
-        content="{{ Adit['AboutAuthor'].Name | default('Adit') }}, {{ Sharan['AboutPage'].Name | default('Sharan') }}, {{ MainPage['PageInfo'].PageTitle | default('Adit and Sharan') }}, blog, articles" />
+        content="{{ Adit.AboutAuthor.Name }}, {{ Sharan.AboutPage.Name }}, {{ MainPage.SiteHead.PageTitle }}, blog, articles" />
 
-  <meta property="og:title" content="{{ MainPage['PageInfo'].PageTitle | default('Adit & Sharan') }}" />
-  <meta property="og:description" content="{{ MainPage['PageInfo'].Description | default('Two minds, two pages.') | striptags }}" />
+  <meta property="og:title" content="{{ MainPage.SiteHead.PageTitle }}" />
+  <meta property="og:description" content="{{ MainPage.SiteHead.Description | striptags }}" />
   <meta property="og:type" content="website" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet" />
 
+  <!-- Shared styles — same as AditPage -->
+  <link rel="stylesheet" href="/Adit-Sahai.github.io/MainCode/style.css" />
+
   <style>
     /* ════════════════════════════════════════════════════════════
-       DESIGN TOKENS  
+       PAGE-SPECIFIC STYLES (index only)
     ════════════════════════════════════════════════════════════ */
-    :root {
-      --bg-base:            #020617;
-      --glass-bg:           rgba(10, 25, 50, 0.60);
-      --glass-bg-strong:    rgba(6, 15, 30, 0.90);
-      --glass-border:       rgba(0, 180, 200, 0.25);
-      --glass-border-hover: rgba(0, 180, 200, 0.85);
-      --text-main:          #e6f7ff;
-      --text-muted:         #9cc7d8;
-      --text-dim:           #4f7c8a;
-      --accent-gold:        #00b4d8;
-      --accent-gold-dim:    rgba(0, 180, 216, 0.15);
-      --accent-gold-line:   rgba(0, 180, 216, 0.35);
-      --max-w:              1020px;
-      --orb-secondary-color:  #0077b6;
-      --orb-blur-factor:      0.95;
-      --orb-speed-multiplier: 1.2;
-      --orb-scale-multiplier: 1.1;
-      --glow-blob-intensity:  0.65;
-    }
-
-    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    html { scroll-behavior:smooth; }
-
-    ::-webkit-scrollbar { width:8px; height:8px; }
-    ::-webkit-scrollbar-track { background:transparent; }
-    ::-webkit-scrollbar-thumb {
-      background:var(--accent-gold-line); border-radius:100px;
-      border:2px solid transparent; background-clip:padding-box;
-    }
-    ::-webkit-scrollbar-thumb:hover { background:var(--accent-gold); border:2px solid transparent; background-clip:padding-box; }
-    * { scrollbar-width:thin; scrollbar-color:var(--accent-gold-line) transparent; }
-
-    body {
-      background-color: var(--bg-base);
-      color:            var(--text-main);
-      font-family:      'Inter', sans-serif;
-      line-height:      1.6;
-      padding:          0 5%;
-      min-height:       100vh;
-      overflow-x:       hidden;
-      position:         relative;
-      transition: background-color 2.5s ease-in-out, color 1.5s ease-in-out;
-    }
-
-    body::before {
-      content:''; position:fixed; inset:0; z-index:-2;
-      background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, var(--bg-base) 100%), var(--bg-base);
-      pointer-events:none;
-    }
-
-    body::after {
-      content:''; position:fixed; inset:0; z-index:-1; pointer-events:none;
-      background-image:
-        radial-gradient(1.5px 1.5px at 12% 18%, rgba(200,220,255,.22) 0%, transparent 100%),
-        radial-gradient(1px   1px   at 72% 28%, rgba(200,220,255,.15) 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 45% 62%, rgba(200,220,255,.18) 0%, transparent 100%),
-        radial-gradient(1px   1px   at  8% 82%, rgba(200,220,255,.12) 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 85% 70%, rgba(200,220,255,.16) 0%, transparent 100%),
-        radial-gradient(1px   1px   at 55%  5%, rgba(200,220,255,.10) 0%, transparent 100%),
-        radial-gradient(1px   1px   at 90% 45%, rgba(200,220,255,.13) 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 30% 90%, rgba(200,220,255,.14) 0%, transparent 100%),
-        radial-gradient(1px   1px   at 65% 52%, rgba(200,220,255,.10) 0%, transparent 100%),
-        radial-gradient(1.5px 1.5px at 22% 47%, rgba(200,220,255,.12) 0%, transparent 100%);
-      animation:starsPulse 9s ease-in-out infinite alternate;
-    }
-    @keyframes starsPulse { from{opacity:.45} to{opacity:.90} }
-
-    #bg-pattern {
-      position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:.28;
-      background-image:
-        repeating-linear-gradient(45deg,  transparent, transparent 38px, rgba(80,120,220,.09) 38px, rgba(80,120,220,.09) 39px),
-        repeating-linear-gradient(-45deg, transparent, transparent 38px, rgba(80,120,220,.07) 38px, rgba(80,120,220,.07) 39px);
-      animation:patternDrift 28s linear infinite;
-    }
-    @keyframes patternDrift { 0%{background-position:0 0,0 0} 100%{background-position:78px 78px,-78px 78px} }
-
-    #bg-dots {
-      position:fixed; inset:0; z-index:-1; pointer-events:none;
-      background-image:radial-gradient(circle,rgba(120,160,255,.12) 1px,transparent 1px);
-      background-size:32px 32px; opacity:0; animation:dotsReveal 3s ease .5s forwards;
-    }
-    @keyframes dotsReveal { to{opacity:1} }
-
-    #bg-canvas { position:fixed; inset:0; z-index:-2; pointer-events:none; overflow:hidden; }
-    .bg-orb    { position:absolute; border-radius:50%; will-change:transform,background,filter; }
-
-    h1,h2,h3,h4 { font-family:'Playfair Display',serif; font-weight:700; letter-spacing:-.02em; line-height:1.15; }
-
-    /* NAVBAR */
-    .navbar {
-      display:flex; justify-content:space-between; align-items:center;
-      padding:0 36px; margin-top:24px; margin-bottom:8px; height:64px;
-      position:sticky; top:20px; z-index:100; border-radius:100px;
-      max-width:var(--max-w); margin-left:auto; margin-right:auto;
-      background:var(--glass-bg-strong); backdrop-filter:blur(40px);
-      -webkit-backdrop-filter:blur(40px); border:1px solid var(--glass-border);
-      box-shadow:0 10px 30px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.04);
-      transition:background 2.5s ease-in-out,border-color 2.5s ease-in-out,box-shadow 2.5s ease-in-out;
-    }
-    .navbar:hover { border-color:var(--glass-border-hover); box-shadow:0 12px 40px rgba(0,0,0,.8),0 0 15px var(--accent-gold-dim); }
-    .logo {
-      font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:900;
-      font-style:italic; letter-spacing:4px;
-      background:linear-gradient(110deg,#fff 10%,var(--accent-gold) 40%,#fff 70%);
-      background-size:200% auto; -webkit-background-clip:text; background-clip:text;
-      -webkit-text-fill-color:transparent; color:var(--accent-gold);
-      animation:goldShine 5s linear infinite; transition:transform .3s ease; text-decoration:none;
-    }
-    .logo:hover { transform:scale(1.08); }
-    @keyframes goldShine { to{background-position:200% center} }
 
     /* HERO BANNER */
     .hero-banner { text-align:center; padding:90px 20px 50px; max-width:var(--max-w); margin:0 auto; }
-    .hero-eyebrow { font-size:.72rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:6px; font-weight:600; opacity:.8; margin-bottom:20px; }
+    .hero-eyebrow { font-size:.72rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:6px; font-weight:600; opacity:.8; margin-bottom:20px; transition:color 1.5s ease-in-out; }
     .hero-title { font-size:clamp(3rem,9vw,6rem); font-weight:900; letter-spacing:4px; text-transform:uppercase; color:rgba(255,255,255,.92); background:linear-gradient(175deg,#ffffff 30%,rgba(255,255,255,.18) 100%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; line-height:1.05; margin-bottom:22px; }
     @supports not (-webkit-background-clip:text) { .hero-title { color:rgba(255,255,255,.92); background:none; -webkit-text-fill-color:unset; } }
-    .hero-sub { font-size:.85rem; color:var(--text-muted); font-weight:300; max-width:500px; margin:0 auto 36px; line-height:1.8; }
-    .hero-divider { width:100px; height:1px; margin:0 auto 60px; background:linear-gradient(90deg,transparent,var(--accent-gold-line),transparent); }
+    .hero-sub { font-size:.85rem; color:var(--text-muted); font-weight:300; max-width:500px; margin:0 auto 36px; line-height:1.8; transition:color 1.5s ease-in-out; }
+    .hero-divider { width:100px; height:1px; margin:0 auto 60px; background:linear-gradient(90deg,transparent,var(--accent-gold-line),transparent); transition:background 2.5s ease-in-out; }
 
     /* CHOOSE SECTION LABEL */
     .choose-label { text-align:center; margin-bottom:40px; }
-    .choose-label span { font-size:.68rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:6px; font-weight:700; background:var(--accent-gold-dim); border:1px solid var(--accent-gold-line); padding:5px 18px; border-radius:100px; transition:background 2.5s ease-in-out,border-color 2.5s ease-in-out; }
+    .choose-label span { font-size:.68rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:6px; font-weight:700; background:var(--accent-gold-dim); border:1px solid var(--accent-gold-line); padding:5px 18px; border-radius:100px; transition:background 2.5s ease-in-out,border-color 2.5s ease-in-out,color 1.5s ease-in-out; }
 
     /* PERSON CARDS GRID */
     .cards-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(340px,1fr)); gap:32px; max-width:var(--max-w); margin:0 auto 80px; }
-    .person-card { position:relative; overflow:hidden; background:var(--glass-bg); border:1px solid var(--glass-border); border-radius:28px; backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); box-shadow:0 8px 32px rgba(0,0,0,.45),inset 0 1px 0 rgba(140,180,255,.07); padding:44px 40px 40px; display:flex; flex-direction:column; align-items:center; text-align:center; cursor:pointer; text-decoration:none; color:inherit; transition: border-color .4s ease, box-shadow .4s ease, transform .4s cubic-bezier(.25,1,.5,1), background 2.5s ease-in-out; }
-    .person-card::before { content:''; position:absolute; inset:-2px; border-radius:30px; background:conic-gradient(from var(--card-angle,0deg), transparent 0deg, var(--accent-gold) 60deg, transparent 120deg); opacity:0; transition:opacity .4s ease; z-index:0; pointer-events:none; }
-    .person-card::after { content:''; position:absolute; inset:1px; border-radius:27px; background:var(--glass-bg); z-index:1; transition:background 2.5s ease-in-out; }
-    .person-card:hover::before { opacity:.9; }
-    .person-card:hover { transform:translateY(-8px) scale(1.02); border-color:var(--glass-border-hover); box-shadow: 0 24px 60px rgba(0,0,0,.65), 0 0 40px var(--accent-gold-dim); }
-    .person-card > * { position:relative; z-index:2; }
 
-    .card-portrait-wrap { width:120px; height:120px; border-radius:50%; overflow:hidden; border:2px solid var(--glass-border); margin-bottom:24px; flex-shrink:0; position:relative; box-shadow:0 0 0 0 var(--accent-gold-dim); transition:border-color .4s ease, box-shadow .4s ease; }
+    .person-card {
+      position:relative; overflow:hidden;
+      border-radius:28px;
+      padding:44px 40px 40px;
+      display:flex; flex-direction:column; align-items:center; text-align:center;
+      cursor:pointer; text-decoration:none; color:inherit;
+    }
+
+    /* Rotating spherical gradient glow — sits BEHIND content, doesn't interfere with text */
+    .person-card-glow {
+      position:absolute;
+      inset:-40%;
+      z-index:0;
+      pointer-events:none;
+      opacity:0;
+      transition:opacity .6s ease;
+      background:conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        var(--accent-gold) 40deg,
+        transparent 110deg,
+        transparent 250deg,
+        var(--orb-secondary-color, var(--accent-gold)) 300deg,
+        transparent 360deg
+      );
+      filter:blur(60px);
+      animation:cardGlowSpin 14s linear infinite;
+      animation-play-state:paused;
+    }
+    .person-card:hover .person-card-glow {
+      opacity:.55;
+      animation-play-state:running;
+    }
+    @keyframes cardGlowSpin {
+      from { transform:rotate(0deg); }
+      to   { transform:rotate(360deg); }
+    }
+
+    /* Inner panel sits above the glow, holds the actual glass look */
+    .person-card-inner {
+      position:relative; z-index:2;
+      width:100%; height:100%;
+      display:flex; flex-direction:column; align-items:center; text-align:center;
+    }
+
+    .person-card::before {
+      content:''; position:absolute; inset:0; z-index:1; border-radius:28px;
+      background:var(--glass-bg);
+      border:1px solid var(--glass-border);
+      backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px);
+      box-shadow:0 8px 32px rgba(0,0,0,.45),inset 0 1px 0 rgba(140,180,255,.07);
+      transition:background 2.5s ease-in-out, border-color .4s ease, box-shadow .4s ease;
+    }
+    .person-card:hover::before {
+      border-color:var(--glass-border-hover);
+      box-shadow:0 24px 60px rgba(0,0,0,.65), 0 0 40px var(--accent-gold-dim);
+    }
+
+    .person-card {
+      transition:transform .4s cubic-bezier(.25,1,.5,1);
+    }
+    .person-card:hover { transform:translateY(-8px) scale(1.02); }
+
+    .card-portrait-wrap { width:120px; height:120px; border-radius:50%; overflow:hidden; border:2px solid var(--glass-border); margin-bottom:24px; flex-shrink:0; position:relative; transition:border-color .4s ease, box-shadow .4s ease; }
     .person-card:hover .card-portrait-wrap { border-color:var(--accent-gold); box-shadow:0 0 24px 4px var(--accent-gold-dim); }
     .card-portrait-wrap img { width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
     .card-portrait-wrap .portrait-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:900; color:var(--accent-gold); background:var(--accent-gold-dim); }
 
     .card-name { font-size:1.8rem; font-weight:900; color:#fff; margin-bottom:8px; letter-spacing:-.02em; }
-    .card-expertise { font-size:.68rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:3.5px; font-weight:700; opacity:.9; background:var(--accent-gold-dim); border:1px solid var(--accent-gold-line); padding:4px 14px; border-radius:100px; margin-bottom:22px; display:inline-block; }
-    .card-bio { color:var(--text-muted); font-size:.9rem; font-weight:300; line-height:1.75; flex:1; margin-bottom:32px; }
-    
+    .card-expertise { font-size:.68rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:3.5px; font-weight:700; opacity:.9; background:var(--accent-gold-dim); border:1px solid var(--accent-gold-line); padding:4px 14px; border-radius:100px; margin-bottom:22px; display:inline-block; transition:background 2.5s ease-in-out,border-color 2.5s ease-in-out,color 1.5s ease-in-out; }
+    .card-bio { color:var(--text-muted); font-size:.9rem; font-weight:300; line-height:1.75; flex:1; margin-bottom:32px; transition:color 1.5s ease-in-out; }
+
     .card-btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:13px 28px; border:1px solid var(--accent-gold-line); border-radius:12px; text-decoration:none; color:var(--accent-gold); font-size:.75rem; font-weight:700; text-transform:uppercase; letter-spacing:2.5px; background:transparent; transition:background .3s ease,color .3s ease,border-color .3s ease,transform .3s ease; pointer-events:all; }
     .card-btn:hover { background:var(--accent-gold); color:var(--bg-base); border-color:var(--accent-gold); transform:translateY(-2px); }
     .card-btn svg { width:14px; height:14px; transition:transform .25s ease; }
     .card-btn:hover svg { transform:translateX(3px); }
 
-    /* REVEAL ANIMATION */
-    .reveal { opacity:0; transform:translateY(28px); transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1); }
-    .reveal.active { opacity:1; transform:translateY(0); }
     .cards-grid > .reveal:nth-child(2) { transition-delay:.15s; }
 
     /* LINKS SECTION */
     #links { width:100%; max-width:var(--max-w); margin:0 auto 30px; }
     .links-section-label { text-align:center; margin-bottom:28px; }
-    .links-section-label span { font-size:.68rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:6px; font-weight:700; background:var(--accent-gold-dim); border:1px solid var(--accent-gold-line); padding:5px 18px; border-radius:100px; }
-
-    .links-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-bottom:60px; }
-    .link-card { display:flex; align-items:center; gap:14px; padding:18px 24px; text-decoration:none; background:var(--glass-bg); border:1px solid var(--glass-border); border-radius:16px; backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); transition: background 2.5s ease-in-out, border-color .3s ease, transform .35s cubic-bezier(.25,1,.5,1), box-shadow .35s ease; overflow:hidden; position:relative; }
-    .link-card:hover { border-color:var(--glass-border-hover); transform:translateY(-4px) scale(1.01); box-shadow:0 14px 40px rgba(0,0,0,.6),0 0 14px var(--accent-gold-dim); }
-    .link-card-icon { width:42px; height:42px; border-radius:12px; display:flex; align-items:center; justify-content:center; flex-shrink:0; background:var(--accent-gold-dim); border:1px solid var(--accent-gold-line); transition:filter .35s ease,transform .35s ease; position:relative; overflow:hidden; }
-    .link-card-icon::after { content:''; position:absolute; inset:0; border-radius:inherit; background:var(--accent-gold); opacity:.08; mix-blend-mode:screen; transition:opacity .35s ease,background 2.5s ease-in-out; pointer-events:none; }
-    .link-card:hover .link-card-icon::after { opacity:.18; }
-    .link-card:hover .link-card-icon { filter:brightness(1.15); transform:scale(1.07); }
-    .link-card-icon svg { width:22px; height:22px; display:block; flex-shrink:0; position:relative; z-index:1; }
-    .link-card-text { flex:1; min-width:0; }
-    .link-card-label { display:block; font-size:.82rem; font-weight:600; color:var(--text-main); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:2px; transition:color 1.5s ease-in-out; }
-    .link-card-url { display:block; font-size:.7rem; color:var(--text-dim); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; transition:color 1.5s ease-in-out; }
-    .link-card-arrow { color:var(--accent-gold); opacity:0; font-size:.85rem; transition:opacity .25s ease,transform .25s ease,color 1.5s ease-in-out; flex-shrink:0; }
-    .link-card:hover .link-card-arrow { opacity:1; transform:translateX(3px); }
-
-    .footer { text-align:center; padding:50px 20px; color:var(--text-dim); font-size:.75rem; text-transform:uppercase; letter-spacing:2px; }
+    .links-section-label span { font-size:.68rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:6px; font-weight:700; background:var(--accent-gold-dim); border:1px solid var(--accent-gold-line); padding:5px 18px; border-radius:100px; transition:background 2.5s ease-in-out,border-color 2.5s ease-in-out,color 1.5s ease-in-out; }
 
     @media (max-width:768px) {
-      body { padding:0 4%; }
-      .navbar { padding:0 20px; border-radius:60px; }
       .cards-grid { grid-template-columns:1fr; }
       .person-card { padding:32px 24px 28px; }
       .hero-title { -webkit-text-fill-color:rgba(255,255,255,.92); }
@@ -211,99 +143,91 @@
   <div id="bg-dots"></div>
   <div id="bg-canvas"></div>
 
-  <nav class="navbar reveal">
-    <a href="/" class="logo">{{ MainPage['PageInfo'].PageTitle | default("A & S") }}</a>
-  </nav>
-
   <section class="hero-banner">
-    <p class="hero-eyebrow reveal">{{ MainPage['PageInfo'].HeroTagline | default("Two minds. One place.") }}</p>
-    <h1 class="hero-title reveal">{{ MainPage['PageInfo'].PageTitle | default("Adit &amp; Sharan") }}</h1>
+    <p class="hero-eyebrow reveal">{{ MainPage.SiteHead.HeroTagline }}</p>
+    <h1 class="hero-title reveal">{{ MainPage.SiteHead.PageTitle }}</h1>
     <p class="hero-sub reveal">
-      {{ MainPage['PageInfo'].Description | default("Two separate worlds — one shared corner of the internet. Pick a page and dive in.") | safe }}
+      {{ MainPage.SiteHead.Description | safe }}
     </p>
     <div class="hero-divider reveal"></div>
   </section>
 
   <div class="choose-label reveal">
-    <span>Choose Your Destination</span>
+    <span>{{ MainPage.SiteHead.ChooseLabel }}</span>
   </div>
 
   <div class="cards-grid">
 
     <a href="Adit/AditPage.html" class="person-card reveal" id="card-adit">
-      <div class="card-portrait-wrap">
-        {% if Adit['AboutAuthor'].Pic %}
-          <img src="{{ Adit['AboutAuthor'].Pic }}" alt="Photo of {{ Adit['AboutAuthor'].Name | default('Adit') }}" loading="lazy" />
-        {% else %}
-          <div class="portrait-placeholder">A</div>
-        {% endif %}
+      <div class="person-card-glow"></div>
+      <div class="person-card-inner">
+        <div class="card-portrait-wrap">
+          {% if Adit.AboutAuthor.Pic %}
+            <img src="/Adit-Sahai.github.io{{ Adit.AboutAuthor.Pic }}" alt="Photo of {{ Adit.AboutAuthor.Name }}" loading="lazy" />
+          {% else %}
+            <div class="portrait-placeholder">A</div>
+          {% endif %}
+        </div>
+
+        <h2 class="card-name">{{ Adit.AboutAuthor.Name }}</h2>
+        <span class="card-expertise">{{ Adit.AboutAuthor.Expertise }}</span>
+        <p class="card-bio">
+          {{ Adit.AboutAuthor.Desciption | striptags | truncate(160) }}
+        </p>
+
+        <span class="card-btn">
+          {{ MainPage.SiteHead.CtaAdit }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </span>
       </div>
-
-      <h2 class="card-name">{{ Adit['AboutAuthor'].Name | default("Adit") }}</h2>
-      <span class="card-expertise">{{ Adit['AboutAuthor'].Expertise | default("Writer & Thinker") }}</span>
-      <p class="card-bio">
-        {{ Adit['AboutAuthor'].Desciption | default("Articles, books, and ideas worth reading. Adit's corner of the web.") | striptags | truncate(160) }}
-      </p>
-
-      <span class="card-btn">
-        {{ MainPage['PageInfo'].CtaAdit | default("Visit Adit's Page") }}
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-        </svg>
-      </span>
     </a>
 
     <a href="Sharan/SharanPage.html" class="person-card reveal" id="card-sharan">
-      <div class="card-portrait-wrap">
-        {% if Sharan['AboutPage'].Pic %}
-          <img src="{{ Sharan['AboutPage'].Pic }}" alt="Photo of {{ Sharan['AboutPage'].Name | default('Sharan') }}" loading="lazy" />
-        {% else %}
-          <div class="portrait-placeholder">S</div>
-        {% endif %}
+      <div class="person-card-glow"></div>
+      <div class="person-card-inner">
+        <div class="card-portrait-wrap">
+          {% if Sharan.AboutPage.Pic %}
+            <img src="/Adit-Sahai.github.io{{ Sharan.AboutPage.Pic }}" alt="Photo of {{ Sharan.AboutPage.Name }}" loading="lazy" />
+          {% else %}
+            <div class="portrait-placeholder">S</div>
+          {% endif %}
+        </div>
+
+        <h2 class="card-name">{{ Sharan.AboutPage.Name }}</h2>
+        <span class="card-expertise">{{ Sharan.AboutPage.Expertise }}</span>
+        <p class="card-bio">
+          {{ Sharan.AboutPage.Desciption | striptags | truncate(160) }}
+        </p>
+
+        <span class="card-btn">
+          {{ MainPage.SiteHead.CtaSharan }}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </span>
       </div>
-
-      <h2 class="card-name">{{ Sharan['AboutPage'].Name | default("Sharan") }}</h2>
-      <span class="card-expertise">{{ Sharan['AboutPage'].Expertise | default("Creator & Explorer") }}</span>
-      <p class="card-bio">
-        {{ Sharan['AboutPage'].Desciption | default("Sharan's personal space — projects, thoughts, and everything in between.") | striptags | truncate(160) }}
-      </p>
-
-      <span class="card-btn">
-        {{ MainPage['PageInfo'].CtaSharan | default("Visit Sharan's Page") }}
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-        </svg>
-      </span>
     </a>
 
   </div>
 
   <section id="links" class="reveal">
-    <div class="links-section-label"><span>Find Us Online</span></div>
+    <div class="links-section-label"><span>{{ MainPage.SiteHead.LinksLabel }}</span></div>
     <div class="links-grid" id="linksGrid">
-      {% for filename, link in MainPage.MentionedLinks %}
-      <a href="{{ link.Link }}" class="link-card" target="_blank" rel="noopener noreferrer">
-        <div class="link-card-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-          </svg>
-        </div>
+      {% for filename, link in MainPage.MMentionedLinks %}
+      <a
+        href="{{ link.Link }}"
+        class="link-card"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-link-url="{{ link.Link }}"
+      >
+        <div class="link-card-icon" data-icon-url="{{ link.Link }}"></div>
         <div class="link-card-text">
           <span class="link-card-label">{{ link.Name }}</span>
           <span class="link-card-url">{{ link.Link }}</span>
         </div>
-        <span class="link-card-arrow">→</span>
-      </a>
-      {% else %}
-      <a href="https://instagram.com" class="link-card" target="_blank" rel="noopener noreferrer">
-        <div class="link-card-icon"></div>
-        <div class="link-card-text"><span class="link-card-label">Adit on Instagram</span><span class="link-card-url">instagram.com</span></div>
-        <span class="link-card-arrow">→</span>
-      </a>
-      <a href="https://youtube.com" class="link-card" target="_blank" rel="noopener noreferrer">
-        <div class="link-card-icon"></div>
-        <div class="link-card-text"><span class="link-card-label">Our YouTube Channel</span><span class="link-card-url">youtube.com</span></div>
         <span class="link-card-arrow">→</span>
       </a>
       {% endfor %}
@@ -311,10 +235,132 @@
   </section>
 
   <footer class="footer">
-    {{ MainPage['PageInfo'].FooterNote | default("© 2026 Adit &amp; Sharan · All rights reserved") | safe }}
+    {{ MainPage.SiteHead.FooterNote | safe }}
   </footer>
 
-<script src="/Adit-Sahai.github.io/MainCode/script.js"></script>
-  
+  <script src="/Adit-Sahai.github.io/MainCode/script.js"></script>
+
+  <script>
+    // ── Link card icons (same logic as AditPage) ─────────────────
+    const LINK_ICONS = {
+        'instagram': {
+            color: 'rgba(193,53,132,0.18)',
+            border: 'rgba(193,53,132,0.45)',
+            fill: '#e1306c',
+            svg: `<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="currentColor" stroke-width="1.8"/>
+                <circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.8"/>
+                <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+            </svg>`
+        },
+        'twitter': {
+            color: 'rgba(29,161,242,0.15)',
+            border: 'rgba(29,161,242,0.4)',
+            fill: '#1da1f2',
+            svg: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.961l4.259 5.631 4.774-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>`
+        },
+        'x.com': {
+            color: 'rgba(255,255,255,0.1)',
+            border: 'rgba(255,255,255,0.25)',
+            fill: '#e7e9ea',
+            svg: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.961l4.259 5.631 4.774-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>`
+        },
+        'youtube': {
+            color: 'rgba(255,0,0,0.15)',
+            border: 'rgba(255,0,0,0.4)',
+            fill: '#ff0000',
+            svg: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>`
+        },
+        'linkedin': {
+            color: 'rgba(0,119,181,0.15)',
+            border: 'rgba(0,119,181,0.4)',
+            fill: '#0077b5',
+            svg: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>`
+        },
+        'github': {
+            color: 'rgba(110,118,129,0.15)',
+            border: 'rgba(110,118,129,0.4)',
+            fill: '#c9d1d9',
+            svg: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            </svg>`
+        },
+        'facebook': {
+            color: 'rgba(24,119,242,0.15)',
+            border: 'rgba(24,119,242,0.4)',
+            fill: '#1877f2',
+            svg: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>`
+        },
+        'tiktok': {
+            color: 'rgba(0,242,234,0.12)',
+            border: 'rgba(0,242,234,0.35)',
+            fill: '#00f2ea',
+            svg: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
+            </svg>`
+        },
+        'substack': {
+            color: 'rgba(255,106,0,0.15)',
+            border: 'rgba(255,106,0,0.4)',
+            fill: '#ff6600',
+            svg: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/>
+            </svg>`
+        },
+        'medium': {
+            color: 'rgba(255,255,255,0.08)',
+            border: 'rgba(255,255,255,0.2)',
+            fill: '#ffffff',
+            svg: `<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.54 12a6.8 6.8 0 0 1-6.77 6.82A6.8 6.8 0 0 1 0 12a6.8 6.8 0 0 1 6.77-6.82A6.8 6.8 0 0 1 13.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
+            </svg>`
+        }
+    };
+
+    const FALLBACK_ICON = {
+        color: 'var(--accent-gold-dim)',
+        border: 'var(--accent-gold-line)',
+        fill: 'var(--accent-gold)',
+        svg: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>`
+    };
+
+    function getIconData(url) {
+        try {
+            const hostname = new URL(url).hostname.toLowerCase().replace('www.', '');
+            for (const [key, data] of Object.entries(LINK_ICONS)) {
+                if (hostname.includes(key)) return data;
+            }
+        } catch(e) {}
+        return FALLBACK_ICON;
+    }
+
+    function initLinkIcons() {
+        document.querySelectorAll('.link-card-icon[data-icon-url]').forEach(el => {
+            const url  = el.getAttribute('data-icon-url');
+            const data = getIconData(url);
+            el.style.background  = data.color;
+            el.style.borderColor = data.border;
+            el.style.color       = data.fill;
+            el.innerHTML         = data.svg;
+        });
+    }
+
+    initLinkIcons();
+  </script>
+
 </body>
 </html>
