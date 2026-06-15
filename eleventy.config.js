@@ -1,9 +1,10 @@
 module.exports = function(eleventyConfig) {
+  // ONLY copy static asset folders that don't contain Eleventy templates
   eleventyConfig.addPassthroughCopy("MainCode");
   eleventyConfig.addPassthroughCopy("files");
-  eleventyConfig.addPassthroughCopy("Adit");
-  eleventyConfig.addPassthroughCopy("Sharan");
+
   return {
-        htmlTemplateEngine: "njk"
-    };
+    htmlTemplateEngine: "njk",
+    markdownTemplateEngine: "njk"
+  };
 };
