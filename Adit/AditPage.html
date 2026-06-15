@@ -413,7 +413,7 @@
     </div>
     
     <section class="book-grid">
-        {% for book in Adit.BooksData | values %}
+        {% for filename, book in Adit.BooksData %}
         <div class="book-card glass-card reveal">
             <div class="glow-blob"></div>
             <div class="book-image-wrapper">
@@ -441,7 +441,7 @@
     <div class="category-menu-container reveal">
         <div class="category-menu">
             <button class="category-btn active" data-filter="all">All</button>
-            {% for cat in Adit.categories | values %}
+            {% for filename, cat in Adit.categories %}
             <button class="category-btn" data-filter="{{ cat.name | lower }}">{{ cat.name }}</button>
             {% endfor %}
             <button class="category-btn liked-filter" data-filter="__liked__">
@@ -470,7 +470,7 @@
     </div>
 
     <section class="article-feed">
-        {% for article in Adit.ArticlesData | values %}
+        {% for filename, article in Adit.ArticlesData %}
         {% if article.Published %}
 
         {% set firstPic = article.Pics[0] if article.Pics and article.Pics.length > 0 else null %}
@@ -534,7 +534,7 @@
     </div>
 
     <div class="links-grid reveal">
-        {% for item in Adit.MentionedLinks | values %}
+        {% for filename, item in Adit.MentionedLinks %}
         <a
             href="{{ item.Link }}"
             class="link-card"
