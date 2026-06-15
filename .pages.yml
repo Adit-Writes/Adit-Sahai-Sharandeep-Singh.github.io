@@ -183,7 +183,22 @@ content:
   - name: Sharan
     type: group
     items:
-
+    
+    - name: SiteHead
+      type: file
+      path: _data/Adit/PageInfo.json
+      fields:
+        - name: PageTitle
+          type: string
+  
+        - name: Pic
+          type: image
+  
+        - name: Description
+          type: rich-text
+          options:
+            switcher: false
+            
     - name: AboutPage
       type: file
       path: _data/Sharan/AboutPage.json
