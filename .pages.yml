@@ -20,10 +20,24 @@ content:
         - name: Pic
           type: image
   
-        - name: Description
-          type: rich-text
-          options:
-            switcher: false
+        - name: HeroTagline
+          type: string
+
+        - name: ChooseLabel
+          type: string
+
+        - name: CtaAdit
+          type: string
+
+        - name: CtaSharan
+          type: string
+
+        - name: LinksLabel
+          type: string
+
+        - name: FooterNote
+          type: string
+
 
     - name: MMentionedLinks
       type: collection
