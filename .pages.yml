@@ -226,7 +226,7 @@ content:
           options:
             switcher: false
 
-    - name: MentionedLinks
+    - name: SMentionedLinks
       type: collection
       path: _data/Sharan/MentionedLinks
       format: json
