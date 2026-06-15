@@ -1,1 +1,451 @@
+<!--
+  CENTRAL HUB — index.html
+  =========================
+  Data pulled from Pages CMS (matches pages.yml):
+    MainPage.PageInfo       -> _data/MainPage/PageInfo.json        (PageTitle, Pic, Description)
+    MainPage.MentionedLinks -> _data/MainPage/MentionedLinks/*.json (Name, Link)
+    Sharan.AboutPage        -> _data/Sharan/AboutPage.json          (Name, Pic, Expertise, Desciption)
+    Adit.AboutAuthor        -> _data/Adit/AboutAuthor.json          (Name, Pic, Expertise, Desciption)
 
+  THINGS TO CHECK / ADJUST BEFORE GOING LIVE:
+   1. The two card links point to /Sharan/SharanPage/ and /Adit/AditPage/
+      (Eleventy's default output for those source paths). Update if your
+      permalinks are different.
+   2. The CSS variables in :root below (--max-w, --glass-bg, --accent-gold, etc.)
+      are placeholders matching the names you've used elsewhere. If these are
+      already defined in a global stylesheet/layout, delete the :root block
+      here so nothing gets overridden.
+   3. The animated background blobs (.bg-orbs) are a simple stand-in. If you
+      already have your orb-background component/script, swap it in here for
+      full consistency.
+   4. Replace "https://your-domain.example" in the JSON-LD and OG tags with
+      your real site URL (for GitHub Pages this is usually
+      https://username.github.io/repo-name/).
+   5. "Desciption" (missing the second "r") is spelled that way on purpose —
+      it matches the actual field name in your CMS config for AboutAuthor /
+      AboutPage. If you ever rename the field in pages.yml, update it here too.
+   6. Description/Desciption fields are rich-text. If they come out as raw
+      Markdown instead of HTML, swap the `| safe` / `| striptags` filters for
+      whatever markdown filter your 11ty config exposes.
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title>{{ MainPage.PageInfo.PageTitle | default("Welcome") }}</title>
+<meta name="description" content="{{ MainPage.PageInfo.PageTitle | default('Welcome') }} — the home of {{ Sharan.AboutPage.Name | default('Sharan') }} and {{ Adit.AboutAuthor.Name | default('Adit') }}. Pick a site to explore." />
+<meta name="keywords" content="{{ Sharan.AboutPage.Name | default('Sharan') }}, {{ Adit.AboutAuthor.Name | default('Adit') }}, {{ MainPage.PageInfo.PageTitle | default('Welcome') }}" />
+
+{% if MainPage.PageInfo.Pic %}<link rel="icon" href="{{ MainPage.PageInfo.Pic }}" />{% endif %}
+<link rel="canonical" href="https://your-domain.example/" />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="{{ MainPage.PageInfo.PageTitle | default('Welcome') }}" />
+<meta property="og:description" content="The home of {{ Sharan.AboutPage.Name | default('Sharan') }} and {{ Adit.AboutAuthor.Name | default('Adit') }}." />
+{% if MainPage.PageInfo.Pic %}<meta property="og:image" content="{{ MainPage.PageInfo.Pic }}" />{% endif %}
+<meta property="og:url" content="https://your-domain.example/" />
+
+<!-- Structured data: helps search engines associate both names with this hub -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "name": "{{ MainPage.PageInfo.PageTitle | default('Welcome') }}",
+      "url": "https://your-domain.example/"
+    },
+    {
+      "@type": "Person",
+      "name": "{{ Sharan.AboutPage.Name | default('Sharan') }}",
+      "jobTitle": "{{ Sharan.AboutPage.Expertise | default('') }}",
+      "url": "https://your-domain.example/Sharan/SharanPage/"
+    },
+    {
+      "@type": "Person",
+      "name": "{{ Adit.AboutAuthor.Name | default('Adit') }}",
+      "jobTitle": "{{ Adit.AboutAuthor.Expertise | default('') }}",
+      "url": "https://your-domain.example/Adit/AditPage/"
+    }
+  ]
+}
+</script>
+
+<style>
+  :root {
+    --max-w: 1100px;
+    --bg-0: #0b0b0f;
+    --glass-bg: rgba(255,255,255,0.04);
+    --glass-border: rgba(255,255,255,0.08);
+    --glass-border-hover: rgba(255,255,255,0.2);
+    --accent-gold: #d4af37;
+    --accent-gold-dim: rgba(212,175,55,0.12);
+    --accent-gold-line: rgba(212,175,55,0.35);
+    --text-main: #f2f0eb;
+    --text-dim: #9b97a6;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    background: var(--bg-0);
+    color: var(--text-main);
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* ── Ambient background ──────────────────────────────────────── */
+  .bg-orbs { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+  .orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.35;
+    background: radial-gradient(circle, var(--accent-gold) 0%, transparent 70%);
+  }
+  .orb-1 { width: 480px; height: 480px; top: -160px; left: -140px; animation: drift1 30s ease-in-out infinite alternate; }
+  .orb-2 {
+    width: 560px; height: 560px; bottom: -220px; right: -180px;
+    background: radial-gradient(circle, #6a4fb0 0%, transparent 70%);
+    animation: drift2 36s ease-in-out infinite alternate;
+  }
+  @keyframes drift1 { from { transform: translate(0,0); } to { transform: translate(110px, 70px); } }
+  @keyframes drift2 { from { transform: translate(0,0); } to { transform: translate(-90px, -50px); } }
+
+  /* ── Layout ───────────────────────────────────────────────────── */
+  main.hub {
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 80px 24px 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hub-header { text-align: center; margin-bottom: 64px; }
+  .hub-logo {
+    width: 84px; height: 84px; border-radius: 50%;
+    object-fit: cover; border: 1px solid var(--accent-gold-line);
+    margin-bottom: 20px;
+  }
+  .hub-header h1 {
+    font-size: 2.4rem; margin: 0 0 14px; letter-spacing: 0.02em; font-weight: 700;
+  }
+  .hub-desc {
+    color: var(--text-dim); max-width: 560px; margin: 0 auto; line-height: 1.6; font-size: 0.98rem;
+  }
+  .hub-desc p { margin: 0; }
+
+  /* ── Selector cards ───────────────────────────────────────────── */
+  .selector-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+    margin-bottom: 70px;
+  }
+  @media (max-width: 720px) {
+    .selector-grid { grid-template-columns: 1fr; }
+  }
+
+  .selector-card {
+    position: relative;
+    display: block;
+    border-radius: 24px;
+    overflow: hidden;
+    isolation: isolate;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Rotating radial-gradient glow — the signature hover effect */
+  .selector-card::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 160%;
+    height: 160%;
+    background: radial-gradient(circle at 50% 12%, var(--accent-gold) 0%, transparent 55%);
+    transform: translate(-50%, -50%) rotate(0deg);
+    opacity: 0;
+    filter: blur(8px);
+    transition: opacity 0.6s ease;
+    animation: spin-glow 11s linear infinite;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .selector-card:hover::before { opacity: 0.45; }
+  @keyframes spin-glow { to { transform: translate(-50%, -50%) rotate(360deg); } }
+
+  .selector-card-inner {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    padding: 36px 28px;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    text-align: center;
+    transition:
+      border-color 0.35s ease,
+      transform 0.35s cubic-bezier(0.25,1,0.5,1),
+      box-shadow 0.35s ease;
+  }
+  .selector-card:hover .selector-card-inner {
+    border-color: var(--glass-border-hover);
+    transform: translateY(-6px);
+    box-shadow: 0 16px 44px rgba(0,0,0,0.55);
+  }
+
+  .selector-pic {
+    width: 96px; height: 96px; border-radius: 50%;
+    object-fit: cover; border: 1px solid var(--accent-gold-line);
+    margin-bottom: 18px;
+  }
+  .selector-card h2 { margin: 0 0 8px; font-size: 1.4rem; font-weight: 700; }
+  .selector-expertise {
+    display: inline-block;
+    font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent-gold); background: var(--accent-gold-dim);
+    border: 1px solid var(--accent-gold-line);
+    padding: 4px 12px; border-radius: 999px; margin-bottom: 16px;
+  }
+  .selector-desc {
+    color: var(--text-dim); font-size: 0.92rem; line-height: 1.6;
+    margin: 0 0 22px;
+  }
+  .selector-cta {
+    color: var(--accent-gold); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.03em;
+  }
+  .selector-card:hover .selector-cta { text-decoration: underline; }
+
+  /* ── Links / Mentioned Links section ─────────────────────────── */
+  #links { width: 100%; max-width: var(--max-w); margin: 0 auto; }
+  #links h3 {
+    text-align: center; color: var(--text-dim); font-size: 0.8rem;
+    letter-spacing: 0.14em; text-transform: uppercase; margin: 0 0 24px;
+  }
+  .links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-bottom: 60px;
+  }
+  .link-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 24px;
+    text-decoration: none;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    transition:
+      background     2.5s ease-in-out,
+      border-color   0.3s ease,
+      transform      0.35s cubic-bezier(0.25,1,0.5,1),
+      box-shadow     0.35s ease;
+    overflow: hidden;
+    position: relative;
+  }
+  .link-card:hover {
+    border-color: var(--glass-border-hover);
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 0 14px 40px rgba(0,0,0,0.6), 0 0 14px var(--accent-gold-dim);
+  }
+  .link-card-icon {
+    width: 42px; height: 42px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    background: rgba(var(--icon-rgb, 212,175,55), 0.15);
+    border: 1px solid rgba(var(--icon-rgb, 212,175,55), 0.4);
+    color: rgb(var(--icon-rgb, 212,175,55));
+    transition: filter 0.35s ease, transform 0.35s ease, background 0.35s ease, border-color 0.35s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .link-card:hover .link-card-icon { filter: brightness(1.15); transform: scale(1.07); }
+  .link-card-icon svg { width: 22px; height: 22px; display: block; flex-shrink: 0; }
+  .link-card-text { flex: 1; min-width: 0; }
+  .link-card-label {
+    display: block; font-size: 0.82rem; font-weight: 600; color: var(--text-main);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px;
+  }
+  .link-card-url {
+    display: block; font-size: 0.7rem; color: var(--text-dim);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .link-card-arrow {
+    color: var(--accent-gold); opacity: 0; font-size: 0.85rem;
+    transition: opacity 0.25s ease, transform 0.25s ease; flex-shrink: 0;
+  }
+  .link-card:hover .link-card-arrow { opacity: 1; transform: translateX(3px); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .orb, .selector-card::before { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-orbs" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+</div>
+
+<!-- Hidden SVG sprite — icons referenced by link cards via <use> -->
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
+  <symbol id="icon-instagram" viewBox="0 0 24 24" fill="none">
+    <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="currentColor" stroke-width="1.8"/>
+    <circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.8"/>
+    <circle cx="17.5" cy="6.5" r="1" fill="currentColor"/>
+  </symbol>
+  <symbol id="icon-x" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L2.25 2.25h6.961l4.259 5.631 4.774-5.631zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+  </symbol>
+  <symbol id="icon-youtube" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+  </symbol>
+  <symbol id="icon-linkedin" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+  </symbol>
+  <symbol id="icon-github" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+  </symbol>
+  <symbol id="icon-facebook" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+  </symbol>
+  <symbol id="icon-tiktok" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.75a4.85 4.85 0 0 1-1.01-.06z"/>
+  </symbol>
+  <symbol id="icon-substack" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M22.539 8.242H1.46V5.406h21.08v2.836zM1.46 10.812V24L12 18.11 22.54 24V10.812H1.46zM22.54 0H1.46v2.836h21.08V0z"/>
+  </symbol>
+  <symbol id="icon-medium" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M13.54 12a6.8 6.8 0 0 1-6.77 6.82A6.8 6.8 0 0 1 0 12a6.8 6.8 0 0 1 6.77-6.82A6.8 6.8 0 0 1 13.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/>
+  </symbol>
+  <symbol id="icon-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="10"/>
+    <line x1="2" y1="12" x2="22" y2="12"/>
+    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+  </symbol>
+</svg>
+
+<main class="hub">
+
+  <header class="hub-header">
+    {% if MainPage.PageInfo.Pic %}
+      <img class="hub-logo" src="{{ MainPage.PageInfo.Pic }}" alt="{{ MainPage.PageInfo.PageTitle | default('Site logo') }}" />
+    {% endif %}
+    <h1>{{ MainPage.PageInfo.PageTitle | default("Welcome") }}</h1>
+    {% if MainPage.PageInfo.Description %}
+      <div class="hub-desc">{{ MainPage.PageInfo.Description | safe }}</div>
+    {% endif %}
+  </header>
+
+  <section class="selector-grid">
+
+    <a class="selector-card" href="/Sharan/SharanPage/">
+      <div class="selector-card-inner">
+        {% if Sharan.AboutPage.Pic %}
+          <img class="selector-pic" src="{{ Sharan.AboutPage.Pic }}" alt="{{ Sharan.AboutPage.Name | default('Sharan') }}" />
+        {% endif %}
+        <h2>{{ Sharan.AboutPage.Name | default("Sharan") }}</h2>
+        {% if Sharan.AboutPage.Expertise %}
+          <span class="selector-expertise">{{ Sharan.AboutPage.Expertise }}</span>
+        {% endif %}
+        {% if Sharan.AboutPage.Desciption %}
+          <p class="selector-desc">{{ Sharan.AboutPage.Desciption | striptags | truncate(140) }}</p>
+        {% endif %}
+        <span class="selector-cta">Enter site →</span>
+      </div>
+    </a>
+
+    <a class="selector-card" href="/Adit/AditPage/">
+      <div class="selector-card-inner">
+        {% if Adit.AboutAuthor.Pic %}
+          <img class="selector-pic" src="{{ Adit.AboutAuthor.Pic }}" alt="{{ Adit.AboutAuthor.Name | default('Adit') }}" />
+        {% endif %}
+        <h2>{{ Adit.AboutAuthor.Name | default("Adit") }}</h2>
+        {% if Adit.AboutAuthor.Expertise %}
+          <span class="selector-expertise">{{ Adit.AboutAuthor.Expertise }}</span>
+        {% endif %}
+        {% if Adit.AboutAuthor.Desciption %}
+          <p class="selector-desc">{{ Adit.AboutAuthor.Desciption | striptags | truncate(140) }}</p>
+        {% endif %}
+        <span class="selector-cta">Enter site →</span>
+      </div>
+    </a>
+
+  </section>
+
+  {% set hubLinks = MainPage.MentionedLinks or {} %}
+  {% if hubLinks | length %}
+  <section id="links">
+    <h3>Find us</h3>
+    <div class="links-grid">
+      {% for key, link in hubLinks %}
+        <a class="link-card" href="{{ link.Link }}" target="_blank" rel="noopener">
+          <div class="link-card-icon" data-icon-url="{{ link.Link }}"></div>
+          <div class="link-card-text">
+            <span class="link-card-label">{{ link.Name }}</span>
+            <span class="link-card-url">{{ link.Link }}</span>
+          </div>
+          <span class="link-card-arrow">↗</span>
+        </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+</main>
+
+<script>
+(function () {
+  // hostname keyword -> icon id + "r,g,b" tint
+  var ICONS = {
+    instagram: { icon: 'instagram', rgb: '193,53,132' },
+    twitter:   { icon: 'x',         rgb: '231,233,234' },
+    'x.com':   { icon: 'x',         rgb: '231,233,234' },
+    youtube:   { icon: 'youtube',   rgb: '255,0,0' },
+    linkedin:  { icon: 'linkedin',  rgb: '0,119,181' },
+    github:    { icon: 'github',    rgb: '201,209,217' },
+    facebook:  { icon: 'facebook',  rgb: '24,119,242' },
+    tiktok:    { icon: 'tiktok',    rgb: '0,242,234' },
+    substack:  { icon: 'substack',  rgb: '255,106,0' },
+    medium:    { icon: 'medium',    rgb: '255,255,255' }
+  };
+  var FALLBACK = { icon: 'link', rgb: '212,175,55' };
+
+  function lookup(url) {
+    try {
+      var host = new URL(url).hostname.toLowerCase().replace(/^www\./, '');
+      for (var key in ICONS) {
+        if (host.indexOf(key) !== -1) return ICONS[key];
+      }
+    } catch (e) {}
+    return FALLBACK;
+  }
+
+  function initLinkIcons() {
+    document.querySelectorAll('.link-card-icon[data-icon-url]').forEach(function (el) {
+      var meta = lookup(el.getAttribute('data-icon-url'));
+      el.style.setProperty('--icon-rgb', meta.rgb);
+      el.innerHTML = '<svg viewBox="0 0 24 24"><use href="#icon-' + meta.icon + '"></use></svg>';
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', initLinkIcons);
+})();
+</script>
+
+</body>
+</html>
