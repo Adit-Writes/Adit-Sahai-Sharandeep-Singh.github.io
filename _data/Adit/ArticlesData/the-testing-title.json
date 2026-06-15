@@ -1,0 +1,12 @@
+{
+  "Title": "The Testing Title",
+  "Topic": "_data/Adit/categories/science.json",
+  "Published": true,
+  "Comments": true,
+  "Likes": true,
+  "Description": "Description test",
+  "Body": "Body test",
+  "ReadTime": 12,
+  "ReleaseDate": "2026-06-15",
+  "LastUpdated": "2026-06-15"
+}
