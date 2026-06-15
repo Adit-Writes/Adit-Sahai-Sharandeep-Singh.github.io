@@ -7,16 +7,16 @@ permalink: /index.html
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>{{ MainPage.MainSiteHeader.PageTitle }}</title>
+  <title>{{ MainPage.PageInfo.PageTitle }}</title>
 
   <meta name="description"
-        content="{{ MainPage.MainSiteHeader.Description | striptags }}" />
+        content="{{ MainPage.PageInfo.Description | striptags }}" />
 
   <meta name="keywords"
-        content="{{ Adit.AboutAuthor.Name }}, {{ Sharan.AboutPage.Name }}, {{ MainPage.MainSiteHeader.PageTitle }}, blog, articles" />
+        content="{{ Adit.AboutAuthor.Name }}, {{ Sharan.AboutPage.Name }}, {{ MainPage.PageInfo.PageTitle }}, blog, articles" />
 
-  <meta property="og:title" content="{{ MainPage.MainSiteHeader.PageTitle }}" />
-  <meta property="og:description" content="{{ MainPage.MainSiteHeader.Description | striptags }}" />
+  <meta property="og:title" content="{{ MainPage.PageInfo.PageTitle }}" />
+  <meta property="og:description" content="{{ MainPage.PageInfo.Description | striptags }}" />
   <meta property="og:type" content="website" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -144,16 +144,16 @@ permalink: /index.html
   <div id="bg-canvas"></div>
 
   <section class="hero-banner">
-    <p class="hero-eyebrow reveal">{{ MainPage.MainSiteHeader.HeroTagline }}</p>
-    <h1 class="hero-title reveal">{{ MainPage.MainSiteHeader.PageTitle }}</h1>
+    <p class="hero-eyebrow reveal">{{ MainPage.PageInfo.HeroTagline }}</p>
+    <h1 class="hero-title reveal">{{ MainPage.PageInfo.PageTitle }}</h1>
     <p class="hero-sub reveal">
-      {{ MainPage.MainSiteHeader.Description | safe }}
+      {{ MainPage.PageInfo.Description | safe }}
     </p>
     <div class="hero-divider reveal"></div>
   </section>
 
   <div class="choose-label reveal">
-    <span>{{ MainPage.MainSiteHeader.ChooseLabel }}</span>
+    <span>{{ MainPage.PageInfo.ChooseLabel }}</span>
   </div>
 
   <div class="cards-grid">
@@ -176,7 +176,7 @@ permalink: /index.html
         </p>
 
         <span class="card-btn">
-          {{ MainPage.MainSiteHeader.CtaAdit }}
+          {{ MainPage.PageInfo.CtaAdit }}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
           </svg>
@@ -202,7 +202,7 @@ permalink: /index.html
         </p>
 
         <span class="card-btn">
-          {{ MainPage.MainSiteHeader.CtaSharan }}
+          {{ MainPage.PageInfo.CtaSharan }}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
           </svg>
@@ -213,7 +213,7 @@ permalink: /index.html
   </div>
 
   <section id="links" class="reveal">
-    <div class="links-section-label"><span>{{ MainPage.MainSiteHeader.LinksLabel }}</span></div>
+    <div class="links-section-label"><span>{{ MainPage.PageInfo.LinksLabel }}</span></div>
     <div class="links-grid" id="linksGrid">
       {% for filename, link in MainPage.MMentionedLinks %}
       <a
@@ -235,7 +235,7 @@ permalink: /index.html
   </section>
 
   <footer class="footer">
-    {{ MainPage.MainSiteHeader.FooterNote | safe }}
+    {{ MainPage.PageInfo.FooterNote | safe }}
   </footer>
 
   <script src="/Adit-Sahai.github.io/MainCode/script.js"></script>
