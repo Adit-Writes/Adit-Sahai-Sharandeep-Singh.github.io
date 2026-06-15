@@ -9,6 +9,22 @@ content:
   - name: MainPage
     type: group
     items:
+
+    - name: MentionedLinks
+      type: collection
+      path: _data/MainPage/MentionedLinks
+      format: json
+      filename: "{slug}.json"
+      view:
+        primary: Name
+      fields:
+        - name: Name
+          type: string
+          required: true
+  
+        - name: Link
+          type: string
+          required: true
       
 
 # Adits Stuff======================================================================
