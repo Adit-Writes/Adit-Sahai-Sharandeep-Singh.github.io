@@ -184,7 +184,7 @@ content:
     type: group
     items:
     
-    - name: SiteHead
+    - name: SiteHeader
       type: file
       path: _data/Sharan/SiteHead.json
       fields:
