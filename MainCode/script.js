@@ -5,6 +5,14 @@
 const ROTATION_INTERVAL_MS   = 30000;   // how often themes rotate (ms)
 const ORB_TRANSITION_SECS    = 10.0;    // how long orb color transition takes (seconds)
 
+
+// Apply a random theme instantly before DOM is ready to prevent flash
+(function() {
+    const theme = MY_FAVORITE_THEMES[Math.floor(Math.random() * MY_FAVORITE_THEMES.length)];
+    const root = document.documentElement;
+    Object.entries(theme.tokens).forEach(([k, v]) => root.style.setProperty(k, v));
+})();
+
 // ============================================================
 //  THEME DEFINITIONS
 // ============================================================
