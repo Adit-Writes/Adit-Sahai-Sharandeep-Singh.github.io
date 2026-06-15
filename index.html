@@ -84,6 +84,7 @@ permalink: /index.html
       text-align: center;
       padding: 120px 24px 60px;
       position: relative;
+      perspective: 800px;
     }
 
     .hero-eyebrow {
@@ -92,8 +93,9 @@ permalink: /index.html
       text-transform: uppercase;
       letter-spacing: 7px;
       font-weight: 700;
-      opacity: 0.85;
+      opacity: 0;  /* JS controls reveal */
       margin-bottom: 28px;
+      min-height: 1.2em;
       transition: color 1.5s ease-in-out;
     }
 
@@ -105,14 +107,26 @@ permalink: /index.html
       letter-spacing: -0.02em;
       color: rgba(255,255,255,0.95);
       margin-bottom: 28px;
-      /* Subtle gradient shimmer on text */
-      background: linear-gradient(160deg, #ffffff 40%, rgba(255,255,255,0.4) 100%);
+      perspective: 600px;
+      /* Gradient shimmer */
+      background: linear-gradient(160deg, #ffffff 30%, var(--accent-gold) 60%, #ffffff 90%);
+      background-size: 200% auto;
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
+      animation: heroTitleShimmer 6s linear infinite;
+      transition: color 1.5s ease-in-out;
     }
     @supports not (-webkit-background-clip: text) {
       .hero-title { color: rgba(255,255,255,0.95); background: none; -webkit-text-fill-color: unset; }
+    }
+    @keyframes heroTitleShimmer {
+      0%   { background-position: 0%   center; }
+      100% { background-position: 200% center; }
+    }
+    /* Mobile — force white text */
+    @media (max-width: 768px) {
+      .hero-title { -webkit-text-fill-color: rgba(255,255,255,0.95); }
     }
 
     .hero-tagline {
@@ -125,7 +139,7 @@ permalink: /index.html
       transition: color 1.5s ease-in-out;
     }
 
-    /* Animated accent line under title */
+    /* Animated accent line */
     .hero-accent-line {
       display: flex;
       align-items: center;
@@ -149,8 +163,13 @@ permalink: /index.html
       height: 6px;
       border-radius: 50%;
       background: var(--accent-gold);
-      box-shadow: 0 0 10px var(--accent-gold);
+      box-shadow: 0 0 10px var(--accent-gold), 0 0 28px var(--accent-gold);
       transition: background 1.5s ease-in-out, box-shadow 1.5s ease-in-out;
+      animation: dotPulse 2.4s ease-in-out infinite;
+    }
+    @keyframes dotPulse {
+      0%, 100% { transform: scale(1);   box-shadow: 0 0 10px var(--accent-gold); }
+      50%       { transform: scale(1.5); box-shadow: 0 0 20px var(--accent-gold), 0 0 40px var(--accent-gold); }
     }
 
     .hero-scroll-hint {
@@ -172,10 +191,7 @@ permalink: /index.html
       color: var(--text-dim);
       transition: color 1.5s ease-in-out;
     }
-    .hero-scroll-hint svg {
-      color: var(--accent-gold);
-      transition: color 1.5s ease-in-out;
-    }
+    .hero-scroll-hint svg { color: var(--accent-gold); transition: color 1.5s ease-in-out; }
     @keyframes scrollBounce {
       0%, 100% { transform: translateX(-50%) translateY(0); }
       50%       { transform: translateX(-50%) translateY(6px); }
@@ -210,7 +226,7 @@ permalink: /index.html
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
       gap: 28px;
-      margin-bottom: 100px;
+      margin-bottom: 80px;
     }
 
     .person-card {
@@ -225,11 +241,10 @@ permalink: /index.html
       cursor: pointer;
       text-decoration: none;
       color: inherit;
-      transition: transform 0.4s cubic-bezier(0.25,1,0.5,1);
+      /* JS sets initial translate + will animate in */
     }
-    .person-card:hover { transform: translateY(-10px) scale(1.015); }
+    .person-card:hover { transform: translateY(-10px) scale(1.015) !important; }
 
-    /* Ambient glow layer */
     .person-card-glow {
       position: absolute;
       inset: -60%;
@@ -259,7 +274,6 @@ permalink: /index.html
       to   { transform: rotate(360deg); }
     }
 
-    /* Glass panel above glow */
     .person-card::before {
       content: '';
       position: absolute;
@@ -299,7 +313,6 @@ permalink: /index.html
       transition: border-color 0.4s ease, box-shadow 0.4s ease;
       position: relative;
     }
-    /* Ring pulse on hover */
     .card-portrait-wrap::after {
       content: '';
       position: absolute;
@@ -362,8 +375,6 @@ permalink: /index.html
       display: inline-block;
       transition: background 2.5s ease-in-out, border-color 2.5s ease-in-out, color 1.5s ease-in-out;
     }
-
-    /* Thin divider under expertise tag */
     .card-sep {
       width: 40px;
       height: 1px;
@@ -371,7 +382,6 @@ permalink: /index.html
       margin: 0 auto 20px;
       transition: background 2.5s ease-in-out;
     }
-
     .card-bio {
       color: var(--text-muted);
       font-size: 0.88rem;
@@ -381,7 +391,6 @@ permalink: /index.html
       margin-bottom: 32px;
       transition: color 1.5s ease-in-out;
     }
-
     .card-btn {
       display: inline-flex;
       align-items: center;
@@ -407,45 +416,172 @@ permalink: /index.html
     .card-btn svg { width: 13px; height: 13px; transition: transform 0.25s ease; }
     .card-btn:hover svg { transform: translateX(3px); }
 
-    /* ── STATS ROW ────────────────────────────────────────────── */
-    .stats-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+    /* ── STATS BLOCK ──────────────────────────────────────────── */
+
+    /* Container for the whole authored-by-Adit section */
+    .adit-stats-block {
       max-width: 1100px;
       margin: 0 auto 100px;
       padding: 0 24px;
     }
+
+    /* Subtle header above the stats */
+    .adit-stats-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .adit-stats-label {
+      font-size: 0.6rem;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      font-weight: 700;
+      white-space: nowrap;
+      opacity: 0.7;
+      transition: color 1.5s ease-in-out;
+    }
+    .adit-stats-rule {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent-gold-line), transparent);
+      transition: background 2.5s ease-in-out;
+    }
+
+    /* Grid of stat cards */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
     .stat-card {
       text-align: center;
-      padding: 32px 20px;
+      padding: 36px 20px 30px;
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
-      border-radius: 18px;
+      border-radius: 20px;
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      transition: background 2.5s ease-in-out, border-color 0.3s ease, transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+      transition:
+        background 2.5s ease-in-out,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
     }
+
+    /* Ambient glow on the stat card */
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 120%, var(--accent-gold-dim) 0%, transparent 65%);
+      opacity: 0;
+      transition: opacity 0.4s ease, background 2.5s ease-in-out;
+      pointer-events: none;
+    }
+    .stat-card:hover::before { opacity: 1; }
     .stat-card:hover {
       border-color: var(--glass-border-hover);
-      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 20px var(--accent-gold-dim);
     }
+
+    /* Icon above the number */
+    .stat-icon {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+      display: block;
+      line-height: 1;
+      opacity: 0.75;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .stat-card:hover .stat-icon {
+      opacity: 1;
+      transform: scale(1.15) translateY(-2px);
+    }
+
     .stat-number {
       font-family: 'Playfair Display', serif;
-      font-size: 2.8rem;
+      font-size: 3.2rem;
       font-weight: 900;
       color: var(--accent-gold);
       line-height: 1;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       transition: color 1.5s ease-in-out;
+      letter-spacing: -0.03em;
     }
     .stat-label {
-      font-size: 0.68rem;
+      font-size: 0.65rem;
       text-transform: uppercase;
       letter-spacing: 3px;
       color: var(--text-dim);
       font-weight: 600;
       transition: color 1.5s ease-in-out;
+      margin-bottom: 6px;
+    }
+    .stat-sublabel {
+      font-size: 0.6rem;
+      color: var(--text-dim);
+      font-weight: 300;
+      opacity: 0.55;
+      font-style: italic;
+      transition: color 1.5s ease-in-out;
+    }
+
+    /* Sharan coming soon block */
+    .sharan-coming-soon {
+      max-width: 1100px;
+      margin: 0 auto 80px;
+      padding: 0 24px;
+    }
+    .sharan-teaser {
+      border: 1px dashed var(--glass-border);
+      border-radius: 20px;
+      padding: 30px 36px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      transition: background 2.5s ease-in-out, border-color 2.5s ease-in-out;
+    }
+    .sharan-teaser-icon {
+      font-size: 1.8rem;
+      flex-shrink: 0;
+      opacity: 0.6;
+    }
+    .sharan-teaser-text h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--accent-gold);
+      margin-bottom: 4px;
+      transition: color 1.5s ease-in-out;
+    }
+    .sharan-teaser-text p {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      font-weight: 300;
+      transition: color 1.5s ease-in-out;
+    }
+    .sharan-teaser-badge {
+      margin-left: auto;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 2.5px;
+      font-weight: 700;
+      color: var(--text-dim);
+      border: 1px solid var(--glass-border);
+      padding: 4px 12px;
+      border-radius: 100px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: border-color 2.5s ease-in-out, color 1.5s ease-in-out;
     }
 
     /* ── LINKS SECTION ────────────────────────────────────────── */
@@ -472,7 +608,90 @@ permalink: /index.html
       transition: color 1.5s ease-in-out;
     }
 
-    /* Re-use .links-grid and .link-card from style.css */
+    /* ── LINK CARDS ───────────────────────────────────────────── */
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .link-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 22px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      text-decoration: none;
+      color: inherit;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition:
+        background    2.5s ease-in-out,
+        border-color  0.3s ease,
+        box-shadow    0.3s ease,
+        transform     0.3s cubic-bezier(0.25,1,0.5,1);
+    }
+    .link-card:hover {
+      border-color: var(--glass-border-hover);
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.5), 0 0 16px var(--accent-gold-dim);
+    }
+
+    .link-card-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+    }
+    .link-card:hover .link-card-icon { transform: scale(1.1) rotate(-4deg); }
+    .link-card-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .link-card-text {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+      flex: 1;
+    }
+    .link-card-label {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-main);
+      transition: color 1.5s ease-in-out;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .link-card-url {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 1.5s ease-in-out;
+    }
+    .link-card:hover .link-card-url { color: var(--accent-gold); }
+
+    .link-card-arrow {
+      color: var(--text-dim);
+      font-size: 1rem;
+      flex-shrink: 0;
+      transition: color 0.25s ease, transform 0.25s ease;
+    }
+    .link-card:hover .link-card-arrow {
+      color: var(--accent-gold);
+      transform: translateX(4px);
+    }
 
     /* ── FOOTER ───────────────────────────────────────────────── */
     .index-footer {
@@ -487,12 +706,14 @@ permalink: /index.html
 
     /* ── RESPONSIVE ───────────────────────────────────────────── */
     @media (max-width: 768px) {
-      .cards-grid { grid-template-columns: 1fr; }
-      .stats-row  { grid-template-columns: 1fr; gap: 14px; }
-      .person-card { padding: 36px 24px 32px; }
-      .index-nav { padding: 6px 14px; gap: 2px; }
-      .index-nav a { padding: 4px 8px; font-size: 0.65rem; }
-      .hero-title { -webkit-text-fill-color: rgba(255,255,255,0.95); }
+      .cards-grid   { grid-template-columns: 1fr; }
+      .stats-row    { grid-template-columns: 1fr; gap: 14px; }
+      .person-card  { padding: 36px 24px 32px; }
+      .index-nav    { padding: 6px 14px; gap: 2px; }
+      .index-nav a  { padding: 4px 8px; font-size: 0.65rem; }
+      .links-grid   { grid-template-columns: 1fr; }
+      .sharan-teaser { flex-wrap: wrap; }
+      .sharan-teaser-badge { margin-left: 0; }
     }
   </style>
 </head>
@@ -512,10 +733,10 @@ permalink: /index.html
 
   <!-- ── HERO ───────────────────────────────────────────────── -->
   <section class="hero-section" id="hero">
-    <p class="hero-eyebrow reveal">{{ MainPage.PageInfo.HeroTagline }}</p>
-    <h1 class="hero-title reveal">{{ MainPage.PageInfo.PageTitle }}</h1>
-    <p class="hero-tagline reveal">{{ MainPage.PageInfo.Description | safe }}</p>
-    <div class="hero-accent-line reveal">
+    <p class="hero-eyebrow">{{ MainPage.PageInfo.HeroTagline }}</p>
+    <h1 class="hero-title">{{ MainPage.PageInfo.PageTitle }}</h1>
+    <p class="hero-tagline">{{ MainPage.PageInfo.Description | safe }}</p>
+    <div class="hero-accent-line">
       <div class="hero-accent-dot"></div>
     </div>
 
@@ -535,7 +756,8 @@ permalink: /index.html
 
     <div class="cards-grid">
 
-      <a href="/Adit-Sahai.github.io/Adit/AditPage.html" class="person-card reveal">
+      <!-- Adit's card -->
+      <a href="/Adit-Sahai.github.io/Adit/AditPage.html" class="person-card">
         <div class="person-card-glow"></div>
         <div class="person-card-inner">
           <div class="card-portrait-wrap">
@@ -558,7 +780,8 @@ permalink: /index.html
         </div>
       </a>
 
-      <a href="/Adit-Sahai.github.io/Sharan/SharanPage.html" class="person-card reveal" style="transition-delay:.12s">
+      <!-- Sharan's card -->
+      <a href="/Adit-Sahai.github.io/Sharan/SharanPage.html" class="person-card">
         <div class="person-card-glow"></div>
         <div class="person-card-inner">
           <div class="card-portrait-wrap">
@@ -582,23 +805,56 @@ permalink: /index.html
       </a>
 
     </div>
+  </section>
 
-    <!-- ── STATS ROW ───────────────────────────────────────── -->
+  <!-- ── ADIT'S STATS ───────────────────────────────────────── -->
+  <div class="adit-stats-block">
+    <div class="adit-stats-header reveal">
+      <span class="adit-stats-label">Adit's Work</span>
+      <div class="adit-stats-rule"></div>
+    </div>
+
     <div class="stats-row">
+
       <div class="stat-card reveal">
-        <div class="stat-number">2</div>
-        <div class="stat-label">Authors</div>
-      </div>
-      <div class="stat-card reveal" style="transition-delay:.08s">
-        <div class="stat-number" id="stat-articles">—</div>
+        <span class="stat-icon">✍️</span>
+        <div class="stat-number" id="stat-articles">
+          {% set count = 0 %}
+          {% for a in Adit.Articles %}{% if a.Published %}{% set count = count + 1 %}{% endif %}{% endfor %}
+          {{ count }}
+        </div>
         <div class="stat-label">Articles Published</div>
+        <div class="stat-sublabel">on Adit's blog</div>
       </div>
-      <div class="stat-card reveal" style="transition-delay:.16s">
+
+      <div class="stat-card reveal" style="transition-delay:.10s">
+        <span class="stat-icon">📚</span>
         <div class="stat-number">{{ Adit.Books | length }}</div>
         <div class="stat-label">Books Written</div>
+        <div class="stat-sublabel">by Adit Sahai</div>
       </div>
+
+      <div class="stat-card reveal" style="transition-delay:.20s">
+        <span class="stat-icon">🗂️</span>
+        <div class="stat-number" id="stat-categories">{{ Adit.ArticleCategories | length }}</div>
+        <div class="stat-label">Topics Covered</div>
+        <div class="stat-sublabel">across all articles</div>
+      </div>
+
     </div>
-  </section>
+  </div>
+
+  <!-- ── SHARAN COMING SOON ─────────────────────────────────── -->
+  <div class="sharan-coming-soon">
+    <div class="sharan-teaser reveal">
+      <span class="sharan-teaser-icon">🎮</span>
+      <div class="sharan-teaser-text">
+        <h3>Sharan's Space — Coming Soon</h3>
+        <p>Game dev updates, projects &amp; more. Still in the planning phase — check back soon.</p>
+      </div>
+      <span class="sharan-teaser-badge">In Progress</span>
+    </div>
+  </div>
 
   <!-- ── LINKS ──────────────────────────────────────────────── -->
   <section class="links-section" id="links">
@@ -606,7 +862,8 @@ permalink: /index.html
       <h2>{{ MainPage.PageInfo.LinksLabel }}</h2>
       <p>Find us elsewhere on the internet</p>
     </div>
-    <div class="links-grid reveal">
+
+    <div class="links-grid">
       {% for link in MainPage.MMentionedLinks %}
       <a
         href="{{ link.Link }}"
@@ -633,15 +890,6 @@ permalink: /index.html
   <script src="/Adit-Sahai.github.io/MainCode/script.js"></script>
 
   <script>
-    // ── Article count stat ────────────────────────────────────
-    (function() {
-      const published = [
-        {% for a in Adit.Articles %}{% if a.Published %}1,{% endif %}{% endfor %}
-      ].length;
-      const el = document.getElementById('stat-articles');
-      if (el) el.textContent = published || '—';
-    })();
-
     // ── Link card icons ───────────────────────────────────────
     const LINK_ICONS = {
       'instagram': { color:'rgba(193,53,132,0.18)', border:'rgba(193,53,132,0.45)', fill:'#e1306c', svg:`<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="2" width="20" height="20" rx="5.5" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>` },
