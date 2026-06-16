@@ -308,60 +308,8 @@ content:
           type: string
           required: true
 
-
     - name: Projects
-      type: collection
       path: _data/Sharan/Projects
-      format: json
-      filename: "{slug}.json"
-      view:
-        primary: Title
-      fields:
-        - name: Title
-          type: string
-          required: true
-
-        - name: Category
-          type: string
-          required: true
-          # e.g. "Game Development", "Video Editing", "Music", "Art"
-
-        - name: Status
-          type: string
-          # e.g. "Active", "On Hold", "Completed"
-
-        - name: Published
-          type: boolean
-
-        - name: Thumbnail
-          type: image
-
-        - name: ShortDescription
-          type: rich-text
-          options:
-            switcher: false
-
-        - name: FullDescription
-          type: rich-text
-          options:
-            switcher: false
-
-        - name: Gallery
-          type: string
-          # Comma-separated image paths, e.g. "/images/game1.jpg, /images/game2.jpg"
-
-        - name: VideoUrl
-          type: string
-          # YouTube URL or direct video file URL
-
-        - name: Updates
-          type: rich-text
-          # JSON array: [{"date":"Jun 2025","note":"Added multiplayer"}]
-          options:
-            switcher: false
-
-    - name: Project
-      path: _data/Sharan/Project
       type: collection
       format: json
       filename: "{slug}.json"
