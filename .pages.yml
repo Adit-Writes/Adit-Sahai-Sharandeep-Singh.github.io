@@ -16,8 +16,6 @@ content:
       fields:
         - name: PageTitle
           type: rich-text
-          options:
-            format: html
   
         - name: Pic
           type: image
