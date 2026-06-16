@@ -101,32 +101,35 @@ permalink: /index.html
     }
 
     .hero-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(3.2rem, 10vw, 7rem);
-      font-weight: 900;
-      line-height: 1.0;
-      letter-spacing: -0.02em;
-      /* Safe base color shown always */
-      color: rgba(255,255,255,0.95);
-      margin-bottom: 28px;
-      perspective: 600px;
-      /* Gradient shimmer — progressive enhancement only */
-      background: linear-gradient(160deg, #ffffff 30%, var(--accent-gold) 60%, #ffffff 90%);
-      background-size: 200% auto;
-      animation: heroTitleShimmer 6s linear infinite;
-      transition: color 1.5s ease-in-out;
-    }
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.2rem, 10vw, 7rem);
+  font-weight: 900;
+  line-height: 1.0;
+  letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.95);
+  margin-bottom: 28px;
+  perspective: 600px;
+  /* No background-clip here — JS splits text into child spans which break gradient-clip */
+  transition: color 1.5s ease-in-out;
+}
 
-    /* Only apply clip-text on supporting browsers that ALSO aren't mobile */
-    @media (min-width: 769px) {
-      @supports (-webkit-background-clip: text) {
-        .hero-title {
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
-      }
+/* Apply shimmer to the child letter-spans JS creates */
+.hero-title span > span {
+  background: linear-gradient(160deg, #ffffff 30%, var(--accent-gold) 60%, #ffffff 90%);
+  background-size: 200% auto;
+  animation: heroTitleShimmer 6s linear infinite;
+  color: rgba(255,255,255,0.95); /* solid fallback */
+}
+
+@media (min-width: 769px) {
+  @supports (-webkit-background-clip: text) {
+    .hero-title span > span {
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
+  }
+}
 
     @keyframes heroTitleShimmer {
       0%   { background-position: 0%   center; }
