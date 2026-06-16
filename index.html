@@ -46,8 +46,8 @@ permalink: /index.html
       font-family: 'Playfair Display', serif;
       font-weight: 900;
       font-size: 1rem;
-      /* Force visible regardless of gradient support */
-      color: var(--accent-gold);
+      /* Hard white so it shows before JS theme loads, then transitions to accent */
+      color: #ffffff;
       letter-spacing: 1px;
       margin-right: 8px;
       transition: color 1.5s ease-in-out;
@@ -244,9 +244,14 @@ permalink: /index.html
       cursor: pointer;
       text-decoration: none;
       color: inherit;
-      transition: transform 0.4s cubic-bezier(0.25,1,0.5,1) !important;
+      /* animation fills opacity/transform on entry; after it ends we take over with transition */
+      transition: transform 0.5s cubic-bezier(0.25,1,0.5,1),
+                  box-shadow 0.4s ease;
     }
-    .person-card:hover { transform: translateY(-10px) scale(1.015) !important; }
+    /* Use a separate class toggled after fly-in so hover works cleanly */
+    .person-card.flew-in:hover {
+      transform: translateY(-10px) scale(1.015);
+    }
 
     .person-card-glow {
       position: absolute;
@@ -547,12 +552,14 @@ permalink: /index.html
 
     /* ── LINK CARDS ───────────────────────────────────────────── */
     .links-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      display: flex;
+      flex-wrap: wrap;
       gap: 16px;
+      justify-content: center;
     }
 
     .link-card {
+      flex: 0 1 300px;
       display: flex; align-items: center; gap: 16px;
       padding: 18px 22px;
       background: var(--glass-bg); border: 1px solid var(--glass-border);
