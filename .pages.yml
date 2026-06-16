@@ -298,7 +298,7 @@ content:
 
     - name: ProjectCategories
       type: collection
-      path: _data/Sharan/categories
+      path: _data/Sharan/Projectcategories
       format: json
       filename: "{slug}.json"
       view:
@@ -308,6 +308,17 @@ content:
           type: string
           required: true
 
+    - name: ProjectStatus
+      type: collection
+      path: _data/Sharan/ProjectStatus
+      format: json
+      filename: "{slug}.json"
+      view:
+        primary: name
+      fields:
+        - name: name
+          type: string
+          required: true
 
     - name: Projects
       type: collection
