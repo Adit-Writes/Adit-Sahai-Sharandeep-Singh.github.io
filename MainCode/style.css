@@ -161,15 +161,49 @@ body::after {
 
 
 /* ============================================================
-   CORNER ORBS — glowing ambient orbs at page corners
+   CORNER BEAMS — sun ray shafts
    ============================================================ */
 
-.corner-orb {
+#corner-beams {
   position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.corner-source {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.c-ray {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  transform-origin: 0 0;
+  pointer-events: none;
+  border-style: solid;
+  border-color: transparent;
+}
+
+.c-hotspot {
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.c-dust {
+  position: absolute;
   border-radius: 50%;
   pointer-events: none;
-  z-index: -1;
-  will-change: opacity, transform;
+  will-change: transform, opacity;
 }
 /* ============================================================
    BACKGROUND LAYERS
