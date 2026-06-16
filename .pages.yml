@@ -360,8 +360,8 @@ content:
           options:
             switcher: false
 
-    - name: Projects
-      path: _data/Sharan/Projects
+    - name: Project
+      path: _data/Sharan/Project
       type: collection
       format: json
       filename: "{slug}.json"
