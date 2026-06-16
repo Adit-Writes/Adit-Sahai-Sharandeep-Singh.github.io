@@ -46,6 +46,7 @@ permalink: /index.html
       font-family: 'Playfair Display', serif;
       font-weight: 900;
       font-size: 1rem;
+      /* Force visible regardless of gradient support */
       color: var(--accent-gold);
       letter-spacing: 1px;
       margin-right: 8px;
@@ -93,7 +94,7 @@ permalink: /index.html
       text-transform: uppercase;
       letter-spacing: 7px;
       font-weight: 700;
-      opacity: 0;  /* JS controls reveal */
+      opacity: 0;
       margin-bottom: 28px;
       min-height: 1.2em;
       transition: color 1.5s ease-in-out;
@@ -105,28 +106,31 @@ permalink: /index.html
       font-weight: 900;
       line-height: 1.0;
       letter-spacing: -0.02em;
+      /* Safe base color shown always */
       color: rgba(255,255,255,0.95);
       margin-bottom: 28px;
       perspective: 600px;
-      /* Gradient shimmer */
+      /* Gradient shimmer — progressive enhancement only */
       background: linear-gradient(160deg, #ffffff 30%, var(--accent-gold) 60%, #ffffff 90%);
       background-size: 200% auto;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
       animation: heroTitleShimmer 6s linear infinite;
       transition: color 1.5s ease-in-out;
     }
-    @supports not (-webkit-background-clip: text) {
-      .hero-title { color: rgba(255,255,255,0.95); background: none; -webkit-text-fill-color: unset; }
+
+    /* Only apply clip-text on supporting browsers that ALSO aren't mobile */
+    @media (min-width: 769px) {
+      @supports (-webkit-background-clip: text) {
+        .hero-title {
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+      }
     }
+
     @keyframes heroTitleShimmer {
       0%   { background-position: 0%   center; }
       100% { background-position: 200% center; }
-    }
-    /* Mobile — force white text */
-    @media (max-width: 768px) {
-      .hero-title { -webkit-text-fill-color: rgba(255,255,255,0.95); }
     }
 
     .hero-tagline {
@@ -139,7 +143,6 @@ permalink: /index.html
       transition: color 1.5s ease-in-out;
     }
 
-    /* Animated accent line */
     .hero-accent-line {
       display: flex;
       align-items: center;
@@ -241,7 +244,7 @@ permalink: /index.html
       cursor: pointer;
       text-decoration: none;
       color: inherit;
-      /* JS sets initial translate + will animate in */
+      transition: transform 0.4s cubic-bezier(0.25,1,0.5,1) !important;
     }
     .person-card:hover { transform: translateY(-10px) scale(1.015) !important; }
 
@@ -254,12 +257,9 @@ permalink: /index.html
       transition: opacity 0.6s ease;
       background: conic-gradient(
         from 0deg,
-        transparent 0deg,
-        var(--accent-gold) 50deg,
-        transparent 130deg,
-        transparent 230deg,
-        var(--accent-gold) 290deg,
-        transparent 360deg
+        transparent 0deg, var(--accent-gold) 50deg,
+        transparent 130deg, transparent 230deg,
+        var(--accent-gold) 290deg, transparent 360deg
       );
       filter: blur(55px);
       animation: cardGlowSpin 10s linear infinite;
@@ -301,7 +301,6 @@ permalink: /index.html
       align-items: center;
     }
 
-    /* Portrait */
     .card-portrait-wrap {
       width: 130px;
       height: 130px;
@@ -323,142 +322,90 @@ permalink: /index.html
       transform: scale(0.9);
       transition: opacity 0.4s ease, transform 0.4s ease;
     }
-    .person-card:hover .card-portrait-wrap::after {
-      opacity: 0.6;
-      transform: scale(1);
-    }
+    .person-card:hover .card-portrait-wrap::after { opacity: 0.6; transform: scale(1); }
     .person-card:hover .card-portrait-wrap {
       border-color: var(--accent-gold);
       box-shadow: 0 0 28px 4px var(--accent-gold-dim);
     }
     .card-portrait-wrap img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: top;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: top;
       display: block;
       transition: transform 0.5s ease;
     }
     .person-card:hover .card-portrait-wrap img { transform: scale(1.05); }
     .portrait-placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
       font-family: 'Playfair Display', serif;
-      font-size: 2.6rem;
-      font-weight: 900;
+      font-size: 2.6rem; font-weight: 900;
       color: var(--accent-gold);
       background: var(--accent-gold-dim);
     }
 
     .card-name {
       font-family: 'Playfair Display', serif;
-      font-size: 1.9rem;
-      font-weight: 900;
+      font-size: 1.9rem; font-weight: 900;
       color: #fff;
       margin-bottom: 10px;
       letter-spacing: -0.02em;
     }
     .card-expertise {
-      font-size: 0.65rem;
-      color: var(--accent-gold);
-      text-transform: uppercase;
-      letter-spacing: 3.5px;
-      font-weight: 700;
-      background: var(--accent-gold-dim);
-      border: 1px solid var(--accent-gold-line);
-      padding: 4px 14px;
-      border-radius: 100px;
-      margin-bottom: 20px;
-      display: inline-block;
+      font-size: 0.65rem; color: var(--accent-gold);
+      text-transform: uppercase; letter-spacing: 3.5px; font-weight: 700;
+      background: var(--accent-gold-dim); border: 1px solid var(--accent-gold-line);
+      padding: 4px 14px; border-radius: 100px;
+      margin-bottom: 20px; display: inline-block;
       transition: background 2.5s ease-in-out, border-color 2.5s ease-in-out, color 1.5s ease-in-out;
     }
-    .card-sep {
-      width: 40px;
-      height: 1px;
-      background: var(--accent-gold-line);
-      margin: 0 auto 20px;
-      transition: background 2.5s ease-in-out;
-    }
-    .card-bio {
-      color: var(--text-muted);
-      font-size: 0.88rem;
-      font-weight: 300;
-      line-height: 1.8;
-      flex: 1;
-      margin-bottom: 32px;
-      transition: color 1.5s ease-in-out;
-    }
+    .card-sep { width: 40px; height: 1px; background: var(--accent-gold-line); margin: 0 auto 20px; transition: background 2.5s ease-in-out; }
+    .card-bio { color: var(--text-muted); font-size: 0.88rem; font-weight: 300; line-height: 1.8; flex: 1; margin-bottom: 32px; transition: color 1.5s ease-in-out; }
     .card-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      display: inline-flex; align-items: center; gap: 8px;
       padding: 12px 26px;
-      border: 1px solid var(--accent-gold-line);
-      border-radius: 12px;
-      text-decoration: none;
-      color: var(--accent-gold);
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 2.5px;
+      border: 1px solid var(--accent-gold-line); border-radius: 12px;
+      text-decoration: none; color: var(--accent-gold);
+      font-size: 0.72rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 2.5px;
       background: transparent;
       transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.3s ease;
     }
-    .card-btn:hover {
-      background: var(--accent-gold);
-      color: var(--bg-base);
-      border-color: var(--accent-gold);
-      transform: translateY(-2px);
-    }
+    .card-btn:hover { background: var(--accent-gold); color: var(--bg-base); border-color: var(--accent-gold); transform: translateY(-2px); }
     .card-btn svg { width: 13px; height: 13px; transition: transform 0.25s ease; }
     .card-btn:hover svg { transform: translateX(3px); }
 
-    /* ── STATS BLOCK ──────────────────────────────────────────── */
-
-    /* Container for the whole authored-by-Adit section */
+    /* ── ADIT STATS BLOCK ─────────────────────────────────────── */
     .adit-stats-block {
       max-width: 1100px;
       margin: 0 auto 100px;
       padding: 0 24px;
     }
 
-    /* Subtle header above the stats */
     .adit-stats-header {
-      display: flex;
-      align-items: center;
-      gap: 16px;
+      display: flex; align-items: center; gap: 16px;
       margin-bottom: 28px;
     }
     .adit-stats-label {
-      font-size: 0.6rem;
-      color: var(--accent-gold);
-      text-transform: uppercase;
-      letter-spacing: 5px;
-      font-weight: 700;
-      white-space: nowrap;
-      opacity: 0.7;
+      font-size: 0.6rem; color: var(--accent-gold);
+      text-transform: uppercase; letter-spacing: 5px; font-weight: 700;
+      white-space: nowrap; opacity: 0.7;
       transition: color 1.5s ease-in-out;
     }
     .adit-stats-rule {
-      flex: 1;
-      height: 1px;
+      flex: 1; height: 1px;
       background: linear-gradient(90deg, var(--accent-gold-line), transparent);
       transition: background 2.5s ease-in-out;
     }
 
-    /* Grid of stat cards */
     .stats-row {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(2, 1fr);
       gap: 20px;
     }
 
     .stat-card {
       text-align: center;
-      padding: 36px 20px 30px;
+      padding: 40px 20px 34px;
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
       border-radius: 20px;
@@ -467,17 +414,11 @@ permalink: /index.html
       position: relative;
       overflow: hidden;
       cursor: default;
-      transition:
-        background 2.5s ease-in-out,
-        border-color 0.3s ease,
-        box-shadow 0.3s ease;
+      transition: background 2.5s ease-in-out, border-color 0.3s ease, box-shadow 0.3s ease;
     }
-
-    /* Ambient glow on the stat card */
     .stat-card::before {
       content: '';
-      position: absolute;
-      inset: 0;
+      position: absolute; inset: 0;
       background: radial-gradient(ellipse at 50% 120%, var(--accent-gold-dim) 0%, transparent 65%);
       opacity: 0;
       transition: opacity 0.4s ease, background 2.5s ease-in-out;
@@ -489,123 +430,119 @@ permalink: /index.html
       box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 20px var(--accent-gold-dim);
     }
 
-    /* Icon above the number */
+    /* Ring accent on stat cards */
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 50%; transform: translateX(-50%);
+      width: 60px; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+      opacity: 0;
+      transition: opacity 0.4s ease, background 2.5s ease-in-out;
+    }
+    .stat-card:hover::after { opacity: 1; }
+
     .stat-icon {
-      font-size: 1.4rem;
-      margin-bottom: 10px;
-      display: block;
-      line-height: 1;
-      opacity: 0.75;
+      font-size: 1.6rem; margin-bottom: 14px;
+      display: block; line-height: 1; opacity: 0.75;
       transition: opacity 0.3s ease, transform 0.3s ease;
     }
-    .stat-card:hover .stat-icon {
-      opacity: 1;
-      transform: scale(1.15) translateY(-2px);
-    }
+    .stat-card:hover .stat-icon { opacity: 1; transform: scale(1.18) translateY(-3px); }
 
     .stat-number {
       font-family: 'Playfair Display', serif;
-      font-size: 3.2rem;
-      font-weight: 900;
+      font-size: 3.6rem; font-weight: 900;
       color: var(--accent-gold);
-      line-height: 1;
-      margin-bottom: 6px;
+      line-height: 1; margin-bottom: 8px;
       transition: color 1.5s ease-in-out;
       letter-spacing: -0.03em;
     }
     .stat-label {
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      color: var(--text-dim);
-      font-weight: 600;
-      transition: color 1.5s ease-in-out;
-      margin-bottom: 6px;
+      font-size: 0.65rem; text-transform: uppercase;
+      letter-spacing: 3px; color: var(--text-muted);
+      font-weight: 700; transition: color 1.5s ease-in-out;
+      margin-bottom: 4px;
     }
     .stat-sublabel {
-      font-size: 0.6rem;
-      color: var(--text-dim);
-      font-weight: 300;
-      opacity: 0.55;
-      font-style: italic;
+      font-size: 0.6rem; color: var(--text-dim);
+      font-weight: 300; opacity: 0.6; font-style: italic;
       transition: color 1.5s ease-in-out;
     }
 
-    /* Sharan coming soon block */
-    .sharan-coming-soon {
-      max-width: 1100px;
-      margin: 0 auto 80px;
-      padding: 0 24px;
-    }
+    /* ── SHARAN TEASER ────────────────────────────────────────── */
+    .sharan-coming-soon { max-width: 1100px; margin: 0 auto 80px; padding: 0 24px; }
     .sharan-teaser {
-      border: 1px dashed var(--glass-border);
-      border-radius: 20px;
+      border: 1px dashed var(--glass-border); border-radius: 20px;
       padding: 30px 36px;
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      background: var(--glass-bg);
-      backdrop-filter: blur(12px);
+      display: flex; align-items: center; gap: 20px;
+      background: var(--glass-bg); backdrop-filter: blur(12px);
       transition: background 2.5s ease-in-out, border-color 2.5s ease-in-out;
     }
-    .sharan-teaser-icon {
-      font-size: 1.8rem;
-      flex-shrink: 0;
-      opacity: 0.6;
-    }
+    .sharan-teaser-icon { font-size: 1.8rem; flex-shrink: 0; opacity: 0.6; }
     .sharan-teaser-text h3 {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.78rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      color: var(--accent-gold);
-      margin-bottom: 4px;
+      font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 3px;
+      color: var(--accent-gold); margin-bottom: 4px;
       transition: color 1.5s ease-in-out;
     }
-    .sharan-teaser-text p {
-      font-size: 0.82rem;
-      color: var(--text-dim);
-      font-weight: 300;
-      transition: color 1.5s ease-in-out;
-    }
+    .sharan-teaser-text p { font-size: 0.82rem; color: var(--text-dim); font-weight: 300; transition: color 1.5s ease-in-out; }
     .sharan-teaser-badge {
-      margin-left: auto;
-      font-size: 0.6rem;
-      text-transform: uppercase;
-      letter-spacing: 2.5px;
-      font-weight: 700;
-      color: var(--text-dim);
-      border: 1px solid var(--glass-border);
-      padding: 4px 12px;
-      border-radius: 100px;
-      white-space: nowrap;
-      flex-shrink: 0;
+      margin-left: auto; font-size: 0.6rem; text-transform: uppercase;
+      letter-spacing: 2.5px; font-weight: 700; color: var(--text-dim);
+      border: 1px solid var(--glass-border); padding: 4px 12px; border-radius: 100px;
+      white-space: nowrap; flex-shrink: 0;
       transition: border-color 2.5s ease-in-out, color 1.5s ease-in-out;
     }
 
     /* ── LINKS SECTION ────────────────────────────────────────── */
-    .links-section {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 24px 100px;
-    }
-    .links-section-header {
-      text-align: center;
-      margin-bottom: 48px;
-    }
-    .links-section-header h2 {
+    .links-section { max-width: 1100px; margin: 0 auto; padding: 0 24px 100px; }
+    .links-section-header { text-align: center; margin-bottom: 56px; }
+
+    /* The animated "Find Us Online" heading */
+    .links-section-title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-size: clamp(2rem, 5vw, 3.2rem);
       font-weight: 900;
-      color: rgba(255,255,255,0.9);
-      margin-bottom: 10px;
+      color: rgba(255,255,255,0.92);
+      margin-bottom: 12px;
+      display: block;
     }
-    .links-section-header p {
-      font-size: 0.82rem;
-      color: var(--text-dim);
-      font-weight: 300;
-      transition: color 1.5s ease-in-out;
+
+    .links-section-eyebrow {
+      display: inline-block;
+      font-size: 0.62rem;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      font-weight: 700;
+      background: var(--accent-gold-dim);
+      border: 1px solid var(--accent-gold-line);
+      padding: 4px 16px; border-radius: 100px;
+      margin-bottom: 18px;
+      transition: background 2.5s ease-in-out, border-color 2.5s ease-in-out, color 1.5s ease-in-out;
+    }
+
+    .links-section-sub {
+      font-size: 0.82rem; color: var(--text-dim);
+      font-weight: 300; transition: color 1.5s ease-in-out;
+    }
+
+    /* Animated underline accent */
+    .links-underline {
+      display: flex; align-items: center; gap: 12px;
+      margin: 16px auto 0; width: fit-content;
+    }
+    .links-underline-line {
+      height: 1px; width: 60px;
+      background: linear-gradient(90deg, transparent, var(--accent-gold-line));
+      transition: background 2.5s ease-in-out;
+    }
+    .links-underline-line:last-child { background: linear-gradient(90deg, var(--accent-gold-line), transparent); }
+    .links-underline-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent-gold);
+      animation: dotPulse 2.4s ease-in-out infinite;
+      transition: background 1.5s ease-in-out;
     }
 
     /* ── LINK CARDS ───────────────────────────────────────────── */
@@ -616,22 +553,13 @@ permalink: /index.html
     }
 
     .link-card {
-      display: flex;
-      align-items: center;
-      gap: 16px;
+      display: flex; align-items: center; gap: 16px;
       padding: 18px 22px;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 16px;
-      text-decoration: none;
-      color: inherit;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      transition:
-        background    2.5s ease-in-out,
-        border-color  0.3s ease,
-        box-shadow    0.3s ease,
-        transform     0.3s cubic-bezier(0.25,1,0.5,1);
+      background: var(--glass-bg); border: 1px solid var(--glass-border);
+      border-radius: 16px; text-decoration: none; color: inherit;
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      transition: background 2.5s ease-in-out, border-color 0.3s ease,
+                  box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.25,1,0.5,1);
     }
     .link-card:hover {
       border-color: var(--glass-border-hover);
@@ -640,67 +568,27 @@ permalink: /index.html
     }
 
     .link-card-icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
+      width: 42px; height: 42px; border-radius: 10px;
       border: 1px solid transparent;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: transform 0.3s ease;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: transform 0.3s ease;
     }
     .link-card:hover .link-card-icon { transform: scale(1.1) rotate(-4deg); }
-    .link-card-icon svg {
-      width: 20px;
-      height: 20px;
-    }
+    .link-card-icon svg { width: 20px; height: 20px; }
 
-    .link-card-text {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-      min-width: 0;
-      flex: 1;
-    }
-    .link-card-label {
-      font-size: 0.88rem;
-      font-weight: 600;
-      color: var(--text-main);
-      transition: color 1.5s ease-in-out;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .link-card-url {
-      font-size: 0.72rem;
-      color: var(--text-dim);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      transition: color 1.5s ease-in-out;
-    }
+    .link-card-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
+    .link-card-label { font-size: 0.88rem; font-weight: 600; color: var(--text-main); transition: color 1.5s ease-in-out; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .link-card-url { font-size: 0.72rem; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 1.5s ease-in-out; }
     .link-card:hover .link-card-url { color: var(--accent-gold); }
 
-    .link-card-arrow {
-      color: var(--text-dim);
-      font-size: 1rem;
-      flex-shrink: 0;
-      transition: color 0.25s ease, transform 0.25s ease;
-    }
-    .link-card:hover .link-card-arrow {
-      color: var(--accent-gold);
-      transform: translateX(4px);
-    }
+    .link-card-arrow { color: var(--text-dim); font-size: 1rem; flex-shrink: 0; transition: color 0.25s ease, transform 0.25s ease; }
+    .link-card:hover .link-card-arrow { color: var(--accent-gold); transform: translateX(4px); }
 
     /* ── FOOTER ───────────────────────────────────────────────── */
     .index-footer {
-      text-align: center;
-      padding: 40px 24px;
+      text-align: center; padding: 40px 24px;
       border-top: 1px solid var(--glass-border);
-      color: var(--text-dim);
-      font-size: 0.75rem;
-      letter-spacing: 1px;
+      color: var(--text-dim); font-size: 0.75rem; letter-spacing: 1px;
       transition: border-color 2.5s ease-in-out, color 1.5s ease-in-out;
     }
 
@@ -725,7 +613,7 @@ permalink: /index.html
 
   <!-- ── TOP NAV ────────────────────────────────────────────── -->
   <nav class="index-nav">
-    <span class="index-nav-logo">A&S</span>
+    <span class="index-nav-logo">A&amp;S</span>
     <div class="index-nav-divider"></div>
     <a href="#about">About</a>
     <a href="#links">Links</a>
@@ -754,10 +642,10 @@ permalink: /index.html
       <span>{{ MainPage.PageInfo.ChooseLabel }}</span>
     </div>
 
-    <div class="cards-grid">
+    <div class="cards-grid reveal-group">
 
       <!-- Adit's card -->
-      <a href="/Adit-Sahai.github.io/Adit/AditPage.html" class="person-card">
+      <a href="/Adit-Sahai.github.io/Adit/AditPage.html" class="person-card fly-left">
         <div class="person-card-glow"></div>
         <div class="person-card-inner">
           <div class="card-portrait-wrap">
@@ -781,7 +669,7 @@ permalink: /index.html
       </a>
 
       <!-- Sharan's card -->
-      <a href="/Adit-Sahai.github.io/Sharan/SharanPage.html" class="person-card">
+      <a href="/Adit-Sahai.github.io/Sharan/SharanPage.html" class="person-card fly-right">
         <div class="person-card-glow"></div>
         <div class="person-card-inner">
           <div class="card-portrait-wrap">
@@ -810,13 +698,13 @@ permalink: /index.html
   <!-- ── ADIT'S STATS ───────────────────────────────────────── -->
   <div class="adit-stats-block">
     <div class="adit-stats-header reveal">
-      <span class="adit-stats-label">Adit's Work</span>
+      <span class="adit-stats-label">Adit's Work — By the Numbers</span>
       <div class="adit-stats-rule"></div>
     </div>
 
     <div class="stats-row">
 
-      <div class="stat-card reveal">
+      <div class="stat-card reveal scale-in">
         <span class="stat-icon">✍️</span>
         <div class="stat-number" id="stat-articles">
           {% set count = 0 %}
@@ -827,18 +715,11 @@ permalink: /index.html
         <div class="stat-sublabel">on Adit's blog</div>
       </div>
 
-      <div class="stat-card reveal" style="transition-delay:.10s">
+      <div class="stat-card reveal scale-in" style="transition-delay:.12s">
         <span class="stat-icon">📚</span>
         <div class="stat-number">{{ Adit.Books | length }}</div>
         <div class="stat-label">Books Written</div>
-        <div class="stat-sublabel">by Adit Sahai</div>
-      </div>
-
-      <div class="stat-card reveal" style="transition-delay:.20s">
-        <span class="stat-icon">🗂️</span>
-        <div class="stat-number" id="stat-categories">{{ Adit.ArticleCategories | length }}</div>
-        <div class="stat-label">Topics Covered</div>
-        <div class="stat-sublabel">across all articles</div>
+        <div class="stat-sublabel">authored by Adit Sahai</div>
       </div>
 
     </div>
@@ -846,7 +727,7 @@ permalink: /index.html
 
   <!-- ── SHARAN COMING SOON ─────────────────────────────────── -->
   <div class="sharan-coming-soon">
-    <div class="sharan-teaser reveal">
+    <div class="sharan-teaser reveal blur-in">
       <span class="sharan-teaser-icon">🎮</span>
       <div class="sharan-teaser-text">
         <h3>Sharan's Space — Coming Soon</h3>
@@ -858,9 +739,15 @@ permalink: /index.html
 
   <!-- ── LINKS ──────────────────────────────────────────────── -->
   <section class="links-section" id="links">
-    <div class="links-section-header reveal">
-      <h2>{{ MainPage.PageInfo.LinksLabel }}</h2>
-      <p>Find us elsewhere on the internet</p>
+    <div class="links-section-header reveal flip-y">
+      <span class="links-section-eyebrow">Around the Web</span>
+      <h2 class="links-section-title reveal-heading">{{ MainPage.PageInfo.LinksLabel }}</h2>
+      <p class="links-section-sub">Find us elsewhere on the internet</p>
+      <div class="links-underline">
+        <div class="links-underline-line"></div>
+        <div class="links-underline-dot"></div>
+        <div class="links-underline-line"></div>
+      </div>
     </div>
 
     <div class="links-grid">
