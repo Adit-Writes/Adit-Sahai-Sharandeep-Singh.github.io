@@ -315,7 +315,7 @@ content:
       filename: "{slug}.json"
       
       view:
-        fields: [Title, Topic, Published, ReleaseDate, LastUpdated]
+        fields: [Title, Status,Category, Published, ReleaseDate, LastUpdated]
         primary: Title
         sort: [ReleaseDate, Title]
         default:
