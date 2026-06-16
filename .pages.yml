@@ -296,6 +296,18 @@ content:
           type: string
           required: true
 
+    - name: ProjectCategories
+      type: collection
+      path: _data/Sharan/categories
+      format: json
+      filename: "{slug}.json"
+      view:
+        primary: name
+      fields:
+        - name: name
+          type: string
+          required: true
+
 
     - name: Projects
       type: collection
