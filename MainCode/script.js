@@ -1339,16 +1339,16 @@ function initCornerBeams() {
   ];
 
   const RAY_DEFS = [
-    { off: -20, wMul: 2.2, oMul: 0.06 },
-    { off: -12, wMul: 0.9, oMul: 0.18 },
-    { off:  -6, wMul: 0.4, oMul: 0.28 },
-    { off:  -2, wMul: 0.2, oMul: 0.32 },
+    { off: -38, wMul: 2.2, oMul: 0.06 },  // was -20
+    { off: -24, wMul: 0.9, oMul: 0.18 },  // was -12
+    { off: -12, wMul: 0.4, oMul: 0.28 },  // was -6
+    { off:  -4, wMul: 0.2, oMul: 0.32 },  // was -2
     { off:   0, wMul: 0.15,oMul: 0.35 },
-    { off:   3, wMul: 0.2, oMul: 0.30 },
-    { off:   7, wMul: 0.5, oMul: 0.22 },
-    { off:  13, wMul: 1.0, oMul: 0.14 },
-    { off:  22, wMul: 2.4, oMul: 0.05 },
-  ];
+    { off:   5, wMul: 0.2, oMul: 0.30 },  // was 3
+    { off:  13, wMul: 0.5, oMul: 0.22 },  // was 7
+    { off:  25, wMul: 1.0, oMul: 0.14 },  // was 13
+    { off:  40, wMul: 2.4, oMul: 0.05 },  // was 22
+];
 
   // ── KEY CHANGE: short fixed length so rays stay in the corner
   const RAY_LENGTH = () => Math.min(window.innerWidth, window.innerHeight) * 0.28;
@@ -1440,8 +1440,8 @@ function initCornerBeams() {
       const sway    = Math.sin(state.swayPhase) * 3;
 
       // ── hotspot — small, tight to corner
-      const hSize  = 22 + 8 * breathe;
-      const hSize2 = 55 + 20 * breathe;
+      const hSize  = 50 + 18 * breathe;   // was 22 + 8
+      const hSize2 = 130 + 50 * breathe;  // was 55 + 20
       state.hotspot.style.width      = hSize + 'px';
       state.hotspot.style.height     = hSize + 'px';
       state.hotspot.style.opacity    = (0.7 * breathe).toFixed(3);
