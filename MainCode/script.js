@@ -1320,11 +1320,10 @@ function initMagneticHover() {
 }
 
 // ============================================================
-//  CORNER BEAMS — volumetric light shafts + dust motes
+//  CORNER BEAMS — focused sun ray shafts from corners
 // ============================================================
 
 function initCornerBeams() {
-  // ── container
   let wrap = document.getElementById('corner-beams');
   if (!wrap) {
     wrap = document.createElement('div');
@@ -1332,186 +1331,176 @@ function initCornerBeams() {
     document.body.appendChild(wrap);
   }
 
-  // ── vignette overlay (soft glow wash at each corner)
-  let vig = document.querySelector('.corner-vignette');
-  if (!vig) {
-    vig = document.createElement('div');
-    vig.className = 'corner-vignette';
-    document.body.appendChild(vig);
-  }
-
-  // ── corner definitions: id, CSS anchor, base angle for rays
+  // Each corner: position it, and the angle the fan CENTER points toward
   const CORNERS = [
-    { id: 'tl', cls: 'tl', baseAngle: 45  },
-    { id: 'tr', cls: 'tr', baseAngle: 135 },
-    { id: 'bl', cls: 'bl', baseAngle: -45 },
-    { id: 'br', cls: 'br', baseAngle: -135 },
+    { id: 'tl', x: 0,    y: 0,    fanAngle: 38  },
+    { id: 'tr', x: 1,    y: 0,    fanAngle: 142 },
+    { id: 'bl', x: 0,    y: 1,    fanAngle: -38 },
+    { id: 'br', x: 1,    y: 1,    fanAngle: -142 },
   ];
 
-  // ── per-corner ray config
-  const RAY_COUNT   = 7;
-  const RAY_LENGTH  = () => Math.max(window.innerWidth, window.innerHeight) * 1.35;
+  // Ray configs: angleOffset from fan center, width multiplier, opacity multiplier
+  // Mimics the reference image — a few fat ambient rays + several sharp bright ones
+  const RAY_DEFS = [
+    { off: -22, wMul: 2.8, oMul: 0.18 },
+    { off: -14, wMul: 1.2, oMul: 0.55 },
+    { off:  -9, wMul: 0.5, oMul: 0.90 },
+    { off:  -4, wMul: 0.3, oMul: 1.00 },
+    { off:   0, wMul: 0.2, oMul: 1.00 },
+    { off:   4, wMul: 0.3, oMul: 0.95 },
+    { off:   9, wMul: 0.6, oMul: 0.80 },
+    { off:  15, wMul: 1.4, oMul: 0.45 },
+    { off:  24, wMul: 3.2, oMul: 0.14 },
+  ];
 
-  // ── state
-  const cornerStates = {};
-  const dustMotes    = [];
+  const RAY_LENGTH = () => Math.hypot(window.innerWidth, window.innerHeight) * 0.72;
+  const DUST_PER_CORNER = 14;
 
-  // ── parse accent color from CSS var
   function getAccentRgb() {
     const raw = getComputedStyle(document.documentElement)
       .getPropertyValue('--accent-gold').trim();
-    if (raw.startsWith('#')) {
-      const r = hexToRgb(raw);
-      return r;
-    }
+    if (raw.startsWith('#')) return hexToRgb(raw);
     const m = raw.match(/rgba?\(\s*([\d.]+),\s*([\d.]+),\s*([\d.]+)/);
     if (m) return { r: +m[1], g: +m[2], b: +m[3] };
-    return { r: 255, g: 200, b: 80 };
+    return { r: 255, g: 190, b: 60 };
   }
 
-  // ── build DOM for each corner
-  CORNERS.forEach(corner => {
-    const group = document.createElement('div');
-    group.className = `corner-beam-group ${corner.cls}`;
-    wrap.appendChild(group);
+  // Build DOM
+  const states = CORNERS.map(corner => {
+    const anchor = document.createElement('div');
+    anchor.className = 'corner-source';
+    wrap.appendChild(anchor);
 
-    const rays = [];
-    for (let i = 0; i < RAY_COUNT; i++) {
-      const rayWrap = document.createElement('div');
-      rayWrap.className = 'c-beam';
+    // hot bright source glow at the corner tip
+    const hotspot = document.createElement('div');
+    hotspot.className = 'c-hotspot';
+    anchor.appendChild(hotspot);
 
-      const ray = document.createElement('div');
-      ray.className = 'c-beam-ray';
-      rayWrap.appendChild(ray);
-      group.appendChild(rayWrap);
+    // secondary softer glow behind hotspot
+    const hotspot2 = document.createElement('div');
+    hotspot2.className = 'c-hotspot';
+    anchor.appendChild(hotspot2);
 
-      rays.push({ wrap: rayWrap, ray, phase: (i / RAY_COUNT) * Math.PI * 2, spreadOffset: (i - (RAY_COUNT - 1) / 2) * 5.5 });
-    }
+    // rays
+    const rayEls = RAY_DEFS.map(def => {
+      const el = document.createElement('div');
+      el.className = 'c-ray';
+      anchor.appendChild(el);
+      return { el, def };
+    });
 
-    // dust motes per corner
-    const motes = [];
-    const MOTE_COUNT = 18;
-    for (let m = 0; m < MOTE_COUNT; m++) {
+    // dust motes
+    const motes = Array.from({ length: DUST_PER_CORNER }, () => {
       const el = document.createElement('div');
       el.className = 'c-dust';
-      const sz = 1.2 + Math.random() * 2.8;
+      const sz = 1 + Math.random() * 2;
       el.style.width  = sz + 'px';
       el.style.height = sz + 'px';
-      group.appendChild(el);
+      anchor.appendChild(el);
+      return {
+        el, sz,
+        t:        Math.random(),
+        rayIdx:   Math.floor(Math.random() * RAY_DEFS.length),
+        speed:    0.00006 + Math.random() * 0.00012,
+        lateralT: Math.random() * Math.PI * 2,
+        lateralSpd: 0.0004 + Math.random() * 0.0006,
+        lateralAmp: 4 + Math.random() * 14,
+        opacityBase: 0.2 + Math.random() * 0.6,
+        born: performance.now() + Math.random() * 2000,
+      };
+    });
 
-      motes.push({
-        el,
-        sz,
-        t:       Math.random(),           // position along beam [0,1]
-        spread:  (Math.random() - 0.5) * 60, // lateral spread px
-        speed:   0.00008 + Math.random() * 0.00014,
-        delay:   Math.random() * 1000,
-        drift:   (Math.random() - 0.5) * 0.3,
-        driftT:  Math.random() * Math.PI * 2,
-        driftSpd: 0.0005 + Math.random() * 0.001,
-        opacity: 0.15 + Math.random() * 0.55,
-        born:    performance.now() + Math.random() * 3000,
-      });
-      dustMotes.push({ mote: motes[motes.length - 1], corner });
-    }
-
-    cornerStates[corner.id] = {
-      group,
-      rays,
-      motes,
-      corner,
-      rotPhase:   Math.random() * Math.PI * 2,
+    return {
+      corner, anchor, hotspot, hotspot2,
+      rayEls, motes,
       breathPhase: Math.random() * Math.PI * 2,
+      swayPhase:   Math.random() * Math.PI * 2,
     };
   });
 
-  // ── animation tick
+  function positionAnchor(state) {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const c  = state.corner;
+    state.anchor.style.left = (c.x * vw) + 'px';
+    state.anchor.style.top  = (c.y * vh) + 'px';
+  }
+
+  states.forEach(positionAnchor);
+  window.addEventListener('resize', () => states.forEach(positionAnchor));
+
   let last = performance.now();
 
   function tick(now) {
-    const dt    = now - last;
-    last        = now;
-    const rgb   = getAccentRgb();
-    const rl    = RAY_LENGTH();
-    const scroll = window.scrollY;
+    const dt  = now - last;
+    last = now;
+    const rgb = getAccentRgb();
+    const rl  = RAY_LENGTH();
 
-    // vignette: soft corner wash — very subtle
-    const va = 0.055;
-    const vigColor = `rgba(${rgb.r},${rgb.g},${rgb.b},${va})`;
-    document.documentElement.style.setProperty('--cv-tl', vigColor);
-    document.documentElement.style.setProperty('--cv-tr', vigColor);
-    document.documentElement.style.setProperty('--cv-bl', vigColor);
-    document.documentElement.style.setProperty('--cv-br', vigColor);
+    states.forEach(state => {
+      state.breathPhase += dt * 0.00035;
+      state.swayPhase   += dt * 0.00015;
 
-    CORNERS.forEach(corner => {
-      const state = cornerStates[corner.id];
-      state.rotPhase    += dt * 0.00018;
-      state.breathPhase += dt * 0.00042;
+      const breathe = 0.78 + 0.22 * Math.sin(state.breathPhase);
+      const sway    = Math.sin(state.swayPhase) * 4; // ±4° gentle sway
 
-      const breathe  = 0.72 + 0.28 * Math.sin(state.breathPhase);
-      const rotSway  = Math.sin(state.rotPhase) * 6; // ±6° total sway
+      // ── hotspot glow
+      const hSize  = 38 + 14 * breathe;
+      const hSize2 = 80 + 30 * breathe;
+      state.hotspot.style.width      = hSize + 'px';
+      state.hotspot.style.height     = hSize + 'px';
+      state.hotspot.style.background = `radial-gradient(circle, rgba(${rgb.r},${rgb.g},${rgb.b},0.95) 0%, rgba(${rgb.r},${rgb.g},${rgb.b},0.4) 40%, transparent 100%)`;
+      state.hotspot.style.boxShadow  = `0 0 ${hSize * 1.5}px rgba(${rgb.r},${rgb.g},${rgb.b},0.8)`;
+      state.hotspot2.style.width     = hSize2 + 'px';
+      state.hotspot2.style.height    = hSize2 + 'px';
+      state.hotspot2.style.background = `radial-gradient(circle, rgba(${rgb.r},${rgb.g},${rgb.b},0.22) 0%, transparent 70%)`;
 
-      // parallax nudge so beams shift very slightly on scroll
-      const parallaxShift = scroll * 0.012;
-
-      state.rays.forEach((r, i) => {
-        const phasedBreath = 0.6 + 0.4 * Math.sin(state.breathPhase + r.phase);
-        const angle = corner.baseAngle + r.spreadOffset + rotSway + Math.sin(state.rotPhase + r.phase) * 3;
+      // ── rays
+      state.rayEls.forEach(({ el, def }) => {
+        const angle    = state.corner.fanAngle + def.off + sway;
         const angleRad = (angle * Math.PI) / 180;
 
-        // fan half-width in px for this ray (tapers toward edges of fan)
-        const fanFrac   = i / (RAY_COUNT - 1); // 0..1
-        const fanWeight = Math.sin(fanFrac * Math.PI); // bell curve — center rays fattest
-        const halfW     = rl * Math.tan((4.5 * Math.PI) / 180) * fanWeight;
+        // half-width of the ray at its far end
+        const halfW = rl * Math.tan((2.2 * Math.PI) / 180) * def.wMul;
 
-        // opacity: center rays more opaque
-        const baseOpacity = 0.035 + 0.055 * fanWeight;
-        const opacity = baseOpacity * phasedBreath;
+        const opacity = def.oMul * breathe * 0.28;
 
-        // Build the ray as a triangle using borders trick
-        // We rotate the wrapper to the correct angle and draw a tall thin triangle
-        r.wrap.style.transform = `rotate(${angle - 90}deg)`;
-
-        // halfW at base, tapering to 0 at tip → CSS border triangle
-        // border-left: halfW solid transparent
-        // border-right: halfW solid transparent
-        // border-top: rl solid color
-        r.ray.style.borderLeft   = `${halfW * 0.5}px solid transparent`;
-        r.ray.style.borderRight  = `${halfW * 0.5}px solid transparent`;
-        r.ray.style.borderBottom = 'none';
-        r.ray.style.borderTop    = `${rl}px solid rgba(${rgb.r},${rgb.g},${rgb.b},${opacity.toFixed(4)})`;
-        r.ray.style.transform    = `translateX(-${halfW * 0.5}px)`;
+        // Triangle: tip at origin, base at length rl
+        // We rotate and use border trick for a sharp-edged beam
+        el.style.transform    = `rotate(${angle - 90}deg) translateX(${-halfW}px)`;
+        el.style.borderLeft   = `${halfW}px solid transparent`;
+        el.style.borderRight  = `${halfW}px solid transparent`;
+        el.style.borderTop    = `${rl}px solid rgba(${rgb.r},${rgb.g},${rgb.b},${opacity.toFixed(4)})`;
+        el.style.borderBottom = 'none';
       });
 
-      // ── dust motes
+      // ── dust motes drift along rays
       state.motes.forEach(mote => {
         if (now < mote.born) { mote.el.style.opacity = '0'; return; }
 
         mote.t += mote.speed * dt;
         if (mote.t > 1) mote.t -= 1;
+        mote.lateralT += mote.lateralSpd * dt;
 
-        mote.driftT += mote.driftSpd * dt;
+        const def      = RAY_DEFS[mote.rayIdx];
+        const angle    = state.corner.fanAngle + def.off + sway;
+        const angleRad = (angle * Math.PI) / 180;
+        const dist     = mote.t * rl * 0.78;
+        const lateral  = Math.sin(mote.lateralT) * mote.lateralAmp;
+        const perpRad  = angleRad + Math.PI / 2;
 
-        // position along the main diagonal direction of the corner
-        const mainAngleRad = (corner.baseAngle * Math.PI) / 180;
-        const dist  = mote.t * rl * 0.85;
-        const drift = mote.spread + Math.sin(mote.driftT) * 20;
+        const x = dist * Math.cos(angleRad) + lateral * Math.cos(perpRad);
+        const y = dist * Math.sin(angleRad) + lateral * Math.sin(perpRad);
 
-        // perpendicular direction
-        const perpRad = mainAngleRad + Math.PI / 2;
+        // fade in from corner, fade out near tip
+        const fadeIn  = Math.min(mote.t * 5, 1);
+        const fadeOut = 1 - Math.pow(mote.t, 2);
+        const opacity = mote.opacityBase * fadeIn * fadeOut * breathe * def.oMul;
 
-        const x = dist * Math.cos(mainAngleRad) + drift * Math.cos(perpRad);
-        const y = dist * Math.sin(mainAngleRad) + drift * Math.sin(perpRad);
-
-        // fade in near origin, fade out near tip
-        const fadeIn  = Math.min(mote.t * 6, 1);
-        const fadeOut = Math.min((1 - mote.t) * 3, 1);
-        const opacity = mote.opacity * fadeIn * fadeOut * breathe;
-
-        mote.el.style.transform  = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
+        mote.el.style.transform  = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px)`;
         mote.el.style.opacity    = opacity.toFixed(3);
-        mote.el.style.background = `rgba(${rgb.r},${rgb.g},${rgb.b},0.9)`;
-        mote.el.style.boxShadow  = `0 0 ${(mote.sz * 2).toFixed(1)}px rgba(${rgb.r},${rgb.g},${rgb.b},0.6)`;
+        mote.el.style.background = `rgba(${rgb.r},${rgb.g},${rgb.b},1)`;
+        mote.el.style.boxShadow  = `0 0 ${mote.sz * 3}px rgba(${rgb.r},${rgb.g},${rgb.b},0.7)`;
       });
     });
 
