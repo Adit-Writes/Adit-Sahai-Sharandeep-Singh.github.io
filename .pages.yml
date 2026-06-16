@@ -393,7 +393,7 @@ content:
           options:
             min: 1
             
-        - name: ReleaseDate
+        - name: StartedDate
           type: date
           required: true
           
