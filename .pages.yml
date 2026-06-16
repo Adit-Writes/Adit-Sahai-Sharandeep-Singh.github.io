@@ -15,7 +15,7 @@ content:
       path: _data/MainPage/PageInfo.json
       fields:
         - name: PageTitle
-          type: rich-text
+          type: string
   
         - name: Pic
           type: image
