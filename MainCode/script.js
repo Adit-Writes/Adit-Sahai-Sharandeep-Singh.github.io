@@ -1339,19 +1339,19 @@ function initCornerBeams() {
   ];
 
   const RAY_DEFS = [
-    { off: -38, wMul: 2.2, oMul: 0.06 },  // was -20
-    { off: -24, wMul: 0.9, oMul: 0.18 },  // was -12
-    { off: -12, wMul: 0.4, oMul: 0.28 },  // was -6
-    { off:  -4, wMul: 0.2, oMul: 0.32 },  // was -2
+    { off: -48, wMul: 2.2, oMul: 0.06 },  // was -20
+    { off: -34, wMul: 0.9, oMul: 0.18 },  // was -12
+    { off: -22, wMul: 0.4, oMul: 0.28 },  // was -6
+    { off:  -8, wMul: 0.2, oMul: 0.32 },  // was -2
     { off:   0, wMul: 0.15,oMul: 0.35 },
-    { off:   5, wMul: 0.2, oMul: 0.30 },  // was 3
-    { off:  13, wMul: 0.5, oMul: 0.22 },  // was 7
-    { off:  25, wMul: 1.0, oMul: 0.14 },  // was 13
-    { off:  40, wMul: 2.4, oMul: 0.05 },  // was 22
+    { off:   7, wMul: 0.2, oMul: 0.30 },  // was 3
+    { off:  20, wMul: 0.5, oMul: 0.22 },  // was 7
+    { off:  29, wMul: 1.0, oMul: 0.14 },  // was 13
+    { off:  48, wMul: 2.4, oMul: 0.05 },  // was 22
 ];
 
   // ── KEY CHANGE: short fixed length so rays stay in the corner
-  const RAY_LENGTH = () => Math.min(window.innerWidth, window.innerHeight) * 0.28;
+  const RAY_LENGTH = () => Math.min(window.innerWidth, window.innerHeight) * 0.18;
 
   const DUST_PER_CORNER = 10;
 
