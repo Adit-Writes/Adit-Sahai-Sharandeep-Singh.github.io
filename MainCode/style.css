@@ -161,7 +161,7 @@ body::after {
 
 
 /* ============================================================
-   CORNER BEAMS
+   CORNER BEAMS — sun ray shafts
    ============================================================ */
 
 #corner-beams {
@@ -172,34 +172,31 @@ body::after {
   overflow: hidden;
 }
 
-.corner-beam-group {
+.corner-source {
   position: absolute;
   width: 0;
   height: 0;
-}
-.corner-beam-group.tl { top: 0; left: 0; }
-.corner-beam-group.tr { top: 0; right: 0; }
-.corner-beam-group.bl { bottom: 0; left: 0; }
-.corner-beam-group.br { bottom: 0; right: 0; }
-
-.c-beam {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 1px;
-  height: 1px;
-  transform-origin: 0 0;
   pointer-events: none;
 }
 
-.c-beam-ray {
+.c-ray {
   position: absolute;
   top: 0;
   left: 0;
   width: 0;
   height: 0;
   transform-origin: 0 0;
+  pointer-events: none;
   border-style: solid;
+  border-color: transparent;
+}
+
+.c-hotspot {
+  position: absolute;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  will-change: opacity;
 }
 
 .c-dust {
@@ -207,19 +204,6 @@ body::after {
   border-radius: 50%;
   pointer-events: none;
   will-change: transform, opacity;
-}
-
-.corner-vignette {
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(ellipse 55% 55% at 0% 0%,   var(--cv-tl, transparent) 0%, transparent 70%),
-    radial-gradient(ellipse 55% 55% at 100% 0%,  var(--cv-tr, transparent) 0%, transparent 70%),
-    radial-gradient(ellipse 55% 55% at 0% 100%,  var(--cv-bl, transparent) 0%, transparent 70%),
-    radial-gradient(ellipse 55% 55% at 100% 100%,var(--cv-br, transparent) 0%, transparent 70%);
-  transition: background 3s ease-in-out;
 }
 
 /* ============================================================
@@ -1351,7 +1335,7 @@ h1, h2, h3, h4 {
   position:         fixed;
   top:              0;
   left:             0;
-  height:           3px;
+  height:           1.5px;
   width:            0%;
   background:       linear-gradient(90deg, var(--accent-gold), var(--glass-border-hover));
   z-index:          9999;
