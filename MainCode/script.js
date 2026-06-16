@@ -1339,21 +1339,21 @@ function initCornerBeams() {
   ];
 
   const RAY_DEFS = [
-    { off: -48, wMul: 2.2, oMul: 0.06 },  // was -20
-    { off: -34, wMul: 0.9, oMul: 0.18 },  // was -12
-    { off: -22, wMul: 0.4, oMul: 0.28 },  // was -6
-    { off:  -8, wMul: 0.2, oMul: 0.32 },  // was -2
-    { off:   0, wMul: 0.15,oMul: 0.35 },
-    { off:   7, wMul: 0.2, oMul: 0.30 },  // was 3
-    { off:  20, wMul: 0.5, oMul: 0.22 },  // was 7
-    { off:  29, wMul: 1.0, oMul: 0.14 },  // was 13
-    { off:  48, wMul: 2.4, oMul: 0.05 },  // was 22
+    { off: -50, wMul: 2.2, oMul: 0.06 },  // was -20
+    { off: -40, wMul: 0.9, oMul: 0.18 },  // was -12
+    { off: -35, wMul: 0.4, oMul: 0.28 },  // was -6
+    { off:  -15, wMul: 0.2, oMul: 0.32 },  // was -2
+    { off:   -5, wMul: 0.15,oMul: 0.35 },
+    { off:   10, wMul: 0.2, oMul: 0.30 },  // was 3
+    { off:  25, wMul: 0.5, oMul: 0.22 },  // was 7
+    { off:  35, wMul: 1.0, oMul: 0.14 },  // was 13
+    { off:  60, wMul: 2.4, oMul: 0.05 },  // was 22
 ];
 
   // ── KEY CHANGE: short fixed length so rays stay in the corner
   const RAY_LENGTH = () => Math.min(window.innerWidth, window.innerHeight) * 0.18;
 
-  const DUST_PER_CORNER = 5;
+  const DUST_PER_CORNER = 3;
 
   function getAccentRgb() {
     const raw = getComputedStyle(document.documentElement)
@@ -1440,8 +1440,8 @@ function initCornerBeams() {
       const sway    = Math.sin(state.swayPhase) * 3;
 
       // ── hotspot — small, tight to corner
-      const hSize  = 85 + 18 * breathe;   // was 22 + 8
-      const hSize2 = 150 + 80 * breathe;  // was 55 + 20
+      const hSize  = 120 + 18 * breathe;   // was 22 + 8
+      const hSize2 = 170 + 80 * breathe;  // was 55 + 20
       state.hotspot.style.width      = hSize + 'px';
       state.hotspot.style.height     = hSize + 'px';
       state.hotspot.style.opacity    = (0.3 * breathe).toFixed(3);
