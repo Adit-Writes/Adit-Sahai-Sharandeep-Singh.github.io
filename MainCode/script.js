@@ -641,37 +641,27 @@ function initMouseGlow() {
 }
 
 // ============================================================
-//  ENHANCED SCROLL REVEAL  ← MAJOR UPGRADE
-//  Supports: fade-up (default), fly-left, fly-right, scale-in,
-//  flip-y, blur-in. Staggered children, intersection threshold
-//  per element, reduced-motion respected.
+//  ENHANCED SCROLL REVEAL
 // ============================================================
 
 function initReveal() {
-  // Inject global animation CSS once
   if (!document.getElementById('_reveal-styles')) {
     const s = document.createElement('style');
     s.id    = '_reveal-styles';
     s.textContent = `
       @media (prefers-reduced-motion: no-preference) {
-
-        /* ── base hidden states ── */
         .reveal                { opacity: 0; transform: translateY(36px); }
         .reveal.fly-left       { opacity: 0; transform: translateX(-60px) translateY(16px) rotate(-1.5deg); }
         .reveal.fly-right      { opacity: 0; transform: translateX(60px)  translateY(16px) rotate( 1.5deg); }
         .reveal.scale-in       { opacity: 0; transform: scale(0.82) translateY(20px); }
         .reveal.flip-y         { opacity: 0; transform: perspective(600px) rotateX(-22deg) translateY(30px); }
         .reveal.blur-in        { opacity: 0; transform: translateY(20px); filter: blur(10px); }
-
-        /* ── revealed states ── */
         .reveal.active                { opacity: 1; transform: translateY(0); }
         .reveal.fly-left.active       { opacity: 1; transform: translateX(0) translateY(0) rotate(0deg); }
         .reveal.fly-right.active      { opacity: 1; transform: translateX(0) translateY(0) rotate(0deg); }
         .reveal.scale-in.active       { opacity: 1; transform: scale(1) translateY(0); }
         .reveal.flip-y.active         { opacity: 1; transform: perspective(600px) rotateX(0) translateY(0); }
         .reveal.blur-in.active        { opacity: 1; transform: translateY(0); filter: blur(0px); }
-
-        /* ── timing ── */
         .reveal {
           transition:
             opacity   0.85s cubic-bezier(0.16, 1, 0.3, 1),
@@ -679,8 +669,6 @@ function initReveal() {
             filter    0.85s cubic-bezier(0.16, 1, 0.3, 1);
           will-change: opacity, transform;
         }
-
-        /* ── stagger children ── */
         .reveal-group > *:nth-child(1)  { transition-delay: 0ms;   }
         .reveal-group > *:nth-child(2)  { transition-delay: 90ms;  }
         .reveal-group > *:nth-child(3)  { transition-delay: 180ms; }
@@ -688,13 +676,9 @@ function initReveal() {
         .reveal-group > *:nth-child(5)  { transition-delay: 360ms; }
         .reveal-group > *:nth-child(6)  { transition-delay: 450ms; }
         .reveal-group > *:nth-child(n+7){ transition-delay: 540ms; }
-
-        /* ── speed modifiers ── */
         .reveal.reveal-fast   { transition-duration: 0.5s; }
         .reveal.reveal-slow   { transition-duration: 1.2s; }
       }
-
-      /* Reduced motion fallback: just fade */
       @media (prefers-reduced-motion: reduce) {
         .reveal { opacity: 0; transition: opacity 0.4s ease; }
         .reveal.active { opacity: 1; }
@@ -719,53 +703,65 @@ function initReveal() {
 }
 
 // ============================================================
-//  HERO TITLE — letter-by-letter cinematic reveal
+//  HERO TITLES — letter-by-letter cinematic reveal
+//  Now handles ALL .hero-title elements with staggered timing
 // ============================================================
 
 function initHeroTitleReveal() {
-  const title = document.querySelector('.hero-title');
-  if (!title) return;
+  const titles = document.querySelectorAll('.hero-title');
+  if (!titles.length) return;
 
-  const text = title.textContent.trim();
-  title.innerHTML = '';
-  title.setAttribute('aria-label', text);
+  let globalLetterIndex = 0;
 
-  const words = text.split(/\s+/);
-  let letterIndex = 0;
+  titles.forEach((title, titleIdx) => {
+    const text = title.textContent.trim();
+    title.innerHTML = '';
+    title.setAttribute('aria-label', text);
 
-  words.forEach((word, wi) => {
-    const wordSpan = document.createElement('span');
-    wordSpan.style.cssText = 'display:inline-block; white-space:nowrap;';
+    // Add a line-break gap between titles (delay offset for second title)
+    const titleDelay = titleIdx * 180;
 
-    word.split('').forEach(char => {
-      const span       = document.createElement('span');
-      span.textContent = char;
-      span.style.cssText = `
-        display: inline-block;
-        opacity: 0;
-        transform: translateY(40px) rotateX(-30deg);
-        transition: opacity 0.55s cubic-bezier(0.16,1,0.3,1),
-                    transform 0.55s cubic-bezier(0.16,1,0.3,1);
-        transition-delay: ${letterIndex * 38}ms;
-        will-change: transform, opacity;
-      `;
-      wordSpan.appendChild(span);
-      letterIndex++;
+    const words = text.split(/\s+/);
+
+    words.forEach((word, wi) => {
+      const wordSpan = document.createElement('span');
+      wordSpan.style.cssText = 'display:inline-block; white-space:nowrap;';
+
+      word.split('').forEach(char => {
+        const span       = document.createElement('span');
+        span.textContent = char;
+        span.style.cssText = `
+          display: inline-block;
+          opacity: 0;
+          transform: translateY(40px) rotateX(-30deg);
+          transition: opacity 0.55s cubic-bezier(0.16,1,0.3,1),
+                      transform 0.55s cubic-bezier(0.16,1,0.3,1);
+          transition-delay: ${titleDelay + globalLetterIndex * 38}ms;
+          will-change: transform, opacity;
+        `;
+        wordSpan.appendChild(span);
+        globalLetterIndex++;
+      });
+
+      title.appendChild(wordSpan);
+      if (wi < words.length - 1) {
+        const space = document.createElement('span');
+        space.innerHTML    = '&nbsp;';
+        space.style.display = 'inline-block';
+        title.appendChild(space);
+      }
     });
 
-    title.appendChild(wordSpan);
-    if (wi < words.length - 1) {
-      const space = document.createElement('span');
-      space.innerHTML    = '&nbsp;';
-      space.style.display = 'inline-block';
-      title.appendChild(space);
-    }
+    // Small gap between title rows
+    globalLetterIndex += 2;
   });
 
   setTimeout(() => {
-    title.querySelectorAll('span > span').forEach(span => {
-      span.style.opacity   = '1';
-      span.style.transform = 'translateY(0) rotateX(0)';
+    titles.forEach(title => {
+      title.querySelectorAll('span > span').forEach(span => {
+        span.style.opacity   = '1';
+        span.style.transform = 'translateY(0) rotateX(0)';
+      });
     });
   }, 200);
 }
@@ -867,14 +863,12 @@ function initAccentLineDraw() {
 
 // ============================================================
 //  PERSON CARDS — cinematic fly-in with spring + depth
-//  (replaces old initCardFlyIn — works on index page)
 // ============================================================
 
 function initCardFlyIn() {
   const cards = document.querySelectorAll('.person-card');
   if (!cards.length) return;
 
-  // Inject card-specific keyframe once
   if (!document.getElementById('_card-fly-kf')) {
     const s = document.createElement('style');
     s.id    = '_card-fly-kf';
@@ -962,10 +956,10 @@ function initStatCounters() {
 // ============================================================
 
 function initParallax() {
-  const heroTitle   = document.querySelector('.hero-title');
+  const heroTitles  = document.querySelectorAll('.hero-title');
   const heroEyebrow = document.querySelector('.hero-eyebrow');
   const heroTagline = document.querySelector('.hero-tagline');
-  if (!heroTitle) return;
+  if (!heroTitles.length) return;
 
   let ticking = false;
   window.addEventListener('scroll', () => {
@@ -973,7 +967,7 @@ function initParallax() {
     ticking = true;
     requestAnimationFrame(() => {
       const sy = window.scrollY;
-      if (heroTitle)   heroTitle.style.transform   = `translateY(${sy * 0.22}px)`;
+      heroTitles.forEach(t => { t.style.transform = `translateY(${sy * 0.22}px)`; });
       if (heroEyebrow) heroEyebrow.style.transform = `translateY(${sy * 0.14}px)`;
       if (heroTagline) heroTagline.style.transform = `translateY(${sy * 0.10}px)`;
       ticking = false;
@@ -1127,13 +1121,11 @@ function initScrollVelocityWarp() {
 }
 
 // ============================================================
-//  "FIND US ONLINE" HEADING — shimmer word-by-word reveal
-//  Works on any element with class .reveal-heading
+//  SECTION HEADING REVEAL — shimmer word-by-word
 // ============================================================
 
 function initSectionHeadingReveal() {
   document.querySelectorAll('.reveal-heading').forEach(el => {
-    // Already processed
     if (el.dataset.revealDone) return;
     el.dataset.revealDone = 'true';
 
