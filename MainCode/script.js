@@ -1320,6 +1320,209 @@ function initMagneticHover() {
 }
 
 // ============================================================
+//  CORNER BEAMS — volumetric light shafts + dust motes
+// ============================================================
+
+function initCornerBeams() {
+  // ── container
+  let wrap = document.getElementById('corner-beams');
+  if (!wrap) {
+    wrap = document.createElement('div');
+    wrap.id = 'corner-beams';
+    document.body.appendChild(wrap);
+  }
+
+  // ── vignette overlay (soft glow wash at each corner)
+  let vig = document.querySelector('.corner-vignette');
+  if (!vig) {
+    vig = document.createElement('div');
+    vig.className = 'corner-vignette';
+    document.body.appendChild(vig);
+  }
+
+  // ── corner definitions: id, CSS anchor, base angle for rays
+  const CORNERS = [
+    { id: 'tl', cls: 'tl', baseAngle: 45  },
+    { id: 'tr', cls: 'tr', baseAngle: 135 },
+    { id: 'bl', cls: 'bl', baseAngle: -45 },
+    { id: 'br', cls: 'br', baseAngle: -135 },
+  ];
+
+  // ── per-corner ray config
+  const RAY_COUNT   = 7;
+  const RAY_LENGTH  = () => Math.max(window.innerWidth, window.innerHeight) * 1.35;
+
+  // ── state
+  const cornerStates = {};
+  const dustMotes    = [];
+
+  // ── parse accent color from CSS var
+  function getAccentRgb() {
+    const raw = getComputedStyle(document.documentElement)
+      .getPropertyValue('--accent-gold').trim();
+    if (raw.startsWith('#')) {
+      const r = hexToRgb(raw);
+      return r;
+    }
+    const m = raw.match(/rgba?\(\s*([\d.]+),\s*([\d.]+),\s*([\d.]+)/);
+    if (m) return { r: +m[1], g: +m[2], b: +m[3] };
+    return { r: 255, g: 200, b: 80 };
+  }
+
+  // ── build DOM for each corner
+  CORNERS.forEach(corner => {
+    const group = document.createElement('div');
+    group.className = `corner-beam-group ${corner.cls}`;
+    wrap.appendChild(group);
+
+    const rays = [];
+    for (let i = 0; i < RAY_COUNT; i++) {
+      const rayWrap = document.createElement('div');
+      rayWrap.className = 'c-beam';
+
+      const ray = document.createElement('div');
+      ray.className = 'c-beam-ray';
+      rayWrap.appendChild(ray);
+      group.appendChild(rayWrap);
+
+      rays.push({ wrap: rayWrap, ray, phase: (i / RAY_COUNT) * Math.PI * 2, spreadOffset: (i - (RAY_COUNT - 1) / 2) * 5.5 });
+    }
+
+    // dust motes per corner
+    const motes = [];
+    const MOTE_COUNT = 18;
+    for (let m = 0; m < MOTE_COUNT; m++) {
+      const el = document.createElement('div');
+      el.className = 'c-dust';
+      const sz = 1.2 + Math.random() * 2.8;
+      el.style.width  = sz + 'px';
+      el.style.height = sz + 'px';
+      group.appendChild(el);
+
+      motes.push({
+        el,
+        sz,
+        t:       Math.random(),           // position along beam [0,1]
+        spread:  (Math.random() - 0.5) * 60, // lateral spread px
+        speed:   0.00008 + Math.random() * 0.00014,
+        delay:   Math.random() * 1000,
+        drift:   (Math.random() - 0.5) * 0.3,
+        driftT:  Math.random() * Math.PI * 2,
+        driftSpd: 0.0005 + Math.random() * 0.001,
+        opacity: 0.15 + Math.random() * 0.55,
+        born:    performance.now() + Math.random() * 3000,
+      });
+      dustMotes.push({ mote: motes[motes.length - 1], corner });
+    }
+
+    cornerStates[corner.id] = {
+      group,
+      rays,
+      motes,
+      corner,
+      rotPhase:   Math.random() * Math.PI * 2,
+      breathPhase: Math.random() * Math.PI * 2,
+    };
+  });
+
+  // ── animation tick
+  let last = performance.now();
+
+  function tick(now) {
+    const dt    = now - last;
+    last        = now;
+    const rgb   = getAccentRgb();
+    const rl    = RAY_LENGTH();
+    const scroll = window.scrollY;
+
+    // vignette: soft corner wash — very subtle
+    const va = 0.055;
+    const vigColor = `rgba(${rgb.r},${rgb.g},${rgb.b},${va})`;
+    document.documentElement.style.setProperty('--cv-tl', vigColor);
+    document.documentElement.style.setProperty('--cv-tr', vigColor);
+    document.documentElement.style.setProperty('--cv-bl', vigColor);
+    document.documentElement.style.setProperty('--cv-br', vigColor);
+
+    CORNERS.forEach(corner => {
+      const state = cornerStates[corner.id];
+      state.rotPhase    += dt * 0.00018;
+      state.breathPhase += dt * 0.00042;
+
+      const breathe  = 0.72 + 0.28 * Math.sin(state.breathPhase);
+      const rotSway  = Math.sin(state.rotPhase) * 6; // ±6° total sway
+
+      // parallax nudge so beams shift very slightly on scroll
+      const parallaxShift = scroll * 0.012;
+
+      state.rays.forEach((r, i) => {
+        const phasedBreath = 0.6 + 0.4 * Math.sin(state.breathPhase + r.phase);
+        const angle = corner.baseAngle + r.spreadOffset + rotSway + Math.sin(state.rotPhase + r.phase) * 3;
+        const angleRad = (angle * Math.PI) / 180;
+
+        // fan half-width in px for this ray (tapers toward edges of fan)
+        const fanFrac   = i / (RAY_COUNT - 1); // 0..1
+        const fanWeight = Math.sin(fanFrac * Math.PI); // bell curve — center rays fattest
+        const halfW     = rl * Math.tan((4.5 * Math.PI) / 180) * fanWeight;
+
+        // opacity: center rays more opaque
+        const baseOpacity = 0.035 + 0.055 * fanWeight;
+        const opacity = baseOpacity * phasedBreath;
+
+        // Build the ray as a triangle using borders trick
+        // We rotate the wrapper to the correct angle and draw a tall thin triangle
+        r.wrap.style.transform = `rotate(${angle - 90}deg)`;
+
+        // halfW at base, tapering to 0 at tip → CSS border triangle
+        // border-left: halfW solid transparent
+        // border-right: halfW solid transparent
+        // border-top: rl solid color
+        r.ray.style.borderLeft   = `${halfW * 0.5}px solid transparent`;
+        r.ray.style.borderRight  = `${halfW * 0.5}px solid transparent`;
+        r.ray.style.borderBottom = 'none';
+        r.ray.style.borderTop    = `${rl}px solid rgba(${rgb.r},${rgb.g},${rgb.b},${opacity.toFixed(4)})`;
+        r.ray.style.transform    = `translateX(-${halfW * 0.5}px)`;
+      });
+
+      // ── dust motes
+      state.motes.forEach(mote => {
+        if (now < mote.born) { mote.el.style.opacity = '0'; return; }
+
+        mote.t += mote.speed * dt;
+        if (mote.t > 1) mote.t -= 1;
+
+        mote.driftT += mote.driftSpd * dt;
+
+        // position along the main diagonal direction of the corner
+        const mainAngleRad = (corner.baseAngle * Math.PI) / 180;
+        const dist  = mote.t * rl * 0.85;
+        const drift = mote.spread + Math.sin(mote.driftT) * 20;
+
+        // perpendicular direction
+        const perpRad = mainAngleRad + Math.PI / 2;
+
+        const x = dist * Math.cos(mainAngleRad) + drift * Math.cos(perpRad);
+        const y = dist * Math.sin(mainAngleRad) + drift * Math.sin(perpRad);
+
+        // fade in near origin, fade out near tip
+        const fadeIn  = Math.min(mote.t * 6, 1);
+        const fadeOut = Math.min((1 - mote.t) * 3, 1);
+        const opacity = mote.opacity * fadeIn * fadeOut * breathe;
+
+        mote.el.style.transform  = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px)`;
+        mote.el.style.opacity    = opacity.toFixed(3);
+        mote.el.style.background = `rgba(${rgb.r},${rgb.g},${rgb.b},0.9)`;
+        mote.el.style.boxShadow  = `0 0 ${(mote.sz * 2).toFixed(1)}px rgba(${rgb.r},${rgb.g},${rgb.b},0.6)`;
+      });
+    });
+
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
+}
+
+
+// ============================================================
 //  INIT
 // ============================================================
 
@@ -1329,7 +1532,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initMouseGlow();
   initArticleSearch();
   initActiveNav();
-
+  initCornerBeams();
+  
   // Hero cinematic sequence
   initHeroTitleReveal();
   initEyebrowTypewriter();
