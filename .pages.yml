@@ -16,6 +16,12 @@ content:
       fields:
         - name: PageTitle
           type: string
+
+        - name: UpTitle
+          type: string
+
+        - name: DownTitle
+          type: string
   
         - name: Pic
           type: image
