@@ -631,9 +631,7 @@ permalink: /index.html
 
   <!-- ── HERO ───────────────────────────────────────────────── -->
   <section class="hero-section" id="hero">
-    <div class="hero-eyebrow">
-      {{ MainPage.PageInfo.HeroTagline | safe }}
-    </div>
+    <p class="hero-eyebrow">{{ MainPage.PageInfo.HeroTagline }}</p>
     <h1 class="hero-title">{{ MainPage.PageInfo.PageTitle }}</h1>
     <p class="hero-tagline">{{ MainPage.PageInfo.Description | safe }}</p>
     <div class="hero-accent-line">
