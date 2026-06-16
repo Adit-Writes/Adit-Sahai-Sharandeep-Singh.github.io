@@ -938,10 +938,7 @@ permalink: /Sharan/SharanPage.html
     <div class="s-cat-filter reveal">
       <div class="s-cat-menu" id="sCatMenu">
         <button class="s-cat-btn active" data-cat="all">All</button>
-        {% assign cats = Sharan.Projects | map: "Category" | uniq | compact %}
-        {% for cat in cats %}
-          <button class="s-cat-btn" data-cat="{{ cat | downcase | replace: ' ', '-' }}">{{ cat }}</button>
-        {% endfor %}
+        <!-- category buttons injected by JS below -->
       </div>
     </div>
 
@@ -951,7 +948,7 @@ permalink: /Sharan/SharanPage.html
       {% if project.Published %}
       <div
         class="s-project-card reveal"
-        data-cat="{{ project.Category | downcase | replace: ' ', '-' }}"
+        data-cat="{{ project.Category | lower | replace(' ', '-') }}"
         data-project-id="{{ forloop.index }}"
         tabindex="0"
         role="button"
@@ -962,14 +959,13 @@ permalink: /Sharan/SharanPage.html
             <img src="/Adit-Sahai.github.io{{ project.Thumbnail }}" alt="{{ project.Title }}" loading="lazy" />
           {% else %}
             <div class="s-project-thumb-placeholder">
-              {% case project.Category %}
-                {% when "Game Development" %}🎮
-                {% when "Video Editing" %}🎬
-                {% when "Music" %}🎵
-                {% when "Art" %}🎨
-                {% when "Writing" %}✍️
-                {% else %}📁
-              {% endcase %}
+              {% if project.Category == "Game Development" %}🎮
+              {% elif project.Category == "Video Editing" %}🎬
+              {% elif project.Category == "Music" %}🎵
+              {% elif project.Category == "Art" %}🎨
+              {% elif project.Category == "Writing" %}✍️
+              {% else %}📁
+              {% endif %}
             </div>
           {% endif %}
           <span class="s-project-cat-badge">{{ project.Category }}</span>
@@ -993,14 +989,14 @@ permalink: /Sharan/SharanPage.html
         <!-- Hidden data for modal -->
         <script type="application/json" class="s-project-data">
         {
-          "title":       {{ project.Title | jsonify }},
-          "category":    {{ project.Category | jsonify }},
-          "status":      {{ project.Status | default: "In Progress" | jsonify }},
-          "thumbnail":   {{ project.Thumbnail | default: "" | jsonify }},
-          "fullDesc":    {{ project.FullDescription | default: "" | jsonify }},
-          "gallery":     {{ project.Gallery | default: "" | jsonify }},
-          "videoUrl":    {{ project.VideoUrl | default: "" | jsonify }},
-          "updates":     {{ project.Updates | default: "[]" | jsonify }}
+          "title":       {{ project.Title | dump }},
+          "category":    {{ project.Category | dump }},
+          "status":      {{ project.Status | default("In Progress") | dump }},
+          "thumbnail":   {{ project.Thumbnail | default("") | dump }},
+          "fullDesc":    {{ project.FullDescription | default("") | dump }},
+          "gallery":     {{ project.Gallery | default("") | dump }},
+          "videoUrl":    {{ project.VideoUrl | default("") | dump }},
+          "updates":     {{ project.Updates | default("[]") | dump }}
         }
         </script>
       </div>
@@ -1113,6 +1109,21 @@ permalink: /Sharan/SharanPage.html
     const catMenu   = document.getElementById('sCatMenu');
     const allCards  = Array.from(document.querySelectorAll('.s-project-card'));
     const noResults = document.getElementById('sNoResults');
+
+    // Build category buttons from the unique data-cat values on cards
+    const seenCats = new Set();
+    allCards.forEach(card => {
+      const cat = card.dataset.cat;
+      if (cat && !seenCats.has(cat)) {
+        seenCats.add(cat);
+        const label = card.querySelector('.s-project-cat-badge')?.textContent?.trim() || cat;
+        const btn = document.createElement('button');
+        btn.className = 's-cat-btn';
+        btn.dataset.cat = cat;
+        btn.textContent = label;
+        catMenu.appendChild(btn);
+      }
+    });
 
     function filterProjects(cat) {
       let visible = 0;
