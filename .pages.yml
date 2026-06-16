@@ -308,6 +308,18 @@ content:
           type: string
           required: true
 
+    - name: ProjectStatus
+      type: collection
+      path: _data/Sharan/ProjectStatus
+      format: json
+      filename: "{slug}.json"
+      view:
+        primary: name
+      fields:
+        - name: name
+          type: string
+          required: true
+
     - name: Projects
       path: _data/Sharan/Projects
       type: collection
@@ -335,7 +347,11 @@ content:
             field: name 
 
         - name: Status
-          type: string
+          type: reference 
+          required: true
+          options:
+            collection: ProjectStatus 
+            field: name
   
         - name: Pics
           type: image
