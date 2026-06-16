@@ -17,19 +17,16 @@ permalink: /Sharan/SharanPage.html
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/Adit-Sahai.github.io/MainCode/style.css" />
 
   <style>
     /* ═══════════════════════════════════════════════════════
        SHARAN PAGE — GAME DEV / VIDEO EDITOR IDENTITY
        Typography: Space Grotesk (display) + Inter (body) + JetBrains Mono (accents)
-       Vibe: tech-forward, cinematic, interactive portfolio
     ═══════════════════════════════════════════════════════ */
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    /* Override body font for this page */
     body { font-family: 'Inter', sans-serif; padding: 0 5%; }
 
     /* ── NAV ─────────────────────────────────────────────── */
@@ -116,45 +113,113 @@ permalink: /Sharan/SharanPage.html
       background: var(--accent-gold-dim);
     }
 
-    /* ── HERO — COMPACT, NOT FULL SCREEN ─────────────────── */
-    .sharan-hero {
+    /* ── PAGE BANNER (like AditPage) ─────────────────────── */
+    .sharan-banner {
+      text-align: center;
+      padding: 64px 20px 20px;
+      margin-bottom: 40px;
+    }
+
+    .sharan-banner-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 6px;
+      font-weight: 500;
+      opacity: 0.85;
+      margin-bottom: 20px;
+      display: block;
+      transition: color 1.5s ease-in-out;
+    }
+    .sharan-banner-eyebrow::before {
+      content: '// ';
+      opacity: 0.5;
+    }
+
+    .sharan-banner-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(3.2rem, 8vw, 5.5rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.0;
+      color: rgba(255,255,255,0.95);
+      margin-bottom: 16px;
+      background: linear-gradient(160deg, #ffffff 30%, var(--accent-gold) 60%, #ffffff 90%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: sharanTitleShimmer 6s linear infinite;
+    }
+    @keyframes sharanTitleShimmer {
+      0%   { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+    @supports not (-webkit-background-clip: text) {
+      .sharan-banner-title { color: rgba(255,255,255,0.95); background: none; -webkit-text-fill-color: unset; }
+    }
+    @media (max-width: 768px) {
+      .sharan-banner-title { -webkit-text-fill-color: rgba(255,255,255,0.95); }
+    }
+
+    .sharan-banner-tagline {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-weight: 400;
+      opacity: 0.75;
+      margin-bottom: 24px;
+      transition: color 1.5s ease-in-out;
+    }
+
+    .sharan-banner-line {
+      width: 120px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent-gold-line), transparent);
+      margin: 0 auto;
+      transition: background 2.5s ease-in-out;
+    }
+
+    /* ── ABOUT / HERO ─────────────────────────────────────── */
+    .sharan-about {
       width: 100%;
       max-width: 1100px;
-      margin: 28px auto 60px;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 40px;
-      align-items: center;
-      padding: 40px 48px;
+      margin: 0 auto 70px;
+      padding: 44px 52px;
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
       border-radius: 28px;
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 48px;
+      align-items: center;
       position: relative;
       overflow: hidden;
       transition: background 2.5s ease-in-out, border-color 2.5s ease-in-out;
     }
 
-    /* Scanline texture overlay — game dev aesthetic */
-    .sharan-hero::before {
+    /* Scanline texture */
+    .sharan-about::before {
       content: '';
       position: absolute;
       inset: 0;
       background: repeating-linear-gradient(
         0deg,
-        transparent,
-        transparent 2px,
-        rgba(255,255,255,0.012) 2px,
-        rgba(255,255,255,0.012) 4px
+        transparent, transparent 2px,
+        rgba(255,255,255,0.012) 2px, rgba(255,255,255,0.012) 4px
       );
       pointer-events: none;
       z-index: 0;
       border-radius: 28px;
     }
 
-    /* Accent corner glow */
-    .sharan-hero::after {
+    /* Corner glow */
+    .sharan-about::after {
       content: '';
       position: absolute;
       top: 0; right: 0;
@@ -165,75 +230,47 @@ permalink: /Sharan/SharanPage.html
       transition: background 2.5s ease-in-out;
     }
 
-    .sharan-hero-content { position: relative; z-index: 1; }
+    .sharan-about-content { position: relative; z-index: 1; }
 
-    .sharan-hero-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+    .sharan-about-expertise {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.65rem;
       color: var(--accent-gold);
       letter-spacing: 1px;
-      margin-bottom: 18px;
+      margin-bottom: 10px;
       opacity: 0.9;
+      display: block;
       transition: color 1.5s ease-in-out;
     }
-    .sharan-hero-tag::before {
-      content: '//';
-      opacity: 0.5;
-    }
+    .sharan-about-expertise::before { content: '// '; opacity: 0.5; }
 
-    .sharan-hero-name {
+    .sharan-about-name {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.6rem, 5vw, 4rem);
+      font-size: clamp(2rem, 4vw, 3rem);
       font-weight: 700;
       color: var(--text-main);
       line-height: 1.05;
       letter-spacing: -0.03em;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
       transition: color 1.5s ease-in-out;
     }
-    .sharan-hero-name em {
+    .sharan-about-name em {
       font-style: normal;
       color: var(--accent-gold);
       transition: color 1.5s ease-in-out;
     }
 
-    .sharan-hero-roles {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-    .sharan-role-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      padding: 4px 12px;
-      border-radius: 6px;
-      background: var(--accent-gold-dim);
-      border: 1px solid var(--accent-gold-line);
-      color: var(--accent-gold);
-      letter-spacing: 0.5px;
-      transition: background 2.5s ease-in-out, border-color 2.5s ease-in-out, color 1.5s ease-in-out;
-    }
-
-    .sharan-hero-bio {
+    .sharan-about-bio {
       font-size: 0.92rem;
       color: var(--text-muted);
       font-weight: 300;
-      line-height: 1.75;
+      line-height: 1.8;
       max-width: 520px;
       transition: color 1.5s ease-in-out;
     }
 
-    /* Portrait with game-screen border treatment */
-    .sharan-hero-portrait {
-      position: relative;
-      z-index: 1;
-      flex-shrink: 0;
-    }
-
+    /* Portrait */
+    .sharan-about-portrait { position: relative; z-index: 1; flex-shrink: 0; }
     .sharan-portrait-frame {
       width: 160px;
       height: 200px;
@@ -243,14 +280,7 @@ permalink: /Sharan/SharanPage.html
       position: relative;
       transition: border-color 2.5s ease-in-out;
     }
-    .sharan-portrait-frame img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      object-position: top;
-      display: block;
-    }
-
-    /* Corner bracket decorations */
+    .sharan-portrait-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
     .sharan-portrait-frame::before,
     .sharan-portrait-frame::after {
       content: '';
@@ -261,15 +291,8 @@ permalink: /Sharan/SharanPage.html
       z-index: 2;
       transition: border-color 1.5s ease-in-out;
     }
-    .sharan-portrait-frame::before {
-      top: 8px; left: 8px;
-      border-width: 2px 0 0 2px;
-    }
-    .sharan-portrait-frame::after {
-      bottom: 8px; right: 8px;
-      border-width: 0 2px 2px 0;
-    }
-
+    .sharan-portrait-frame::before { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
+    .sharan-portrait-frame::after  { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
     .sharan-portrait-placeholder {
       width: 100%; height: 100%;
       display: flex; align-items: center; justify-content: center;
@@ -279,115 +302,97 @@ permalink: /Sharan/SharanPage.html
       background: var(--accent-gold-dim);
     }
 
-    /* ── STATUS BAR — unique to Sharan page ──────────────── */
-    .sharan-status-bar {
+    /* ── CINEMATIC SECTION HEADERS ───────────────────────── */
+    .s-section-wrap {
       width: 100%;
       max-width: 1100px;
-      margin: 0 auto 60px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
+      margin: 0 auto 48px;
     }
 
-    .status-tile {
-      padding: 20px 24px;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 16px;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+    .s-section-eyebrow {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      font-weight: 500;
+      opacity: 0.8;
+      margin-bottom: 8px;
+      display: block;
+      background: var(--accent-gold-dim);
+      border: 1px solid var(--accent-gold-line);
+      padding: 4px 14px;
+      border-radius: 100px;
+      width: fit-content;
+      transition: background 2.5s ease-in-out, border-color 2.5s ease-in-out, color 1.5s ease-in-out;
+    }
+
+    .s-section-title-large {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.0;
+      color: rgba(255,255,255,0.95);
+      margin-bottom: 10px;
+      background: linear-gradient(145deg, #ffffff 20%, var(--accent-gold) 55%, rgba(255,255,255,0.5) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: sectionTitleShine 8s ease-in-out infinite alternate;
+      transition: color 1.5s ease-in-out;
+    }
+    @keyframes sectionTitleShine {
+      0%   { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+    @supports not (-webkit-background-clip: text) {
+      .s-section-title-large { color: rgba(255,255,255,0.95); background: none; -webkit-text-fill-color: unset; }
+    }
+    @media (max-width: 768px) {
+      .s-section-title-large { -webkit-text-fill-color: rgba(255,255,255,0.95); }
+    }
+
+    .s-section-subtitle {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-weight: 300;
+      letter-spacing: 0.5px;
+      opacity: 0.75;
+      transition: color 1.5s ease-in-out;
+    }
+
+    .s-section-rule-wrap {
       display: flex;
       align-items: center;
       gap: 16px;
-      position: relative;
-      overflow: hidden;
-      transition: background 2.5s ease-in-out, border-color 0.3s ease, box-shadow 0.3s ease;
+      margin-top: 14px;
     }
-    .status-tile:hover {
-      border-color: var(--glass-border-hover);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 16px var(--accent-gold-dim);
-    }
-
-    .status-tile-icon {
-      font-size: 1.4rem;
-      flex-shrink: 0;
-      line-height: 1;
-    }
-    .status-tile-text {}
-    .status-tile-value {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--accent-gold);
-      line-height: 1;
-      margin-bottom: 3px;
-      transition: color 1.5s ease-in-out;
-    }
-    .status-tile-label {
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 2.5px;
-      color: var(--text-dim);
-      font-weight: 600;
-      transition: color 1.5s ease-in-out;
-    }
-
-    /* Animated bar on bottom */
-    .status-tile::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0;
-      width: 100%; height: 2px;
-      background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
-      opacity: 0;
-      transition: opacity 0.3s ease, background 2.5s ease-in-out;
-    }
-    .status-tile:hover::after { opacity: 1; }
-
-    /* ── SECTION HEADERS — Sharan style ──────────────────── */
-    .s-section-header {
-      width: 100%;
-      max-width: 1100px;
-      margin: 0 auto 36px;
-      display: flex;
-      align-items: flex-end;
-      gap: 20px;
-    }
-
-    .s-section-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem;
-      color: var(--accent-gold);
-      letter-spacing: 2px;
-      opacity: 0.7;
-      margin-bottom: 4px;
-      display: block;
-      transition: color 1.5s ease-in-out;
-    }
-
-    .s-section-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-      font-weight: 700;
-      color: var(--text-main);
-      line-height: 1;
-      letter-spacing: -0.02em;
-      transition: color 1.5s ease-in-out;
-    }
-
     .s-section-rule {
       flex: 1;
       height: 1px;
       background: linear-gradient(90deg, var(--accent-gold-line), transparent);
-      margin-bottom: 6px;
       transition: background 2.5s ease-in-out;
     }
+    .s-section-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--accent-gold);
+      box-shadow: 0 0 10px var(--accent-gold);
+      animation: dotPulse 2.4s ease-in-out infinite;
+      transition: background 1.5s ease-in-out, box-shadow 1.5s ease-in-out;
+    }
+    @keyframes dotPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 10px var(--accent-gold); }
+      50% { transform: scale(1.5); box-shadow: 0 0 20px var(--accent-gold), 0 0 40px var(--accent-gold); }
+    }
 
-    /* ── FILTER TABS — compact inline pill style ─────────── */
+    /* ── FILTER TABS ─────────────────────────────────────── */
     .s-filter-wrap {
       width: 100%;
       max-width: 1100px;
-      margin: 0 auto 28px;
+      margin: 0 auto 24px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -399,8 +404,8 @@ permalink: /Sharan/SharanPage.html
       font-size: 0.65rem;
       font-weight: 500;
       letter-spacing: 1px;
-      padding: 6px 14px;
-      border-radius: 8px;
+      padding: 7px 16px;
+      border-radius: 10px;
       border: 1px solid var(--glass-border);
       background: transparent;
       color: var(--text-dim);
@@ -417,21 +422,62 @@ permalink: /Sharan/SharanPage.html
       color: var(--accent-gold);
     }
 
+    /* ── SEARCH BAR ──────────────────────────────────────── */
+    .s-search-bar {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--glass-bg-strong);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px;
+      padding: 11px 20px;
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      transition: border-color 0.3s ease, background 2.5s ease-in-out;
+    }
+    .s-search-bar:focus-within {
+      border-color: var(--glass-border-hover);
+      box-shadow: 0 0 20px var(--accent-gold-dim);
+    }
+    .s-search-icon {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent-gold);
+      opacity: 0.7;
+      flex-shrink: 0;
+      letter-spacing: 1px;
+      transition: color 1.5s ease-in-out;
+    }
+    .s-search-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-main);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82rem;
+      caret-color: var(--accent-gold);
+    }
+    .s-search-input::placeholder { color: var(--text-dim); }
+
     /* ── PROJECT GRID ────────────────────────────────────── */
     .project-grid {
       width: 100%;
       max-width: 1100px;
-      margin: 0 auto 80px;
+      margin: 0 auto 90px;
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 20px;
+      gap: 22px;
     }
 
     .project-card {
       position: relative;
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
-      border-radius: 20px;
+      border-radius: 22px;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -448,16 +494,30 @@ permalink: /Sharan/SharanPage.html
     }
     .project-card:hover {
       border-color: var(--glass-border-hover);
-      transform: translateY(-6px);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 24px var(--accent-gold-dim);
+      transform: translateY(-8px);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.65), 0 0 28px var(--accent-gold-dim);
     }
+
+    /* Hover accent stripe */
+    .project-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 15%; bottom: 15%;
+      width: 2px;
+      background: var(--accent-gold);
+      border-radius: 0 2px 2px 0;
+      opacity: 0;
+      transform: scaleY(0);
+      transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.25,1,0.5,1), background 2.5s ease-in-out;
+    }
+    .project-card:hover::before { opacity: 0.85; transform: scaleY(1); }
 
     /* Thumbnail */
     .project-thumb {
       aspect-ratio: 16/9;
       overflow: hidden;
       position: relative;
-      background: rgba(0,0,0,0.4);
+      background: rgba(0,0,0,0.5);
       flex-shrink: 0;
     }
     .project-thumb img {
@@ -465,24 +525,43 @@ permalink: /Sharan/SharanPage.html
       object-fit: cover;
       display: block;
       transition: transform 0.6s cubic-bezier(0.25,1,0.5,1), filter 0.6s ease;
-      filter: brightness(0.85) saturate(0.9);
+      filter: brightness(0.82) saturate(0.9);
     }
     .project-card:hover .project-thumb img {
-      transform: scale(1.06);
-      filter: brightness(1) saturate(1.1);
+      transform: scale(1.07);
+      filter: brightness(1) saturate(1.12);
     }
 
-    /* Status badge on thumbnail */
+    /* Overlay gradient on thumb */
+    .project-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    /* No-thumb placeholder */
+    .project-thumb-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, var(--accent-gold-dim) 0%, transparent 80%);
+      font-size: 3rem;
+      opacity: 0.5;
+      aspect-ratio: 16/9;
+    }
+
+    /* Status badge */
     .project-status-badge {
       position: absolute;
       top: 12px; right: 12px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.58rem;
-      font-weight: 500;
-      letter-spacing: 1px;
-      padding: 4px 10px;
-      border-radius: 6px;
-      z-index: 2;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      padding: 4px 11px;
+      border-radius: 7px;
+      z-index: 3;
       text-transform: uppercase;
     }
     .badge-completed  { background: rgba(0,220,130,0.2); color: #00dc82; border: 1px solid rgba(0,220,130,0.4); }
@@ -490,34 +569,27 @@ permalink: /Sharan/SharanPage.html
     .badge-concept    { background: rgba(140,100,255,0.2); color: #a06fff; border: 1px solid rgba(140,100,255,0.4); }
     .badge-released   { background: rgba(0,180,255,0.2); color: #00b4ff; border: 1px solid rgba(0,180,255,0.4); }
     .badge-shelved    { background: rgba(120,120,120,0.2); color: #888; border: 1px solid rgba(120,120,120,0.4); }
+    .badge-ongoing    { background: rgba(0,180,255,0.2); color: #00b4ff; border: 1px solid rgba(0,180,255,0.4); }
 
-    /* No-thumb fallback — gradient placeholder */
-    .project-thumb-placeholder {
-      width: 100%; height: 100%;
-      display: flex; align-items: center; justify-content: center;
-      background: linear-gradient(135deg, var(--accent-gold-dim) 0%, transparent 80%);
-      font-size: 2.5rem;
-      opacity: 0.6;
-    }
-
-    /* Category label on bottom-left of thumb */
+    /* Category chip on thumb */
     .project-thumb-cat {
       position: absolute;
       bottom: 12px; left: 12px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.58rem;
       letter-spacing: 1px;
-      color: rgba(255,255,255,0.7);
-      background: rgba(0,0,0,0.55);
-      padding: 3px 9px;
-      border-radius: 5px;
+      color: rgba(255,255,255,0.85);
+      background: rgba(0,0,0,0.6);
+      padding: 4px 10px;
+      border-radius: 6px;
       backdrop-filter: blur(8px);
       text-transform: uppercase;
+      z-index: 3;
     }
 
     /* Card body */
     .project-card-body {
-      padding: 22px 24px 26px;
+      padding: 24px 26px 28px;
       display: flex;
       flex-direction: column;
       flex: 1;
@@ -525,22 +597,22 @@ permalink: /Sharan/SharanPage.html
 
     .project-title {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.15rem;
+      font-size: 1.18rem;
       font-weight: 600;
       color: var(--text-main);
       line-height: 1.25;
-      margin-bottom: 8px;
-      transition: color 1.5s ease-in-out;
+      margin-bottom: 9px;
+      transition: color 0.25s ease;
     }
     .project-card:hover .project-title { color: #fff; }
 
     .project-desc {
-      font-size: 0.82rem;
+      font-size: 0.83rem;
       color: var(--text-muted);
       font-weight: 300;
-      line-height: 1.65;
+      line-height: 1.7;
       flex: 1;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
       transition: color 1.5s ease-in-out;
     }
 
@@ -548,6 +620,9 @@ permalink: /Sharan/SharanPage.html
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding-top: 16px;
+      border-top: 1px solid var(--glass-border);
+      transition: border-color 2.5s ease-in-out;
     }
 
     .project-date {
@@ -560,51 +635,44 @@ permalink: /Sharan/SharanPage.html
 
     .project-read-link {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem;
-      letter-spacing: 1px;
+      font-size: 0.65rem;
+      letter-spacing: 1.5px;
       color: var(--accent-gold);
       text-decoration: none;
       display: flex;
       align-items: center;
-      gap: 5px;
-      transition: gap 0.2s ease, color 1.5s ease-in-out;
+      gap: 6px;
+      padding: 5px 12px;
+      border: 1px solid var(--accent-gold-line);
+      border-radius: 8px;
+      background: var(--accent-gold-dim);
+      transition: gap 0.2s ease, color 1.5s ease-in-out, background 0.25s ease, border-color 0.25s ease;
     }
-    .project-card:hover .project-read-link { gap: 9px; }
-
-    /* Hover accent stripe on left edge */
-    .project-card::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 20%; bottom: 20%;
-      width: 2px;
+    .project-card:hover .project-read-link {
+      gap: 10px;
       background: var(--accent-gold);
-      border-radius: 0 2px 2px 0;
-      opacity: 0;
-      transform: scaleY(0);
-      transition: opacity 0.3s ease, transform 0.4s cubic-bezier(0.25,1,0.5,1), background 2.5s ease-in-out;
+      color: #000;
+      border-color: var(--accent-gold);
     }
-    .project-card:hover::before { opacity: 0.8; transform: scaleY(1); }
-
-    .project-card[style*="display: none"] { display: none !important; }
 
     /* ── LINKS SECTION ───────────────────────────────────── */
-    .s-links-wrap {
+    .s-links-grid {
       width: 100%;
       max-width: 1100px;
-      margin: 0 auto 80px;
+      margin: 0 auto 90px;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
     }
 
     .s-link-card {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 16px 20px;
+      gap: 16px;
+      padding: 18px 22px;
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
-      border-radius: 14px;
+      border-radius: 16px;
       text-decoration: none;
       color: inherit;
       backdrop-filter: blur(16px);
@@ -617,35 +685,35 @@ permalink: /Sharan/SharanPage.html
     }
     .s-link-card:hover {
       border-color: var(--glass-border-hover);
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5), 0 0 12px var(--accent-gold-dim);
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 12px 36px rgba(0,0,0,0.5), 0 0 16px var(--accent-gold-dim);
     }
 
     .s-link-icon {
-      width: 38px; height: 38px;
-      border-radius: 10px;
+      width: 42px; height: 42px;
+      border-radius: 11px;
       display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
       border: 1px solid transparent;
       transition: transform 0.3s ease;
     }
-    .s-link-card:hover .s-link-icon { transform: scale(1.1) rotate(-5deg); }
-    .s-link-icon svg { width: 18px; height: 18px; }
+    .s-link-card:hover .s-link-icon { transform: scale(1.1) rotate(-4deg); }
+    .s-link-icon svg { width: 20px; height: 20px; }
 
     .s-link-text { flex: 1; min-width: 0; }
     .s-link-name {
       display: block;
-      font-size: 0.84rem;
+      font-size: 0.88rem;
       font-weight: 600;
       color: var(--text-main);
-      margin-bottom: 2px;
+      margin-bottom: 3px;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       transition: color 1.5s ease-in-out;
     }
     .s-link-url {
       display: block;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6rem;
+      font-size: 0.62rem;
       color: var(--text-dim);
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       transition: color 1.5s ease-in-out;
@@ -654,7 +722,7 @@ permalink: /Sharan/SharanPage.html
 
     .s-link-arrow {
       color: var(--text-dim);
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       flex-shrink: 0;
       transition: color 0.25s ease, transform 0.25s ease;
     }
@@ -692,58 +760,14 @@ permalink: /Sharan/SharanPage.html
     }
     .s-no-results.visible { display: block; }
 
-    /* ── SEARCH BAR ───────────────────────────────────────── */
-    .s-search-bar {
-      width: 100%;
-      max-width: 1100px;
-      margin: 0 auto 28px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: var(--glass-bg-strong);
-      border: 1px solid var(--glass-border);
-      border-radius: 12px;
-      padding: 10px 18px;
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      transition: border-color 0.3s ease, background 2.5s ease-in-out;
-    }
-    .s-search-bar:focus-within {
-      border-color: var(--glass-border-hover);
-      box-shadow: 0 0 16px var(--accent-gold-dim);
-    }
-    .s-search-icon {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--accent-gold);
-      opacity: 0.7;
-      flex-shrink: 0;
-      letter-spacing: 1px;
-    }
-    .s-search-input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: var(--text-main);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.8rem;
-      caret-color: var(--accent-gold);
-    }
-    .s-search-input::placeholder { color: var(--text-dim); }
-
     /* ── RESPONSIVE ──────────────────────────────────────── */
     @media (max-width: 768px) {
       body { padding: 0 4%; }
-      .sharan-hero { grid-template-columns: 1fr; padding: 28px 24px; gap: 24px; }
-      .sharan-hero-portrait { display: none; }
-      .sharan-status-bar { grid-template-columns: 1fr 1fr; }
+      .sharan-about { grid-template-columns: 1fr; padding: 28px 24px; gap: 28px; }
+      .sharan-about-portrait { display: none; }
       .project-grid { grid-template-columns: 1fr; }
-      .s-links-wrap { grid-template-columns: 1fr; }
+      .s-links-grid { grid-template-columns: 1fr; }
       .sharan-nav-links a { font-size: 0.6rem; padding: 5px 10px; }
-    }
-    @media (max-width: 480px) {
-      .sharan-status-bar { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -766,25 +790,29 @@ permalink: /Sharan/SharanPage.html
       <span class="sharan-nav-brand">Sharan <em>Sahai</em></span>
     </div>
     <div class="sharan-nav-links">
+      <a href="#about">About</a>
       <a href="#projects">Projects</a>
       <a href="#links">Links</a>
     </div>
   </nav>
 
-  <!-- ── HERO — COMPACT ─────────────────────────────────────── -->
-  <div class="sharan-hero reveal blur-in">
-    <div class="sharan-hero-content">
-      <span class="sharan-hero-tag">{{ Sharan.AboutPage.Expertise }}</span>
-      <h1 class="sharan-hero-name">{{ Sharan.AboutPage.Name }}</h1>
-      <div class="sharan-hero-roles">
-        <span class="sharan-role-tag">game_dev</span>
-        <span class="sharan-role-tag">video_editor</span>
-        <span class="sharan-role-tag">creator</span>
-      </div>
-      <p class="sharan-hero-bio">{{ Sharan.AboutPage.Desciption | striptags }}</p>
+  <!-- ── BANNER ─────────────────────────────────────────────── -->
+  <div class="sharan-banner">
+    <span class="sharan-banner-eyebrow reveal">{{ Sharan.AboutPage.Expertise }}</span>
+    <h1 class="sharan-banner-title reveal">{{ Sharan.AboutPage.Name }}</h1>
+    <p class="sharan-banner-tagline reveal">Game Dev · Video Editor · Creator</p>
+    <div class="sharan-banner-line reveal"></div>
+  </div>
+
+  <!-- ── ABOUT ──────────────────────────────────────────────── -->
+  <div id="about" class="sharan-about reveal blur-in">
+    <div class="sharan-about-content">
+      <span class="sharan-about-expertise">{{ Sharan.AboutPage.Expertise }}</span>
+      <h2 class="sharan-about-name">{{ Sharan.AboutPage.Name }}</h2>
+      <p class="sharan-about-bio">{{ Sharan.AboutPage.Desciption | striptags }}</p>
     </div>
 
-    <div class="sharan-hero-portrait">
+    <div class="sharan-about-portrait">
       <div class="sharan-portrait-frame">
         {% if Sharan.AboutPage.Pic %}
           <img src="/Adit-Sahai.github.io{{ Sharan.AboutPage.Pic }}" alt="{{ Sharan.AboutPage.Name }}" />
@@ -795,43 +823,18 @@ permalink: /Sharan/SharanPage.html
     </div>
   </div>
 
-  <!-- ── STATUS TILES ───────────────────────────────────────── -->
-  <div class="sharan-status-bar">
-    <div class="status-tile reveal scale-in">
-      <span class="status-tile-icon">🎮</span>
-      <div class="status-tile-text">
-        <div class="status-tile-value" id="stat-projects">
-          {% set pcount = 0 %}
-          {% for p in Sharan.Projects %}{% if p.Published %}{% set pcount = pcount + 1 %}{% endif %}{% endfor %}
-          {{ pcount }}
-        </div>
-        <div class="status-tile-label">Projects</div>
-      </div>
-    </div>
-    <div class="status-tile reveal scale-in" style="transition-delay:.08s">
-      <span class="status-tile-icon">🎬</span>
-      <div class="status-tile-text">
-        <div class="status-tile-value" id="stat-videos">—</div>
-        <div class="status-tile-label">Videos Edited</div>
-      </div>
-    </div>
-    <div class="status-tile reveal scale-in" style="transition-delay:.16s">
-      <span class="status-tile-icon">⚡</span>
-      <div class="status-tile-text">
-        <div class="status-tile-value">Active</div>
-        <div class="status-tile-label">Status</div>
-      </div>
-    </div>
-  </div>
-
   <!-- ── PROJECTS ───────────────────────────────────────────── -->
   <div id="projects">
-    <div class="s-section-header reveal">
-      <div>
-        <span class="s-section-label">// portfolio</span>
-        <h2 class="s-section-title">Projects</h2>
+
+    <!-- Section header -->
+    <div class="s-section-wrap reveal">
+      <span class="s-section-eyebrow">// portfolio</span>
+      <h2 class="s-section-title-large">Projects</h2>
+      <p class="s-section-subtitle">Games, tools &amp; creative experiments</p>
+      <div class="s-section-rule-wrap">
+        <div class="s-section-dot"></div>
+        <div class="s-section-rule"></div>
       </div>
-      <div class="s-section-rule"></div>
     </div>
 
     <!-- Filter tabs -->
@@ -861,10 +864,14 @@ permalink: /Sharan/SharanPage.html
       {% if project.Published %}
       {% set firstPic = project.Pics[0] if project.Pics and project.Pics.length > 0 else null %}
 
+      {# Resolve Category and Status — handle both string and object from CMS reference fields #}
+      {% set categoryName = project.Category.name if project.Category.name else project.Category %}
+      {% set statusName = project.Status.name if project.Status.name else project.Status %}
+
       <a
         href="/Adit-Sahai.github.io/Sharan/projects/{{ project.Title | slug }}/"
-        class="project-card reveal {% if loop.index % 3 == 1 %}fly-left{% elif loop.index % 3 == 2 %}{% else %}fly-right{% endif %}"
-        data-category="{{ project.Category | default('') | lower }}"
+        class="project-card reveal {% if loop.index % 3 == 1 %}fly-left{% elif loop.index % 3 == 0 %}fly-right{% endif %}"
+        data-category="{{ categoryName | lower }}"
         data-title="{{ project.Title | lower }}"
         data-desc="{{ project.Description | striptags | lower }}"
       >
@@ -875,14 +882,14 @@ permalink: /Sharan/SharanPage.html
             <div class="project-thumb-placeholder">🎮</div>
           {% endif %}
 
-          {% if project.Status %}
-          <span class="project-status-badge badge-{{ project.Status | lower | replace(' ', '-') }}">
-            {{ project.Status }}
+          {% if statusName %}
+          <span class="project-status-badge badge-{{ statusName | lower | replace(' ', '-') }}">
+            {{ statusName }}
           </span>
           {% endif %}
 
-          {% if project.Category %}
-          <span class="project-thumb-cat">{{ project.Category }}</span>
+          {% if categoryName %}
+          <span class="project-thumb-cat">{{ categoryName }}</span>
           {% endif %}
         </div>
 
@@ -904,15 +911,19 @@ permalink: /Sharan/SharanPage.html
 
   <!-- ── LINKS ──────────────────────────────────────────────── -->
   <div id="links">
-    <div class="s-section-header reveal">
-      <div>
-        <span class="s-section-label">// find me</span>
-        <h2 class="s-section-title">Links</h2>
+
+    <!-- Section header -->
+    <div class="s-section-wrap reveal">
+      <span class="s-section-eyebrow">// find me</span>
+      <h2 class="s-section-title-large">Links</h2>
+      <p class="s-section-subtitle">Find me elsewhere on the internet</p>
+      <div class="s-section-rule-wrap">
+        <div class="s-section-dot"></div>
+        <div class="s-section-rule"></div>
       </div>
-      <div class="s-section-rule"></div>
     </div>
 
-    <div class="s-links-wrap">
+    <div class="s-links-grid">
       {% for item in Sharan.SMentionedLinks %}
       <a
         href="{{ item.Link }}"
@@ -920,7 +931,6 @@ permalink: /Sharan/SharanPage.html
         style="transition-delay: {{ loop.index0 * 60 }}ms"
         target="_blank"
         rel="noopener noreferrer"
-        data-icon-url="{{ item.Link }}"
       >
         <div class="s-link-icon" data-icon-url="{{ item.Link }}"></div>
         <div class="s-link-text">
@@ -931,6 +941,7 @@ permalink: /Sharan/SharanPage.html
       </a>
       {% endfor %}
     </div>
+
   </div>
 
   <footer class="sharan-footer">
@@ -994,33 +1005,6 @@ permalink: /Sharan/SharanPage.html
       }
     })();
 
-    // ── Stat counter roll-up ────────────────────────────────────
-    (function() {
-      function easeOutExpo(t) {
-        return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-      }
-      function animCount(el, target, duration) {
-        if (!el || isNaN(target)) return;
-        const start = performance.now();
-        function tick(now) {
-          const t = Math.min((now - start) / duration, 1);
-          el.textContent = Math.round(target * easeOutExpo(t));
-          if (t < 1) requestAnimationFrame(tick);
-        }
-        requestAnimationFrame(tick);
-      }
-      const io = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-          if (!e.isIntersecting) return;
-          const el  = e.target.querySelector('.status-tile-value');
-          const raw = el && parseInt(el.textContent, 10);
-          if (el && !isNaN(raw) && raw > 0) animCount(el, raw, 1200);
-          io.unobserve(e.target);
-        });
-      }, { threshold: 0.5 });
-      document.querySelectorAll('.status-tile').forEach(t => io.observe(t));
-    })();
-
     // ── Link card icons ──────────────────────────────────────────
     (function() {
       const ICONS = {
@@ -1047,14 +1031,12 @@ permalink: /Sharan/SharanPage.html
         return FALLBACK;
       }
 
-      document.querySelectorAll('[data-icon-url]').forEach(el => {
-        if (!el.classList.contains('s-link-card')) {
-          const d = getIcon(el.getAttribute('data-icon-url'));
-          el.style.background  = d.bg;
-          el.style.borderColor = d.border;
-          el.style.color       = d.fill;
-          el.innerHTML         = d.svg;
-        }
+      document.querySelectorAll('.s-link-icon[data-icon-url]').forEach(el => {
+        const d = getIcon(el.getAttribute('data-icon-url'));
+        el.style.background  = d.bg;
+        el.style.borderColor = d.border;
+        el.style.color       = d.fill;
+        el.innerHTML         = d.svg;
       });
     })();
   </script>
