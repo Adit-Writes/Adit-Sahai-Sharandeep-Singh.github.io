@@ -394,7 +394,7 @@ permalink: /Adit/AditPage.html
     </header>
 
     {# ── About ─────────────────────────────────────────── #}
-    <section id="about" class="hero glass-card reveal">
+    <section id="about" class="hero glass-card reveal blur-in">
         <div class="glow-blob"></div>
         <div class="hero-content">
             <div class="hero-text">
@@ -411,14 +411,14 @@ permalink: /Adit/AditPage.html
     {# ── Books ─────────────────────────────────────────── #}
     <div id="books" class="section-divider reveal">
         <h2>Published Works</h2>
-        <div class="section-title-large">Books</div>
+        <div class="section-title-large reveal-heading">Books</div>
         <p class="section-divider-subtitle">Long-form explorations of the ideas that matter</p>
         <div class="gold-line"></div>
     </div>
 
-    <section class="book-grid">
+    <section class="book-grid reveal-group">
         {% for book in Adit.Books %}
-        <div class="book-card glass-card reveal">
+        <div class="book-card glass-card reveal {% if loop.index % 2 == 1 %}fly-left{% else %}fly-right{% endif %}">
             <div class="glow-blob"></div>
             <div class="book-image-wrapper">
                 <img src="/Adit-Sahai.github.io{{ book.Pic }}" alt="{{ book.Name }}" class="book-cover">
@@ -437,12 +437,12 @@ permalink: /Adit/AditPage.html
     {# ── Articles ──────────────────────────────────────── #}
     <div id="articles" class="section-divider reveal">
         <h2>Essays &amp; Perspectives</h2>
-        <div class="section-title-large">Writing</div>
+        <div class="section-title-large reveal-heading">Writing</div>
         <p class="section-divider-subtitle">Critical takes on science, politics, and sports culture</p>
         <div class="gold-line"></div>
     </div>
 
-    <div class="category-menu-container reveal">
+    <div class="category-menu-container reveal scale-in">
         <div class="category-menu">
             <button class="category-btn active" data-filter="all">All</button>
             {% for cat in Adit.Categories %}
@@ -481,7 +481,7 @@ permalink: /Adit/AditPage.html
         {% set firstPic = article.Pics[0] if article.Pics and article.Pics.length > 0 else null %}
 
         <article
-            class="article-card glass-card reveal{% if firstPic %} has-thumb{% endif %}"
+            class="article-card glass-card reveal {% if loop.index % 2 == 1 %}fly-left{% else %}fly-right{% endif %}{% if firstPic %} has-thumb{% endif %}"
             data-category="{{ article.Topic | default('') | lower }}"
             data-slug="{{ article.Title | slug }}"
             data-title="{{ article.Title | lower }}"
@@ -538,16 +538,17 @@ permalink: /Adit/AditPage.html
     {# ── Links / MentionedLinks ────────────────────────── #}
     <div id="links" class="section-divider reveal">
         <h2>Around the Web</h2>
-        <div class="section-title-large">Links</div>
+        <div class="section-title-large reveal-heading">Links</div>
         <p class="section-divider-subtitle">Find me elsewhere on the internet</p>
         <div class="gold-line"></div>
     </div>
 
-    <div class="links-grid reveal">
+    <div class="links-grid">
         {% for item in Adit.Mentionedlinks %}
         <a
             href="{{ item.Link }}"
-            class="link-card"
+            class="link-card reveal"
+            style="transition-delay: {{ loop.index0 * 65 }}ms"
             target="_blank"
             rel="noopener noreferrer"
             data-link-url="{{ item.Link }}"
