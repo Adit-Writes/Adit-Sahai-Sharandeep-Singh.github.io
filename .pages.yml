@@ -296,16 +296,6 @@ content:
           type: string
           required: true
 
-    - name: SiteHeader
-      type: file
-      path: _data/Sharan/SiteHead.json
-      fields:
-        - name: PageTitle
-          type: string
-        - name: Description
-          type: rich-text
-          options:
-            switcher: false
 
     - name: Projects
       type: collection
