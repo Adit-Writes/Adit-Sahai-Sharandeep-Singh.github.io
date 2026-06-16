@@ -1320,16 +1320,40 @@ function initMagneticHover() {
 }
 
 // ============================================================
-//  CORNER ORBS — soft glowing orbs that illuminate corners
+//  CORNER BEAMS — short subtle sun rays tucked in corners
 // ============================================================
 
-function initCornerOrbs() {
+function initCornerBeams() {
+  let wrap = document.getElementById('corner-beams');
+  if (!wrap) {
+    wrap = document.createElement('div');
+    wrap.id = 'corner-beams';
+    document.body.appendChild(wrap);
+  }
+
   const CORNERS = [
-    { id: 'tl', x: -0.08, y: -0.08 },
-    { id: 'tr', x:  1.08, y: -0.08 },
-    { id: 'bl', x: -0.08, y:  1.08 },
-    { id: 'br', x:  1.08, y:  1.08 },
+    { id: 'tl', x: 0, y: 0, fanAngle: 38   },
+    { id: 'tr', x: 1, y: 0, fanAngle: 142  },
+    { id: 'bl', x: 0, y: 1, fanAngle: -38  },
+    { id: 'br', x: 1, y: 1, fanAngle: -142 },
   ];
+
+  const RAY_DEFS = [
+    { off: -20, wMul: 2.2, oMul: 0.06 },
+    { off: -12, wMul: 0.9, oMul: 0.18 },
+    { off:  -6, wMul: 0.4, oMul: 0.28 },
+    { off:  -2, wMul: 0.2, oMul: 0.32 },
+    { off:   0, wMul: 0.15,oMul: 0.35 },
+    { off:   3, wMul: 0.2, oMul: 0.30 },
+    { off:   7, wMul: 0.5, oMul: 0.22 },
+    { off:  13, wMul: 1.0, oMul: 0.14 },
+    { off:  22, wMul: 2.4, oMul: 0.05 },
+  ];
+
+  // ── KEY CHANGE: short fixed length so rays stay in the corner
+  const RAY_LENGTH = () => Math.min(window.innerWidth, window.innerHeight) * 0.28;
+
+  const DUST_PER_CORNER = 10;
 
   function getAccentRgb() {
     const raw = getComputedStyle(document.documentElement)
@@ -1340,38 +1364,65 @@ function initCornerOrbs() {
     return { r: 255, g: 190, b: 60 };
   }
 
-  // Build one orb element per corner
-  const orbs = CORNERS.map(corner => {
-    const el = document.createElement('div');
-    el.className = 'corner-orb';
-    document.body.appendChild(el);
+  const states = CORNERS.map(corner => {
+    const anchor = document.createElement('div');
+    anchor.className = 'corner-source';
+    anchor.style.cssText = 'position:absolute;width:0;height:0;pointer-events:none;';
+    wrap.appendChild(anchor);
+
+    // hotspot glow at the corner tip
+    const hotspot = document.createElement('div');
+    hotspot.className = 'c-hotspot';
+    hotspot.style.cssText = 'position:absolute;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;';
+    anchor.appendChild(hotspot);
+
+    const hotspot2 = document.createElement('div');
+    hotspot2.className = 'c-hotspot';
+    hotspot2.style.cssText = 'position:absolute;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;';
+    anchor.appendChild(hotspot2);
+
+    const rayEls = RAY_DEFS.map(def => {
+      const el = document.createElement('div');
+      el.style.cssText = 'position:absolute;top:0;left:0;width:0;height:0;transform-origin:0 0;pointer-events:none;border-style:solid;border-color:transparent;';
+      anchor.appendChild(el);
+      return { el, def };
+    });
+
+    const motes = Array.from({ length: DUST_PER_CORNER }, () => {
+      const el = document.createElement('div');
+      const sz = 1 + Math.random() * 1.8;
+      el.style.cssText = `position:absolute;border-radius:50%;pointer-events:none;width:${sz}px;height:${sz}px;`;
+      anchor.appendChild(el);
+      return {
+        el, sz,
+        t:           Math.random(),
+        rayIdx:      Math.floor(Math.random() * RAY_DEFS.length),
+        speed:       0.00008 + Math.random() * 0.00014,
+        lateralT:    Math.random() * Math.PI * 2,
+        lateralSpd:  0.0004 + Math.random() * 0.0005,
+        lateralAmp:  2 + Math.random() * 8,
+        opacityBase: 0.15 + Math.random() * 0.40,
+        born:        performance.now() + Math.random() * 1500,
+      };
+    });
+
     return {
-      el,
-      corner,
+      corner, anchor, hotspot, hotspot2, rayEls, motes,
       breathPhase: Math.random() * Math.PI * 2,
-      breathSpeed: 0.00028 + Math.random() * 0.00018,
-      // slight independent drift so each corner feels alive differently
-      driftPhase:  Math.random() * Math.PI * 2,
-      driftSpeed:  0.00012 + Math.random() * 0.0001,
+      swayPhase:   Math.random() * Math.PI * 2,
     };
   });
 
-  function place() {
+  function placeAnchors() {
     const vw = window.innerWidth;
     const vh = window.innerHeight;
-    const sz = Math.min(vw, vh) * 0.52; // orb diameter — covers corner nicely
-    orbs.forEach(({ el, corner }) => {
-      const cx = corner.x * vw;
-      const cy = corner.y * vh;
-      el.style.width  = sz + 'px';
-      el.style.height = sz + 'px';
-      el.style.left   = (cx - sz / 2) + 'px';
-      el.style.top    = (cy - sz / 2) + 'px';
+    states.forEach(({ corner, anchor }) => {
+      anchor.style.left = (corner.x * vw) + 'px';
+      anchor.style.top  = (corner.y * vh) + 'px';
     });
   }
-
-  place();
-  window.addEventListener('resize', place);
+  placeAnchors();
+  window.addEventListener('resize', placeAnchors);
 
   let last = performance.now();
 
@@ -1379,28 +1430,67 @@ function initCornerOrbs() {
     const dt  = now - last;
     last = now;
     const rgb = getAccentRgb();
+    const rl  = RAY_LENGTH();
 
-    orbs.forEach(orb => {
-      orb.breathPhase += dt * orb.breathSpeed;
-      orb.driftPhase  += dt * orb.driftSpeed;
+    states.forEach(state => {
+      state.breathPhase += dt * 0.00032;
+      state.swayPhase   += dt * 0.00014;
 
-      // Breathe opacity: gentle pulse so it feels alive
-      const breathe = 0.70 + 0.30 * Math.sin(orb.breathPhase);
-      // Slight size pulse
-      const scalePulse = 1 + 0.06 * Math.sin(orb.driftPhase);
+      const breathe = 0.75 + 0.25 * Math.sin(state.breathPhase);
+      const sway    = Math.sin(state.swayPhase) * 3;
 
-      // Core glow: very bright tight center fading to nothing fast
-      // Outer haze: wide soft wash that illuminates the corner region
-      orb.el.style.background = `
-        radial-gradient(
-          circle at center,
-          rgba(${rgb.r},${rgb.g},${rgb.b},${(0.38 * breathe).toFixed(3)})  0%,
-          rgba(${rgb.r},${rgb.g},${rgb.b},${(0.18 * breathe).toFixed(3)}) 28%,
-          rgba(${rgb.r},${rgb.g},${rgb.b},${(0.07 * breathe).toFixed(3)}) 55%,
-          transparent 75%
-        )
-      `;
-      orb.el.style.transform = `scale(${scalePulse.toFixed(4)})`;
+      // ── hotspot — small, tight to corner
+      const hSize  = 22 + 8 * breathe;
+      const hSize2 = 55 + 20 * breathe;
+      state.hotspot.style.width      = hSize + 'px';
+      state.hotspot.style.height     = hSize + 'px';
+      state.hotspot.style.opacity    = (0.7 * breathe).toFixed(3);
+      state.hotspot.style.background = `radial-gradient(circle, rgba(${rgb.r},${rgb.g},${rgb.b},0.9) 0%, rgba(${rgb.r},${rgb.g},${rgb.b},0.3) 50%, transparent 100%)`;
+      state.hotspot.style.boxShadow  = `0 0 ${hSize}px rgba(${rgb.r},${rgb.g},${rgb.b},0.6)`;
+      state.hotspot2.style.width     = hSize2 + 'px';
+      state.hotspot2.style.height    = hSize2 + 'px';
+      state.hotspot2.style.opacity   = (0.25 * breathe).toFixed(3);
+      state.hotspot2.style.background = `radial-gradient(circle, rgba(${rgb.r},${rgb.g},${rgb.b},0.18) 0%, transparent 70%)`;
+
+      // ── rays — short, subtle
+      state.rayEls.forEach(({ el, def }) => {
+        const angle    = state.corner.fanAngle + def.off + sway;
+        const halfW    = rl * Math.tan((2.0 * Math.PI) / 180) * def.wMul;
+        const opacity  = def.oMul * breathe * 0.18; // subtle multiplier
+
+        el.style.transform    = `rotate(${angle - 90}deg) translateX(${-halfW}px)`;
+        el.style.borderLeft   = `${halfW}px solid transparent`;
+        el.style.borderRight  = `${halfW}px solid transparent`;
+        el.style.borderTop    = `${rl}px solid rgba(${rgb.r},${rgb.g},${rgb.b},${opacity.toFixed(4)})`;
+        el.style.borderBottom = 'none';
+      });
+
+      // ── dust motes
+      state.motes.forEach(mote => {
+        if (now < mote.born) { mote.el.style.opacity = '0'; return; }
+        mote.t += mote.speed * dt;
+        if (mote.t > 1) mote.t -= 1;
+        mote.lateralT += mote.lateralSpd * dt;
+
+        const def      = RAY_DEFS[mote.rayIdx];
+        const angle    = state.corner.fanAngle + def.off + sway;
+        const angleRad = (angle * Math.PI) / 180;
+        const dist     = mote.t * rl * 0.85;
+        const lateral  = Math.sin(mote.lateralT) * mote.lateralAmp;
+        const perpRad  = angleRad + Math.PI / 2;
+
+        const x = dist * Math.cos(angleRad) + lateral * Math.cos(perpRad);
+        const y = dist * Math.sin(angleRad) + lateral * Math.sin(perpRad);
+
+        const fadeIn  = Math.min(mote.t * 5, 1);
+        const fadeOut = 1 - Math.pow(mote.t, 2.5);
+        const opacity = mote.opacityBase * fadeIn * fadeOut * breathe * 0.6;
+
+        mote.el.style.transform  = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px)`;
+        mote.el.style.opacity    = opacity.toFixed(3);
+        mote.el.style.background = `rgba(${rgb.r},${rgb.g},${rgb.b},0.9)`;
+        mote.el.style.boxShadow  = `0 0 ${mote.sz * 2}px rgba(${rgb.r},${rgb.g},${rgb.b},0.5)`;
+      });
     });
 
     requestAnimationFrame(tick);
@@ -1420,7 +1510,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMouseGlow();
   initArticleSearch();
   initActiveNav();
-  initCornerOrbs();
+  initCornerBeams();
   
   // Hero cinematic sequence
   initHeroTitleReveal();
