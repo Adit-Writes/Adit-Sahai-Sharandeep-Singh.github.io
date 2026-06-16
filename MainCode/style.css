@@ -159,6 +159,69 @@ body::after {
   to   { opacity: 0.90; }
 }
 
+
+/* ============================================================
+   CORNER BEAMS
+   ============================================================ */
+
+#corner-beams {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.corner-beam-group {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.corner-beam-group.tl { top: 0; left: 0; }
+.corner-beam-group.tr { top: 0; right: 0; }
+.corner-beam-group.bl { bottom: 0; left: 0; }
+.corner-beam-group.br { bottom: 0; right: 0; }
+
+.c-beam {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+
+.c-beam-ray {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  transform-origin: 0 0;
+  border-style: solid;
+}
+
+.c-dust {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.corner-vignette {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 55% 55% at 0% 0%,   var(--cv-tl, transparent) 0%, transparent 70%),
+    radial-gradient(ellipse 55% 55% at 100% 0%,  var(--cv-tr, transparent) 0%, transparent 70%),
+    radial-gradient(ellipse 55% 55% at 0% 100%,  var(--cv-bl, transparent) 0%, transparent 70%),
+    radial-gradient(ellipse 55% 55% at 100% 100%,var(--cv-br, transparent) 0%, transparent 70%);
+  transition: background 3s ease-in-out;
+}
+
 /* ============================================================
    BACKGROUND LAYERS
    ============================================================ */
