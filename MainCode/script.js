@@ -1351,9 +1351,9 @@ function initCornerBeams() {
 ];
 
   // ── KEY CHANGE: short fixed length so rays stay in the corner
-  const RAY_LENGTH = () => Math.min(window.innerWidth, window.innerHeight) * 0.18;
+  const RAY_LENGTH = () => Math.min(window.innerWidth, window.innerHeight) * 0.22;
 
-  const DUST_PER_CORNER = 10;
+  const DUST_PER_CORNER = 5;
 
   function getAccentRgb() {
     const raw = getComputedStyle(document.documentElement)
@@ -1440,8 +1440,8 @@ function initCornerBeams() {
       const sway    = Math.sin(state.swayPhase) * 3;
 
       // ── hotspot — small, tight to corner
-      const hSize  = 50 + 18 * breathe;   // was 22 + 8
-      const hSize2 = 130 + 50 * breathe;  // was 55 + 20
+      const hSize  = 85 + 18 * breathe;   // was 22 + 8
+      const hSize2 = 150 + 80 * breathe;  // was 55 + 20
       state.hotspot.style.width      = hSize + 'px';
       state.hotspot.style.height     = hSize + 'px';
       state.hotspot.style.opacity    = (0.7 * breathe).toFixed(3);
