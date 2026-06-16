@@ -677,11 +677,11 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
     {# article.Topic is already resolved to the category display name by _data/Adit/Articles.js #}
 
     <div class="article-page">
-        <a href="/Adit-Sahai.github.io/Adit/AditPage#articles" class="back-link">Back to Essays</a>
+        <a href="/Adit-Sahai.github.io/Adit/AditPage#articles" class="back-link reveal">← Back to Essays</a>
 
         <!-- Hero -->
-        <article class="article-hero reveal">
-            <div class="article-hero-meta">
+        <article class="article-hero">
+            <div class="article-hero-meta reveal">
                 <span class="category">{{ article.Topic }}</span>
                 <span class="meta-dot"></span>
                 <span class="read-time">{{ article.ReadTime }} min read</span>
@@ -692,9 +692,9 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
                 <span class="date">Updated {{ article.LastUpdated }}</span>
                 {% endif %}
             </div>
-            <h1 class="article-main-title">{{ article.Title }}</h1>
-            <div class="article-title-rule"><span>✦</span></div>
-            <p class="article-lead">{{ article.Description | safe }}</p>
+            <h1 class="article-main-title reveal-heading">{{ article.Title }}</h1>
+            <div class="article-title-rule reveal scale-in"><span>✦</span></div>
+            <p class="article-lead reveal blur-in">{{ article.Description | safe }}</p>
         </article>
 
         <!-- Section break -->
@@ -704,7 +704,7 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
 
         <!-- ══ IMAGE GALLERY ══════════════════════════════════════ -->
         {% if article.Pics and article.Pics.length > 0 %}
-        <div class="article-gallery reveal" id="articleGallery">
+        <div class="article-gallery reveal scale-in" id="articleGallery">
             <div class="media-section-label">
                 <span>📷</span>
                 <span>Images</span>
@@ -803,7 +803,7 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
         {% endif %}
 
         <!-- Body -->
-        <div class="article-body-card reveal">
+        <div class="article-body-card reveal scale-in">
             <div class="article-body">
                 {{ article.Body | safe }}
             </div>
@@ -823,7 +823,8 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
                 {%- set isDoc    = ext in ['doc','docx','odt','pages','txt','rtf','xls','xlsx','csv','ppt','pptx'] -%}
                 <a
                     href="/Adit-Sahai.github.io{{ df }}"
-                    class="file-card"
+                    class="file-card link-card reveal"
+                    style="transition-delay: {{ loop.index0 * 60 }}ms"
                     target="_blank"
                     rel="noopener noreferrer"
                     download
@@ -856,7 +857,7 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
             </div>
             <div class="links-embed-list" id="linksEmbedList">
                 {% for link in article.Links %}
-                <div class="link-embed-item" data-url="{{ link }}"></div>
+                <div class="link-embed-item reveal" style="transition-delay: {{ loop.index0 * 80 }}ms" data-url="{{ link }}"></div>
                 {% endfor %}
             </div>
         </div>
@@ -864,7 +865,7 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
 
         <!-- ── Likes ─────────────────────────────────────────── -->
         {% if article.Likes %}
-        <div class="interactions-row reveal" id="likesSection">
+        <div class="interactions-row reveal scale-in" id="likesSection">
             <button class="like-btn" id="likeBtn">
                 <span class="like-heart" id="likeHeart">♡</span>
                 <span id="likeCount">—</span>
@@ -880,7 +881,7 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
                 <span class="comments-count" id="commentsCount"></span>
             </div>
 
-            <div class="comment-form-card">
+            <div class="comment-form-card reveal blur-in">
                 <div class="comment-form-fields">
                     <input
                         type="text"
@@ -917,7 +918,7 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
         </section>
         {% endif %}
 
-        <div class="article-nav-footer">
+        <div class="article-nav-footer reveal">
             <a href="/Adit-Sahai.github.io/Adit/AditPage#articles">← View all essays</a>
         </div>
     </div>
