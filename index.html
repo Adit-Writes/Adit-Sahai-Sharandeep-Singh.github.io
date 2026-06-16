@@ -811,18 +811,54 @@ permalink: /index.html
     </div>
   </div>
 
-  <!-- ── SHARAN COMING SOON ─────────────────────────────────── -->
-  <div class="sharan-coming-soon">
-    <div class="sharan-teaser reveal blur-in">
-      <span class="sharan-teaser-icon">🎮</span>
-      <div class="sharan-teaser-text">
-        <h3>Sharan's Space — Coming Soon</h3>
-        <p>Game dev updates, projects &amp; more. Still in the planning phase — check back soon.</p>
+  <!-- ── SHARAN'S STATS ─────────────────────────────────────── -->
+  <div class="adit-stats-block" style="margin-top: -20px;">
+    <div class="adit-stats-header reveal">
+      <div class="adit-stats-label-wrap">
+        <div class="adit-stats-pip"></div>
+        <span class="links-section-title reveal-heading" style="font-size: 35px; align-items: center;">Sharan's Stats</span>
       </div>
-      <span class="sharan-teaser-badge">In Progress</span>
+      <div class="adit-stats-rule"></div>
+    </div>
+ 
+    <div class="stats-row">
+ 
+      <div class="stat-card reveal scale-in">
+        <span class="stat-icon">🎮</span>
+        <div class="stat-number">
+          {# Count all published projects #}
+          {% set pcount = 0 %}
+          {% for p in Sharan.Projects %}{% if p.Published %}{% set pcount = pcount + 1 %}{% endif %}{% endfor %}
+          {{ pcount }}
+        </div>
+        <div class="stat-label">Projects Built</div>
+        <div class="stat-sublabel">games, tools &amp; more</div>
+      </div>
+ 
+      <div class="stat-card reveal scale-in" style="transition-delay:.12s">
+        <span class="stat-icon">🎬</span>
+        <div class="stat-number">
+          {#
+            Dynamically count published projects in the "Video Editing" category.
+            This handles both string values and object references from the CMS.
+          #}
+          {% set vcount = 0 %}
+          {% for p in Sharan.Projects %}
+            {% if p.Published %}
+              {% set catName = p.Category.name if p.Category.name else p.Category %}
+              {% if 'video' in (catName | lower) %}
+                {% set vcount = vcount + 1 %}
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+          {{ vcount }}
+        </div>
+        <div class="stat-label">Videos Edited</div>
+        <div class="stat-sublabel">from project portfolio</div>
+      </div>
+ 
     </div>
   </div>
-
   <!-- ── LINKS ──────────────────────────────────────────────── -->
   <section class="links-section" id="links">
     <div class="links-section-header reveal flip-y">
