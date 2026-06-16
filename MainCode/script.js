@@ -1351,7 +1351,7 @@ function initCornerBeams() {
 ];
 
   // ── KEY CHANGE: short fixed length so rays stay in the corner
-  const RAY_LENGTH = () => Math.min(window.innerWidth, window.innerHeight) * 0.22;
+  const RAY_LENGTH = () => Math.min(window.innerWidth, window.innerHeight) * 0.18;
 
   const DUST_PER_CORNER = 5;
 
@@ -1444,19 +1444,19 @@ function initCornerBeams() {
       const hSize2 = 150 + 80 * breathe;  // was 55 + 20
       state.hotspot.style.width      = hSize + 'px';
       state.hotspot.style.height     = hSize + 'px';
-      state.hotspot.style.opacity    = (0.7 * breathe).toFixed(3);
+      state.hotspot.style.opacity    = (0.3 * breathe).toFixed(3);
       state.hotspot.style.background = `radial-gradient(circle, rgba(${rgb.r},${rgb.g},${rgb.b},0.9) 0%, rgba(${rgb.r},${rgb.g},${rgb.b},0.3) 50%, transparent 100%)`;
       state.hotspot.style.boxShadow  = `0 0 ${hSize}px rgba(${rgb.r},${rgb.g},${rgb.b},0.6)`;
       state.hotspot2.style.width     = hSize2 + 'px';
       state.hotspot2.style.height    = hSize2 + 'px';
-      state.hotspot2.style.opacity   = (0.25 * breathe).toFixed(3);
+      state.hotspot2.style.opacity   = (0.12 * breathe).toFixed(3);
       state.hotspot2.style.background = `radial-gradient(circle, rgba(${rgb.r},${rgb.g},${rgb.b},0.18) 0%, transparent 70%)`;
 
       // ── rays — short, subtle
       state.rayEls.forEach(({ el, def }) => {
         const angle    = state.corner.fanAngle + def.off + sway;
         const halfW    = rl * Math.tan((2.0 * Math.PI) / 180) * def.wMul;
-        const opacity  = def.oMul * breathe * 0.18; // subtle multiplier
+        const opacity  = def.oMul * breathe * 0.08; // subtle multiplier
 
         el.style.transform    = `rotate(${angle - 90}deg) translateX(${-halfW}px)`;
         el.style.borderLeft   = `${halfW}px solid transparent`;
