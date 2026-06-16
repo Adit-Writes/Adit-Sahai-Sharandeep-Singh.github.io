@@ -32,7 +32,7 @@
   --orb-speed-multiplier:  1.2;
   --orb-scale-multiplier:  1.1;
 
-  /* ── Mouse glow intensity (0.0 = invisible, 1.0 = full, >1.0 = extra bright) */
+  /* Mouse glow intensity */
   --glow-blob-intensity: 0.65;
 }
 
@@ -57,14 +57,13 @@ html {
    CUSTOM SCROLLBAR
    ============================================================ */
 
-/* Webkit (Chrome, Safari, Edge) */
 ::-webkit-scrollbar {
   width:  8px;
   height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background:    transparent;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -85,7 +84,6 @@ html {
   background: transparent;
 }
 
-/* Firefox */
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--accent-gold-line) transparent;
@@ -125,7 +123,6 @@ body {
   position:         relative;
 }
 
-/* Dark vignette overlay */
 body::before {
   content:  '';
   position: fixed;
@@ -137,7 +134,6 @@ body::before {
   pointer-events: none;
 }
 
-/* Starfield */
 body::after {
   content:  '';
   position: fixed;
@@ -164,7 +160,7 @@ body::after {
 }
 
 /* ============================================================
-   BACKGROUND LAYERS — pattern, dots, orb canvas
+   BACKGROUND LAYERS
    ============================================================ */
 
 #bg-pattern {
@@ -267,7 +263,6 @@ h1, h2, h3, h4 {
   z-index: 10;
 }
 
-/* Glow blob */
 .glow-blob {
   position:       absolute;
   width:          420px;
@@ -278,7 +273,6 @@ h1, h2, h3, h4 {
   transform:      translate(-50%, -50%);
   z-index:        999;
   will-change:    left, top, background;
-  /* Multi-stop radial gradient for a smooth organic fade */
   background:     radial-gradient(
     circle,
     rgba(255, 46, 76, calc(var(--glow-blob-intensity) * 0.35))  0%,
@@ -291,7 +285,6 @@ h1, h2, h3, h4 {
     background 1.5s ease-in-out;
 }
 
-/* Positioned context for glow blob */
 .hero,
 .book-card,
 .article-card,
@@ -357,7 +350,6 @@ h1, h2, h3, h4 {
   top:             20px;
   z-index:         100;
   border-radius:   100px !important;
-  /* Use theme tokens — not hardcoded colors */
   background:      var(--glass-bg-strong) !important;
   backdrop-filter: blur(40px) !important;
   -webkit-backdrop-filter: blur(40px) !important;
@@ -391,13 +383,13 @@ h1, h2, h3, h4 {
   -webkit-background-clip: text;
   background-clip:          text;
   -webkit-text-fill-color: transparent;
-  color: var(--accent-gold); /* fallback for browsers that don't support bg-clip */
+  color: var(--accent-gold);
   animation:  goldShine 5s linear infinite;
   transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .logo:hover {
-  transform:   scale(1.08);
+  transform: scale(1.08);
 }
 
 @keyframes goldShine {
@@ -442,7 +434,7 @@ h1, h2, h3, h4 {
 }
 
 /* ============================================================
-   SEARCH — prevent focus from triggering page scroll
+   SEARCH
    ============================================================ */
 
 .search-wrap {
@@ -499,13 +491,11 @@ h1, h2, h3, h4 {
   font-size:   0.9rem;
   font-weight: 300;
   caret-color: var(--accent-gold);
-  /* prevent input focus from auto-scrolling the page */
   scroll-margin: 0;
 }
 
 .search-input::placeholder { color: var(--text-dim); }
 
-/* Search results dropdown (article pages) */
 .search-results {
   margin-top:  8px;
   display:     flex;
@@ -546,7 +536,6 @@ h1, h2, h3, h4 {
   font-weight:     900;
   letter-spacing:  6px;
   text-transform:  uppercase;
-  /* Solid fallback first — prevents black text on unsupported mobile browsers */
   color:           rgba(255, 255, 255, 0.92);
   background:      linear-gradient(175deg, #ffffff 30%, rgba(255,255,255,0.18) 100%);
   -webkit-background-clip: text;
@@ -556,7 +545,6 @@ h1, h2, h3, h4 {
   margin-bottom:   20px;
 }
 
-/* Fallback for browsers where background-clip:text isn't supported */
 @supports not (-webkit-background-clip: text) {
   .main-blog-title {
     color: rgba(255, 255, 255, 0.92);
@@ -583,7 +571,7 @@ h1, h2, h3, h4 {
 }
 
 /* ============================================================
-   SECTION DIVIDERS — redesigned, more impactful
+   SECTION DIVIDERS
    ============================================================ */
 
 .section-divider {
@@ -596,7 +584,6 @@ h1, h2, h3, h4 {
   position:       relative;
 }
 
-/* Subtle horizontal rule extending from center */
 .section-divider::before {
   content:  '';
   position: absolute;
@@ -626,7 +613,6 @@ h1, h2, h3, h4 {
   font-family:     'Inter', sans-serif;
   font-weight:     700;
   opacity:         0.9;
-  /* pill badge */
   background:      var(--accent-gold-dim);
   border:          1px solid var(--accent-gold-line);
   padding:         5px 18px;
@@ -640,7 +626,6 @@ h1, h2, h3, h4 {
   font-weight:    800;
   letter-spacing: -0.03em;
   line-height:    1;
-  /* Gradient text matching the banner style */
   color:          rgba(255, 255, 255, 0.95);
   background:     linear-gradient(
     145deg,
@@ -701,7 +686,7 @@ h1, h2, h3, h4 {
 
 .hero-content {
   display:         flex;
-  align-items:     flex-start;   /* ← fix: image aligns to top, not center */
+  align-items:     flex-start;
   justify-content: space-between;
   gap:             60px;
   width:           100%;
@@ -737,7 +722,7 @@ h1, h2, h3, h4 {
 }
 
 .hero-visual {
-  flex:          0 0 220px;       /* ← fixed width so it never grows huge */
+  flex:          0 0 220px;
   width:         220px;
   aspect-ratio:  3 / 4;
   max-height:    300px;
@@ -760,7 +745,7 @@ h1, h2, h3, h4 {
   width:           100%;
   height:          100%;
   object-fit:      cover;
-  object-position: top;
+  object-position: center; /* ← FIXED: was "top", face now centers properly */
 }
 
 /* ============================================================
@@ -948,7 +933,6 @@ h1, h2, h3, h4 {
   gap:         5px;
 }
 
-/* Sub-filter row */
 .liked-subfilter-row {
   display:         flex;
   justify-content: center;
@@ -1038,7 +1022,6 @@ h1, h2, h3, h4 {
   font-weight: 400;
 }
 
-/* Liked badge */
 .liked-badge {
   display:        none;
   align-items:    center;
@@ -1106,7 +1089,6 @@ h1, h2, h3, h4 {
   letter-spacing: 3px;
 }
 
-/* No results */
 .no-results-msg {
   text-align:  center;
   color:       var(--text-dim);
@@ -1143,7 +1125,6 @@ h1, h2, h3, h4 {
 
 .back-link:hover { color: var(--text-main); }
 
-/* Article hero */
 .article-hero {
   margin-bottom: 40px;
 }
@@ -1216,7 +1197,6 @@ h1, h2, h3, h4 {
   font-style:  italic;
 }
 
-/* Article divider */
 .article-divider {
   text-align:    center;
   margin:        40px 0;
@@ -1226,11 +1206,9 @@ h1, h2, h3, h4 {
   transition:    color 1.5s ease-in-out;
 }
 
-/* Article body card — use theme tokens, not hardcoded colors */
 .article-body-card {
   padding:       50px 55px;
   margin-bottom: 40px;
-  /* background and border come from .glass-card rule above */
 }
 
 .article-body {
@@ -1240,7 +1218,6 @@ h1, h2, h3, h4 {
   line-height: 1.85;
 }
 
-/* Rich text styles */
 .article-body h2 {
   font-size:     1.55rem;
   color:         var(--text-main);
@@ -1391,7 +1368,6 @@ h1, h2, h3, h4 {
   font-weight: 400;
 }
 
-/* Comment form */
 .comment-form-card {
   background:      var(--glass-bg);
   border:          1px solid var(--glass-border);
@@ -1479,7 +1455,6 @@ h1, h2, h3, h4 {
   min-height: 1em;
 }
 
-/* Comment list */
 .comments-list {
   display:        flex;
   flex-direction: column;
@@ -1674,7 +1649,6 @@ h1, h2, h3, h4 {
     letter-spacing: 1.5px;
   }
 
-  /* About: stack vertically on mobile */
   .hero {
     padding: 32px 28px;
   }
@@ -1695,7 +1669,6 @@ h1, h2, h3, h4 {
     padding: 50px 16px 20px;
   }
 
-  /* Main title: force white on mobile to avoid black text */
   .main-blog-title {
     -webkit-text-fill-color: rgba(255, 255, 255, 0.92);
     font-size: clamp(2.2rem, 10vw, 4rem);
