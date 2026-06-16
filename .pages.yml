@@ -379,11 +379,11 @@ content:
           type: string
           required: true
           
-        - name: Topic
+        - name: Category
           type: reference 
           required: true
           options:
-            collection: ArticleCategories 
+            collection: ProjectCategories 
             field: name 
   
         - name: Pics
