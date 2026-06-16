@@ -385,6 +385,9 @@ content:
           options:
             collection: ProjectCategories 
             field: name 
+
+        - name: Status
+          type: string
   
         - name: Pics
           type: image
