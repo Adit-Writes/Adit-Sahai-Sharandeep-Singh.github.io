@@ -8,13 +8,11 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
 {#
   NOTES FOR ADIT / SHARAN (delete this comment once read):
 
-  1. New Supabase tables needed (same project, same shape as the existing
-     article_likes / article_comments tables):
-       - project_likes     (id, project_id text, fingerprint text, created_at timestamptz default now())
-       - project_comments  (id, project_id text, name text, body text, fingerprint text, created_at timestamptz default now())
-     The existing `comment_likes` table is reused as-is (comment_id, fingerprint) —
-     comment ids are unique whether they came from article_comments or project_comments,
-     so no new table is needed for comment-likes.
+  1. New Supabase tables needed — fully separate from the Adit/article tables:
+       - project_likes         (id, project_id text, fingerprint text, created_at timestamptz default now())
+       - project_comments      (id, project_id text, name text, body text, fingerprint text, created_at timestamptz default now())
+       - project_comment_likes (id, comment_id uuid -> project_comments.id, fingerprint text, created_at timestamptz default now())
+     See projects_supabase.sql for the full create-table + RLS policy script.
 
   2. This page reuses a handful of class names that live in your shared
      MainCode/style.css rather than redefining them here — same trick article.njk
@@ -1055,7 +1053,7 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
             if (!commentIds.length) return;
             try {
                 const ids = commentIds.map(id => `"${id}"`).join(',');
-                const rows = await sb(`comment_likes?comment_id=in.(${ids})&select=comment_id`);
+                const rows = await sb(`project_comment_likes?comment_id=in.(${ids})&select=comment_id`);
                 rows.forEach(r => { commentLikeCounts[r.comment_id] = (commentLikeCounts[r.comment_id] || 0) + 1; });
             } catch (e) { console.warn('Comment likes unavailable', e); }
         }
@@ -1068,7 +1066,7 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
             try {
                 if (!fp) {
                     const newFp = crypto.randomUUID();
-                    await sb('comment_likes', {
+                    await sb('project_comment_likes', {
                         method: 'POST',
                         prefer: 'return=minimal',
                         body:   { comment_id: commentId, fingerprint: newFp }
@@ -1078,7 +1076,7 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
                     btn.querySelector('.clheart').textContent = '♥';
                     commentLikeCounts[commentId] = (commentLikeCounts[commentId] || 0) + 1;
                 } else {
-                    await sb(`comment_likes?comment_id=eq.${commentId}&fingerprint=eq.${fp}`, { method: 'DELETE' });
+                    await sb(`project_comment_likes?comment_id=eq.${commentId}&fingerprint=eq.${fp}`, { method: 'DELETE' });
                     localStorage.removeItem(`comment_liked:${commentId}`);
                     btn.classList.remove('liked');
                     btn.querySelector('.clheart').textContent = '♡';
