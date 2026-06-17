@@ -1048,6 +1048,29 @@ function initLinkCardReveal() {
   linkCards.forEach(card => io.observe(card));
 }
 
+// Adit Sharan Cards 3d Tilt
+
+function initStatCardTilt() {
+  document.querySelectorAll('.Creator-Card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect  = card.getBoundingClientRect();
+      const cx    = rect.left + rect.width  / 2;
+      const cy    = rect.top  + rect.height / 2;
+      const dx    = (e.clientX - cx) / (rect.width  / 2);
+      const dy    = (e.clientY - cy) / (rect.height / 2);
+      const tiltX = dy * -4;
+      const tiltY = dx *  4;
+      card.style.transform  = `translateY(-4px) perspective(600px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+      card.style.transition = 'transform 0.05s linear';
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform  = '';
+      card.style.transition = 'transform 0.4s cubic-bezier(0.25,1,0.5,1)';
+    });
+  });
+}
+
 // ============================================================
 //  STAT CARD TILT — 3D on hover
 // ============================================================
@@ -1060,8 +1083,8 @@ function initStatCardTilt() {
       const cy    = rect.top  + rect.height / 2;
       const dx    = (e.clientX - cx) / (rect.width  / 2);
       const dy    = (e.clientY - cy) / (rect.height / 2);
-      const tiltX = dy * -8;
-      const tiltY = dx *  8;
+      const tiltX = dy * -6;
+      const tiltY = dx *  6;
       card.style.transform  = `translateY(-4px) perspective(600px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
       card.style.transition = 'transform 0.05s linear';
     });
