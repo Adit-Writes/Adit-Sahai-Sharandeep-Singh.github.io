@@ -16,10 +16,16 @@ permalink: /Sharan/SharanPage.html
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,700;0,900;1,700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/Adit-Sahai.github.io/MainCode/style.css" />
 
   <style>
+    @property --card-angle {
+      syntax: '<angle>';
+      inherits: false;
+      initial-value: 0deg;
+    }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; padding: 0 5%; }
 
@@ -74,7 +80,6 @@ permalink: /Sharan/SharanPage.html
     }
     .sp-nav-brand em { font-style: normal; color: var(--accent-gold); }
 
-    /* Animated glow dot on brand */
     .sp-nav-dot {
       width: 6px; height: 6px;
       border-radius: 50%;
@@ -103,7 +108,6 @@ permalink: /Sharan/SharanPage.html
     }
     .sp-nav-link:hover { color: var(--accent-gold); background: var(--accent-gold-dim); }
 
-    /* Nav search button */
     .sp-nav-search-btn {
       display: flex; align-items: center; gap: 7px;
       font-family: 'JetBrains Mono', monospace;
@@ -130,25 +134,44 @@ permalink: /Sharan/SharanPage.html
     /* ═══ BANNER ═══════════════════════════════════════════════ */
     .sp-banner {
       text-align: center;
-      padding: 72px 20px 24px;
+      padding: 76px 20px 24px;
       margin-bottom: 48px;
       max-width: 1100px;
       margin-left: auto;
       margin-right: auto;
+      position: relative;
+    }
+
+    .sp-banner-kicker {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--accent-gold);
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      opacity: 0.75;
+      margin-bottom: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sp-banner-kicker::before, .sp-banner-kicker::after {
+      content: '';
+      width: 22px; height: 1px;
+      background: var(--accent-gold-line);
+      transition: background 2.5s ease-in-out;
     }
 
     .sp-banner-title {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(4rem, 10vw, 7rem);
+      font-size: clamp(4rem, 10vw, 7.4rem);
       font-weight: 700;
       letter-spacing: -0.05em;
       line-height: 0.92;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       position: relative;
       display: inline-block;
     }
 
-    /* Clip gradient over the text */
     .sp-banner-title-inner {
       background: linear-gradient(
         160deg,
@@ -162,6 +185,7 @@ permalink: /Sharan/SharanPage.html
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
+      color: #fff;
       animation: titleFlow 5s linear infinite;
     }
     @keyframes titleFlow {
@@ -175,7 +199,15 @@ permalink: /Sharan/SharanPage.html
       .sp-banner-title-inner { -webkit-text-fill-color: rgba(255,255,255,0.95); }
     }
 
-    /* Underline glow beneath title */
+    .sp-banner-cursor {
+      display: inline-block;
+      width: 0.5ch;
+      color: var(--accent-gold);
+      -webkit-text-fill-color: var(--accent-gold);
+      animation: cursorBlinkBanner 0.9s step-end infinite;
+    }
+    @keyframes cursorBlinkBanner { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
     .sp-banner-title::after {
       content: '';
       display: block;
@@ -194,11 +226,11 @@ permalink: /Sharan/SharanPage.html
 
     .sp-banner-sub {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       color: var(--accent-gold);
       text-transform: uppercase;
       letter-spacing: 6px;
-      opacity: 0.7;
+      opacity: 0.75;
       margin-top: 18px;
     }
 
@@ -207,34 +239,33 @@ permalink: /Sharan/SharanPage.html
       width: 100%;
       max-width: 1100px;
       margin: 0 auto 90px;
-      padding: 50px 58px;
+      padding: 52px 58px;
       background: var(--glass-bg);
       border: 1px solid var(--glass-border);
       border-radius: 28px;
       backdrop-filter: blur(24px);
       -webkit-backdrop-filter: blur(24px);
       display: grid;
-      grid-template-columns: 1fr 180px;
+      grid-template-columns: 1fr 190px;
       gap: 56px;
       align-items: center;
       position: relative;
       overflow: hidden;
-      transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s cubic-bezier(0.25,1,0.5,1), background 2.5s ease-in-out;
+      transform-style: preserve-3d;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+      transition: border-color 0.45s ease, box-shadow 0.45s ease, background 2.5s ease-in-out;
     }
-    .sp-about:hover {
+    .sp-about.is-hovering {
       border-color: var(--glass-border-hover);
-      transform: translateY(-6px);
-      box-shadow: 0 28px 70px rgba(0,0,0,0.65), 0 0 36px var(--accent-gold-dim);
+      box-shadow: 0 30px 75px rgba(0,0,0,0.65), 0 0 38px var(--accent-gold-dim);
     }
 
-    /* scanline texture */
     .sp-about::before {
       content: '';
       position: absolute; inset: 0;
       background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(255,255,255,0.013) 2px, rgba(255,255,255,0.013) 4px);
       pointer-events: none; border-radius: 28px;
     }
-    /* corner glow */
     .sp-about::after {
       content: '';
       position: absolute; top: 0; right: 0;
@@ -251,20 +282,27 @@ permalink: /Sharan/SharanPage.html
       font-size: 0.62rem;
       color: var(--accent-gold);
       letter-spacing: 2px;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       background: var(--accent-gold-dim);
       border: 1px solid var(--accent-gold-line);
-      padding: 4px 14px;
+      padding: 5px 14px 5px 10px;
       border-radius: 100px;
       text-transform: uppercase;
+    }
+    .sp-about-tag-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--accent-gold);
+      box-shadow: 0 0 6px var(--accent-gold);
+      animation: dotPulse 2.4s ease-in-out infinite;
+      flex-shrink: 0;
     }
 
     .sp-about-name {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-size: clamp(2.2rem, 4vw, 3.3rem);
       font-weight: 700;
       color: var(--text-main);
       line-height: 1.05;
@@ -273,30 +311,31 @@ permalink: /Sharan/SharanPage.html
     }
 
     .sp-about-bio {
-      font-size: 0.95rem;
+      font-size: 0.96rem;
       color: var(--text-muted);
       font-weight: 300;
       line-height: 1.85;
       max-width: 560px;
     }
 
-    /* portrait */
     .sp-portrait-frame {
-      width: 165px; height: 210px;
+      width: 175px; height: 222px;
       border-radius: 18px;
       overflow: hidden;
       border: 1px solid var(--glass-border);
       position: relative; z-index: 1;
-      transition: border-color 2.5s ease-in-out, transform 0.4s ease;
+      transition: border-color 2.5s ease-in-out;
     }
-    .sp-about:hover .sp-portrait-frame { transform: scale(1.04) rotate(1deg); }
-    .sp-portrait-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+    .sp-portrait-frame img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
     .sp-portrait-frame::before, .sp-portrait-frame::after {
       content: ''; position: absolute;
       width: 22px; height: 22px;
       border-color: var(--accent-gold); border-style: solid; z-index: 2;
-      transition: border-color 1.5s ease-in-out;
+      transition: border-color 1.5s ease-in-out, opacity 0.4s ease;
+      opacity: 0.7;
     }
+    .sp-about.is-hovering .sp-portrait-frame::before,
+    .sp-about.is-hovering .sp-portrait-frame::after { opacity: 1; }
     .sp-portrait-frame::before { top: 8px; left: 8px; border-width: 2px 0 0 2px; }
     .sp-portrait-frame::after  { bottom: 8px; right: 8px; border-width: 0 2px 2px 0; }
     .sp-portrait-placeholder {
@@ -325,6 +364,7 @@ permalink: /Sharan/SharanPage.html
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
+      color: #fff;
       animation: sectionShine 7s ease-in-out infinite alternate;
     }
     @keyframes sectionShine {
@@ -438,54 +478,89 @@ permalink: /Sharan/SharanPage.html
       width: 100%; max-width: 1100px;
       margin: 0 auto 100px;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 28px;
+      perspective: 1400px;
     }
 
     .sp-project-card {
+      --card-angle: 0deg;
       position: relative;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
       border-radius: 24px;
+      border: 1px solid transparent;
+      background:
+        linear-gradient(var(--glass-bg), var(--glass-bg)) padding-box,
+        conic-gradient(
+          from var(--card-angle),
+          transparent 0deg,
+          var(--accent-gold-line) 35deg,
+          var(--accent-gold) 60deg,
+          var(--accent-gold-line) 85deg,
+          transparent 130deg,
+          transparent 360deg
+        ) border-box;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       overflow: hidden;
       display: flex; flex-direction: column;
       text-decoration: none; color: inherit;
       cursor: pointer;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      transition: border-color 0.35s ease, box-shadow 0.35s ease, background 2.5s ease-in-out;
       will-change: transform;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      transition: box-shadow 0.45s ease, background-color 2.5s ease-in-out, transform 0.6s cubic-bezier(0.22,1,0.36,1);
     }
     .sp-project-card:hover {
-      border-color: var(--glass-border-hover);
-      box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 40px var(--accent-gold-dim);
+      animation: cardRingSpin 3s linear infinite;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 42px var(--accent-gold-dim);
     }
-
-    /* Left accent bar */
-    .sp-project-card::before {
-      content: '';
-      position: absolute; left: 0; top: 10%; bottom: 10%;
-      width: 2px;
-      background: linear-gradient(to bottom, transparent, var(--accent-gold), transparent);
-      border-radius: 2px;
-      opacity: 0; transform: scaleY(0);
-      transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.25,1,0.5,1), background 2.5s ease-in-out;
-    }
-    .sp-project-card:hover::before { opacity: 1; transform: scaleY(1); }
+    @keyframes cardRingSpin { to { --card-angle: 360deg; } }
 
     /* Mouse-tracking glow (controlled via JS) */
     .sp-card-glow {
       position: absolute;
-      width: 400px; height: 400px;
+      width: 420px; height: 420px;
       border-radius: 50%;
       pointer-events: none;
       opacity: 0;
       transform: translate(-50%, -50%);
       z-index: 0;
-      transition: opacity 0.2s ease;
+      transition: opacity 0.25s ease;
       background: radial-gradient(circle, var(--accent-gold-dim) 0%, transparent 65%);
     }
     .sp-project-card:hover .sp-card-glow { opacity: 1; }
+
+    /* HUD header strip — index + status, console-readout feel */
+    .sp-card-hud {
+      position: relative; z-index: 1;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 10px;
+      padding: 13px 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--glass-border);
+      color: var(--text-dim);
+      transition: border-color 2.5s ease-in-out;
+    }
+    .sp-hud-index { opacity: 0.55; flex-shrink: 0; }
+    .sp-hud-status {
+      display: flex; align-items: center; gap: 6px;
+      flex-shrink: 0;
+      color: var(--text-dim);
+    }
+    .sp-status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 6px currentColor;
+      flex-shrink: 0;
+    }
+    .sp-hud-status[data-status="completed"] { color: #00dc82; }
+    .sp-hud-status[data-status="wip"]       { color: #ffbe32; }
+    .sp-hud-status[data-status="concept"]   { color: #a06fff; }
+    .sp-hud-status[data-status="released"]  { color: #00b4ff; }
+    .sp-hud-status[data-status="ongoing"]   { color: #00b4ff; }
+    .sp-hud-status[data-status="shelved"]   { color: #8a8a8a; }
 
     /* Thumbnail */
     .sp-thumb {
@@ -497,7 +572,7 @@ permalink: /Sharan/SharanPage.html
     }
     .sp-thumb img {
       width: 100%; height: 100%; object-fit: cover; display: block;
-      transition: transform 0.65s cubic-bezier(0.25,1,0.5,1), filter 0.65s ease;
+      transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1), filter 0.65s ease;
       filter: brightness(0.78) saturate(0.85);
     }
     .sp-project-card:hover .sp-thumb img {
@@ -512,27 +587,18 @@ permalink: /Sharan/SharanPage.html
     }
 
     .sp-thumb-placeholder {
-      width: 100%; height: 100%; aspect-ratio: 16/9;
+      width: 100%; height: 100%;
       display: flex; align-items: center; justify-content: center;
       background: linear-gradient(135deg, var(--accent-gold-dim) 0%, rgba(0,0,0,0.35) 80%);
-      font-size: 3.5rem;
     }
-
-    /* Badges on thumb */
-    .sp-status-badge {
-      position: absolute; top: 13px; right: 13px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.55rem; font-weight: 600; letter-spacing: 2px;
-      padding: 5px 12px; border-radius: 8px;
-      z-index: 4; text-transform: uppercase;
-      backdrop-filter: blur(12px);
+    .sp-thumb-icon {
+      width: 25%; height: 25%;
+      color: var(--accent-gold);
+      opacity: 0.85;
+      filter: drop-shadow(0 0 16px var(--accent-gold-dim));
+      transition: transform 0.5s cubic-bezier(0.25,1,0.5,1);
     }
-    .badge-completed { background: rgba(0,220,130,0.2);  color: #00dc82; border: 1px solid rgba(0,220,130,0.4); }
-    .badge-wip       { background: rgba(255,190,50,0.2);  color: #ffbe32; border: 1px solid rgba(255,190,50,0.4); }
-    .badge-concept   { background: rgba(140,100,255,0.2); color: #a06fff; border: 1px solid rgba(140,100,255,0.4); }
-    .badge-released  { background: rgba(0,180,255,0.2);   color: #00b4ff; border: 1px solid rgba(0,180,255,0.4); }
-    .badge-shelved   { background: rgba(120,120,120,0.2); color: #888;    border: 1px solid rgba(120,120,120,0.4); }
-    .badge-ongoing   { background: rgba(0,180,255,0.2);   color: #00b4ff; border: 1px solid rgba(0,180,255,0.4); }
+    .sp-project-card:hover .sp-thumb-icon { transform: scale(1.08) rotate(-3deg); }
 
     .sp-cat-chip {
       position: absolute; bottom: 13px; left: 13px;
@@ -554,8 +620,9 @@ permalink: /Sharan/SharanPage.html
 
     .sp-card-title {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.24rem; font-weight: 600;
-      color: var(--text-main); line-height: 1.22;
+      font-size: 1.32rem; font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-main); line-height: 1.2;
       margin-bottom: 10px;
       transition: color 0.25s ease;
     }
@@ -588,12 +655,14 @@ permalink: /Sharan/SharanPage.html
       border: 1px solid var(--accent-gold-line);
       border-radius: 10px;
       background: var(--accent-gold-dim);
-      transition: gap 0.25s ease, color 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+      transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease;
       text-decoration: none;
     }
+    .sp-card-link-arrow { width: 13px; height: 13px; transition: transform 0.3s ease; flex-shrink: 0; }
     .sp-project-card:hover .sp-card-link {
-      gap: 12px; background: var(--accent-gold); color: #000; border-color: var(--accent-gold);
+      background: var(--accent-gold); color: #000; border-color: var(--accent-gold);
     }
+    .sp-project-card:hover .sp-card-link-arrow { transform: translateX(4px); }
 
     /* ═══ NO RESULTS ════════════════════════════════════════════ */
     .sp-no-results {
@@ -622,12 +691,12 @@ permalink: /Sharan/SharanPage.html
       text-decoration: none; color: inherit;
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      transition: border-color 0.3s ease, transform 0.35s cubic-bezier(0.25,1,0.5,1), box-shadow 0.3s ease, background 2.5s ease-in-out;
+      will-change: transform;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, background 2.5s ease-in-out, transform 0.5s cubic-bezier(0.22,1,0.36,1);
     }
-    .sp-link-card:hover {
+    .sp-link-card.is-hovering {
       border-color: var(--glass-border-hover);
-      transform: translateY(-5px) scale(1.01);
-      box-shadow: 0 14px 44px rgba(0,0,0,0.55), 0 0 20px var(--accent-gold-dim);
+      box-shadow: 0 16px 46px rgba(0,0,0,0.55), 0 0 22px var(--accent-gold-dim);
     }
 
     .sp-link-icon {
@@ -681,6 +750,10 @@ permalink: /Sharan/SharanPage.html
       .sp-project-grid { grid-template-columns: 1fr; }
       .sp-links-grid { grid-template-columns: 1fr; }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      .sp-project-card:hover { animation: none; }
+    }
   </style>
 </head>
 <body>
@@ -712,8 +785,9 @@ permalink: /Sharan/SharanPage.html
 
   <!-- BANNER -->
   <div class="sp-banner">
+    <p class="sp-banner-kicker reveal">game dev &amp; creative tech</p>
     <h1 class="sp-banner-title reveal">
-      <span class="sp-banner-title-inner">{{ Sharan.AboutPage.Name }}</span>
+      <span class="sp-banner-title-inner">{{ Sharan.AboutPage.Name }}</span><span class="sp-banner-cursor">_</span>
     </h1>
     <p class="sp-banner-sub reveal">{{ Sharan.AboutPage.Expertise }}</p>
   </div>
@@ -721,7 +795,7 @@ permalink: /Sharan/SharanPage.html
   <!-- ABOUT -->
   <div id="about" class="sp-about reveal blur-in">
     <div class="sp-about-content">
-      <span class="sp-about-tag">// {{ Sharan.AboutPage.Expertise }}</span>
+      <span class="sp-about-tag"><span class="sp-about-tag-dot"></span>// {{ Sharan.AboutPage.Expertise }}</span>
       <h2 class="sp-about-name">{{ Sharan.AboutPage.Name }}</h2>
       <p class="sp-about-bio">{{ Sharan.AboutPage.Desciption | striptags }}</p>
     </div>
@@ -770,7 +844,6 @@ permalink: /Sharan/SharanPage.html
       {% else %}
         {% set catRaw = project.Category | string %}
       {% endif %}
-      {# strip path prefix if CMS gave us a filepath #}
       {% set catName = catRaw | replace("_data/Sharan/Projectcategories/","") | replace("_data/Sharan/ProjectCategories/","") | replace(".json","") | replace("-"," ") | trim %}
 
       {# ── Resolve Status ── #}
@@ -780,6 +853,7 @@ permalink: /Sharan/SharanPage.html
         {% set statusRaw = project.Status | string %}
       {% endif %}
       {% set statusName = statusRaw | replace("_data/Sharan/ProjectStatus/","") | replace(".json","") | replace("-"," ") | trim %}
+      {% set statusSlug = statusName | lower | replace(" ","-") %}
 
       {% set firstPic = project.Pics[0] if project.Pics and project.Pics.length > 0 else null %}
 
@@ -792,15 +866,22 @@ permalink: /Sharan/SharanPage.html
       >
         <div class="sp-card-glow"></div>
 
+        <div class="sp-card-hud">
+          <span class="sp-hud-index">{{ "0" if loop.index < 10 }}{{ loop.index }}</span>
+          {% if statusName and statusName != "undefined" and statusName != "" %}
+          <span class="sp-hud-status" data-status="{{ statusSlug }}"><span class="sp-status-dot"></span>{{ statusName }}</span>
+          {% endif %}
+        </div>
+
         <div class="sp-thumb">
           {% if firstPic %}
             <img src="/Adit-Sahai.github.io{{ firstPic }}" alt="{{ project.Title }}" loading="lazy" />
           {% else %}
-            <div class="sp-thumb-placeholder">🎮</div>
-          {% endif %}
-
-          {% if statusName and statusName != "undefined" and statusName != "" %}
-          <span class="sp-status-badge badge-{{ statusName | lower | replace(' ','-') }}">{{ statusName }}</span>
+            <div class="sp-thumb-placeholder">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="sp-thumb-icon">
+                <path d="M6 12h2m-1-1v2m6.5-2.5h.01M17 9.5h.01M5.5 7h13a3 3 0 0 1 2.9 3.7l-1.2 5A3 3 0 0 1 17.3 18a2.7 2.7 0 0 1-2.1-1l-1.2-1.5a2 2 0 0 0-1.6-.8h-.8a2 2 0 0 0-1.6.8L8.8 17a2.7 2.7 0 0 1-2.1 1A3 3 0 0 1 3.8 15.7l-1.2-5A3 3 0 0 1 5.5 7z"/>
+              </svg>
+            </div>
           {% endif %}
 
           {% if catName and catName != "undefined" and catName != "" %}
@@ -813,7 +894,10 @@ permalink: /Sharan/SharanPage.html
           <p class="sp-card-desc">{{ project.Description | striptags | truncate(120) }}</p>
           <div class="sp-card-footer">
             <span class="sp-card-date">{{ project.StartedDate }}</span>
-            <span class="sp-card-link">view →</span>
+            <span class="sp-card-link">
+              view
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="sp-card-link-arrow"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
+            </span>
           </div>
         </div>
       </a>
@@ -862,16 +946,60 @@ permalink: /Sharan/SharanPage.html
   <script src="/Adit-Sahai.github.io/MainCode/script.js"></script>
 
   <script>
-    // ── Mouse-tracking glow on project cards ──────────────────────
-    document.querySelectorAll('.sp-project-card').forEach(card => {
-      const glow = card.querySelector('.sp-card-glow');
-      if (!glow) return;
-      card.addEventListener('mousemove', e => {
-        const r = card.getBoundingClientRect();
-        glow.style.left = (e.clientX - r.left) + 'px';
-        glow.style.top  = (e.clientY - r.top) + 'px';
+    // ── About card — subtle 3D tilt + lift (smooth eased return) ──
+    (function () {
+      const about = document.querySelector('.sp-about');
+      if (!about) return;
+
+      about.addEventListener('mouseenter', () => {
+        about.classList.add('is-hovering');
+        about.style.transition = 'transform 0.18s ease, border-color 0.45s ease, box-shadow 0.45s ease';
       });
-    });
+
+      about.addEventListener('mousemove', e => {
+        const r  = about.getBoundingClientRect();
+        const dx = (e.clientX - r.left - r.width  / 2) / (r.width  / 2);
+        const dy = (e.clientY - r.top  - r.height / 2) / (r.height / 2);
+        about.style.transform = `translateY(-6px) perspective(1400px) rotateX(${dy * -1.6}deg) rotateY(${dx * 1.6}deg)`;
+      });
+
+      about.addEventListener('mouseleave', () => {
+        about.classList.remove('is-hovering');
+        about.style.transition = 'transform 0.7s cubic-bezier(0.22,1,0.36,1), border-color 0.45s ease, box-shadow 0.45s ease';
+        about.style.transform  = '';
+      });
+    })();
+
+    // ── Project cards — magnetic pull + tilt + mouse glow ──────────
+    (function () {
+      document.querySelectorAll('.sp-project-card').forEach(card => {
+        const glow = card.querySelector('.sp-card-glow');
+
+        card.addEventListener('mousemove', e => {
+          const r  = card.getBoundingClientRect();
+          const px = e.clientX - r.left;
+          const py = e.clientY - r.top;
+
+          if (glow) { glow.style.left = px + 'px'; glow.style.top = py + 'px'; }
+
+          const dx = (px - r.width  / 2) / (r.width  / 2);
+          const dy = (py - r.height / 2) / (r.height / 2);
+
+          const moveX = dx * 10;
+          const moveY = dy * 10;
+          const rotX  = dy * -4;
+          const rotY  = dx * 4;
+
+          card.style.transform  = `translate(${moveX}px, ${moveY}px) perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+          card.style.transition = 'transform 0.12s ease';
+        });
+
+        card.addEventListener('mouseleave', () => {
+          card.style.transform  = '';
+          card.style.transition = 'transform 0.6s cubic-bezier(0.22,1,0.36,1)';
+        });
+      });
+    })();
 
     // ── Magnetic effect on filter buttons ─────────────────────────
     document.querySelectorAll('.sp-filter-btn').forEach(btn => {
@@ -885,6 +1013,25 @@ permalink: /Sharan/SharanPage.html
       btn.addEventListener('mouseleave', () => {
         btn.style.transform  = '';
         btn.style.transition = 'transform 0.5s cubic-bezier(0.25,1,0.5,1), border-color 0.25s ease, color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease';
+      });
+    });
+
+    // ── Link cards — gentle tilt, smooth return ────────────────────
+    document.querySelectorAll('.sp-link-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.classList.add('is-hovering');
+        card.style.transition = 'transform 0.15s ease, border-color 0.3s ease, box-shadow 0.3s ease';
+      });
+      card.addEventListener('mousemove', e => {
+        const r  = card.getBoundingClientRect();
+        const dx = (e.clientX - r.left - r.width  / 2) / (r.width  / 2);
+        const dy = (e.clientY - r.top  - r.height / 2) / (r.height / 2);
+        card.style.transform = `translateY(-5px) perspective(900px) rotateX(${dy * -2}deg) rotateY(${dx * 2}deg)`;
+      });
+      card.addEventListener('mouseleave', () => {
+        card.classList.remove('is-hovering');
+        card.style.transition = 'transform 0.55s cubic-bezier(0.22,1,0.36,1), border-color 0.3s ease, box-shadow 0.3s ease';
+        card.style.transform  = '';
       });
     });
 
