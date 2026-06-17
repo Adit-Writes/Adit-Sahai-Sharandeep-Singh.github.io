@@ -1,7 +1,7 @@
 {
   "Title": "Test Title",
   "Category": "_data/Sharan/Projectcategories/game-dev.json",
-  "Status": "_data/Sharan/ProjectStatus/onhold.json",
+  "Status": "_data/Sharan/ProjectStatus/concept.json",
   "Pics": [
     "/files/Pics/Author/IMG-20251101-WA0023.jpg"
   ],
