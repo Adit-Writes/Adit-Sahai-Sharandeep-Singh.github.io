@@ -937,10 +937,6 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
 
         <!-- ── Hero ──────────────────────────────────────────────── -->
         <div class="proj-hero">
-            <div class="proj-status-badge reveal" data-status="{{ statusSlug }}">
-                <span class="proj-status-dot"></span>
-                {{ statusName }}
-            </div>
 
             <h1 class="proj-hero-title reveal-heading">
                 <span class="proj-hero-title-inner">{{ project.Title }}</span>
@@ -960,6 +956,11 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
                 <span class="meta-dot"></span>
                 <span class="date">Updated {{ project.LastUpdated }}</span>
                 {% endif %}
+            </div>
+
+            <div class="proj-status-badge reveal" data-status="{{ statusSlug }}">
+                <span class="proj-status-dot"></span>
+                {{ statusName }}
             </div>
 
             <div class="article-title-rule reveal scale-in"><span>✦</span></div>
