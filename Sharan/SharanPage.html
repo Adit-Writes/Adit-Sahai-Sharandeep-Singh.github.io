@@ -29,13 +29,6 @@ permalink: /Sharan/SharanPage.html
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: 'Inter', sans-serif; padding: 0 5%; }
 
-    /* Fix potential hidden element visibility if scroll-reveal classes fail to fire */
-    .reveal, .reveal-heading, .blur-in, .fly-left, .fly-right {
-      opacity: 1 !important;
-      transform: none !important;
-      visibility: visible !important;
-    }
-
     /* ═══ NAV ═══════════════════════════════════════════════════ */
     .sp-nav {
       position: sticky;
@@ -127,8 +120,7 @@ permalink: /Sharan/SharanPage.html
       padding: 8px 16px;
       border-radius: 100px;
       cursor: pointer;
-      /* FIX: Changed background transition from 2.5s to 0.25s for a faster snappy feel */
-      transition: all 0.25s ease, background 0.25s ease-in-out;
+      transition: all 0.25s ease, background 2.5s ease-in-out;
       white-space: nowrap;
     }
     .sp-nav-search-btn:hover {
@@ -142,7 +134,7 @@ permalink: /Sharan/SharanPage.html
     /* ═══ BANNER ═══════════════════════════════════════════════ */
     .sp-banner {
       text-align: center;
-      padding: 120px 20px 40px; /* FIX: Added explicit top padding to stop text crashing into sticky navbar */
+      padding: 76px 20px 24px;
       margin-bottom: 48px;
       max-width: 1100px;
       margin-left: auto;
@@ -171,10 +163,10 @@ permalink: /Sharan/SharanPage.html
 
     .sp-banner-title {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(3.2rem, 8vw, 6.5rem); /* FIX: Reduced extreme clamp sizes to optimize position/scannability */
+      font-size: clamp(4rem, 10vw, 7.4rem);
       font-weight: 700;
       letter-spacing: -0.05em;
-      line-height: 1.1; /* FIX: Bumped from 0.92 to prevent character clipping across browsers */
+      line-height: 0.92;
       margin-bottom: 22px;
       position: relative;
       display: inline-block;
@@ -362,10 +354,10 @@ permalink: /Sharan/SharanPage.html
 
     .sp-section-title {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.5rem, 6vw, 4.5rem); /* FIX: Balanced clamp range to prevent container blowout */
+      font-size: clamp(3.8rem, 8vw, 6.2rem);
       font-weight: 700;
       letter-spacing: -0.05em;
-      line-height: 1.1; /* FIX: Adjusted from 0.9 to ensure text remains fully visible */
+      line-height: 0.9;
       margin-bottom: 16px;
       background: linear-gradient(145deg, #ffffff 10%, var(--accent-gold) 45%, rgba(255,255,255,0.5) 80%);
       background-size: 250% auto;
