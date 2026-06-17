@@ -28,6 +28,10 @@ permalink: /Sharan/SharanPage.html
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: 'Inter', sans-serif;
       padding: 0 5%;
@@ -58,13 +62,28 @@ permalink: /Sharan/SharanPage.html
     }
 
     /* ═══ NAV ═══════════════════════════════════════════════════ */
-    .sp-nav {
-      position: sticky;
+    /* Switched from `position: sticky` to a fixed wrapper. Sticky
+       silently breaks the moment ANY ancestor sets overflow, transform,
+       contain, or perspective — which is exactly what this page's own
+       .sp-project-grid (perspective) and other ancestors can trigger
+       depending on the surrounding site shell. Fixed positioning is
+       immune to that, so the nav now reliably tracks the viewport. */
+    .sp-nav-fixed-wrap {
+      position: fixed;
       top: 20px;
+      left: 0;
+      right: 0;
       z-index: 200;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .sp-nav-fixed-wrap > * { pointer-events: auto; }
+
+    .sp-nav {
       width: 100%;
       max-width: 1100px;
-      margin: 0 auto;
+      margin: 0 5%;
       display: grid;
       grid-template-columns: auto 1fr auto;
       align-items: center;
@@ -76,12 +95,21 @@ permalink: /Sharan/SharanPage.html
       backdrop-filter: blur(40px);
       -webkit-backdrop-filter: blur(40px);
       box-shadow: 0 8px 32px rgba(0,0,0,0.55), 0 0 0 1px rgba(255,255,255,0.03) inset;
-      transition: border-color 2.5s ease-in-out, background 2.5s ease-in-out, box-shadow 0.4s ease;
+      transition: border-color 2.5s ease-in-out, background 2.5s ease-in-out, box-shadow 0.4s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1);
+    }
+    /* Slightly shrinks + gains a stronger shadow once the page has
+       scrolled a bit — gives scroll feedback instead of a static pill */
+    .sp-nav.is-scrolled {
+      box-shadow: 0 10px 36px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.04) inset;
+      transform: translateY(-1px) scale(0.985);
     }
     .sp-nav:hover {
       border-color: var(--glass-border-hover);
       box-shadow: 0 12px 40px rgba(0,0,0,0.7), 0 0 18px var(--accent-gold-dim);
     }
+
+    /* Push page content down so it doesn't sit under the fixed nav */
+    .sp-nav-spacer { height: 76px; width: 100%; }
 
     .sp-nav-left { display: flex; align-items: center; gap: 10px; }
 
@@ -148,6 +176,11 @@ permalink: /Sharan/SharanPage.html
       background: var(--accent-gold-dim);
       border-color: var(--accent-gold-line);
     }
+    .sp-nav-link.is-active {
+      color: var(--accent-gold);
+      background: var(--accent-gold-dim);
+      border-color: var(--accent-gold-line);
+    }
 
     .sp-nav-search-btn {
       display: flex; align-items: center; gap: 7px;
@@ -171,6 +204,18 @@ permalink: /Sharan/SharanPage.html
       box-shadow: 0 4px 16px var(--accent-gold-dim);
     }
     .sp-nav-search-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    /* ═══ SCROLL PROGRESS ══════════════════════════════════════ */
+    .sp-scroll-progress {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent-gold-line), var(--accent-gold));
+      box-shadow: 0 0 10px var(--accent-gold);
+      z-index: 300;
+      transition: width 0.1s ease-out;
+    }
 
     /* ═══ BANNER ════════════════════════════════════════════════ */
     .sp-banner {
@@ -524,19 +569,20 @@ permalink: /Sharan/SharanPage.html
     .sp-search-input::placeholder { color: var(--text-dim); }
 
     /* ═══ PROJECT GRID ══════════════════════════════════════════ */
+    /* Smaller cards: narrower min column width + reduced gap */
     .sp-project-grid {
       width: 100%; max-width: 1100px;
       margin: 0 auto 100px;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-      gap: 28px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
       perspective: 1400px;
     }
 
     .sp-project-card {
       --card-angle: 0deg;
       position: relative;
-      border-radius: 24px;
+      border-radius: 20px;
       border: 1px solid transparent;
       /* Ring lives IN the card background — no separate overlay element needed */
       background:
@@ -579,7 +625,7 @@ permalink: /Sharan/SharanPage.html
 
     .sp-card-glow {
       position: absolute;
-      width: 420px; height: 420px;
+      width: 340px; height: 340px;
       border-radius: 50%;
       pointer-events: none;
       opacity: 0;
@@ -596,7 +642,7 @@ permalink: /Sharan/SharanPage.html
 
     .sp-card-grain {
       position: absolute; inset: 0;
-      border-radius: 24px;
+      border-radius: 20px;
       pointer-events: none;
       z-index: 5;
       opacity: 0.035;
@@ -619,29 +665,29 @@ permalink: /Sharan/SharanPage.html
       position: relative; z-index: 1;
       display: flex; align-items: center; justify-content: space-between;
       gap: 10px;
-      padding: 14px 22px;
+      padding: 11px 18px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
+      font-size: 0.64rem;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       border-bottom: 1px solid var(--glass-border);
       color: var(--text-dim);
     }
-    .sp-hud-index { opacity: 0.55; flex-shrink: 0; font-size: 0.65rem; }
+    .sp-hud-index { opacity: 0.55; flex-shrink: 0; font-size: 0.62rem; }
 
     .sp-hud-status {
       display: flex; align-items: center; gap: 7px;
       flex-shrink: 0;
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-weight: 600;
       letter-spacing: 1.5px;
-      padding: 4px 12px;
+      padding: 3px 10px;
       border-radius: 8px;
       border: 1px solid currentColor;
       opacity: 0.85;
     }
     .sp-status-dot {
-      width: 7px; height: 7px; border-radius: 50%;
+      width: 6px; height: 6px; border-radius: 50%;
       background: currentColor;
       box-shadow: 0 0 8px currentColor;
       flex-shrink: 0;
@@ -709,43 +755,45 @@ permalink: /Sharan/SharanPage.html
     .sp-project-card:hover .sp-thumb-icon { transform: scale(1.06) rotate(-2deg); }
 
     .sp-cat-chip {
-      position: absolute; bottom: 13px; left: 13px;
+      position: absolute; bottom: 11px; left: 11px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.55rem; letter-spacing: 1.5px;
+      font-size: 0.54rem; letter-spacing: 1.5px;
       color: rgba(255,255,255,0.9);
       background: rgba(0,0,0,0.68);
-      padding: 5px 12px; border-radius: 7px;
+      padding: 4px 11px; border-radius: 7px;
       backdrop-filter: blur(10px); text-transform: uppercase;
       z-index: 4; border: 1px solid rgba(255,255,255,0.14);
     }
 
     /* ── CARD BODY + FOOTER LINE HOVER EFFECT ── */
     .sp-card-body {
-      padding: 26px 28px 30px;
+      padding: 20px 22px 24px;
       display: flex; flex-direction: column; flex: 1;
       position: relative; z-index: 1;
     }
 
+    /* Project titles now use the same Space Grotesk family as the About
+       section name, bumped slightly larger than before */
     .sp-card-title {
       font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.32rem; font-weight: 700;
+      font-size: 1.42rem; font-weight: 700;
       letter-spacing: -0.01em;
       color: var(--text-main) !important; line-height: 1.2;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       transition: color 0.4s ease;
     }
     .sp-project-card:hover .sp-card-title { color: #fff !important; }
 
     .sp-card-desc {
-      font-size: 0.84rem; color: var(--text-muted) !important;
-      font-weight: 300; line-height: 1.75;
-      flex: 1; margin-bottom: 22px;
+      font-size: 0.8rem; color: var(--text-muted) !important;
+      font-weight: 300; line-height: 1.7;
+      flex: 1; margin-bottom: 18px;
     }
 
     /* Footer line with hover travel + glow effect */
     .sp-card-footer {
       display: flex; align-items: center; justify-content: space-between;
-      padding-top: 18px;
+      padding-top: 16px;
       position: relative;
     }
     /* The animated line replaces border-top */
@@ -782,22 +830,22 @@ permalink: /Sharan/SharanPage.html
 
     .sp-card-date {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem; color: var(--text-dim) !important; letter-spacing: 0.5px;
+      font-size: 0.6rem; color: var(--text-dim) !important; letter-spacing: 0.5px;
     }
 
     .sp-card-link {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 0.62rem; letter-spacing: 2px; text-transform: uppercase;
+      font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase;
       color: var(--accent-gold) !important;
-      display: flex; align-items: center; gap: 7px;
-      padding: 7px 16px;
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 14px;
       border: 1px solid var(--accent-gold-line);
       border-radius: 10px;
       background: var(--accent-gold-dim);
       transition: color 0.4s ease, background 0.4s ease, border-color 0.4s ease;
       text-decoration: none;
     }
-    .sp-card-link-arrow { width: 13px; height: 13px; transition: transform 0.5s cubic-bezier(0.22,1,0.36,1); flex-shrink: 0; }
+    .sp-card-link-arrow { width: 12px; height: 12px; transition: transform 0.5s cubic-bezier(0.22,1,0.36,1); flex-shrink: 0; }
     .sp-project-card:hover .sp-card-link {
       background: var(--accent-gold); color: #000 !important; border-color: var(--accent-gold);
     }
@@ -848,8 +896,12 @@ permalink: /Sharan/SharanPage.html
     .sp-link-icon svg { width: 22px; height: 22px; }
 
     .sp-link-text { flex: 1; min-width: 0; }
+    /* Link names now use Space Grotesk (matching About name) at a
+       slightly larger size than the previous Inter-based label */
     .sp-link-name {
-      display: block; font-size: 0.9rem; font-weight: 600;
+      display: block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem; font-weight: 600;
       color: var(--text-main) !important; margin-bottom: 3px;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
@@ -883,7 +935,8 @@ permalink: /Sharan/SharanPage.html
     /* ═══ RESPONSIVE ════════════════════════════════════════════ */
     @media (max-width: 768px) {
       body { padding: 0 4%; }
-      .sp-nav { grid-template-columns: auto 1fr; }
+      .sp-nav-fixed-wrap { padding: 0 4%; }
+      .sp-nav { grid-template-columns: auto 1fr; margin: 0; }
       .sp-nav-center { display: none; }
       .sp-about { grid-template-columns: 1fr; padding: 30px 26px; gap: 28px; }
       .sp-portrait-frame { display: none; }
@@ -894,6 +947,7 @@ permalink: /Sharan/SharanPage.html
     @media (prefers-reduced-motion: reduce) {
       .sp-project-card:hover { animation: none; }
       .sp-project-card { transition: none; }
+      html { scroll-behavior: auto; }
     }
 
     body::before {
@@ -910,6 +964,24 @@ permalink: /Sharan/SharanPage.html
       position: relative;
       z-index: 1;
     }
+
+    /* ═══ SCROLL-DRIVEN EXTRAS ═════════════════════════════════ */
+    /* Card index numbers count up as each card enters view, and the
+       status pill gets a tiny "just landed" pop — handled in JS below
+       by toggling .sp-card-landed, defined here for the keyframe. */
+    @keyframes spCardLand {
+      0%   { transform: scale(0.94); }
+      55%  { transform: scale(1.015); }
+      100% { transform: scale(1); }
+    }
+    .sp-project-card.sp-card-landed .sp-card-hud {
+      animation: spCardLand 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    /* Banner parallax target — JS translates this on scroll */
+    .sp-banner-title, .sp-banner-sub {
+      will-change: transform;
+    }
   </style>
 </head>
 <body>
@@ -917,31 +989,36 @@ permalink: /Sharan/SharanPage.html
   <div id="bg-dots"></div>
   <div id="bg-canvas"></div>
 
-  <!-- NAV -->
-  <nav class="sp-nav">
-    <div class="sp-nav-left">
-      <a href="/Adit-Sahai.github.io/index.html" class="sp-nav-home">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-        A&amp;S
-      </a>
-      <div class="sp-nav-sep"></div>
-      <div class="sp-nav-dot"></div>
-      <span class="sp-nav-brand">{{ Sharan.AboutPage.Name }}</span>
-    </div>
+  <div class="sp-scroll-progress" id="spScrollProgress"></div>
 
-    <div class="sp-nav-center">
-      <a href="#about"    class="sp-nav-link">About</a>
-      <a href="#projects" class="sp-nav-link">Projects</a>
-      <a href="#links"    class="sp-nav-link">Links</a>
-    </div>
+  <!-- NAV (fixed wrapper so it always tracks the viewport) -->
+  <div class="sp-nav-fixed-wrap">
+    <nav class="sp-nav" id="spNav">
+      <div class="sp-nav-left">
+        <a href="/Adit-Sahai.github.io/index.html" class="sp-nav-home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          A&amp;S
+        </a>
+        <div class="sp-nav-sep"></div>
+        <div class="sp-nav-dot"></div>
+        <span class="sp-nav-brand">{{ Sharan.AboutPage.Name }}</span>
+      </div>
 
-    <div class="sp-nav-right">
-      <button class="sp-nav-search-btn" id="spNavSearchBtn" onclick="document.getElementById('spProjectSearch').focus(); document.getElementById('projects').scrollIntoView({behavior:'smooth'});">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        Search
-      </button>
-    </div>
-  </nav>
+      <div class="sp-nav-center">
+        <a href="#about"    class="sp-nav-link" data-section="about">About</a>
+        <a href="#projects" class="sp-nav-link" data-section="projects">Projects</a>
+        <a href="#links"    class="sp-nav-link" data-section="links">Links</a>
+      </div>
+
+      <div class="sp-nav-right">
+        <button class="sp-nav-search-btn" id="spNavSearchBtn" onclick="document.getElementById('spProjectSearch').focus(); document.getElementById('projects').scrollIntoView({behavior:'smooth'});">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Search
+        </button>
+      </div>
+    </nav>
+  </div>
+  <div class="sp-nav-spacer"></div>
 
   <!-- BANNER: kicker removed, title + sub only -->
   <div class="sp-banner">
@@ -1104,6 +1181,82 @@ permalink: /Sharan/SharanPage.html
   <script src="/Adit-Sahai.github.io/MainCode/script.js"></script>
 
   <script>
+    // ── Fixed nav: scroll state + active section highlighting ──
+    (function () {
+      const nav = document.getElementById('spNav');
+      if (!nav) return;
+
+      // Toggle a subtle "scrolled" state once the page moves
+      let lastScrolled = false;
+      function onScroll() {
+        const scrolled = window.scrollY > 12;
+        if (scrolled !== lastScrolled) {
+          nav.classList.toggle('is-scrolled', scrolled);
+          lastScrolled = scrolled;
+        }
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      // Highlight the nav link for whichever section is in view
+      const navLinks = Array.from(document.querySelectorAll('.sp-nav-link[data-section]'));
+      const sections = ['about', 'projects', 'links']
+        .map(id => document.getElementById(id))
+        .filter(Boolean);
+
+      if (sections.length && navLinks.length) {
+        const io = new IntersectionObserver(entries => {
+          entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            navLinks.forEach(link => {
+              link.classList.toggle('is-active', link.dataset.section === entry.target.id);
+            });
+          });
+        }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+
+        sections.forEach(s => io.observe(s));
+      }
+    })();
+
+    // ── Top scroll progress bar ──
+    (function () {
+      const bar = document.getElementById('spScrollProgress');
+      if (!bar) return;
+      let ticking = false;
+      function update() {
+        const total = document.documentElement.scrollHeight - window.innerHeight;
+        bar.style.width = total > 0 ? `${Math.min((window.scrollY / total) * 100, 100)}%` : '0%';
+        ticking = false;
+      }
+      window.addEventListener('scroll', () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }, { passive: true });
+      update();
+    })();
+
+    // ── Banner parallax — title drifts up + fades slightly on scroll ──
+    (function () {
+      const title = document.querySelector('.sp-banner-title');
+      const sub   = document.querySelector('.sp-banner-sub');
+      if (!title) return;
+      let ticking = false;
+      function update() {
+        const y = window.scrollY;
+        const fade = Math.max(1 - y / 420, 0);
+        title.style.transform = `translateY(${y * 0.32}px)`;
+        title.style.opacity   = fade;
+        if (sub) {
+          sub.style.transform = `translateY(${y * 0.18}px)`;
+          sub.style.opacity   = fade;
+        }
+        ticking = false;
+      }
+      window.addEventListener('scroll', () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }, { passive: true });
+      update();
+    })();
+
     // ── About card — 3D tilt + slow eased return ──
     (function () {
       const about = document.querySelector('.sp-about');
@@ -1227,6 +1380,20 @@ permalink: /Sharan/SharanPage.html
           card.style.transition = 'transform 1.1s cubic-bezier(0.22,1,0.36,1), box-shadow 0.8s cubic-bezier(0.22,1,0.36,1)';
         });
       });
+    })();
+
+    // ── Project cards — "landed" pop the moment they enter view ──
+    (function () {
+      const cards = document.querySelectorAll('.sp-project-card');
+      if (!cards.length) return;
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('sp-card-landed');
+          io.unobserve(entry.target);
+        });
+      }, { threshold: 0.35 });
+      cards.forEach(c => io.observe(c));
     })();
 
     // ── Magnetic effect on filter buttons ─────────────────────────
