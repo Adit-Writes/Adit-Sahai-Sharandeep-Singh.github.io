@@ -1050,7 +1050,7 @@ function initLinkCardReveal() {
 
 // Adit Sharan Cards 3d Tilt
 
-function initStatCardTilt() {
+function initCreatorCardTilt() {
   document.querySelectorAll('.Creator-Card').forEach(card => {
     card.addEventListener('mousemove', (e) => {
       const rect  = card.getBoundingClientRect();
@@ -1552,6 +1552,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Interactive polish
   initStatCardTilt();
+  initCreatorCardTilt()
   initArticleCardTilt();
   initScrollVelocityWarp();
   initSectionTitles();
