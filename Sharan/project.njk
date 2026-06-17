@@ -5,25 +5,6 @@ pagination:
   alias: project
 permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
 ---
-{#
-  NOTES FOR ADIT / SHARAN (delete this comment once read):
-
-  1. New Supabase tables needed — fully separate from the Adit/article tables:
-       - project_likes         (id, project_id text, fingerprint text, created_at timestamptz default now())
-       - project_comments      (id, project_id text, name text, body text, fingerprint text, created_at timestamptz default now())
-       - project_comment_likes (id, comment_id uuid -> project_comments.id, fingerprint text, created_at timestamptz default now())
-     See projects_supabase.sql for the full create-table + RLS policy script.
-
-  2. This page reuses a handful of class names that live in your shared
-     MainCode/style.css rather than redefining them here — same trick article.njk
-     uses (.article-hero-meta, .category, .meta-dot, .read-time, .date,
-     .article-title-rule, .article-lead, .article-divider, .article-body-card,
-     .article-body, .interactions-row, .like-btn, .comments-section and friends,
-     .search-wrap/.search-toggle/.search-box). Because we redeclare the gold
-     --accent-* variables on :root below (same trick SharanPage.html uses), those
-     shared components should automatically pick up Sharan's palette. If anything
-     looks off against the shared stylesheet, flag it and it's an easy tweak.
-#}
 
 {% if project.Category and project.Category.name %}
   {% set catRaw = project.Category.name %}
