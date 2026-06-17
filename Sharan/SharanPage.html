@@ -188,10 +188,11 @@ permalink: /Sharan/SharanPage.html
     }
 
     .sp-banner-title {
-      font-family: 'Space Grotesk', sans-serif;
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
       font-size: clamp(4rem, 10vw, 7.4rem);
       font-weight: 700;
-      letter-spacing: -0.05em;
+      letter-spacing: -0.03em;
       line-height: 0.92;
       margin-bottom: 28px;
       position: relative;
@@ -376,21 +377,57 @@ permalink: /Sharan/SharanPage.html
       margin: 0 auto 56px;
     }
 
-    /* FIX: section titles always visible — solid white fallback, gradient only as enhancement */
+    /* Section titles — Playfair italic, shimmer gradient, smaller */
     .sp-section-title {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(3.8rem, 8vw, 6.2rem);
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(2rem, 4vw, 3rem) !important;
       font-weight: 700;
-      letter-spacing: -0.05em;
-      line-height: 0.9;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
       margin-bottom: 16px;
-      /* Always visible solid color */
-      color: #ffffff !important;
-      -webkit-text-fill-color: #ffffff !important;
-      /* No background-clip by default — override the external stylesheet */
-      background: none !important;
-      -webkit-background-clip: unset !important;
-      background-clip: unset !important;
+      /* Shimmer gradient: accent sweeps left→right continuously */
+      background: linear-gradient(
+        100deg,
+        rgba(255,255,255,0.55) 0%,
+        #ffffff               15%,
+        var(--accent-gold)    30%,
+        #ffffff               45%,
+        rgba(255,255,255,0.55) 60%,
+        var(--accent-gold)    75%,
+        #ffffff               90%,
+        rgba(255,255,255,0.55) 100%
+      ) !important;
+      background-size: 250% auto !important;
+      -webkit-background-clip: text !important;
+      background-clip: text !important;
+      -webkit-text-fill-color: transparent !important;
+      color: #fff;
+      animation: sectionTitleShimmer 5s linear infinite;
+    }
+    @keyframes sectionTitleShimmer {
+      0%   { background-position: 200% center; }
+      100% { background-position: -50% center; }
+    }
+    /* Solid fallback — also covers initSectionTitles() span wrapping */
+    @supports not (-webkit-background-clip: text) {
+      .sp-section-title {
+        background: none !important;
+        -webkit-text-fill-color: #ffffff !important;
+        color: #ffffff !important;
+        animation: none;
+      }
+    }
+    @media (max-width: 768px) {
+      .sp-section-title { -webkit-text-fill-color: rgba(255,255,255,0.92) !important; }
+    }
+    /* Ensure child spans from initSectionTitles() inherit the clip */
+    .sp-section-title span {
+      display: inline-block;
+      background: inherit;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     .sp-section-sub {
@@ -500,8 +537,19 @@ permalink: /Sharan/SharanPage.html
       --card-angle: 0deg;
       position: relative;
       border-radius: 24px;
-      border: 1px solid rgba(255,255,255,0.1);
-      background: rgba(18,14,10,0.85);
+      border: 1px solid transparent;
+      /* Ring lives IN the card background — no separate overlay element needed */
+      background:
+        linear-gradient(var(--glass-bg), var(--glass-bg)) padding-box,
+        conic-gradient(
+          from var(--card-angle),
+          transparent 0deg,
+          var(--accent-gold-line) 35deg,
+          var(--accent-gold)      60deg,
+          var(--accent-gold-line) 85deg,
+          transparent 130deg,
+          transparent 360deg
+        ) border-box;
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       overflow: hidden;
@@ -510,49 +558,23 @@ permalink: /Sharan/SharanPage.html
       cursor: pointer;
       will-change: transform;
       box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      /* Do NOT transition --card-angle here — JS owns that */
       transition:
         box-shadow 0.8s cubic-bezier(0.22,1,0.36,1),
-        border-color 0.8s ease,
-        transform 1.1s cubic-bezier(0.22,1,0.36,1);
+        transform  1.1s cubic-bezier(0.22,1,0.36,1);
     }
-
-    /* ── FIXED RING: freeze angle in place instead of snapping to 0deg ── */
-    .sp-card-ring {
-      position: absolute; inset: -1px;
-      border-radius: 24px;
-      padding: 1px;
-      background: conic-gradient(
-        from var(--card-angle),
-        transparent 0deg,
-        var(--accent-gold-line) 35deg,
-        var(--accent-gold) 60deg,
-        var(--accent-gold-line) 85deg,
-        transparent 130deg,
-        transparent 360deg
-      );
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-      opacity: 0;
-      /* Transition only opacity — no animation on ring itself by default */
-      transition: opacity 0.5s ease;
-    }
-    .sp-project-card:hover .sp-card-ring {
-      opacity: 1;
+    /* While spinning on hover */
+    .sp-project-card.ring-spinning {
       animation: cardRingSpin 3s linear infinite;
     }
-    /* On leave: fade out with transition (opacity), JS will pause animation cleanly */
-    .sp-project-card.ring-fading .sp-card-ring {
-      opacity: 0;
+    /* While easing back — JS sets --card-angle inline each frame */
+    .sp-project-card.ring-returning {
       animation: none;
-      /* angle stays frozen via inline style set by JS */
     }
     @keyframes cardRingSpin { to { --card-angle: 360deg; } }
 
     .sp-project-card:hover {
       box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 42px var(--accent-gold-dim);
-      border-color: rgba(212,160,80,0.2);
     }
 
     .sp-card-glow {
@@ -951,7 +973,7 @@ permalink: /Sharan/SharanPage.html
   <div id="projects">
 
     <div class="sp-section reveal">
-      <h2 class="sp-section-title reveal-heading">Projects</h2>
+      <h2 class="sp-section-title reveal">Projects</h2>
       <p class="sp-section-sub">Games, tools &amp; creative experiments</p>
       <div class="sp-section-rule">
         <div class="sp-section-rule-dot"></div>
@@ -999,7 +1021,6 @@ permalink: /Sharan/SharanPage.html
         data-title="{{ project.Title | lower }}"
         data-desc="{{ project.Description | striptags | lower }}"
       >
-        <div class="sp-card-ring"></div>
         <div class="sp-card-glow"></div>
         <div class="sp-card-grain"></div>
 
@@ -1048,7 +1069,7 @@ permalink: /Sharan/SharanPage.html
   <!-- LINKS -->
   <div id="links">
     <div class="sp-section reveal">
-      <h2 class="sp-section-title reveal-heading">Links</h2>
+      <h2 class="sp-section-title reveal">Links</h2>
       <p class="sp-section-sub">Find me elsewhere on the internet</p>
       <div class="sp-section-rule">
         <div class="sp-section-rule-dot"></div>
@@ -1107,19 +1128,31 @@ permalink: /Sharan/SharanPage.html
       });
     })();
 
-    // ── Project cards — ring snap fix + heavy card tilt ──
+    // ── Project cards — ring with smooth angle return + tilt ──
     (function () {
       document.querySelectorAll('.sp-project-card').forEach(card => {
-        const ring = card.querySelector('.sp-card-ring');
         const glow = card.querySelector('.sp-card-glow');
-        let ringFadeTimer = null;
+        let returnRaf    = null;  // rAF handle for angle return
+        let currentAngle = 0;    // tracked angle in degrees (0–360)
+
+        function parseAngle(str) {
+          const v = parseFloat(str);
+          return isNaN(v) ? 0 : v;
+        }
+
+        function cancelReturn() {
+          if (returnRaf) { cancelAnimationFrame(returnRaf); returnRaf = null; }
+        }
 
         card.addEventListener('mouseenter', () => {
-          // Cancel any pending fade-out
-          if (ringFadeTimer) { clearTimeout(ringFadeTimer); ringFadeTimer = null; }
-          card.classList.remove('ring-fading');
-          // Remove frozen angle so animation can resume freely
-          if (ring) ring.style.removeProperty('--card-angle');
+          cancelReturn();
+          // Read wherever the angle stopped, then let CSS animation take over
+          const computed = getComputedStyle(card).getPropertyValue('--card-angle').trim();
+          currentAngle   = parseAngle(computed);
+          // Remove inline style so CSS animation (cardRingSpin) controls it
+          card.style.removeProperty('--card-angle');
+          card.classList.add('ring-spinning');
+          card.classList.remove('ring-returning');
         });
 
         card.addEventListener('mousemove', e => {
@@ -1137,26 +1170,61 @@ permalink: /Sharan/SharanPage.html
         });
 
         card.addEventListener('mouseleave', () => {
-          // Freeze the ring at its current visual angle before stopping animation
-          if (ring) {
-            // Read the computed --card-angle; if @property isn't supported, default to 0
-            const computed = getComputedStyle(card).getPropertyValue('--card-angle').trim();
-            ring.style.setProperty('--card-angle', computed || '0deg');
+          // Stop CSS animation, capture current angle, ease back to 0
+          card.classList.remove('ring-spinning');
+          card.classList.add('ring-returning');
+
+          // Read the angle the animation had reached
+          const computed = getComputedStyle(card).getPropertyValue('--card-angle').trim();
+          let   angle    = parseAngle(computed);
+          // Normalise to 0-360
+          angle = ((angle % 360) + 360) % 360;
+          // If already past 180 it's faster to go forward to 360→0
+          // If before 180 go backward toward 0
+          // We always ease toward 0 (full rotation ÷ remaining degrees)
+          // Strategy: smoothly decelerate toward next multiple of 360 (i.e., angle → 360 if >0)
+          const target = angle > 0 ? 360 : 0;
+          let   from   = angle;
+
+          // Set first frame so there's no jump
+          card.style.setProperty('--card-angle', from + 'deg');
+
+          let lastTime = null;
+          // Ease over ~700ms — exponential approach
+          const DURATION = 700;
+          let elapsed = 0;
+
+          function step(ts) {
+            if (!lastTime) lastTime = ts;
+            const dt = ts - lastTime;
+            lastTime = ts;
+            elapsed += dt;
+
+            // Exponential ease-out: remaining = from * e^(-k*t)
+            const t = Math.min(elapsed / DURATION, 1);
+            // easeOutCubic
+            const eased = 1 - Math.pow(1 - t, 3);
+            const current = from + (target - from) * eased;
+
+            card.style.setProperty('--card-angle', current + 'deg');
+
+            if (t < 1) {
+              returnRaf = requestAnimationFrame(step);
+            } else {
+              // Fully returned — reset to 0 cleanly
+              card.style.setProperty('--card-angle', '0deg');
+              card.classList.remove('ring-returning');
+              card.style.removeProperty('--card-angle');
+              returnRaf = null;
+            }
           }
 
-          // Add fading class — CSS fades opacity to 0, animation stops cleanly
-          card.classList.add('ring-fading');
+          cancelReturn();
+          returnRaf = requestAnimationFrame(step);
 
-          // After fade completes, clean up
-          ringFadeTimer = setTimeout(() => {
-            card.classList.remove('ring-fading');
-            if (ring) ring.style.removeProperty('--card-angle');
-            ringFadeTimer = null;
-          }, 600);
-
-          // Card return
+          // Card transform return
           card.style.transform  = '';
-          card.style.transition = 'transform 1.1s cubic-bezier(0.22,1,0.36,1), box-shadow 0.8s cubic-bezier(0.22,1,0.36,1), border-color 0.8s ease';
+          card.style.transition = 'transform 1.1s cubic-bezier(0.22,1,0.36,1), box-shadow 0.8s cubic-bezier(0.22,1,0.36,1)';
         });
       });
     })();
