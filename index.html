@@ -131,29 +131,68 @@ permalink: /index.html
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
+        /* fallback color stays rgba(255,255,255,0.95) from parent rule */
       }
     }
 
 
     /* ── HERO LOAD ANIMATION ──────────────────────────────────── */
+    /* eyebrow slides up first */
     .hero-eyebrow {
-      animation: blurFadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.1s both;
-      opacity: 1 !important; /* override the opacity:0 that was there */
+      animation: blurFadeUp 0.6s cubic-bezier(0.22,1,0.36,1) 0.05s both;
+      opacity: 1 !important;
     }
-    .hero-title:nth-of-type(1) {
-      animation: heroFadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.25s both;
+    /* hero titles fade in as a whole — individual chars animated via JS */
+    .hero-title {
+      opacity: 0;
     }
-    .hero-title:nth-of-type(2) {
-      animation: heroFadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.42s both;
+    .hero-title.chars-ready {
+      opacity: 1; /* JS reveals after splitting */
     }
+    /* each character span */
+    .hero-char {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(0.35em) rotateX(-60deg);
+      transform-origin: 50% 100%;
+      animation: charIn 0.55s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    @keyframes charIn {
+      to { opacity: 1; transform: translateY(0) rotateX(0deg); }
+    }
+    /* gold shimmer sweep that plays once across the full title line */
+    .hero-title.chars-ready::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(212,175,55,0.55) 45%,
+        rgba(255,220,100,0.8) 50%,
+        rgba(212,175,55,0.55) 55%,
+        transparent 100%
+      );
+      background-size: 200% 100%;
+      animation: goldSweep 0.9s cubic-bezier(0.4,0,0.2,1) 0.6s both;
+      pointer-events: none;
+      border-radius: 4px;
+      mix-blend-mode: screen;
+    }
+    @keyframes goldSweep {
+      from { background-position: 200% center; opacity: 0; }
+      20%  { opacity: 1; }
+      to   { background-position: -200% center; opacity: 0; }
+    }
+    .hero-title { position: relative; }
+
     .hero-tagline {
-      animation: blurFadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.6s both;
+      animation: blurFadeUp 0.7s cubic-bezier(0.22,1,0.36,1) 0.9s both;
     }
     .hero-accent-line {
-      animation: blurFadeUp 0.6s ease 0.8s both;
+      animation: blurFadeUp 0.6s ease 1.1s both;
     }
     .hero-scroll-hint {
-      animation: blurFadeUp 0.6s ease 1.1s both, scrollBounce 2.2s ease-in-out 1.7s infinite;
+      animation: blurFadeUp 0.6s ease 1.4s both, scrollBounce 2.2s ease-in-out 2s infinite;
     }
 
     /* ── SECTION HEADING UNDERLINE SWEEP ─────────────────────── 
@@ -510,7 +549,7 @@ permalink: /index.html
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
-        color: transparent;
+        /* Never use color:transparent — mobile WebKit renders it black */
       }
     }
 
@@ -643,7 +682,7 @@ permalink: /index.html
       font-size: clamp(2rem, 5vw, 3.2rem);
       font-weight: 900;
       margin-bottom: 12px;
-      display: block;
+      display: inline-block;
       background: linear-gradient(160deg, #ffffff 30%, var(--accent-gold) 60%, #ffffff 90%);
       background-size: 200% auto;
       color: rgba(255,255,255,0.92);
@@ -656,6 +695,7 @@ permalink: /index.html
         -webkit-background-clip: text;
         background-clip: text;
         -webkit-text-fill-color: transparent;
+        /* color stays rgba(255,255,255,0.92) as fallback — never transparent */
       }
     }
 
@@ -1078,15 +1118,51 @@ permalink: /index.html
 
 
   <script>
+    /* ── CHAR SPLIT: hero titles ──────────────────────────────── */
+    (function() {
+      // Split each hero title into individual character spans
+      // so we can stagger their entry animation
+      const titles = document.querySelectorAll('.hero-title');
+      titles.forEach((title, titleIdx) => {
+        const baseDelay = titleIdx === 0 ? 0.2 : 0.55; // title 1 starts sooner
+        const text = title.textContent;
+        const words = text.trim().split(/(\s+)/);
+        let charCount = 0;
+        title.innerHTML = '';
+        words.forEach(word => {
+          if (/^\s+$/.test(word)) {
+            // preserve spaces
+            title.appendChild(document.createTextNode(word));
+            return;
+          }
+          const wordSpan = document.createElement('span');
+          wordSpan.style.display = 'inline-block';
+          wordSpan.style.whiteSpace = 'nowrap';
+          [...word].forEach(ch => {
+            const span = document.createElement('span');
+            span.className = 'hero-char';
+            span.textContent = ch;
+            // stagger each character
+            span.style.animationDelay = (baseDelay + charCount * 0.032) + 's';
+            wordSpan.appendChild(span);
+            charCount++;
+          });
+          title.appendChild(wordSpan);
+        });
+        // After splitting, show the title and trigger the sweep
+        requestAnimationFrame(() => {
+          title.classList.add('chars-ready');
+        });
+      });
+    })();
+
     /* ── SCROLL REVEAL ─────────────────────────────────────────── */
     (function() {
       const io = new IntersectionObserver((entries) => {
         entries.forEach(e => {
           if (!e.isIntersecting) return;
           const el = e.target;
-          // Add visible class to reveal element or group
           el.classList.add('is-visible');
-          // Heading underline: add to the element itself or its title child
           if (el.classList.contains('links-section-title')) {
             el.classList.add('heading-visible');
           }
@@ -1096,7 +1172,6 @@ permalink: /index.html
         });
       }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
 
-      // Observe all reveal targets
       document.querySelectorAll(
         '.reveal, .reveal-group, .scale-in, .links-section-title'
       ).forEach(el => io.observe(el));
