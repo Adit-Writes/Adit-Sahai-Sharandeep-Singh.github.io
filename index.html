@@ -123,13 +123,14 @@ permalink: /index.html
       color: rgba(255,255,255,0.95);
     }
 
-    @media (min-width: 769px) {
-      @supports (-webkit-background-clip: text) {
-        .hero-title span > span {
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
+    /* ── FIX: shimmer text clip applies on ALL screen sizes ─────
+       Removed the @media (min-width: 769px) wrapper so phones also
+       get the text-mask effect instead of a visible gradient box.  */
+    @supports (-webkit-background-clip: text) {
+      .hero-title span > span {
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
     }
 
@@ -407,16 +408,18 @@ permalink: /index.html
       background-size: 220% auto;
       animation: statsLabelShimmer 5s linear infinite;
     }
-    @media (min-width: 769px) {
-      @supports (-webkit-background-clip: text) {
-        .adit-stats-label {
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-          color: transparent;
-        }
+
+    /* ── FIX: shimmer text clip on ALL screen sizes ─────────────
+       Removed @media (min-width: 769px) wrapper.                  */
+    @supports (-webkit-background-clip: text) {
+      .adit-stats-label {
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: transparent;
       }
     }
+
     @keyframes statsLabelShimmer {
       0%   { background-position: 0% center; }
       100% { background-position: 220% center; }
@@ -555,27 +558,28 @@ permalink: /index.html
       animation: heroTitleShimmer 6s linear infinite;
       color: rgba(255,255,255,0.92);
     }
-    @media (min-width: 769px) {
-      @supports (-webkit-background-clip: text) {
-        .links-section-title {
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
+
+    /* ── FIX: links-section-title clip on ALL screen sizes ──────
+       Removed @media (min-width: 769px) wrappers.                 */
+    @supports (-webkit-background-clip: text) {
+      .links-section-title {
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
     }
+
     .links-section-title span {
       background: inherit;
       background-size: inherit;
       animation: none;
     }
-    @media (min-width: 769px) {
-      @supports (-webkit-background-clip: text) {
-        .links-section-title span {
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
+
+    @supports (-webkit-background-clip: text) {
+      .links-section-title span {
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
     }
 
@@ -650,7 +654,15 @@ permalink: /index.html
 
     .link-card-text { display: flex; flex-direction: column; gap: 3px; min-width: 0; flex: 1; }
     .link-card-label { font-size: 0.88rem; font-weight: 600; color: var(--text-main); transition: color 1.5s ease-in-out; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .link-card-url { font-size: 0.72rem; color: var(--text-dim); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; transition: color 1.5s ease-in-out; }
+    /* ── FIX: allow URL text to wrap so it never causes horizontal overflow */
+    .link-card-url {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      transition: color 1.5s ease-in-out;
+      word-break: break-all;
+      overflow-wrap: anywhere;
+      white-space: normal;
+    }
     .link-card:hover .link-card-url { color: var(--accent-gold); }
 
     .link-card-arrow { color: var(--text-dim); font-size: 1rem; flex-shrink: 0; transition: color 0.25s ease, transform 0.25s ease; }
@@ -708,16 +720,32 @@ permalink: /index.html
       .sharan-teaser { flex-wrap: wrap; padding: 20px; gap: 12px; }
       .sharan-teaser-badge { margin-left: 0; }
 
-      /* Links */
+      /* Links — stack vertically, constrained to viewport */
       .links-section { padding: 0 16px 60px; }
       .links-grid {
         flex-direction: column;
         align-items: stretch;
+        width: 100%;
       }
-      .link-card { flex: 1 1 auto; }
+      .link-card {
+        flex: 1 1 auto;
+        max-width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+      }
+      .link-card-text {
+        min-width: 0;
+        overflow: hidden;
+      }
 
       /* Footer */
       .index-footer { padding: 30px 16px; }
+    }
+
+    /* ── FIX: prevent any child from pushing page wider than viewport ── */
+    html, body {
+      overflow-x: hidden;
+      max-width: 100%;
     }
   </style>
 </head>
