@@ -14,7 +14,7 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/Adit-Sahai.github.io/MainCode/style.css">
+    <link rel="stylesheet" href="/Adit-Sahai-Sharandeep-Singh.github.io/MainCode/style.css">
 
     <style>
         /* ════════════════════════════════════════════════════════════
@@ -651,9 +651,9 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
         <div class="logo">A.S.</div>
         <div class="navbar-divider"></div>
         <div class="nav-links">
-            <a href="/Adit-Sahai.github.io/Adit/AditPage">About</a>
-            <a href="/Adit-Sahai.github.io/Adit/AditPage#books">Books</a>
-            <a href="/Adit-Sahai.github.io/Adit/AditPage#articles">Articles</a>
+            <a href="/Adit-Sahai-Sharandeep-Singh.github.io/Adit/AditPage">About</a>
+            <a href="/Adit-Sahai-Sharandeep-Singh.github.io/Adit/AditPage#books">Books</a>
+            <a href="/Adit-Sahai-Sharandeep-Singh.github.io/Adit/AditPage#articles">Articles</a>
         </div>
         <!-- Search -->
         <div class="search-wrap" id="searchWrap">
@@ -677,7 +677,7 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
     {# article.Topic is already resolved to the category display name by _data/Adit/Articles.js #}
 
     <div class="article-page">
-        <a href="/Adit-Sahai.github.io/Adit/AditPage#articles" class="back-link reveal">← Back to Essays</a>
+        <a href="/Adit-Sahai-Sharandeep-Singh.github.io/Adit/AditPage#articles" class="back-link reveal">← Back to Essays</a>
 
         <!-- Hero -->
         <article class="article-hero">
@@ -714,7 +714,7 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
                     {% for pic in article.Pics %}
                     <div class="gallery-slide" data-index="{{ loop.index0 }}">
                         <img
-                            src="/Adit-Sahai.github.io{{ pic }}"
+                            src="/Adit-Sahai-Sharandeep-Singh.github.io{{ pic }}"
                             alt="{{ article.Title }} — image {{ loop.index }}"
                             loading="{{ 'eager' if loop.first else 'lazy' }}"
                         >
@@ -775,7 +775,7 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
             {% for vf in videoFiles %}
             <div class="video-embed-wrap" style="{{ 'margin-bottom:14px;' if not loop.last }}">
                 <video controls preload="metadata" playsinline>
-                    <source src="/Adit-Sahai.github.io{{ vf }}" type="video/{{ vf.split('.')[-1] | lower | replace('mov','quicktime') }}">
+                    <source src="/Adit-Sahai-Sharandeep-Singh.github.io{{ vf }}" type="video/{{ vf.split('.')[-1] | lower | replace('mov','quicktime') }}">
                     Your browser doesn't support the video tag.
                 </video>
             </div>
@@ -793,7 +793,7 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
                 {% for af in audioFiles %}
                 <div class="audio-player-item">
                     <audio controls preload="metadata" style="flex:1;">
-                        <source src="/Adit-Sahai.github.io{{ af }}" type="audio/{{ af.split('.')[-1] | lower }}">
+                        <source src="/Adit-Sahai-Sharandeep-Singh.github.io{{ af }}" type="audio/{{ af.split('.')[-1] | lower }}">
                         Your browser doesn't support the audio element.
                     </audio>
                 </div>
@@ -822,7 +822,7 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
                 {%- set isPdf    = ext === 'pdf' -%}
                 {%- set isDoc    = ext in ['doc','docx','odt','pages','txt','rtf','xls','xlsx','csv','ppt','pptx'] -%}
                 <a
-                    href="/Adit-Sahai.github.io{{ df }}"
+                    href="/Adit-Sahai-Sharandeep-Singh.github.io{{ df }}"
                     class="file-card link-card reveal"
                     style="transition-delay: {{ loop.index0 * 60 }}ms"
                     target="_blank"
@@ -919,7 +919,7 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
         {% endif %}
 
         <div class="article-nav-footer reveal">
-            <a href="/Adit-Sahai.github.io/Adit/AditPage#articles">← View all essays</a>
+            <a href="/Adit-Sahai-Sharandeep-Singh.github.io/Adit/AditPage#articles">← View all essays</a>
         </div>
     </div>
 
@@ -927,7 +927,7 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
         <p>&copy; 2026 The Sahai Analogy. All rights reserved.</p>
     </footer>
 
-    <script src="/Adit-Sahai.github.io/MainCode/script.js"></script>
+    <script src="/Adit-Sahai-Sharandeep-Singh.github.io/MainCode/script.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
 
@@ -1430,7 +1430,7 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
                 matches.forEach(a => {
                     const link     = document.createElement('a');
                     link.className = 'search-result-item';
-                    link.href      = `/Adit-Sahai.github.io/Adit/articles/${a.slug}/`;
+                    link.href      = `/Adit-Sahai-Sharandeep-Singh.github.io/Adit/articles/${a.slug}/`;
                     const likedTag = likedSlugs.has(a.slug) ? ' <span style="color:var(--accent-gold)">♥</span>' : '';
                     link.innerHTML = `<strong>${escHtml(a.title)}${likedTag}</strong><span class="s-cat">${escHtml(a.category)}</span>`;
                     results.appendChild(link);
