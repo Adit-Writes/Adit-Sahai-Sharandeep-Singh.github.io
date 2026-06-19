@@ -975,6 +975,7 @@ function initReveal() {
 // ============================================================
 
 function initHeroTitleReveal() {
+  if (window._heroTitleRevealDone) return;
   const titles = document.querySelectorAll('.hero-title');
   if (!titles.length) return;
 
