@@ -118,6 +118,10 @@ content:
             type: string
             required: true
 
+  - name: MainPage
+    type: group
+    items:
+
       - name: Books
         path: _data/Adit/BooksData
         type: collection
