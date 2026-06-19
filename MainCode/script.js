@@ -12,408 +12,207 @@ const REDUCED_MOTION        = window.matchMedia('(prefers-reduced-motion: reduce
 // ============================================================
 
 const MY_FAVORITE_THEMES = [
+  // --- CONTRASTING UI THEMES (Dueling Colors) ---
   {
-    name: "Bordeaux Reserve", // Deep wine, crushed velvet, and soft rose-champagne
+    name: "Midnight Sunset",
     tokens: {
-      '--bg-base':             '#0a0405',
-      '--glass-bg':            'rgba(28, 12, 14, 0.60)',
-      '--glass-bg-strong':     'rgba(20, 8, 10, 0.88)',
-      '--glass-border':        'rgba(180, 130, 140, 0.15)',
-      '--glass-border-hover':  'rgba(180, 130, 140, 0.50)',
-      '--text-main':           '#fdfafb',
-      '--text-muted':          '#cfbcc0',
-      '--text-dim':            '#856a70',
-      '--accent-gold':         '#b87a88', // Muted Rose-Champagne
-      '--accent-gold-dim':     'rgba(184, 122, 136, 0.12)',
-      '--accent-gold-line':    'rgba(184, 122, 136, 0.25)',
-      '--orb-colors':          '#752033, #9e364a, #b87a88, #4a1320, #cca3ab', // Deep burgundy mixing with champagne
-      '--orb-blur-factor':     '1.45',
-      '--orb-speed-multiplier':'0.6',
-      '--orb-scale-multiplier':'1.15'
+      '--bg-base': '#050508', '--glass-bg': 'rgba(15, 10, 30, 0.65)', '--glass-bg-strong': 'rgba(10, 5, 20, 0.88)',
+      '--glass-border': 'rgba(255, 0, 128, 0.3)', '--glass-border-hover': 'rgba(255, 140, 0, 0.8)',
+      '--text-main': '#f0f0ff', '--text-muted': '#b0a5c0', '--text-dim': '#605070',
+      '--accent-gold': '#ff9d00', '--accent-gold-dim': 'rgba(255, 157, 0, 0.15)', '--accent-gold-line': 'rgba(255, 157, 0, 0.4)',
+      '--orb-colors': '#ff0080, #ff8c00, #4d00ff, #ff00ff, #00d4ff', '--orb-blur-factor': '1.2', '--orb-speed-multiplier': '0.8', '--orb-scale-multiplier': '1.1'
     }
   },
   {
-    name: "Crimson Ember",
+    name: "Copper Teal",
     tokens: {
-      '--bg-base':             '#0a0506',
-      '--glass-bg':            'rgba(28, 8, 10, 0.65)',
-      '--glass-bg-strong':     'rgba(18, 4, 6, 0.88)',
-      '--glass-border':        'rgba(255, 60, 80, 0.25)',
-      '--glass-border-hover':  'rgba(255, 60, 80, 0.85)',
-      '--text-main':           '#fff1f2',
-      '--text-muted':          '#d7a7ad',
-      '--text-dim':            '#7a4a50',
-      '--accent-gold':         '#ff3b4d',
-      '--accent-gold-dim':     'rgba(255, 59, 77, 0.15)',
-      '--accent-gold-line':    'rgba(255, 59, 77, 0.35)',
-      '--orb-colors':          '#ff2a2a, #ff6b3d, #ff3b8d, #ffb347, #c1121f',
-      '--orb-blur-factor':     '1.05',
-      '--orb-speed-multiplier':'1.25',
-      '--orb-scale-multiplier':'1.05'
+      '--bg-base': '#050a0a', '--glass-bg': 'rgba(10, 25, 25, 0.65)', '--glass-bg-strong': 'rgba(5, 15, 15, 0.88)',
+      '--glass-border': 'rgba(184, 115, 51, 0.4)', '--glass-border-hover': 'rgba(0, 255, 200, 0.8)',
+      '--text-main': '#e8f4f4', '--text-muted': '#90a0a0', '--text-dim': '#506060',
+      '--accent-gold': '#b87333', '--accent-gold-dim': 'rgba(184, 115, 51, 0.15)', '--accent-gold-line': 'rgba(184, 115, 51, 0.4)',
+      '--orb-colors': '#b87333, #00ffcc, #ffcc99, #008080, #ffffff', '--orb-blur-factor': '1.3', '--orb-speed-multiplier': '0.7', '--orb-scale-multiplier': '1.1'
     }
   },
   {
-    name: "Aurora Ice",
+    name: "Arctic Ember",
     tokens: {
-      '--bg-base':             '#050814',
-      '--glass-bg':            'rgba(10, 18, 40, 0.65)',
-      '--glass-bg-strong':     'rgba(6, 12, 30, 0.88)',
-      '--glass-border':        'rgba(80, 140, 255, 0.25)',
-      '--glass-border-hover':  'rgba(80, 140, 255, 0.85)',
-      '--text-main':           '#eef4ff',
-      '--text-muted':          '#a9b9d6',
-      '--text-dim':            '#5a6f93',
-      '--accent-gold':         '#4da3ff',
-      '--accent-gold-dim':     'rgba(77, 163, 255, 0.15)',
-      '--accent-gold-line':    'rgba(77, 163, 255, 0.35)',
-      '--orb-colors':          '#1e90ff, #00c2ff, #7a5cff, #00ffd0, #3b82f6',
-      '--orb-blur-factor':     '0.95',
-      '--orb-speed-multiplier':'1.3',
-      '--orb-scale-multiplier':'1.1'
+      '--bg-base': '#08080c', '--glass-bg': 'rgba(15, 15, 30, 0.65)', '--glass-bg-strong': 'rgba(8, 8, 20, 0.9)',
+      '--glass-border': 'rgba(100, 200, 255, 0.3)', '--glass-border-hover': 'rgba(255, 60, 60, 0.8)',
+      '--text-main': '#e0efff', '--text-muted': '#90a0c0', '--text-dim': '#506080',
+      '--accent-gold': '#ff4500', '--accent-gold-dim': 'rgba(255, 69, 0, 0.15)', '--accent-gold-line': 'rgba(255, 69, 0, 0.4)',
+      '--orb-colors': '#1e90ff, #ff4500, #00bfff, #ff8c00, #00008b', '--orb-blur-factor': '1.25', '--orb-speed-multiplier': '0.9', '--orb-scale-multiplier': '1.05'
     }
   },
   {
-    name: "Neon Forest",
+    name: "Sage Gold",
     tokens: {
-      '--bg-base':             '#050a07',
-      '--glass-bg':            'rgba(10, 26, 18, 0.65)',
-      '--glass-bg-strong':     'rgba(6, 18, 12, 0.88)',
-      '--glass-border':        'rgba(0, 255, 140, 0.22)',
-      '--glass-border-hover':  'rgba(0, 255, 140, 0.85)',
-      '--text-main':           '#eafff3',
-      '--text-muted':          '#a7d6bc',
-      '--text-dim':            '#5a8f73',
-      '--accent-gold':         '#00ff9a',
-      '--accent-gold-dim':     'rgba(0, 255, 154, 0.15)',
-      '--accent-gold-line':    'rgba(0, 255, 154, 0.35)',
-      '--orb-colors':          '#00ff9a, #39ff14, #00d4ff, #7cffcb, #2bff88',
-      '--orb-blur-factor':     '0.9',
-      '--orb-speed-multiplier':'1.45',
-      '--orb-scale-multiplier':'1.05'
+      '--bg-base': '#060806', '--glass-bg': 'rgba(20, 25, 20, 0.65)', '--glass-bg-strong': 'rgba(10, 15, 10, 0.9)',
+      '--glass-border': 'rgba(100, 150, 100, 0.3)', '--glass-border-hover': 'rgba(212, 175, 55, 0.8)',
+      '--text-main': '#f0f5f0', '--text-muted': '#a0b0a0', '--text-dim': '#607060',
+      '--accent-gold': '#d4af37', '--accent-gold-dim': 'rgba(212, 175, 55, 0.15)', '--accent-gold-line': 'rgba(212, 175, 55, 0.4)',
+      '--orb-colors': '#8fbc8f, #d4af37, #556b2f, #f5deb3, #2f4f4f', '--orb-blur-factor': '1.4', '--orb-speed-multiplier': '0.6', '--orb-scale-multiplier': '1.15'
     }
   },
   {
-    name: "Cyber Magenta",
+    name: "Violet Steel",
     tokens: {
-      '--bg-base':             '#07000a',
-      '--glass-bg':            'rgba(30, 8, 40, 0.65)',
-      '--glass-bg-strong':     'rgba(18, 4, 24, 0.9)',
-      '--glass-border':        'rgba(255, 0, 180, 0.25)',
-      '--glass-border-hover':  'rgba(255, 0, 180, 0.85)',
-      '--text-main':           '#ffe9fb',
-      '--text-muted':          '#d7a0cc',
-      '--text-dim':            '#8a4f7a',
-      '--accent-gold':         '#ff2bd6',
-      '--accent-gold-dim':     'rgba(255, 43, 214, 0.15)',
-      '--accent-gold-line':    'rgba(255, 43, 214, 0.35)',
-      '--orb-colors':          '#ff2bd6, #ff6bd6, #9b5cff, #00e5ff, #ff0080',
-      '--orb-blur-factor':     '1.1',
-      '--orb-speed-multiplier':'1.4',
-      '--orb-scale-multiplier':'1.1'
+      '--bg-base': '#0a0a0a', '--glass-bg': 'rgba(25, 25, 30, 0.65)', '--glass-bg-strong': 'rgba(15, 15, 20, 0.9)',
+      '--glass-border': 'rgba(150, 150, 170, 0.3)', '--glass-border-hover': 'rgba(180, 80, 255, 0.8)',
+      '--text-main': '#e0e0f0', '--text-muted': '#9090a0', '--text-dim': '#505060',
+      '--accent-gold': '#b450ff', '--accent-gold-dim': 'rgba(180, 80, 255, 0.15)', '--accent-gold-line': 'rgba(180, 80, 255, 0.4)',
+      '--orb-colors': '#b450ff, #404060, #ffffff, #606080, #202030', '--orb-blur-factor': '1.2', '--orb-speed-multiplier': '0.75', '--orb-scale-multiplier': '1.1'
     }
   },
-  {
-    name: "Void Sakura",
-    tokens: {
-      '--bg-base':             '#0a0610',
-      '--glass-bg':            'rgba(35, 15, 30, 0.6)',
-      '--glass-bg-strong':     'rgba(20, 8, 18, 0.9)',
-      '--glass-border':        'rgba(255, 105, 180, 0.22)',
-      '--glass-border-hover':  'rgba(255, 105, 180, 0.85)',
-      '--text-main':           '#fff0f6',
-      '--text-muted':          '#e2b3c7',
-      '--text-dim':            '#9b6b84',
-      '--accent-gold':         '#ff69b4',
-      '--accent-gold-dim':     'rgba(255, 105, 180, 0.15)',
-      '--accent-gold-line':    'rgba(255, 105, 180, 0.35)',
-      '--orb-colors':          '#ff69b4, #ff85a2, #c084fc, #f472b6, #fb7185',
-      '--orb-blur-factor':     '1.05',
-      '--orb-speed-multiplier':'1.25',
-      '--orb-scale-multiplier':'1.08'
-    }
-  },
-
-  // --- SCI-FI & COLOR THEORY (Striking & Balanced) ---
-  {
-    name: "Bioluminescent Abyss",
-    tokens: {
-      '--bg-base':             '#01080c',
-      '--glass-bg':            'rgba(5, 30, 45, 0.65)',
-      '--glass-bg-strong':     'rgba(3, 20, 30, 0.88)',
-      '--glass-border':        'rgba(0, 255, 204, 0.25)',
-      '--glass-border-hover':  'rgba(0, 255, 204, 0.85)',
-      '--text-main':           '#e0ffff',
-      '--text-muted':          '#98cacc',
-      '--text-dim':            '#4a7c80',
-      '--accent-gold':         '#00ffcc',
-      '--accent-gold-dim':     'rgba(0, 255, 204, 0.15)',
-      '--accent-gold-line':    'rgba(0, 255, 204, 0.35)',
-      '--orb-colors':          '#00ffcc, #00fa9a, #00bfff, #50c878, #20b2aa',
-      '--orb-blur-factor':     '1.2',
-      '--orb-speed-multiplier':'0.9',
-      '--orb-scale-multiplier':'1.1'
-    }
-  },
-  {
-    name: "Vaporwave Dream",
-    tokens: {
-      '--bg-base':             '#0a0814',
-      '--glass-bg':            'rgba(35, 25, 60, 0.65)',
-      '--glass-bg-strong':     'rgba(25, 15, 45, 0.88)',
-      '--glass-border':        'rgba(255, 119, 255, 0.25)',
-      '--glass-border-hover':  'rgba(255, 119, 255, 0.85)',
-      '--text-main':           '#fdf0ff',
-      '--text-muted':          '#d0b8d6',
-      '--text-dim':            '#8b7a96',
-      '--accent-gold':         '#ff77ff',
-      '--accent-gold-dim':     'rgba(255, 119, 255, 0.15)',
-      '--accent-gold-line':    'rgba(255, 119, 255, 0.35)',
-      '--orb-colors':          '#ff77ff, #00f0ff, #fff000, #ff1493, #00ffff',
-      '--orb-blur-factor':     '1.15',
-      '--orb-speed-multiplier':'1.2',
-      '--orb-scale-multiplier':'1.1'
-    }
-  },
-
-  // --- PREMIUM & METALLIC LUXURY (Deep, rich, and slow) ---
   {
     name: "Onyx & Gold",
     tokens: {
-      '--bg-base':             '#050505',
-      '--glass-bg':            'rgba(15, 15, 15, 0.65)',
-      '--glass-bg-strong':     'rgba(10, 10, 10, 0.88)',
-      '--glass-border':        'rgba(212, 175, 55, 0.15)',
-      '--glass-border-hover':  'rgba(212, 175, 55, 0.60)',
-      '--text-main':           '#faf9f6',
-      '--text-muted':          '#a39b8b',
-      '--text-dim':            '#5c574d',
-      '--accent-gold':         '#d4af37',
-      '--accent-gold-dim':     'rgba(212, 175, 55, 0.12)',
-      '--accent-gold-line':    'rgba(212, 175, 55, 0.25)',
-      '--orb-colors':          '#d4af37, #f3e5ab, #aa8c2c, #e6c27a, #8c7322',
-      '--orb-blur-factor':     '1.4',
-      '--orb-speed-multiplier':'0.6',
-      '--orb-scale-multiplier':'1.15'
+      '--bg-base': '#050505', '--glass-bg': 'rgba(15, 15, 15, 0.65)', '--glass-bg-strong': 'rgba(10, 10, 10, 0.88)',
+      '--glass-border': 'rgba(100, 100, 100, 0.2)', '--glass-border-hover': 'rgba(212, 175, 55, 0.8)',
+      '--text-main': '#faf9f6', '--text-muted': '#a39b8b', '--text-dim': '#5c574d',
+      '--accent-gold': '#d4af37', '--accent-gold-dim': 'rgba(212, 175, 55, 0.12)', '--accent-gold-line': 'rgba(212, 175, 55, 0.25)',
+      '--orb-colors': '#d4af37, #f3e5ab, #aa8c2c, #e6c27a, #8c7322', '--orb-blur-factor': '1.4', '--orb-speed-multiplier': '0.6', '--orb-scale-multiplier': '1.15'
     }
   },
   {
     name: "Obsidian Copper",
     tokens: {
-      '--bg-base':             '#0a0908',
-      '--glass-bg':            'rgba(25, 20, 18, 0.65)',
-      '--glass-bg-strong':     'rgba(18, 14, 12, 0.88)',
-      '--glass-border':        'rgba(184, 115, 51, 0.15)',
-      '--glass-border-hover':  'rgba(184, 115, 51, 0.60)',
-      '--text-main':           '#fffcf2',
-      '--text-muted':          '#b5a596',
-      '--text-dim':            '#6b6158',
-      '--accent-gold':         '#b87333',
-      '--accent-gold-dim':     'rgba(184, 115, 51, 0.12)',
-      '--accent-gold-line':    'rgba(184, 115, 51, 0.25)',
-      '--orb-colors':          '#b87333, #cd7f32, #d99058, #995522, #e6a87c',
-      '--orb-blur-factor':     '1.3',
-      '--orb-speed-multiplier':'0.7',
-      '--orb-scale-multiplier':'1.1'
+      '--bg-base': '#0a0908', '--glass-bg': 'rgba(25, 20, 18, 0.65)', '--glass-bg-strong': 'rgba(18, 14, 12, 0.88)',
+      '--glass-border': 'rgba(100, 90, 80, 0.2)', '--glass-border-hover': 'rgba(184, 115, 51, 0.8)',
+      '--text-main': '#fffcf2', '--text-muted': '#b5a596', '--text-dim': '#6b6158',
+      '--accent-gold': '#b87333', '--accent-gold-dim': 'rgba(184, 115, 51, 0.12)', '--accent-gold-line': 'rgba(184, 115, 51, 0.25)',
+      '--orb-colors': '#b87333, #cd7f32, #d99058, #995522, #e6a87c', '--orb-blur-factor': '1.3', '--orb-speed-multiplier': '0.7', '--orb-scale-multiplier': '1.1'
     }
   },
   {
     name: "Midnight Pearl",
     tokens: {
-      '--bg-base':             '#03050a',
-      '--glass-bg':            'rgba(15, 20, 35, 0.65)',
-      '--glass-bg-strong':     'rgba(8, 12, 25, 0.88)',
-      '--glass-border':        'rgba(203, 213, 225, 0.15)',
-      '--glass-border-hover':  'rgba(203, 213, 225, 0.60)',
-      '--text-main':           '#f8fafc',
-      '--text-muted':          '#94a3b8',
-      '--text-dim':            '#475569',
-      '--accent-gold':         '#cbd5e1',
-      '--accent-gold-dim':     'rgba(203, 213, 225, 0.12)',
-      '--accent-gold-line':    'rgba(203, 213, 225, 0.25)',
-      '--orb-colors':          '#cbd5e1, #f1f5f9, #94a3b8, #e2e8f0, #64748b',
-      '--orb-blur-factor':     '1.25',
-      '--orb-speed-multiplier':'0.75',
-      '--orb-scale-multiplier':'1.05'
+      '--bg-base': '#03050a', '--glass-bg': 'rgba(15, 20, 35, 0.65)', '--glass-bg-strong': 'rgba(8, 12, 25, 0.88)',
+      '--glass-border': 'rgba(100, 120, 140, 0.2)', '--glass-border-hover': 'rgba(203, 213, 225, 0.8)',
+      '--text-main': '#f8fafc', '--text-muted': '#94a3b8', '--text-dim': '#475569',
+      '--accent-gold': '#cbd5e1', '--accent-gold-dim': 'rgba(203, 213, 225, 0.12)', '--accent-gold-line': 'rgba(203, 213, 225, 0.25)',
+      '--orb-colors': '#cbd5e1, #f1f5f9, #94a3b8, #e2e8f0, #64748b', '--orb-blur-factor': '1.25', '--orb-speed-multiplier': '0.75', '--orb-scale-multiplier': '1.05'
     }
   },
   {
     name: "Imperial Emerald",
     tokens: {
-      '--bg-base':             '#020a06',
-      '--glass-bg':            'rgba(10, 25, 18, 0.65)',
-      '--glass-bg-strong':     'rgba(6, 18, 12, 0.88)',
-      '--glass-border':        'rgba(212, 195, 145, 0.15)',
-      '--glass-border-hover':  'rgba(212, 195, 145, 0.60)',
-      '--text-main':           '#f8f9fa',
-      '--text-muted':          '#9ba8a1',
-      '--text-dim':            '#55635b',
-      '--accent-gold':         '#d4c391',
-      '--accent-gold-dim':     'rgba(212, 195, 145, 0.12)',
-      '--accent-gold-line':    'rgba(212, 195, 145, 0.25)',
-      '--orb-colors':          '#047857, #065f46, #d4c391, #022c22, #f3eacb',
-      '--orb-blur-factor':     '1.5',
-      '--orb-speed-multiplier':'0.65',
-      '--orb-scale-multiplier':'1.2'
+      '--bg-base': '#020a06', '--glass-bg': 'rgba(10, 25, 18, 0.65)', '--glass-bg-strong': 'rgba(6, 18, 12, 0.88)',
+      '--glass-border': 'rgba(100, 150, 120, 0.2)', '--glass-border-hover': 'rgba(212, 195, 145, 0.8)',
+      '--text-main': '#f8f9fa', '--text-muted': '#9ba8a1', '--text-dim': '#55635b',
+      '--accent-gold': '#d4c391', '--accent-gold-dim': 'rgba(212, 195, 145, 0.12)', '--accent-gold-line': 'rgba(212, 195, 145, 0.25)',
+      '--orb-colors': '#047857, #065f46, #d4c391, #022c22, #f3eacb', '--orb-blur-factor': '1.5', '--orb-speed-multiplier': '0.65', '--orb-scale-multiplier': '1.2'
     }
   },
   {
     name: "Amethyst Ash",
     tokens: {
-      '--bg-base':             '#08060a',
-      '--glass-bg':            'rgba(25, 18, 35, 0.65)',
-      '--glass-bg-strong':     'rgba(16, 12, 22, 0.88)',
-      '--glass-border':        'rgba(224, 192, 151, 0.15)',
-      '--glass-border-hover':  'rgba(224, 192, 151, 0.60)',
-      '--text-main':           '#fdfcfb',
-      '--text-muted':          '#bca8c2',
-      '--text-dim':            '#6a5a70',
-      '--accent-gold':         '#e0c097',
-      '--accent-gold-dim':     'rgba(224, 192, 151, 0.12)',
-      '--accent-gold-line':    'rgba(224, 192, 151, 0.25)',
-      '--orb-colors':          '#e0c097, #c89f70, #2e1f47, #4c326b, #f5dabb',
-      '--orb-blur-factor':     '1.35',
-      '--orb-speed-multiplier':'0.7',
-      '--orb-scale-multiplier':'1.15'
+      '--bg-base': '#08060a', '--glass-bg': 'rgba(25, 18, 35, 0.65)', '--glass-bg-strong': 'rgba(16, 12, 22, 0.88)',
+      '--glass-border': 'rgba(120, 100, 140, 0.2)', '--glass-border-hover': 'rgba(224, 192, 151, 0.8)',
+      '--text-main': '#fdfcfb', '--text-muted': '#bca8c2', '--text-dim': '#6a5a70',
+      '--accent-gold': '#e0c097', '--accent-gold-dim': 'rgba(224, 192, 151, 0.12)', '--accent-gold-line': 'rgba(224, 192, 151, 0.25)',
+      '--orb-colors': '#e0c097, #c89f70, #2e1f47, #4c326b, #f5dabb', '--orb-blur-factor': '1.35', '--orb-speed-multiplier': '0.7', '--orb-scale-multiplier': '1.15'
     }
   },
   {
     name: "Desert Titanium",
     tokens: {
-      '--bg-base':             '#080706',
-      '--glass-bg':            'rgba(25, 22, 20, 0.60)',
-      '--glass-bg-strong':     'rgba(18, 15, 14, 0.88)',
-      '--glass-border':        'rgba(168, 159, 145, 0.15)',
-      '--glass-border-hover':  'rgba(168, 159, 145, 0.50)',
-      '--text-main':           '#fbfaf9',
-      '--text-muted':          '#bfb6a8',
-      '--text-dim':            '#787063',
-      '--accent-gold':         '#a89f91',
-      '--accent-gold-dim':     'rgba(168, 159, 145, 0.12)',
-      '--accent-gold-line':    'rgba(168, 159, 145, 0.25)',
-      '--orb-colors':          '#a89f91, #c4bcb0, #877e70, #e0d9cf, #6e6557',
-      '--orb-blur-factor':     '1.35',
-      '--orb-speed-multiplier':'0.6',
-      '--orb-scale-multiplier':'1.1'
+      '--bg-base': '#080706', '--glass-bg': 'rgba(25, 22, 20, 0.60)', '--glass-bg-strong': 'rgba(18, 15, 14, 0.88)',
+      '--glass-border': 'rgba(120, 110, 100, 0.2)', '--glass-border-hover': 'rgba(168, 159, 145, 0.8)',
+      '--text-main': '#fbfaf9', '--text-muted': '#bfb6a8', '--text-dim': '#787063',
+      '--accent-gold': '#a89f91', '--accent-gold-dim': 'rgba(168, 159, 145, 0.12)', '--accent-gold-line': 'rgba(168, 159, 145, 0.25)',
+      '--orb-colors': '#a89f91, #c4bcb0, #877e70, #e0d9cf, #6e6557', '--orb-blur-factor': '1.35', '--orb-speed-multiplier': '0.6', '--orb-scale-multiplier': '1.1'
     }
   },
   {
     name: "Glacial Sapphire",
     tokens: {
-      '--bg-base':             '#030508',
-      '--glass-bg':            'rgba(10, 15, 25, 0.60)',
-      '--glass-bg-strong':     'rgba(6, 10, 18, 0.88)',
-      '--glass-border':        'rgba(107, 140, 174, 0.15)',
-      '--glass-border-hover':  'rgba(107, 140, 174, 0.50)',
-      '--text-main':           '#f4f7fa',
-      '--text-muted':          '#a3b5c7',
-      '--text-dim':            '#5e7082',
-      '--accent-gold':         '#6b8cae',
-      '--accent-gold-dim':     'rgba(107, 140, 174, 0.12)',
-      '--accent-gold-line':    'rgba(107, 140, 174, 0.25)',
-      '--orb-colors':          '#6b8cae, #8caecf, #4a6b8c, #cddbe8, #34506e',
-      '--orb-blur-factor':     '1.3',
-      '--orb-speed-multiplier':'0.7',
-      '--orb-scale-multiplier':'1.08'
+      '--bg-base': '#030508', '--glass-bg': 'rgba(10, 15, 25, 0.60)', '--glass-bg-strong': 'rgba(6, 10, 18, 0.88)',
+      '--glass-border': 'rgba(100, 120, 140, 0.2)', '--glass-border-hover': 'rgba(107, 140, 174, 0.8)',
+      '--text-main': '#f4f7fa', '--text-muted': '#a3b5c7', '--text-dim': '#5e7082',
+      '--accent-gold': '#6b8cae', '--accent-gold-dim': 'rgba(107, 140, 174, 0.12)', '--accent-gold-line': 'rgba(107, 140, 174, 0.25)',
+      '--orb-colors': '#6b8cae, #8caecf, #4a6b8c, #cddbe8, #34506e', '--orb-blur-factor': '1.3', '--orb-speed-multiplier': '0.7', '--orb-scale-multiplier': '1.08'
     }
   },
   {
     name: "Ruby Horizon",
     tokens: {
-      '--bg-base':             '#080304',
-      '--glass-bg':            'rgba(25, 10, 12, 0.60)',
-      '--glass-bg-strong':     'rgba(18, 6, 8, 0.88)',
-      '--glass-border':        'rgba(155, 44, 58, 0.15)',
-      '--glass-border-hover':  'rgba(155, 44, 58, 0.50)',
-      '--text-main':           '#fcf5f5',
-      '--text-muted':          '#c7acaf',
-      '--text-dim':            '#7a5e62',
-      '--accent-gold':         '#9b2c3a',
-      '--accent-gold-dim':     'rgba(155, 44, 58, 0.12)',
-      '--accent-gold-line':    'rgba(155, 44, 58, 0.25)',
-      '--orb-colors':          '#9b2c3a, #b04353, #e5a4ab, #5e1620, #c46d78',
-      '--orb-blur-factor':     '1.45',
-      '--orb-speed-multiplier':'0.65',
-      '--orb-scale-multiplier':'1.15'
+      '--bg-base': '#080304', '--glass-bg': 'rgba(25, 10, 12, 0.60)', '--glass-bg-strong': 'rgba(18, 6, 8, 0.88)',
+      '--glass-border': 'rgba(140, 90, 90, 0.2)', '--glass-border-hover': 'rgba(155, 44, 58, 0.8)',
+      '--text-main': '#fcf5f5', '--text-muted': '#c7acaf', '--text-dim': '#7a5e62',
+      '--accent-gold': '#9b2c3a', '--accent-gold-dim': 'rgba(155, 44, 58, 0.12)', '--accent-gold-line': 'rgba(155, 44, 58, 0.25)',
+      '--orb-colors': '#9b2c3a, #b04353, #e5a4ab, #5e1620, #c46d78', '--orb-blur-factor': '1.45', '--orb-speed-multiplier': '0.65', '--orb-scale-multiplier': '1.15'
     }
   },
   {
     name: "Abyssal Cobalt",
     tokens: {
-      '--bg-base':             '#02040a',
-      '--glass-bg':            'rgba(10, 15, 30, 0.60)',
-      '--glass-bg-strong':     'rgba(6, 10, 22, 0.88)',
-      '--glass-border':        'rgba(59, 89, 152, 0.15)',
-      '--glass-border-hover':  'rgba(59, 89, 152, 0.50)',
-      '--text-main':           '#f2f5fb',
-      '--text-muted':          '#a2b0ce',
-      '--text-dim':            '#556382',
-      '--accent-gold':         '#3b5998',
-      '--accent-gold-dim':     'rgba(59, 89, 152, 0.12)',
-      '--accent-gold-line':    'rgba(59, 89, 152, 0.25)',
-      '--orb-colors':          '#3b5998, #5977b5, #223766, #88a4d4, #152240',
-      '--orb-blur-factor':     '1.45',
-      '--orb-speed-multiplier':'0.6',
-      '--orb-scale-multiplier':'1.2'
+      '--bg-base': '#02040a', '--glass-bg': 'rgba(10, 15, 30, 0.60)', '--glass-bg-strong': 'rgba(6, 10, 22, 0.88)',
+      '--glass-border': 'rgba(80, 100, 140, 0.2)', '--glass-border-hover': 'rgba(59, 89, 152, 0.8)',
+      '--text-main': '#f2f5fb', '--text-muted': '#a2b0ce', '--text-dim': '#556382',
+      '--accent-gold': '#3b5998', '--accent-gold-dim': 'rgba(59, 89, 152, 0.12)', '--accent-gold-line': 'rgba(59, 89, 152, 0.25)',
+      '--orb-colors': '#3b5998, #5977b5, #223766, #88a4d4, #152240', '--orb-blur-factor': '1.45', '--orb-speed-multiplier': '0.6', '--orb-scale-multiplier': '1.2'
     }
   },
+
+  // --- HARMONIOUS PREMIUM THEMES (Consistent/Refined) ---
   {
     name: "Rose Quartz",
     tokens: {
-      '--bg-base':             '#080506',
-      '--glass-bg':            'rgba(25, 18, 20, 0.60)',
-      '--glass-bg-strong':     'rgba(18, 12, 14, 0.88)',
-      '--glass-border':        'rgba(191, 163, 168, 0.15)',
-      '--glass-border-hover':  'rgba(191, 163, 168, 0.50)',
-      '--text-main':           '#fcf8f9',
-      '--text-muted':          '#cebcc0',
-      '--text-dim':            '#8a7579',
-      '--accent-gold':         '#bfa3a8',
-      '--accent-gold-dim':     'rgba(191, 163, 168, 0.12)',
-      '--accent-gold-line':    'rgba(191, 163, 168, 0.25)',
-      '--orb-colors':          '#bfa3a8, #d4bcc0, #967d82, #ecd8db, #755e62',
-      '--orb-blur-factor':     '1.3',
-      '--orb-speed-multiplier':'0.65',
-      '--orb-scale-multiplier':'1.1'
+      '--bg-base': '#080506', '--glass-bg': 'rgba(25, 18, 20, 0.60)', '--glass-bg-strong': 'rgba(18, 12, 14, 0.88)',
+      '--glass-border': 'rgba(191, 163, 168, 0.15)', '--glass-border-hover': 'rgba(191, 163, 168, 0.50)',
+      '--text-main': '#fcf8f9', '--text-muted': '#cebcc0', '--text-dim': '#8a7579',
+      '--accent-gold': '#bfa3a8', '--accent-gold-dim': 'rgba(191, 163, 168, 0.12)', '--accent-gold-line': 'rgba(191, 163, 168, 0.25)',
+      '--orb-colors': '#bfa3a8, #d4bcc0, #967d82, #ecd8db, #755e62', '--orb-blur-factor': '1.3', '--orb-speed-multiplier': '0.65', '--orb-scale-multiplier': '1.1'
     }
   },
   {
     name: "Smoked Topaz",
     tokens: {
-      '--bg-base':             '#0a0602',
-      '--glass-bg':            'rgba(25, 15, 8, 0.60)',
-      '--glass-bg-strong':     'rgba(18, 10, 5, 0.88)',
-      '--glass-border':        'rgba(176, 125, 76, 0.15)',
-      '--glass-border-hover':  'rgba(176, 125, 76, 0.50)',
-      '--text-main':           '#fdf9f4',
-      '--text-muted':          '#c7a98f',
-      '--text-dim':            '#7a6350',
-      '--accent-gold':         '#b07d4c',
-      '--accent-gold-dim':     'rgba(176, 125, 76, 0.12)',
-      '--accent-gold-line':    'rgba(176, 125, 76, 0.25)',
-      '--orb-colors':          '#b07d4c, #cc9b6a, #8a5a2e, #e8be97, #5c3817',
-      '--orb-blur-factor':     '1.35',
-      '--orb-speed-multiplier':'0.6',
-      '--orb-scale-multiplier':'1.15'
+      '--bg-base': '#0a0602', '--glass-bg': 'rgba(25, 15, 8, 0.60)', '--glass-bg-strong': 'rgba(18, 10, 5, 0.88)',
+      '--glass-border': 'rgba(176, 125, 76, 0.15)', '--glass-border-hover': 'rgba(176, 125, 76, 0.50)',
+      '--text-main': '#fdf9f4', '--text-muted': '#c7a98f', '--text-dim': '#7a6350',
+      '--accent-gold': '#b07d4c', '--accent-gold-dim': 'rgba(176, 125, 76, 0.12)', '--accent-gold-line': 'rgba(176, 125, 76, 0.25)',
+      '--orb-colors': '#b07d4c, #cc9b6a, #8a5a2e, #e8be97, #5c3817', '--orb-blur-factor': '1.35', '--orb-speed-multiplier': '0.6', '--orb-scale-multiplier': '1.15'
     }
   },
   {
     name: "Celestial Ivory",
     tokens: {
-      '--bg-base':             '#080808',
-      '--glass-bg':            'rgba(25, 25, 24, 0.60)',
-      '--glass-bg-strong':     'rgba(18, 18, 16, 0.88)',
-      '--glass-border':        'rgba(224, 218, 199, 0.12)',
-      '--glass-border-hover':  'rgba(224, 218, 199, 0.45)',
-      '--text-main':           '#ffffff',
-      '--text-muted':          '#c7c2b5',
-      '--text-dim':            '#7d786d',
-      '--accent-gold':         '#e0dac7',
-      '--accent-gold-dim':     'rgba(224, 218, 199, 0.10)',
-      '--accent-gold-line':    'rgba(224, 218, 199, 0.20)',
-      '--orb-colors':          '#e0dac7, #f2efe6, #b8b29e, #ffffff, #8a8571',
-      '--orb-blur-factor':     '1.5',
-      '--orb-speed-multiplier':'0.5',
-      '--orb-scale-multiplier':'1.25'
+      '--bg-base': '#080808', '--glass-bg': 'rgba(25, 25, 24, 0.60)', '--glass-bg-strong': 'rgba(18, 18, 16, 0.88)',
+      '--glass-border': 'rgba(224, 218, 199, 0.12)', '--glass-border-hover': 'rgba(224, 218, 199, 0.45)',
+      '--text-main': '#ffffff', '--text-muted': '#c7c2b5', '--text-dim': '#7d786d',
+      '--accent-gold': '#e0dac7', '--accent-gold-dim': 'rgba(224, 218, 199, 0.10)', '--accent-gold-line': 'rgba(224, 218, 199, 0.20)',
+      '--orb-colors': '#e0dac7, #f2efe6, #b8b29e, #ffffff, #8a8571', '--orb-blur-factor': '1.5', '--orb-speed-multiplier': '0.5', '--orb-scale-multiplier': '1.25'
+    }
+  },
+  {
+    name: "Bordeaux Reserve",
+    tokens: {
+      '--bg-base': '#0a0405', '--glass-bg': 'rgba(28, 12, 14, 0.60)', '--glass-bg-strong': 'rgba(20, 8, 10, 0.88)',
+      '--glass-border': 'rgba(180, 130, 140, 0.15)', '--glass-border-hover': 'rgba(180, 130, 140, 0.50)',
+      '--text-main': '#fdfafb', '--text-muted': '#cfbcc0', '--text-dim': '#856a70',
+      '--accent-gold': '#b87a88', '--accent-gold-dim': 'rgba(184, 122, 136, 0.12)', '--accent-gold-line': 'rgba(184, 122, 136, 0.25)',
+      '--orb-colors': '#752033, #9e364a, #b87a88, #4a1320, #cca3ab', '--orb-blur-factor': '1.45', '--orb-speed-multiplier': '0.6', '--orb-scale-multiplier': '1.15'
+    }
+  },
+  {
+    name: "Bronze Patina",
+    tokens: {
+      '--bg-base': '#070605', '--glass-bg': 'rgba(24, 20, 16, 0.60)', '--glass-bg-strong': 'rgba(16, 14, 10, 0.88)',
+      '--glass-border': 'rgba(156, 122, 82, 0.15)', '--glass-border-hover': 'rgba(156, 122, 82, 0.50)',
+      '--text-main': '#fbf9f6', '--text-muted': '#bdae9c', '--text-dim': '#736657',
+      '--accent-gold': '#9c7a52', '--accent-gold-dim': 'rgba(156, 122, 82, 0.12)', '--accent-gold-line': 'rgba(156, 122, 82, 0.25)',
+      '--orb-colors': '#9c7a52, #b89872, #3a6358, #608f82, #735332', '--orb-blur-factor': '1.4', '--orb-speed-multiplier': '0.6', '--orb-scale-multiplier': '1.15'
+    }
+  },
+  {
+    name: "Vintage Violet",
+    tokens: {
+      '--bg-base': '#050308', '--glass-bg': 'rgba(18, 12, 25, 0.60)', '--glass-bg-strong': 'rgba(12, 8, 18, 0.88)',
+      '--glass-border': 'rgba(107, 91, 122, 0.15)', '--glass-border-hover': 'rgba(107, 91, 122, 0.50)',
+      '--text-main': '#f8f6fc', '--text-muted': '#b2a7bd', '--text-dim': '#6a5f73',
+      '--accent-gold': '#6b5b7a', '--accent-gold-dim': 'rgba(107, 91, 122, 0.12)', '--accent-gold-line': 'rgba(107, 91, 122, 0.25)',
+      '--orb-colors': '#6b5b7a, #8c7b9c, #4c3e59, #b5a8c2, #32263d', '--orb-blur-factor': '1.3', '--orb-speed-multiplier': '0.65', '--orb-scale-multiplier': '1.1'
     }
   }
 ];
