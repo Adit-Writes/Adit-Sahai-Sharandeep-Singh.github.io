@@ -1,37 +1,52 @@
-media_folder: files
-public_folder: /files
+media:
+  input: files
+  output: /files
 
-collections:
+content:
+
+  # MainPage Stuff======================================================================
+
   - name: MainPage
-    label: Main Page
     type: group
     items:
+
       - name: MainSiteHeader
         type: file
         path: _data/MainPage/PageInfo.json
         fields:
           - name: PageTitle
             type: string
+
           - name: UpTitle
             type: string
+
           - name: DownTitle
             type: string
+
           - name: Description
             type: string
+
           - name: Pic
             type: image
+
           - name: HeroTagline
             type: string
+
           - name: ChooseLabel
             type: string
+
           - name: CtaAdit
             type: string
+
           - name: CtaSharan
             type: string
+
           - name: LinksLabel
             type: string
+
           - name: FooterNote
             type: string
+
       - name: MMentionedLinks
         type: collection
         path: _data/MainPage/MentionedLinks
@@ -43,40 +58,50 @@ collections:
           - name: Name
             type: string
             required: true
+
           - name: Link
             type: string
             required: true
 
+  # Adits Stuff======================================================================
+
   - name: AditPage
-    label: Adit Page
     type: group
     items:
+
       - name: SiteHead
         type: file
         path: _data/Adit/PageInfo.json
         fields:
           - name: PageTitle
             type: string
+
           - name: Pic
             type: image
+
           - name: Description
             type: rich-text
             options:
               switcher: false
+
       - name: AboutAuthor
         type: file
         path: _data/Adit/AboutAuthor.json
         fields:
           - name: Name
             type: string
+
           - name: Expertise
             type: string
+
           - name: Pic
             type: image
-          - name: Description
+
+          - name: Desciption
             type: rich-text
             options:
               switcher: false
+
       - name: AMentionedLinks
         type: collection
         path: _data/Adit/MentionedLinks
@@ -88,26 +113,20 @@ collections:
           - name: Name
             type: string
             required: true
+
           - name: Link
             type: string
             required: true
+
       - name: Books
         path: _data/Adit/BooksData
         type: collection
         format: json
         filename: "{slug}.json"
         view:
-          fields:
-            - Name
-            - Pic
-            - Topic
-            - PublishedDate
-            - Link
+          fields: [Name, Pic, Topic, PublishedDate, Link]
           primary: Name
-          sort:
-            - PublishedDate
-            - Name
-            - Topic
+          sort: [PublishedDate, Name, Topic]
           default:
             sort: PublishedDate
             order: desc
@@ -115,19 +134,25 @@ collections:
           - name: Name
             type: string
             required: true
+
           - name: PublishedDate
             type: date
             required: true
+
           - name: Pic
             type: image
+
           - name: Topic
             type: string
+
           - name: About
             type: rich-text
             options:
               switcher: false
+
           - name: Link
             type: string
+
       - name: ArticleCategories
         label: Categories
         type: collection
@@ -140,22 +165,16 @@ collections:
           - name: name
             type: string
             required: true
+
       - name: Articles
         path: _data/Adit/ArticlesData
         type: collection
         format: json
-        filename: "{slug}.json"
+        filename: "{slug}.json" # Changed to slug for cleaner URLs in your 11ty build
         view:
-          fields:
-            - Title
-            - Topic
-            - Published
-            - ReleaseDate
-            - LastUpdated
+          fields: [Title, Topic, Published, ReleaseDate, LastUpdated]
           primary: Title
-          sort:
-            - ReleaseDate
-            - Title
+          sort: [ReleaseDate, Title]
           default:
             sort: ReleaseDate
             order: desc
@@ -163,71 +182,103 @@ collections:
           - name: Title
             type: string
             required: true
+
           - name: Topic
             type: reference
             required: true
             options:
               collection: ArticleCategories
               field: name
+
           - name: Pics
             type: image
             list: true
+
           - name: Files
             type: file
             list: true
+
           - name: Links
             type: string
             list: true
+
           - name: Published
             type: boolean
             default: false
+
+          - name: Comments
+            type: boolean
+            default: true
+
+          - name: Likes
+            type: boolean
+            default: true
+
           - name: Description
             type: rich-text
             options:
               switcher: false
+
           - name: Body
             type: rich-text
             required: true
             options:
               switcher: false
+
+          - name: ReadTime
+            type: number
+            options:
+              min: 1
+
           - name: ReleaseDate
             type: date
             required: true
+
           - name: LastUpdated
             type: date
 
+  # Sharan's Stuff======================================================================
+
   - name: Sharan
-    label: Sharan
     type: group
     items:
+
       - name: SiteHeader
         type: file
         path: _data/Sharan/SiteHeader.json
         fields:
           - name: PageTitle
             type: string
+
           - name: Pic
             type: image
+
           - name: Description
             type: rich-text
             options:
               switcher: false
+
       - name: AboutPage
         type: file
         path: _data/Sharan/AboutPage.json
         fields:
           - name: Name
             type: string
+
           - name: ShortName
             type: string
+
           - name: Pic
             type: image
+
           - name: Expertise
             type: string
-          - name: Description
+
+          - name: Desciption
             type: rich-text
             options:
               switcher: false
+
       - name: SMentionedLinks
         type: collection
         path: _data/Sharan/MentionedLinks
@@ -239,12 +290,15 @@ collections:
           - name: Name
             type: string
             required: true
+
           - name: Link
             type: string
             required: true
+
       - name: Projects
         type: group
         items:
+
           - name: ProjectCategories
             type: collection
             path: _data/Sharan/Projectcategories
@@ -256,6 +310,7 @@ collections:
               - name: name
                 type: string
                 required: true
+
           - name: ProjectStatus
             type: collection
             path: _data/Sharan/ProjectStatus
@@ -267,23 +322,16 @@ collections:
               - name: name
                 type: string
                 required: true
+
           - name: Projects
             path: _data/Sharan/Projects
             type: collection
             format: json
             filename: "{slug}.json"
             view:
-              fields:
-                - Title
-                - Status
-                - Category
-                - Published
-                - ReleaseDate
-                - LastUpdated
+              fields: [Title, Status, Category, Published, ReleaseDate, LastUpdated]
               primary: Title
-              sort:
-                - ReleaseDate
-                - Title
+              sort: [ReleaseDate, Title]
               default:
                 sort: ReleaseDate
                 order: desc
@@ -291,37 +339,64 @@ collections:
               - name: Title
                 type: string
                 required: true
+
               - name: Category
                 type: reference
                 required: true
                 options:
                   collection: ProjectCategories
                   field: name
+
               - name: Status
                 type: reference
                 required: true
                 options:
                   collection: ProjectStatus
                   field: name
+
               - name: Pics
                 type: image
                 list: true
+
               - name: Files
                 type: file
                 list: true
+
               - name: Links
                 type: string
                 list: true
+
               - name: Published
                 type: boolean
                 default: false
+
+              - name: Comments
+                type: boolean
+                default: true
+
+              - name: Likes
+                type: boolean
+                default: true
+
+              - name: Description
+                type: rich-text
+                options:
+                  switcher: false
+
               - name: Body
                 type: rich-text
                 required: true
                 options:
                   switcher: false
+
+              - name: ReadTime
+                type: number
+                options:
+                  min: 1
+
               - name: StartedDate
                 type: date
                 required: true
+
               - name: LastUpdated
                 type: date
