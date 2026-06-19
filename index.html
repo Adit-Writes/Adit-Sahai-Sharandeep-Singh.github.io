@@ -1180,8 +1180,7 @@ permalink: /index.html
           {% set vcount = 0 %}
           {% for p in Sharan.Projects %}
             {% if p.Published %}
-              {% set catName = p.Category.name if p.Category.name else p.Category %}
-              {% if 'video' in (catName | lower) %}
+              {% if p.Status.Name is completed %}
                 {% set vcount = vcount + 1 %}
               {% endif %}
             {% endif %}
@@ -1189,7 +1188,7 @@ permalink: /index.html
           {{ vcount }}
         </div>
         <div class="stat-label">Projects Completed</div>
-        <div class="stat-sublabel">from project portfolio</div>
+        <div class="stat-sublabel">from projects</div>
       </div>
 
     </div>
