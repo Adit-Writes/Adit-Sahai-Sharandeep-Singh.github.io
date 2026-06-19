@@ -2,10 +2,10 @@
 //  CONFIGURATION
 // ============================================================
 
-const ROTATION_INTERVAL_MS   = 30000;
-const ORB_TRANSITION_SECS    = 10.0;
-
-
+const ROTATION_INTERVAL_MS  = 30000;
+const ORB_TRANSITION_SECS   = 10.0;
+const IS_MOBILE             = window.innerWidth <= 768 || /Mobi|Android/i.test(navigator.userAgent);
+const REDUCED_MOTION        = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // ============================================================
 //  THEME DEFINITIONS
@@ -18,16 +18,16 @@ const MY_FAVORITE_THEMES = [
       '--bg-base':             '#0a0506',
       '--glass-bg':            'rgba(28, 8, 10, 0.65)',
       '--glass-bg-strong':     'rgba(18, 4, 6, 0.88)',
-      '--glass-border':       'rgba(255, 60, 80, 0.25)',
-      '--glass-border-hover': 'rgba(255, 60, 80, 0.85)',
-      '--text-main':          '#fff1f2',
-      '--text-muted':         '#d7a7ad',
-      '--text-dim':           '#7a4a50',
-      '--accent-gold':        '#ff3b4d',
-      '--accent-gold-dim':    'rgba(255, 59, 77, 0.15)',
-      '--accent-gold-line':   'rgba(255, 59, 77, 0.35)',
-      '--orb-colors':         '#ff2a2a, #ff6b3d, #ff3b8d, #ffb347, #c1121f',
-      '--orb-blur-factor':    '1.05',
+      '--glass-border':        'rgba(255, 60, 80, 0.25)',
+      '--glass-border-hover':  'rgba(255, 60, 80, 0.85)',
+      '--text-main':           '#fff1f2',
+      '--text-muted':          '#d7a7ad',
+      '--text-dim':            '#7a4a50',
+      '--accent-gold':         '#ff3b4d',
+      '--accent-gold-dim':     'rgba(255, 59, 77, 0.15)',
+      '--accent-gold-line':    'rgba(255, 59, 77, 0.35)',
+      '--orb-colors':          '#ff2a2a, #ff6b3d, #ff3b8d, #ffb347, #c1121f',
+      '--orb-blur-factor':     '1.05',
       '--orb-speed-multiplier':'1.25',
       '--orb-scale-multiplier':'1.05'
     }
@@ -37,16 +37,16 @@ const MY_FAVORITE_THEMES = [
       '--bg-base':             '#050814',
       '--glass-bg':            'rgba(10, 18, 40, 0.65)',
       '--glass-bg-strong':     'rgba(6, 12, 30, 0.88)',
-      '--glass-border':       'rgba(80, 140, 255, 0.25)',
-      '--glass-border-hover': 'rgba(80, 140, 255, 0.85)',
-      '--text-main':          '#eef4ff',
-      '--text-muted':         '#a9b9d6',
-      '--text-dim':           '#5a6f93',
-      '--accent-gold':        '#4da3ff',
-      '--accent-gold-dim':    'rgba(77, 163, 255, 0.15)',
-      '--accent-gold-line':   'rgba(77, 163, 255, 0.35)',
-      '--orb-colors':         '#1e90ff, #00c2ff, #7a5cff, #00ffd0, #3b82f6',
-      '--orb-blur-factor':    '0.95',
+      '--glass-border':        'rgba(80, 140, 255, 0.25)',
+      '--glass-border-hover':  'rgba(80, 140, 255, 0.85)',
+      '--text-main':           '#eef4ff',
+      '--text-muted':          '#a9b9d6',
+      '--text-dim':            '#5a6f93',
+      '--accent-gold':         '#4da3ff',
+      '--accent-gold-dim':     'rgba(77, 163, 255, 0.15)',
+      '--accent-gold-line':    'rgba(77, 163, 255, 0.35)',
+      '--orb-colors':          '#1e90ff, #00c2ff, #7a5cff, #00ffd0, #3b82f6',
+      '--orb-blur-factor':     '0.95',
       '--orb-speed-multiplier':'1.3',
       '--orb-scale-multiplier':'1.1'
     }
@@ -56,16 +56,16 @@ const MY_FAVORITE_THEMES = [
       '--bg-base':             '#0e0b08',
       '--glass-bg':            'rgba(40, 30, 24, 0.6)',
       '--glass-bg-strong':     'rgba(28, 20, 16, 0.88)',
-      '--glass-border':       'rgba(210, 190, 160, 0.25)',
-      '--glass-border-hover': 'rgba(210, 190, 160, 0.85)',
-      '--text-main':          '#f7f1e6',
-      '--text-muted':         '#cbbba4',
-      '--text-dim':           '#8a7a66',
-      '--accent-gold':        '#d6b48a',
-      '--accent-gold-dim':    'rgba(214, 180, 138, 0.15)',
-      '--accent-gold-line':   'rgba(214, 180, 138, 0.35)',
-      '--orb-colors':         '#d6b48a, #f2d2a9, #a68a64, #ffe0b2, #c8a27a',
-      '--orb-blur-factor':    '1.0',
+      '--glass-border':        'rgba(210, 190, 160, 0.25)',
+      '--glass-border-hover':  'rgba(210, 190, 160, 0.85)',
+      '--text-main':           '#f7f1e6',
+      '--text-muted':          '#cbbba4',
+      '--text-dim':            '#8a7a66',
+      '--accent-gold':         '#d6b48a',
+      '--accent-gold-dim':     'rgba(214, 180, 138, 0.15)',
+      '--accent-gold-line':    'rgba(214, 180, 138, 0.35)',
+      '--orb-colors':          '#d6b48a, #f2d2a9, #a68a64, #ffe0b2, #c8a27a',
+      '--orb-blur-factor':     '1.0',
       '--orb-speed-multiplier':'0.95',
       '--orb-scale-multiplier':'1.08'
     }
@@ -75,16 +75,16 @@ const MY_FAVORITE_THEMES = [
       '--bg-base':             '#050a07',
       '--glass-bg':            'rgba(10, 26, 18, 0.65)',
       '--glass-bg-strong':     'rgba(6, 18, 12, 0.88)',
-      '--glass-border':       'rgba(0, 255, 140, 0.22)',
-      '--glass-border-hover': 'rgba(0, 255, 140, 0.85)',
-      '--text-main':          '#eafff3',
-      '--text-muted':         '#a7d6bc',
-      '--text-dim':           '#5a8f73',
-      '--accent-gold':        '#00ff9a',
-      '--accent-gold-dim':    'rgba(0, 255, 154, 0.15)',
-      '--accent-gold-line':   'rgba(0, 255, 154, 0.35)',
-      '--orb-colors':         '#00ff9a, #39ff14, #00d4ff, #7cffcb, #2bff88',
-      '--orb-blur-factor':    '0.9',
+      '--glass-border':        'rgba(0, 255, 140, 0.22)',
+      '--glass-border-hover':  'rgba(0, 255, 140, 0.85)',
+      '--text-main':           '#eafff3',
+      '--text-muted':          '#a7d6bc',
+      '--text-dim':            '#5a8f73',
+      '--accent-gold':         '#00ff9a',
+      '--accent-gold-dim':     'rgba(0, 255, 154, 0.15)',
+      '--accent-gold-line':    'rgba(0, 255, 154, 0.35)',
+      '--orb-colors':          '#00ff9a, #39ff14, #00d4ff, #7cffcb, #2bff88',
+      '--orb-blur-factor':     '0.9',
       '--orb-speed-multiplier':'1.45',
       '--orb-scale-multiplier':'1.05'
     }
@@ -94,16 +94,16 @@ const MY_FAVORITE_THEMES = [
       '--bg-base':             '#07040b',
       '--glass-bg':            'rgba(24, 10, 32, 0.65)',
       '--glass-bg-strong':     'rgba(14, 6, 22, 0.88)',
-      '--glass-border':       'rgba(170, 90, 255, 0.25)',
-      '--glass-border-hover': 'rgba(170, 90, 255, 0.85)',
-      '--text-main':          '#f5ecff',
-      '--text-muted':         '#c7b3e6',
-      '--text-dim':           '#7a5a9a',
-      '--accent-gold':        '#b56cff',
-      '--accent-gold-dim':    'rgba(181, 108, 255, 0.15)',
-      '--accent-gold-line':   'rgba(181, 108, 255, 0.35)',
-      '--orb-colors':         '#b56cff, #7c3aed, #00d9ff, #ff4fd8, #9b5cff',
-      '--orb-blur-factor':    '1.05',
+      '--glass-border':        'rgba(170, 90, 255, 0.25)',
+      '--glass-border-hover':  'rgba(170, 90, 255, 0.85)',
+      '--text-main':           '#f5ecff',
+      '--text-muted':          '#c7b3e6',
+      '--text-dim':            '#7a5a9a',
+      '--accent-gold':         '#b56cff',
+      '--accent-gold-dim':     'rgba(181, 108, 255, 0.15)',
+      '--accent-gold-line':    'rgba(181, 108, 255, 0.35)',
+      '--orb-colors':          '#b56cff, #7c3aed, #00d9ff, #ff4fd8, #9b5cff',
+      '--orb-blur-factor':     '1.05',
       '--orb-speed-multiplier':'1.35',
       '--orb-scale-multiplier':'1.1'
     }
@@ -113,16 +113,16 @@ const MY_FAVORITE_THEMES = [
       '--bg-base':             '#030407',
       '--glass-bg':            'rgba(12, 14, 18, 0.7)',
       '--glass-bg-strong':     'rgba(6, 7, 10, 0.9)',
-      '--glass-border':       'rgba(120, 120, 120, 0.22)',
-      '--glass-border-hover': 'rgba(200, 200, 200, 0.7)',
-      '--text-main':          '#f0f4ff',
-      '--text-muted':         '#a0a8b8',
-      '--text-dim':           '#5a6270',
-      '--accent-gold':        '#7dd3fc',
-      '--accent-gold-dim':    'rgba(125, 211, 252, 0.12)',
-      '--accent-gold-line':   'rgba(125, 211, 252, 0.28)',
-      '--orb-colors':         '#7dd3fc, #f97316, #22c55e, #a78bfa, #e5e7eb',
-      '--orb-blur-factor':    '0.95',
+      '--glass-border':        'rgba(120, 120, 120, 0.22)',
+      '--glass-border-hover':  'rgba(200, 200, 200, 0.7)',
+      '--text-main':           '#f0f4ff',
+      '--text-muted':          '#a0a8b8',
+      '--text-dim':            '#5a6270',
+      '--accent-gold':         '#7dd3fc',
+      '--accent-gold-dim':     'rgba(125, 211, 252, 0.12)',
+      '--accent-gold-line':    'rgba(125, 211, 252, 0.28)',
+      '--orb-colors':          '#7dd3fc, #f97316, #22c55e, #a78bfa, #e5e7eb',
+      '--orb-blur-factor':     '0.95',
       '--orb-speed-multiplier':'1.2',
       '--orb-scale-multiplier':'1.08'
     }
@@ -132,16 +132,16 @@ const MY_FAVORITE_THEMES = [
       '--bg-base':             '#0b0605',
       '--glass-bg':            'rgba(40, 18, 12, 0.62)',
       '--glass-bg-strong':     'rgba(25, 10, 6, 0.88)',
-      '--glass-border':       'rgba(255, 120, 70, 0.22)',
-      '--glass-border-hover': 'rgba(255, 120, 70, 0.8)',
-      '--text-main':          '#fff3ec',
-      '--text-muted':         '#e2b7a3',
-      '--text-dim':           '#8a5a48',
-      '--accent-gold':        '#ff7a45',
-      '--accent-gold-dim':    'rgba(255, 122, 69, 0.15)',
-      '--accent-gold-line':   'rgba(255, 122, 69, 0.35)',
-      '--orb-colors':         '#ff6b35, #ff3d2e, #ff9f1c, #c44536, #ff784f',
-      '--orb-blur-factor':    '1.05',
+      '--glass-border':        'rgba(255, 120, 70, 0.22)',
+      '--glass-border-hover':  'rgba(255, 120, 70, 0.8)',
+      '--text-main':           '#fff3ec',
+      '--text-muted':          '#e2b7a3',
+      '--text-dim':            '#8a5a48',
+      '--accent-gold':         '#ff7a45',
+      '--accent-gold-dim':     'rgba(255, 122, 69, 0.15)',
+      '--accent-gold-line':    'rgba(255, 122, 69, 0.35)',
+      '--orb-colors':          '#ff6b35, #ff3d2e, #ff9f1c, #c44536, #ff784f',
+      '--orb-blur-factor':     '1.05',
       '--orb-speed-multiplier':'1.3',
       '--orb-scale-multiplier':'1.05'
     }
@@ -151,16 +151,16 @@ const MY_FAVORITE_THEMES = [
       '--bg-base':             '#050b12',
       '--glass-bg':            'rgba(12, 28, 40, 0.6)',
       '--glass-bg-strong':     'rgba(8, 18, 28, 0.9)',
-      '--glass-border':       'rgba(120, 200, 255, 0.22)',
-      '--glass-border-hover': 'rgba(120, 200, 255, 0.85)',
-      '--text-main':          '#eaf6ff',
-      '--text-muted':         '#a8c7db',
-      '--text-dim':           '#5f7c92',
-      '--accent-gold':        '#6dd3ff',
-      '--accent-gold-dim':    'rgba(109, 211, 255, 0.15)',
-      '--accent-gold-line':   'rgba(109, 211, 255, 0.35)',
-      '--orb-colors':         '#6dd3ff, #00a6fb, #90e0ef, #48cae4, #0077b6',
-      '--orb-blur-factor':    '0.95',
+      '--glass-border':        'rgba(120, 200, 255, 0.22)',
+      '--glass-border-hover':  'rgba(120, 200, 255, 0.85)',
+      '--text-main':           '#eaf6ff',
+      '--text-muted':          '#a8c7db',
+      '--text-dim':            '#5f7c92',
+      '--accent-gold':         '#6dd3ff',
+      '--accent-gold-dim':     'rgba(109, 211, 255, 0.15)',
+      '--accent-gold-line':    'rgba(109, 211, 255, 0.35)',
+      '--orb-colors':          '#6dd3ff, #00a6fb, #90e0ef, #48cae4, #0077b6',
+      '--orb-blur-factor':     '0.95',
       '--orb-speed-multiplier':'1.25',
       '--orb-scale-multiplier':'1.1'
     }
@@ -170,16 +170,16 @@ const MY_FAVORITE_THEMES = [
       '--bg-base':             '#0e0a06',
       '--glass-bg':            'rgba(40, 26, 12, 0.62)',
       '--glass-bg-strong':     'rgba(25, 16, 8, 0.9)',
-      '--glass-border':       'rgba(255, 190, 90, 0.22)',
-      '--glass-border-hover': 'rgba(255, 190, 90, 0.85)',
-      '--text-main':          '#fff7e6',
-      '--text-muted':         '#e2c9a3',
-      '--text-dim':           '#9b7a4f',
-      '--accent-gold':        '#ffbe5a',
-      '--accent-gold-dim':    'rgba(255, 190, 90, 0.15)',
-      '--accent-gold-line':   'rgba(255, 190, 90, 0.35)',
-      '--orb-colors':         '#ffbe5a, #ff9f1c, #e85d04, #ffd166, #f48c06',
-      '--orb-blur-factor':    '1.0',
+      '--glass-border':        'rgba(255, 190, 90, 0.22)',
+      '--glass-border-hover':  'rgba(255, 190, 90, 0.85)',
+      '--text-main':           '#fff7e6',
+      '--text-muted':          '#e2c9a3',
+      '--text-dim':            '#9b7a4f',
+      '--accent-gold':         '#ffbe5a',
+      '--accent-gold-dim':     'rgba(255, 190, 90, 0.15)',
+      '--accent-gold-line':    'rgba(255, 190, 90, 0.35)',
+      '--orb-colors':          '#ffbe5a, #ff9f1c, #e85d04, #ffd166, #f48c06',
+      '--orb-blur-factor':     '1.0',
       '--orb-speed-multiplier':'1.15',
       '--orb-scale-multiplier':'1.08'
     }
@@ -189,16 +189,16 @@ const MY_FAVORITE_THEMES = [
       '--bg-base':             '#07000a',
       '--glass-bg':            'rgba(30, 8, 40, 0.65)',
       '--glass-bg-strong':     'rgba(18, 4, 24, 0.9)',
-      '--glass-border':       'rgba(255, 0, 180, 0.25)',
-      '--glass-border-hover': 'rgba(255, 0, 180, 0.85)',
-      '--text-main':          '#ffe9fb',
-      '--text-muted':         '#d7a0cc',
-      '--text-dim':           '#8a4f7a',
-      '--accent-gold':        '#ff2bd6',
-      '--accent-gold-dim':    'rgba(255, 43, 214, 0.15)',
-      '--accent-gold-line':   'rgba(255, 43, 214, 0.35)',
-      '--orb-colors':         '#ff2bd6, #ff6bd6, #9b5cff, #00e5ff, #ff0080',
-      '--orb-blur-factor':    '1.1',
+      '--glass-border':        'rgba(255, 0, 180, 0.25)',
+      '--glass-border-hover':  'rgba(255, 0, 180, 0.85)',
+      '--text-main':           '#ffe9fb',
+      '--text-muted':          '#d7a0cc',
+      '--text-dim':            '#8a4f7a',
+      '--accent-gold':         '#ff2bd6',
+      '--accent-gold-dim':     'rgba(255, 43, 214, 0.15)',
+      '--accent-gold-line':    'rgba(255, 43, 214, 0.35)',
+      '--orb-colors':          '#ff2bd6, #ff6bd6, #9b5cff, #00e5ff, #ff0080',
+      '--orb-blur-factor':     '1.1',
       '--orb-speed-multiplier':'1.4',
       '--orb-scale-multiplier':'1.1'
     }
@@ -208,16 +208,16 @@ const MY_FAVORITE_THEMES = [
       '--bg-base':             '#020617',
       '--glass-bg':            'rgba(10, 25, 50, 0.6)',
       '--glass-bg-strong':     'rgba(6, 15, 30, 0.9)',
-      '--glass-border':       'rgba(0, 180, 200, 0.25)',
-      '--glass-border-hover': 'rgba(0, 180, 200, 0.85)',
-      '--text-main':          '#e6f7ff',
-      '--text-muted':         '#9cc7d8',
-      '--text-dim':           '#4f7c8a',
-      '--accent-gold':        '#00b4d8',
-      '--accent-gold-dim':    'rgba(0, 180, 216, 0.15)',
-      '--accent-gold-line':   'rgba(0, 180, 216, 0.35)',
-      '--orb-colors':         '#00b4d8, #0077b6, #90e0ef, #48cae4, #0096c7',
-      '--orb-blur-factor':    '0.95',
+      '--glass-border':        'rgba(0, 180, 200, 0.25)',
+      '--glass-border-hover':  'rgba(0, 180, 200, 0.85)',
+      '--text-main':           '#e6f7ff',
+      '--text-muted':          '#9cc7d8',
+      '--text-dim':            '#4f7c8a',
+      '--accent-gold':         '#00b4d8',
+      '--accent-gold-dim':     'rgba(0, 180, 216, 0.15)',
+      '--accent-gold-line':    'rgba(0, 180, 216, 0.35)',
+      '--orb-colors':          '#00b4d8, #0077b6, #90e0ef, #48cae4, #0096c7',
+      '--orb-blur-factor':     '0.95',
       '--orb-speed-multiplier':'1.2',
       '--orb-scale-multiplier':'1.1'
     }
@@ -227,16 +227,16 @@ const MY_FAVORITE_THEMES = [
       '--bg-base':             '#0a0610',
       '--glass-bg':            'rgba(35, 15, 30, 0.6)',
       '--glass-bg-strong':     'rgba(20, 8, 18, 0.9)',
-      '--glass-border':       'rgba(255, 105, 180, 0.22)',
-      '--glass-border-hover': 'rgba(255, 105, 180, 0.85)',
-      '--text-main':          '#fff0f6',
-      '--text-muted':         '#e2b3c7',
-      '--text-dim':           '#9b6b84',
-      '--accent-gold':        '#ff69b4',
-      '--accent-gold-dim':    'rgba(255, 105, 180, 0.15)',
-      '--accent-gold-line':   'rgba(255, 105, 180, 0.35)',
-      '--orb-colors':         '#ff69b4, #ff85a2, #c084fc, #f472b6, #fb7185',
-      '--orb-blur-factor':    '1.05',
+      '--glass-border':        'rgba(255, 105, 180, 0.22)',
+      '--glass-border-hover':  'rgba(255, 105, 180, 0.85)',
+      '--text-main':           '#fff0f6',
+      '--text-muted':          '#e2b3c7',
+      '--text-dim':            '#9b6b84',
+      '--accent-gold':         '#ff69b4',
+      '--accent-gold-dim':     'rgba(255, 105, 180, 0.15)',
+      '--accent-gold-line':    'rgba(255, 105, 180, 0.35)',
+      '--orb-colors':          '#ff69b4, #ff85a2, #c084fc, #f472b6, #fb7185',
+      '--orb-blur-factor':     '1.05',
       '--orb-speed-multiplier':'1.25',
       '--orb-scale-multiplier':'1.08'
     }
@@ -278,17 +278,6 @@ function easeInOut(t) {
 
 function easeOutExpo(t) {
   return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
-}
-
-function easeOutBack(t) {
-  const c1 = 1.70158, c3 = c1 + 1;
-  return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
-}
-
-function easeOutElastic(t) {
-  const c4 = (2 * Math.PI) / 3;
-  return t === 0 ? 0 : t === 1 ? 1 :
-    Math.pow(2, -10 * t) * Math.sin((t * 10 - 0.75) * c4) + 1;
 }
 
 function orbGradient(rgb) {
@@ -337,35 +326,18 @@ function lerpRgba(a, b, t) {
   };
 }
 
-const _tokenLerps       = new Map();
-let   _tokenLerpRunning = false;
+const _tokenLerps = new Map();
 
-function startTokenLerpLoop() {
-  if (_tokenLerpRunning) return;
-  _tokenLerpRunning = true;
-  let last = performance.now();
-
-  function tick(now) {
-    const dt   = now - last;
-    last       = now;
-    const root = document.documentElement;
-
-    _tokenLerps.forEach((state, variable) => {
-      state.elapsed = Math.min(state.elapsed + dt, state.duration);
-      const t   = easeInOut(state.elapsed / state.duration);
-      const cur = lerpRgba(state.fromColor, state.toColor, t);
-      root.style.setProperty(variable, serializeColor(cur, state.rawTarget));
-      if (state.elapsed >= state.duration) _tokenLerps.delete(variable);
-    });
-
-    if (_tokenLerps.size > 0) {
-      requestAnimationFrame(tick);
-    } else {
-      _tokenLerpRunning = false;
-    }
-  }
-
-  requestAnimationFrame(tick);
+function applyTokenLerpTick(dt) {
+  if (!_tokenLerps.size) return;
+  const root = document.documentElement;
+  _tokenLerps.forEach((state, variable) => {
+    state.elapsed = Math.min(state.elapsed + dt, state.duration);
+    const t   = easeInOut(state.elapsed / state.duration);
+    const cur = lerpRgba(state.fromColor, state.toColor, t);
+    root.style.setProperty(variable, serializeColor(cur, state.rawTarget));
+    if (state.elapsed >= state.duration) _tokenLerps.delete(variable);
+  });
 }
 
 const INSTANT_TOKENS = new Set([
@@ -385,20 +357,14 @@ function applyThemeTokensSmooth(tokens, durationMs) {
       return;
     }
     const toColor = parseColorToken(rawTarget);
-    if (!toColor) {
-      root.style.setProperty(variable, rawTarget);
-      return;
-    }
+    if (!toColor) { root.style.setProperty(variable, rawTarget); return; }
     const currentRaw = styles.getPropertyValue(variable).trim();
     const fromColor  = parseColorToken(currentRaw) || toColor;
-
     _tokenLerps.set(variable, {
       variable, fromColor, toColor, rawTarget,
       elapsed: 0, duration: durationMs,
     });
   });
-
-  startTokenLerpLoop();
 }
 
 // ============================================================
@@ -413,18 +379,14 @@ function applyRandomTheme() {
   const pool        = available.length > 0 ? available : MY_FAVORITE_THEMES;
   const randomTheme = pool[Math.floor(Math.random() * pool.length)];
   currentThemeName  = randomTheme.name;
-
   console.log(`🎨 Theme: "${randomTheme.name}"`);
-
-  const durationMs = ORB_TRANSITION_SECS * 1000;
-  requestAnimationFrame(() => {
-    applyThemeTokensSmooth(randomTheme.tokens, durationMs);
-    updateActiveOrbSkins(randomTheme.tokens, durationMs);
-  });
+  const durationMs  = ORB_TRANSITION_SECS * 1000;
+  applyThemeTokensSmooth(randomTheme.tokens, durationMs);
+  updateActiveOrbSkins(randomTheme.tokens, durationMs);
 }
 
 // ============================================================
-//  BACKGROUND — orb canvas + tick loop
+//  BACKGROUND — orb system (transform-based, no layout thrash)
 // ============================================================
 
 function initBackground() {
@@ -434,7 +396,12 @@ function initBackground() {
   const vw = window.innerWidth;
   const vh = window.innerHeight;
 
-  const BASE_CONFIGS = [
+  // Fewer orbs on mobile to save GPU
+  const BASE_CONFIGS = IS_MOBILE ? [
+    { sizePercent: 55, isSecondary: false, blurBase: 80, opacity: 0.35 },
+    { sizePercent: 48, isSecondary: true,  blurBase: 70, opacity: 0.45 },
+    { sizePercent: 42, isSecondary: false, blurBase: 60, opacity: 0.28 },
+  ] : [
     { sizePercent: 38, isSecondary: false, blurBase: 110, opacity: 0.40 },
     { sizePercent: 32, isSecondary: true,  blurBase: 100, opacity: 0.55 },
     { sizePercent: 28, isSecondary: false, blurBase:  90, opacity: 0.30 },
@@ -442,6 +409,9 @@ function initBackground() {
     { sizePercent: 24, isSecondary: false, blurBase:  80, opacity: 0.35 },
     { sizePercent: 30, isSecondary: true,  blurBase:  95, opacity: 0.50 }
   ];
+
+  // On mobile, lower blur values dramatically
+  const blurScale = IS_MOBILE ? 0.5 : 1.0;
 
   const orbs = BASE_CONFIGS.map((cfg, i) => {
     const el     = document.createElement('div');
@@ -451,11 +421,19 @@ function initBackground() {
     const startX = Math.random() * vw;
     const startY = Math.random() * vh;
 
+    const initStyles    = getComputedStyle(document.documentElement);
+    const initScale     = parseFloat(initStyles.getPropertyValue('--orb-scale-multiplier')) || 1.0;
+    const initBlurFact  = parseFloat(initStyles.getPropertyValue('--orb-blur-factor'))      || 1.0;
+    const initSizePx    = Math.round(vw * (cfg.sizePercent * initScale) / 100);
+    const initBlurPx    = cfg.blurBase * initBlurFact * blurScale;
+
     const state = {
       el,
       sizePercent: cfg.sizePercent,
       blurBase:    cfg.blurBase,
+      blurScale,
       opacity:     cfg.opacity,
+      // positions stored as center coords; we use transform for rendering
       x: startX, y: startY,
       tx: 0,     ty: 0,
       ox: startX, oy: startY,
@@ -464,94 +442,49 @@ function initBackground() {
       fromRgb:    { r: 80, g: 0, b: 80 },
       currentRgb: { r: 80, g: 0, b: 80 },
       targetRgb:  { r: 80, g: 0, b: 80 },
-      colorT: 1,        colorDuration: ORB_TRANSITION_SECS * 1000,
-      fromSizePx: 0,    currentSizePx: 0, targetSizePx: 0,
-      sizeT: 1,         sizeDuration:  ORB_TRANSITION_SECS * 1000,
-      fromBlurPx: cfg.blurBase, currentBlurPx: cfg.blurBase, targetBlurPx: cfg.blurBase,
-      blurT: 1,         blurDuration:  ORB_TRANSITION_SECS * 1000,
+      colorT: 1,       colorDuration: ORB_TRANSITION_SECS * 1000,
+      fromSizePx:    initSizePx, currentSizePx: initSizePx, targetSizePx: initSizePx,
+      sizeT: 1,        sizeDuration:  ORB_TRANSITION_SECS * 1000,
+      fromBlurPx:    initBlurPx, currentBlurPx: initBlurPx, targetBlurPx: initBlurPx,
+      blurT: 1,        blurDuration:  ORB_TRANSITION_SECS * 1000,
+      // track last rendered values to avoid redundant style writes
+      _lastX: -9999, _lastY: -9999, _lastSz: -1, _lastBlur: -1,
     };
 
-    el.style.position      = 'absolute';
-    el.style.pointerEvents = 'none';
-    el.style.opacity       = '0';
-    el.style.transition    = `opacity ${ORB_TRANSITION_SECS}s ease`;
-
-    const initStyles        = getComputedStyle(document.documentElement);
-    const initScale         = parseFloat(initStyles.getPropertyValue('--orb-scale-multiplier')) || 1.0;
-    const initBlurFactor    = parseFloat(initStyles.getPropertyValue('--orb-blur-factor'))      || 1.0;
-    state.currentSizePx     = Math.round(vw * (cfg.sizePercent * initScale) / 100);
-    state.fromSizePx        = state.currentSizePx;
-    state.targetSizePx      = state.currentSizePx;
-    state.currentBlurPx     = cfg.blurBase * initBlurFactor;
-    state.fromBlurPx        = state.currentBlurPx;
-    state.targetBlurPx      = state.currentBlurPx;
-
-    el.style.width  = `${state.currentSizePx}px`;
-    el.style.height = `${state.currentSizePx}px`;
-    el.style.filter = `blur(${state.currentBlurPx}px)`;
+    el.style.cssText = `
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      will-change: transform, background;
+      opacity: 0;
+      transition: opacity ${ORB_TRANSITION_SECS}s ease;
+      top: 0; left: 0;
+      width:  ${initSizePx}px;
+      height: ${initSizePx}px;
+      filter: blur(${initBlurPx.toFixed(1)}px);
+    `;
 
     setTimeout(() => { el.style.opacity = cfg.opacity; }, i * 200);
-    pickTarget(state, vw, vh);
+    pickOrbTarget(state, vw, vh);
     return state;
   });
 
   window._orbStates = orbs;
 
-  function pickTarget(state, width, height) {
+  function pickOrbTarget(state, width, height) {
     const styles          = getComputedStyle(document.documentElement);
     const speedMultiplier = parseFloat(styles.getPropertyValue('--orb-speed-multiplier')) || 1.0;
     state.ox       = state.x;
     state.oy       = state.y;
     state.tx       = Math.random() * (width  * 1.3) - width  * 0.15;
     state.ty       = Math.random() * (height * 1.3) - height * 0.15;
-    const base     = 24000 + Math.random() * 24000;
+    const base     = (IS_MOBILE ? 30000 : 24000) + Math.random() * 24000;
     state.duration = base / speedMultiplier;
     state.elapsed  = 0;
   }
 
-  let last = performance.now();
-
-  function tick(now) {
-    const dt = now - last;
-    last = now;
-
-    orbs.forEach(state => {
-      state.elapsed += dt;
-      const t = Math.min(state.elapsed / state.duration, 1);
-      const e = easeInOut(t);
-      state.x = state.ox + (state.tx - state.ox) * e;
-      state.y = state.oy + (state.ty - state.oy) * e;
-
-      if (t >= 1) pickTarget(state, window.innerWidth, window.innerHeight);
-
-      if (state.colorT < 1) {
-        state.colorT     = Math.min(state.colorT + dt / state.colorDuration, 1);
-        state.currentRgb = lerpColor(state.fromRgb, state.targetRgb, easeInOut(state.colorT));
-        state.el.style.background = orbGradient(state.currentRgb);
-      }
-
-      if (state.sizeT < 1) {
-        state.sizeT         = Math.min(state.sizeT + dt / state.sizeDuration, 1);
-        state.currentSizePx = state.fromSizePx + (state.targetSizePx - state.fromSizePx) * easeInOut(state.sizeT);
-      }
-
-      if (state.blurT < 1) {
-        state.blurT         = Math.min(state.blurT + dt / state.blurDuration, 1);
-        state.currentBlurPx = state.fromBlurPx + (state.targetBlurPx - state.fromBlurPx) * easeInOut(state.blurT);
-      }
-
-      const sizePx = Math.round(state.currentSizePx);
-      state.el.style.left   = (state.x - sizePx / 2) + 'px';
-      state.el.style.top    = (state.y - sizePx / 2) + 'px';
-      state.el.style.width  = `${sizePx}px`;
-      state.el.style.height = `${sizePx}px`;
-      state.el.style.filter = `blur(${state.currentBlurPx.toFixed(1)}px)`;
-    });
-
-    requestAnimationFrame(tick);
-  }
-
-  requestAnimationFrame(tick);
+  // Expose pickOrbTarget so the unified loop can call it
+  window._pickOrbTarget = pickOrbTarget;
 }
 
 // ============================================================
@@ -576,17 +509,347 @@ function updateActiveOrbSkins(themeTokens, durationMs) {
     state.fromSizePx = state.currentSizePx;
     state.fromBlurPx = state.currentBlurPx;
 
-    const rawTarget      = pickRandomColor(colorPool);
-    state.targetRgb      = hexToRgb(rawTarget);
-    state.colorT         = 0;
-    state.colorDuration  = transitionMs;
-    state.targetSizePx   = Math.round(vw * (state.sizePercent * scaleMultiplier) / 100);
-    state.sizeT          = 0;
-    state.sizeDuration   = transitionMs;
-    state.targetBlurPx   = state.blurBase * blurFactor;
-    state.blurT          = 0;
-    state.blurDuration   = transitionMs;
+    const rawTarget     = pickRandomColor(colorPool);
+    state.targetRgb     = hexToRgb(rawTarget);
+    state.colorT        = 0;
+    state.colorDuration = transitionMs;
+    state.targetSizePx  = Math.round(vw * (state.sizePercent * scaleMultiplier) / 100);
+    state.sizeT         = 0;
+    state.sizeDuration  = transitionMs;
+    state.targetBlurPx  = state.blurBase * blurFactor * state.blurScale;
+    state.blurT         = 0;
+    state.blurDuration  = transitionMs;
   });
+}
+
+// ============================================================
+//  AMBIENT PARTICLES (canvas-based, runs on all pages)
+// ============================================================
+
+function initAmbientParticles() {
+  if (REDUCED_MOTION) return;
+
+  let canvas = document.getElementById('ambient-canvas');
+  if (!canvas) {
+    canvas = document.createElement('canvas');
+    canvas.id = 'ambient-canvas';
+    canvas.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.6;';
+    document.body.insertBefore(canvas, document.body.firstChild);
+  }
+
+  const ctx = canvas.getContext('2d');
+  const GOLD  = [212, 175, 55];
+  const WHITE = [220, 210, 255];
+  let W, H, particles;
+
+  function rand(min, max) { return min + Math.random() * (max - min); }
+
+  function makeParticle(randomY) {
+    const useGold = Math.random() > 0.35;
+    const [r, g, b] = useGold ? GOLD : WHITE;
+    return {
+      x: rand(0, W), y: randomY ? rand(0, H) : H + 10,
+      r: rand(1, IS_MOBILE ? 2.5 : 3.5),
+      speed: rand(0.18, IS_MOBILE ? 0.4 : 0.55),
+      drift: rand(-0.12, 0.12),
+      alpha: rand(0.04, 0.28),
+      alphaTarget: rand(0.1, 0.35),
+      alphaDelta: rand(0.003, 0.008) * (Math.random() > 0.5 ? 1 : -1),
+      r_val: r, g_val: g, b_val: b,
+      pulse: rand(0, Math.PI * 2),
+      pulseSpeed: rand(0.008, 0.025),
+    };
+  }
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    const count = Math.min(IS_MOBILE ? 30 : 55, Math.floor(W * H / 18000));
+    particles = Array.from({ length: count }, () => makeParticle(true));
+  }
+
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+
+  // Store draw fn for unified loop
+  window._ambientParticlesTick = function() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach((p, i) => {
+      p.y -= p.speed;
+      p.x += p.drift;
+      p.pulse += p.pulseSpeed;
+      p.alpha += p.alphaDelta;
+      if (p.alpha > p.alphaTarget || p.alpha < 0.02) p.alphaDelta *= -1;
+
+      const displayR = p.r * (1 + 0.2 * Math.sin(p.pulse));
+      const a = Math.max(0, Math.min(0.5, p.alpha));
+
+      const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, displayR * 3.5);
+      gradient.addColorStop(0,   `rgba(${p.r_val},${p.g_val},${p.b_val},${a})`);
+      gradient.addColorStop(0.4, `rgba(${p.r_val},${p.g_val},${p.b_val},${a * 0.5})`);
+      gradient.addColorStop(1,   `rgba(${p.r_val},${p.g_val},${p.b_val},0)`);
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, displayR * 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+
+      if (p.y < -20 || p.x < -20 || p.x > W + 20) {
+        particles[i] = makeParticle(false);
+        particles[i].x = rand(0, W);
+      }
+    });
+  };
+}
+
+// ============================================================
+//  CORNER BEAMS — desktop only
+// ============================================================
+
+function initCornerBeams() {
+  // Skip entirely on mobile — too GPU-heavy
+  if (IS_MOBILE) return;
+
+  let wrap = document.getElementById('corner-beams');
+  if (!wrap) {
+    wrap = document.createElement('div');
+    wrap.id = 'corner-beams';
+    document.body.appendChild(wrap);
+  }
+
+  const CORNERS = [
+    { id: 'tl', x: 0, y: 0, fanAngle: 38   },
+    { id: 'tr', x: 1, y: 0, fanAngle: 142  },
+    { id: 'bl', x: 0, y: 1, fanAngle: -38  },
+    { id: 'br', x: 1, y: 1, fanAngle: -142 },
+  ];
+
+  const RAY_DEFS = [
+    { off: -50, wMul: 2.2, oMul: 0.06 },
+    { off: -40, wMul: 0.9, oMul: 0.18 },
+    { off: -35, wMul: 0.4, oMul: 0.28 },
+    { off:  -15, wMul: 0.2, oMul: 0.32 },
+    { off:   -5, wMul: 0.15,oMul: 0.35 },
+    { off:   10, wMul: 0.2, oMul: 0.30 },
+    { off:  25, wMul: 0.5, oMul: 0.22 },
+    { off:  35, wMul: 1.0, oMul: 0.14 },
+    { off:  60, wMul: 2.4, oMul: 0.05 },
+  ];
+
+  const RAY_LENGTH = () => Math.min(window.innerWidth, window.innerHeight) * 0.18;
+  const DUST_PER_CORNER = 3;
+
+  function getAccentRgb() {
+    const raw = getComputedStyle(document.documentElement)
+      .getPropertyValue('--accent-gold').trim();
+    if (raw.startsWith('#')) return hexToRgb(raw);
+    const m = raw.match(/rgba?\(\s*([\d.]+),\s*([\d.]+),\s*([\d.]+)/);
+    if (m) return { r: +m[1], g: +m[2], b: +m[3] };
+    return { r: 255, g: 190, b: 60 };
+  }
+
+  const states = CORNERS.map(corner => {
+    const anchor = document.createElement('div');
+    anchor.className = 'corner-source';
+    anchor.style.cssText = 'position:absolute;width:0;height:0;pointer-events:none;';
+    wrap.appendChild(anchor);
+
+    const hotspot = document.createElement('div');
+    hotspot.className = 'c-hotspot';
+    hotspot.style.cssText = 'position:absolute;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;';
+    anchor.appendChild(hotspot);
+
+    const hotspot2 = document.createElement('div');
+    hotspot2.className = 'c-hotspot';
+    hotspot2.style.cssText = 'position:absolute;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;';
+    anchor.appendChild(hotspot2);
+
+    const rayEls = RAY_DEFS.map(def => {
+      const el = document.createElement('div');
+      el.style.cssText = 'position:absolute;top:0;left:0;width:0;height:0;transform-origin:0 0;pointer-events:none;border-style:solid;border-color:transparent;';
+      anchor.appendChild(el);
+      return { el, def };
+    });
+
+    const motes = Array.from({ length: DUST_PER_CORNER }, () => {
+      const el = document.createElement('div');
+      const sz = 1 + Math.random() * 1.8;
+      el.style.cssText = `position:absolute;border-radius:50%;pointer-events:none;width:${sz}px;height:${sz}px;will-change:transform,opacity;`;
+      anchor.appendChild(el);
+      return {
+        el, sz,
+        t: Math.random(),
+        rayIdx: Math.floor(Math.random() * RAY_DEFS.length),
+        speed: 0.00008 + Math.random() * 0.00014,
+        lateralT: Math.random() * Math.PI * 2,
+        lateralSpd: 0.0004 + Math.random() * 0.0005,
+        lateralAmp: 2 + Math.random() * 8,
+        opacityBase: 0.15 + Math.random() * 0.40,
+        born: performance.now() + Math.random() * 1500,
+      };
+    });
+
+    return {
+      corner, anchor, hotspot, hotspot2, rayEls, motes,
+      breathPhase: Math.random() * Math.PI * 2,
+      swayPhase:   Math.random() * Math.PI * 2,
+    };
+  });
+
+  function placeAnchors() {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    states.forEach(({ corner, anchor }) => {
+      anchor.style.left = (corner.x * vw) + 'px';
+      anchor.style.top  = (corner.y * vh) + 'px';
+    });
+  }
+  placeAnchors();
+  window.addEventListener('resize', placeAnchors, { passive: true });
+
+  // Store tick fn for unified loop
+  window._cornerBeamsTick = function(now, dt) {
+    const rgb = getAccentRgb();
+    const rl  = RAY_LENGTH();
+
+    states.forEach(state => {
+      state.breathPhase += dt * 0.00032;
+      state.swayPhase   += dt * 0.00014;
+
+      const breathe = 0.75 + 0.25 * Math.sin(state.breathPhase);
+      const sway    = Math.sin(state.swayPhase) * 3;
+
+      const hSize  = 120 + 18 * breathe;
+      const hSize2 = 170 + 80 * breathe;
+      state.hotspot.style.width      = hSize + 'px';
+      state.hotspot.style.height     = hSize + 'px';
+      state.hotspot.style.opacity    = (0.3 * breathe).toFixed(3);
+      state.hotspot.style.background = `radial-gradient(circle, rgba(${rgb.r},${rgb.g},${rgb.b},0.9) 0%, rgba(${rgb.r},${rgb.g},${rgb.b},0.3) 50%, transparent 100%)`;
+      state.hotspot.style.boxShadow  = `0 0 ${hSize}px rgba(${rgb.r},${rgb.g},${rgb.b},0.6)`;
+      state.hotspot2.style.width     = hSize2 + 'px';
+      state.hotspot2.style.height    = hSize2 + 'px';
+      state.hotspot2.style.opacity   = (0.12 * breathe).toFixed(3);
+      state.hotspot2.style.background = `radial-gradient(circle, rgba(${rgb.r},${rgb.g},${rgb.b},0.18) 0%, transparent 70%)`;
+
+      state.rayEls.forEach(({ el, def }) => {
+        const angle    = state.corner.fanAngle + def.off + sway;
+        const halfW    = rl * Math.tan((2.0 * Math.PI) / 180) * def.wMul;
+        const opacity  = def.oMul * breathe * 0.08;
+        el.style.transform    = `rotate(${angle - 90}deg) translateX(${-halfW}px)`;
+        el.style.borderLeft   = `${halfW}px solid transparent`;
+        el.style.borderRight  = `${halfW}px solid transparent`;
+        el.style.borderTop    = `${rl}px solid rgba(${rgb.r},${rgb.g},${rgb.b},${opacity.toFixed(4)})`;
+        el.style.borderBottom = 'none';
+      });
+
+      state.motes.forEach(mote => {
+        if (now < mote.born) { mote.el.style.opacity = '0'; return; }
+        mote.t += mote.speed * dt;
+        if (mote.t > 1) mote.t -= 1;
+        mote.lateralT += mote.lateralSpd * dt;
+
+        const def      = RAY_DEFS[mote.rayIdx];
+        const angle    = state.corner.fanAngle + def.off + sway;
+        const angleRad = (angle * Math.PI) / 180;
+        const dist     = mote.t * rl * 0.85;
+        const lateral  = Math.sin(mote.lateralT) * mote.lateralAmp;
+        const perpRad  = angleRad + Math.PI / 2;
+        const x = dist * Math.cos(angleRad) + lateral * Math.cos(perpRad);
+        const y = dist * Math.sin(angleRad) + lateral * Math.sin(perpRad);
+
+        const fadeIn  = Math.min(mote.t * 5, 1);
+        const fadeOut = 1 - Math.pow(mote.t, 2.5);
+        const opacity = mote.opacityBase * fadeIn * fadeOut * breathe * 0.6;
+
+        mote.el.style.transform  = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px)`;
+        mote.el.style.opacity    = opacity.toFixed(3);
+        mote.el.style.background = `rgba(${rgb.r},${rgb.g},${rgb.b},0.9)`;
+        mote.el.style.boxShadow  = `0 0 ${mote.sz * 2}px rgba(${rgb.r},${rgb.g},${rgb.b},0.5)`;
+      });
+    });
+  };
+}
+
+// ============================================================
+//  UNIFIED RAF LOOP — single requestAnimationFrame drives all systems
+// ============================================================
+
+function startUnifiedLoop() {
+  let last = performance.now();
+
+  function tick(now) {
+    const dt = Math.min(now - last, 50); // cap dt to avoid huge jumps after tab switch
+    last = now;
+
+    // 1. Token lerp (theme transitions)
+    applyTokenLerpTick(dt);
+
+    // 2. Orb movement + color/size animation
+    const orbs = window._orbStates;
+    if (orbs) {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      orbs.forEach(state => {
+        state.elapsed += dt;
+        const t = Math.min(state.elapsed / state.duration, 1);
+        const e = easeInOut(t);
+        state.x = state.ox + (state.tx - state.ox) * e;
+        state.y = state.oy + (state.ty - state.oy) * e;
+
+        if (t >= 1 && window._pickOrbTarget) window._pickOrbTarget(state, vw, vh);
+
+        if (state.colorT < 1) {
+          state.colorT     = Math.min(state.colorT + dt / state.colorDuration, 1);
+          state.currentRgb = lerpColor(state.fromRgb, state.targetRgb, easeInOut(state.colorT));
+        }
+        if (state.sizeT < 1) {
+          state.sizeT         = Math.min(state.sizeT + dt / state.sizeDuration, 1);
+          state.currentSizePx = state.fromSizePx + (state.targetSizePx - state.fromSizePx) * easeInOut(state.sizeT);
+        }
+        if (state.blurT < 1) {
+          state.blurT         = Math.min(state.blurT + dt / state.blurDuration, 1);
+          state.currentBlurPx = state.fromBlurPx + (state.targetBlurPx - state.fromBlurPx) * easeInOut(state.blurT);
+        }
+
+        // Use transform instead of left/top — no layout, GPU composited
+        const sizePx   = Math.round(state.currentSizePx);
+        const halfSize = sizePx / 2;
+        const tx       = state.x - halfSize;
+        const ty       = state.y - halfSize;
+
+        // Only write style when values actually changed (avoid redundant paint)
+        const blurRounded = state.currentBlurPx.toFixed(1);
+        if (tx !== state._lastX || ty !== state._lastY) {
+          state.el.style.transform = `translate(${tx.toFixed(1)}px,${ty.toFixed(1)}px)`;
+          state._lastX = tx; state._lastY = ty;
+        }
+        if (sizePx !== state._lastSz) {
+          state.el.style.width  = `${sizePx}px`;
+          state.el.style.height = `${sizePx}px`;
+          state._lastSz = sizePx;
+        }
+        if (blurRounded !== state._lastBlur) {
+          state.el.style.filter = `blur(${blurRounded}px)`;
+          state._lastBlur = blurRounded;
+        }
+        if (state.colorT < 1 || state._colorDirty) {
+          const { r, g, b } = state.currentRgb;
+          state.el.style.background = `radial-gradient(circle, rgb(${r},${g},${b}) 0%, rgba(0,0,0,0) 70%)`;
+          state._colorDirty = state.colorT < 1;
+        }
+      });
+    }
+
+    // 3. Ambient particles
+    if (window._ambientParticlesTick) window._ambientParticlesTick();
+
+    // 4. Corner beams (desktop only)
+    if (window._cornerBeamsTick) window._cornerBeamsTick(now, dt);
+
+    requestAnimationFrame(tick);
+  }
+
+  requestAnimationFrame(tick);
 }
 
 // ============================================================
@@ -600,8 +863,7 @@ function getGlowIntensity() {
 }
 
 function buildGlowGradient(r, g, b, intensity) {
-  return `radial-gradient(
-    circle,
+  return `radial-gradient(circle,
     rgba(${r},${g},${b},${(intensity * 0.50).toFixed(3)})  0%,
     rgba(${r},${g},${b},${(intensity * 0.28).toFixed(3)}) 25%,
     rgba(${r},${g},${b},${(intensity * 0.12).toFixed(3)}) 50%,
@@ -611,6 +873,7 @@ function buildGlowGradient(r, g, b, intensity) {
 }
 
 function initMouseGlow() {
+  if (IS_MOBILE) return; // No hover on mobile
   document.querySelectorAll('.glass-card').forEach(card => {
     const blob = card.querySelector('.glow-blob');
     if (!blob) return;
@@ -625,23 +888,21 @@ function initMouseGlow() {
 
       const states = window._orbStates;
       if (!states || !states.length) return;
-
       let closest = null, minDist = Infinity;
       states.forEach(s => {
         const dx = s.x - e.clientX, dy = s.y - e.clientY;
-        const dist = Math.sqrt(dx*dx + dy*dy);
+        const dist = dx*dx + dy*dy;
         if (dist < minDist) { minDist = dist; closest = s; }
       });
-
       if (!closest || !closest.currentRgb) return;
       const { r, g, b } = closest.currentRgb;
       blob.style.background = buildGlowGradient(r, g, b, getGlowIntensity());
-    });
+    }, { passive: true });
   });
 }
 
 // ============================================================
-//  ENHANCED SCROLL REVEAL
+//  SCROLL REVEAL
 // ============================================================
 
 function initReveal() {
@@ -704,7 +965,6 @@ function initReveal() {
 
 // ============================================================
 //  HERO TITLES — letter-by-letter cinematic reveal
-//  Now handles ALL .hero-title elements with staggered timing
 // ============================================================
 
 function initHeroTitleReveal() {
@@ -718,9 +978,7 @@ function initHeroTitleReveal() {
     title.innerHTML = '';
     title.setAttribute('aria-label', text);
 
-    // Add a line-break gap between titles (delay offset for second title)
     const titleDelay = titleIdx * 180;
-
     const words = text.split(/\s+/);
 
     words.forEach((word, wi) => {
@@ -746,13 +1004,12 @@ function initHeroTitleReveal() {
       title.appendChild(wordSpan);
       if (wi < words.length - 1) {
         const space = document.createElement('span');
-        space.innerHTML    = '&nbsp;';
+        space.innerHTML     = '&nbsp;';
         space.style.display = 'inline-block';
         title.appendChild(space);
       }
     });
 
-    // Small gap between title rows
     globalLetterIndex += 2;
   });
 
@@ -767,7 +1024,7 @@ function initHeroTitleReveal() {
 }
 
 // ============================================================
-//  HERO EYEBROW — typewriter with blinking cursor
+//  HERO EYEBROW — typewriter
 // ============================================================
 
 function initEyebrowTypewriter() {
@@ -793,11 +1050,7 @@ function initEyebrowTypewriter() {
   if (!document.getElementById('cursor-blink-kf')) {
     const style       = document.createElement('style');
     style.id          = 'cursor-blink-kf';
-    style.textContent = `
-      @keyframes cursorBlink {
-        0%, 100% { opacity: 1; } 50% { opacity: 0; }
-      }
-    `;
+    style.textContent = `@keyframes cursorBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }`;
     document.head.appendChild(style);
   }
 
@@ -810,10 +1063,7 @@ function initEyebrowTypewriter() {
       i++;
       setTimeout(type, speed + Math.random() * 25);
     } else {
-      setTimeout(() => {
-        cursor.style.animation = 'none';
-        cursor.style.opacity   = '0';
-      }, 1800);
+      setTimeout(() => { cursor.style.animation = 'none'; cursor.style.opacity = '0'; }, 1800);
     }
   }
 
@@ -821,7 +1071,7 @@ function initEyebrowTypewriter() {
 }
 
 // ============================================================
-//  HERO TAGLINE — fade in word by word
+//  HERO TAGLINE
 // ============================================================
 
 function initTaglineReveal() {
@@ -856,13 +1106,13 @@ function initTaglineReveal() {
 function initAccentLineDraw() {
   const dot = document.querySelector('.hero-accent-dot');
   if (!dot) return;
-  dot.style.transform = 'scale(0)';
+  dot.style.transform  = 'scale(0)';
   dot.style.transition = 'transform 0.5s cubic-bezier(0.34,1.56,0.64,1)';
   setTimeout(() => { dot.style.transform = 'scale(1)'; }, 1400);
 }
 
 // ============================================================
-//  PERSON CARDS — cinematic fly-in with spring + depth
+//  PERSON CARDS — fly-in
 // ============================================================
 
 function initCardFlyIn() {
@@ -885,7 +1135,7 @@ function initCardFlyIn() {
     document.head.appendChild(s);
   }
 
-  cards.forEach((card, i) => {
+  cards.forEach(card => {
     card.style.opacity    = '0';
     card.style.willChange = 'transform, opacity, filter';
   });
@@ -897,7 +1147,6 @@ function initCardFlyIn() {
       const index = Array.from(cards).indexOf(card);
       const delay = index * 160;
       const anim  = index % 2 === 0 ? 'cardFlyLeft' : 'cardFlyRight';
-
       card.style.animation = `${anim} 0.9s cubic-bezier(0.16,1,0.3,1) ${delay}ms forwards`;
       io.unobserve(card);
     });
@@ -907,7 +1156,7 @@ function initCardFlyIn() {
 }
 
 // ============================================================
-//  STAT CARDS — animated counter roll-up
+//  STAT COUNTERS
 // ============================================================
 
 function animateCounter(el, target, duration, prefix, suffix) {
@@ -935,14 +1184,10 @@ function initStatCounters() {
     entries.forEach(entry => {
       if (!entry.isIntersecting) return;
       io.unobserve(entry.target);
-
       const numberEl = entry.target.querySelector('.stat-number');
       if (!numberEl) return;
-
-      const raw    = numberEl.textContent.trim();
-      const parsed = parseInt(raw, 10);
+      const parsed = parseInt(numberEl.textContent.trim(), 10);
       if (isNaN(parsed)) return;
-
       const delay = Array.from(statCards).indexOf(entry.target) * 150;
       setTimeout(() => animateCounter(numberEl, parsed, 1400, '', ''), delay);
     });
@@ -952,10 +1197,11 @@ function initStatCounters() {
 }
 
 // ============================================================
-//  PARALLAX — hero elements drift on scroll
+//  PARALLAX — throttled, passive
 // ============================================================
 
 function initParallax() {
+  if (IS_MOBILE) return; // Disable parallax on mobile — causes repaints
   const heroTitles  = document.querySelectorAll('.hero-title');
   const heroEyebrow = document.querySelector('.hero-eyebrow');
   const heroTagline = document.querySelector('.hero-tagline');
@@ -987,15 +1233,21 @@ function initScrollProgress() {
     document.body.prepend(bar);
   }
 
+  let ticking = false;
   window.addEventListener('scroll', () => {
-    const scrolled = window.scrollY;
-    const total    = document.documentElement.scrollHeight - window.innerHeight;
-    bar.style.width = total > 0 ? `${(scrolled / total) * 100}%` : '0%';
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const scrolled = window.scrollY;
+      const total    = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = total > 0 ? `${(scrolled / total) * 100}%` : '0%';
+      ticking = false;
+    });
   }, { passive: true });
 }
 
 // ============================================================
-//  SECTION BADGES — pop in with spring
+//  SECTION BADGES
 // ============================================================
 
 function initSectionBadges() {
@@ -1019,7 +1271,7 @@ function initSectionBadges() {
 }
 
 // ============================================================
-//  LINK CARDS — staggered slide-up with blur
+//  LINK CARDS
 // ============================================================
 
 function initLinkCardReveal() {
@@ -1048,21 +1300,22 @@ function initLinkCardReveal() {
   linkCards.forEach(card => io.observe(card));
 }
 
-// Adit Sharan Cards 3d Tilt
+// ============================================================
+//  CARD TILTS — desktop only
+// ============================================================
 
-function initCreatorCardTilt() {
-  document.querySelectorAll('.Creator-Card').forEach(card => {
+function addTilt(selector, maxTilt) {
+  if (IS_MOBILE) return;
+  document.querySelectorAll(selector).forEach(card => {
     card.addEventListener('mousemove', (e) => {
       const rect  = card.getBoundingClientRect();
       const cx    = rect.left + rect.width  / 2;
       const cy    = rect.top  + rect.height / 2;
       const dx    = (e.clientX - cx) / (rect.width  / 2);
       const dy    = (e.clientY - cy) / (rect.height / 2);
-      const tiltX = dy * -4;
-      const tiltY = dx *  4;
-      card.style.transform  = `translateY(-4px) perspective(600px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+      card.style.transform  = `translateY(-4px) perspective(600px) rotateX(${dy * -maxTilt}deg) rotateY(${dx * maxTilt}deg)`;
       card.style.transition = 'transform 0.05s linear';
-    });
+    }, { passive: true });
 
     card.addEventListener('mouseleave', () => {
       card.style.transform  = '';
@@ -1071,80 +1324,12 @@ function initCreatorCardTilt() {
   });
 }
 
-// ============================================================
-//  STAT CARD TILT — 3D on hover
-// ============================================================
-
-function initStatCardTilt() {
-  document.querySelectorAll('.stat-card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      const rect  = card.getBoundingClientRect();
-      const cx    = rect.left + rect.width  / 2;
-      const cy    = rect.top  + rect.height / 2;
-      const dx    = (e.clientX - cx) / (rect.width  / 2);
-      const dy    = (e.clientY - cy) / (rect.height / 2);
-      const tiltX = dy * -6;
-      const tiltY = dx *  6;
-      card.style.transform  = `translateY(-4px) perspective(600px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
-      card.style.transition = 'transform 0.05s linear';
-    });
-
-    card.addEventListener('mouseleave', () => {
-      card.style.transform  = '';
-      card.style.transition = 'transform 0.4s cubic-bezier(0.25,1,0.5,1)';
-    });
-  });
-}
+function initCreatorCardTilt()  { addTilt('.Creator-Card', 4); }
+function initStatCardTilt()     { addTilt('.stat-card', 6); }
+function initArticleCardTilt()  { addTilt('.article-card, .book-card', 5); }
 
 // ============================================================
-//  ARTICLE CARD TILT
-// ============================================================
-
-function initArticleCardTilt() {
-  document.querySelectorAll('.article-card, .book-card').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      const rect  = card.getBoundingClientRect();
-      const cx    = rect.left + rect.width  / 2;
-      const cy    = rect.top  + rect.height / 2;
-      const dx    = (e.clientX - cx) / (rect.width  / 2);
-      const dy    = (e.clientY - cy) / (rect.height / 2);
-      const tiltX = dy * -5;
-      const tiltY = dx *  5;
-      card.style.transform  = `translateY(-6px) scale(1.01) perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
-      card.style.transition = 'transform 0.05s linear';
-    });
-
-    card.addEventListener('mouseleave', () => {
-      card.style.transform  = '';
-      card.style.transition = 'transform 0.4s cubic-bezier(0.25,1,0.5,1)';
-    });
-  });
-}
-
-// ============================================================
-//  SCROLL VELOCITY WARP
-// ============================================================
-
-function initScrollVelocityWarp() {
-  let lastY    = window.scrollY;
-
-  window.addEventListener('scroll', () => {
-    const currentY = window.scrollY;
-    const velocity = Math.abs(currentY - lastY);
-    lastY = currentY;
-
-    const states = window._orbStates;
-    if (!states) return;
-
-    const boost = Math.min(velocity / 20, 3.5);
-    states.forEach(s => {
-      s.el.style.filter = `blur(${(s.currentBlurPx * (1 - boost * 0.12)).toFixed(1)}px)`;
-    });
-  }, { passive: true });
-}
-
-// ============================================================
-//  SECTION HEADING REVEAL — shimmer word-by-word
+//  SECTION HEADING REVEAL
 // ============================================================
 
 function initSectionHeadingReveal() {
@@ -1171,9 +1356,7 @@ function initSectionHeadingReveal() {
         will-change: transform, opacity;
       `;
       el.appendChild(span);
-      if (i < words.length - 1) {
-        el.appendChild(document.createTextNode('\u00a0'));
-      }
+      if (i < words.length - 1) el.appendChild(document.createTextNode('\u00a0'));
     });
 
     const io = new IntersectionObserver((entries) => {
@@ -1223,7 +1406,7 @@ function initArticleSearch() {
     box.classList.contains('open') ? closeSearch() : openSearch();
   });
 
-  document.addEventListener('click', e => { if (!searchWrap.contains(e.target)) closeSearch(); });
+  document.addEventListener('click', e => { if (searchWrap && !searchWrap.contains(e.target)) closeSearch(); });
   input.addEventListener('keydown', e => { if (e.key === 'Escape') closeSearch(); });
 
   if (resultsEl) {
@@ -1245,10 +1428,7 @@ function initArticleSearch() {
         const link     = document.createElement('a');
         link.className = 'search-result-item';
         link.href      = `/Adit-Sahai.github.io/articles/${a.slug}/`;
-        link.innerHTML = `
-          <strong>${a.rawTitle}</strong>
-          <span class="s-cat">${a.rawCat}</span>
-        `;
+        link.innerHTML = `<strong>${a.rawTitle}</strong><span class="s-cat">${a.rawCat}</span>`;
         resultsEl.appendChild(link);
       });
     });
@@ -1279,7 +1459,7 @@ function initActiveNav() {
 }
 
 // ============================================================
-//  SECTION TITLE LARGE — split-word stagger
+//  SECTION TITLE LARGE
 // ============================================================
 
 function initSectionTitles() {
@@ -1320,10 +1500,11 @@ function initSectionTitles() {
 }
 
 // ============================================================
-//  MAGNETIC HOVER — subtle pull effect on CTA buttons
+//  MAGNETIC HOVER — desktop only
 // ============================================================
 
 function initMagneticHover() {
+  if (IS_MOBILE) return;
   document.querySelectorAll('.card-btn, .gold-btn').forEach(btn => {
     btn.addEventListener('mousemove', (e) => {
       const rect = btn.getBoundingClientRect();
@@ -1333,7 +1514,7 @@ function initMagneticHover() {
       const dy   = (e.clientY - cy) * 0.25;
       btn.style.transform  = `translate(${dx}px, ${dy}px)`;
       btn.style.transition = 'transform 0.1s ease';
-    });
+    }, { passive: true });
 
     btn.addEventListener('mouseleave', () => {
       btn.style.transform  = '';
@@ -1343,198 +1524,56 @@ function initMagneticHover() {
 }
 
 // ============================================================
-//  CORNER BEAMS — short subtle sun rays tucked in corners
+//  SCROLL VELOCITY WARP — throttled
 // ============================================================
 
-function initCornerBeams() {
-  let wrap = document.getElementById('corner-beams');
-  if (!wrap) {
-    wrap = document.createElement('div');
-    wrap.id = 'corner-beams';
-    document.body.appendChild(wrap);
-  }
+function initScrollVelocityWarp() {
+  if (IS_MOBILE) return; // Skip on mobile
+  let lastY    = window.scrollY;
+  let ticking  = false;
 
-  const CORNERS = [
-    { id: 'tl', x: 0, y: 0, fanAngle: 38   },
-    { id: 'tr', x: 1, y: 0, fanAngle: 142  },
-    { id: 'bl', x: 0, y: 1, fanAngle: -38  },
-    { id: 'br', x: 1, y: 1, fanAngle: -142 },
-  ];
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const currentY = window.scrollY;
+      const velocity = Math.abs(currentY - lastY);
+      lastY    = currentY;
+      ticking  = false;
 
-  const RAY_DEFS = [
-    { off: -50, wMul: 2.2, oMul: 0.06 },  // was -20
-    { off: -40, wMul: 0.9, oMul: 0.18 },  // was -12
-    { off: -35, wMul: 0.4, oMul: 0.28 },  // was -6
-    { off:  -15, wMul: 0.2, oMul: 0.32 },  // was -2
-    { off:   -5, wMul: 0.15,oMul: 0.35 },
-    { off:   10, wMul: 0.2, oMul: 0.30 },  // was 3
-    { off:  25, wMul: 0.5, oMul: 0.22 },  // was 7
-    { off:  35, wMul: 1.0, oMul: 0.14 },  // was 13
-    { off:  60, wMul: 2.4, oMul: 0.05 },  // was 22
-];
-
-  // ── KEY CHANGE: short fixed length so rays stay in the corner
-  const RAY_LENGTH = () => Math.min(window.innerWidth, window.innerHeight) * 0.18;
-
-  const DUST_PER_CORNER = 3;
-
-  function getAccentRgb() {
-    const raw = getComputedStyle(document.documentElement)
-      .getPropertyValue('--accent-gold').trim();
-    if (raw.startsWith('#')) return hexToRgb(raw);
-    const m = raw.match(/rgba?\(\s*([\d.]+),\s*([\d.]+),\s*([\d.]+)/);
-    if (m) return { r: +m[1], g: +m[2], b: +m[3] };
-    return { r: 255, g: 190, b: 60 };
-  }
-
-  const states = CORNERS.map(corner => {
-    const anchor = document.createElement('div');
-    anchor.className = 'corner-source';
-    anchor.style.cssText = 'position:absolute;width:0;height:0;pointer-events:none;';
-    wrap.appendChild(anchor);
-
-    // hotspot glow at the corner tip
-    const hotspot = document.createElement('div');
-    hotspot.className = 'c-hotspot';
-    hotspot.style.cssText = 'position:absolute;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;';
-    anchor.appendChild(hotspot);
-
-    const hotspot2 = document.createElement('div');
-    hotspot2.className = 'c-hotspot';
-    hotspot2.style.cssText = 'position:absolute;border-radius:50%;transform:translate(-50%,-50%);pointer-events:none;';
-    anchor.appendChild(hotspot2);
-
-    const rayEls = RAY_DEFS.map(def => {
-      const el = document.createElement('div');
-      el.style.cssText = 'position:absolute;top:0;left:0;width:0;height:0;transform-origin:0 0;pointer-events:none;border-style:solid;border-color:transparent;';
-      anchor.appendChild(el);
-      return { el, def };
-    });
-
-    const motes = Array.from({ length: DUST_PER_CORNER }, () => {
-      const el = document.createElement('div');
-      const sz = 1 + Math.random() * 1.8;
-      el.style.cssText = `position:absolute;border-radius:50%;pointer-events:none;width:${sz}px;height:${sz}px;`;
-      anchor.appendChild(el);
-      return {
-        el, sz,
-        t:           Math.random(),
-        rayIdx:      Math.floor(Math.random() * RAY_DEFS.length),
-        speed:       0.00008 + Math.random() * 0.00014,
-        lateralT:    Math.random() * Math.PI * 2,
-        lateralSpd:  0.0004 + Math.random() * 0.0005,
-        lateralAmp:  2 + Math.random() * 8,
-        opacityBase: 0.15 + Math.random() * 0.40,
-        born:        performance.now() + Math.random() * 1500,
-      };
-    });
-
-    return {
-      corner, anchor, hotspot, hotspot2, rayEls, motes,
-      breathPhase: Math.random() * Math.PI * 2,
-      swayPhase:   Math.random() * Math.PI * 2,
-    };
-  });
-
-  function placeAnchors() {
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    states.forEach(({ corner, anchor }) => {
-      anchor.style.left = (corner.x * vw) + 'px';
-      anchor.style.top  = (corner.y * vh) + 'px';
-    });
-  }
-  placeAnchors();
-  window.addEventListener('resize', placeAnchors);
-
-  let last = performance.now();
-
-  function tick(now) {
-    const dt  = now - last;
-    last = now;
-    const rgb = getAccentRgb();
-    const rl  = RAY_LENGTH();
-
-    states.forEach(state => {
-      state.breathPhase += dt * 0.00032;
-      state.swayPhase   += dt * 0.00014;
-
-      const breathe = 0.75 + 0.25 * Math.sin(state.breathPhase);
-      const sway    = Math.sin(state.swayPhase) * 3;
-
-      // ── hotspot — small, tight to corner
-      const hSize  = 120 + 18 * breathe;   // was 22 + 8
-      const hSize2 = 170 + 80 * breathe;  // was 55 + 20
-      state.hotspot.style.width      = hSize + 'px';
-      state.hotspot.style.height     = hSize + 'px';
-      state.hotspot.style.opacity    = (0.3 * breathe).toFixed(3);
-      state.hotspot.style.background = `radial-gradient(circle, rgba(${rgb.r},${rgb.g},${rgb.b},0.9) 0%, rgba(${rgb.r},${rgb.g},${rgb.b},0.3) 50%, transparent 100%)`;
-      state.hotspot.style.boxShadow  = `0 0 ${hSize}px rgba(${rgb.r},${rgb.g},${rgb.b},0.6)`;
-      state.hotspot2.style.width     = hSize2 + 'px';
-      state.hotspot2.style.height    = hSize2 + 'px';
-      state.hotspot2.style.opacity   = (0.12 * breathe).toFixed(3);
-      state.hotspot2.style.background = `radial-gradient(circle, rgba(${rgb.r},${rgb.g},${rgb.b},0.18) 0%, transparent 70%)`;
-
-      // ── rays — short, subtle
-      state.rayEls.forEach(({ el, def }) => {
-        const angle    = state.corner.fanAngle + def.off + sway;
-        const halfW    = rl * Math.tan((2.0 * Math.PI) / 180) * def.wMul;
-        const opacity  = def.oMul * breathe * 0.08; // subtle multiplier
-
-        el.style.transform    = `rotate(${angle - 90}deg) translateX(${-halfW}px)`;
-        el.style.borderLeft   = `${halfW}px solid transparent`;
-        el.style.borderRight  = `${halfW}px solid transparent`;
-        el.style.borderTop    = `${rl}px solid rgba(${rgb.r},${rgb.g},${rgb.b},${opacity.toFixed(4)})`;
-        el.style.borderBottom = 'none';
-      });
-
-      // ── dust motes
-      state.motes.forEach(mote => {
-        if (now < mote.born) { mote.el.style.opacity = '0'; return; }
-        mote.t += mote.speed * dt;
-        if (mote.t > 1) mote.t -= 1;
-        mote.lateralT += mote.lateralSpd * dt;
-
-        const def      = RAY_DEFS[mote.rayIdx];
-        const angle    = state.corner.fanAngle + def.off + sway;
-        const angleRad = (angle * Math.PI) / 180;
-        const dist     = mote.t * rl * 0.85;
-        const lateral  = Math.sin(mote.lateralT) * mote.lateralAmp;
-        const perpRad  = angleRad + Math.PI / 2;
-
-        const x = dist * Math.cos(angleRad) + lateral * Math.cos(perpRad);
-        const y = dist * Math.sin(angleRad) + lateral * Math.sin(perpRad);
-
-        const fadeIn  = Math.min(mote.t * 5, 1);
-        const fadeOut = 1 - Math.pow(mote.t, 2.5);
-        const opacity = mote.opacityBase * fadeIn * fadeOut * breathe * 0.6;
-
-        mote.el.style.transform  = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px)`;
-        mote.el.style.opacity    = opacity.toFixed(3);
-        mote.el.style.background = `rgba(${rgb.r},${rgb.g},${rgb.b},0.9)`;
-        mote.el.style.boxShadow  = `0 0 ${mote.sz * 2}px rgba(${rgb.r},${rgb.g},${rgb.b},0.5)`;
+      const states = window._orbStates;
+      if (!states) return;
+      const boost = Math.min(velocity / 20, 3.5);
+      states.forEach(s => {
+        s.el.style.filter = `blur(${(s.currentBlurPx * (1 - boost * 0.12)).toFixed(1)}px)`;
       });
     });
-
-    requestAnimationFrame(tick);
-  }
-
-  requestAnimationFrame(tick);
+  }, { passive: true });
 }
-
 
 // ============================================================
 //  INIT
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Ambient particles first (runs on all pages)
+  initAmbientParticles();
+
+  // Background orbs
   initBackground();
+
+  // Corner beams (desktop only — skipped on mobile)
+  initCornerBeams();
+
+  // Start the single unified animation loop
+  startUnifiedLoop();
+
+  // Scroll/reveal
   initReveal();
   initMouseGlow();
   initArticleSearch();
   initActiveNav();
-  initCornerBeams();
-  
+
   // Hero cinematic sequence
   initHeroTitleReveal();
   initEyebrowTypewriter();
@@ -1552,7 +1591,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Interactive polish
   initStatCardTilt();
-  initCreatorCardTilt()
+  initCreatorCardTilt();
   initArticleCardTilt();
   initScrollVelocityWarp();
   initSectionTitles();
