@@ -436,6 +436,10 @@ content:
                   collection: ProjectStatus
                   field: name
 
+              - name: Published
+                type: boolean
+                default: false
+                
               - name: Description
                 type: rich-text
                 options:
@@ -463,9 +467,6 @@ content:
                 type: string
                 list: true
 
-              - name: Published
-                type: boolean
-                default: false
 
               - name: Comments
                 type: boolean
