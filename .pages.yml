@@ -271,6 +271,9 @@ content:
       fields:
         - name: Name
           type: string
+
+        - name: ShortName
+          type: string
   
         - name: Pic
           type: image
