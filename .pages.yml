@@ -118,7 +118,7 @@ content:
             type: string
             required: true
 
-  - name: MainPage
+  - name: AditContent
     type: group
     items:
 
