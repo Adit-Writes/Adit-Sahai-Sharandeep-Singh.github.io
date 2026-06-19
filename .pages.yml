@@ -405,3 +405,43 @@ content:
 
               - name: LastUpdated
                 type: date
+
+          - name: ProjectUpdates
+            path: _data/Sharan/ProjectUpdates
+            type: collection
+            format: json
+            filename: "{slug}.json"
+          
+            view:
+              fields: [Title, Project, Published, ReleaseDate]
+              primary: Title
+              sort: [ReleaseDate, Title]
+              default:
+                sort: ReleaseDate
+                order: desc
+          
+            fields:
+              - name: Title
+                type: string
+                required: true
+          
+              - name: Project
+                type: reference
+                required: true
+                options:
+                  collection: Projects
+                  field: Title      # ← this is the field on Projects shown/matched in the picker
+          
+              - name: Body
+                type: rich-text
+                required: true
+                options:
+                  switcher: false
+          
+              - name: ReleaseDate
+                type: date
+                required: true
+          
+              - name: Published
+                type: boolean
+                default: false
