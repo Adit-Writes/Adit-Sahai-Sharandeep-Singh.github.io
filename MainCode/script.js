@@ -13,103 +13,103 @@ const REDUCED_MOTION        = window.matchMedia('(prefers-reduced-motion: reduce
 
 const MY_FAVORITE_THEMES = [
   {
-    name: "Neon Synapse", // Complementary (Cyan & Magenta)
+    name: "Onyx & Gold", // Classic Luxury (Deep Black & Metallic Gold)
     tokens: {
-      '--bg-base':             '#04020a',
-      '--glass-bg':            'rgba(20, 10, 40, 0.65)',
-      '--glass-bg-strong':     'rgba(15, 8, 30, 0.88)',
-      '--glass-border':        'rgba(0, 255, 255, 0.25)',
-      '--glass-border-hover':  'rgba(0, 255, 255, 0.85)',
-      '--text-main':           '#f0f8ff',
-      '--text-muted':          '#b0c4de',
-      '--text-dim':            '#6b5b95',
-      '--accent-gold':         '#00ffff',
-      '--accent-gold-dim':     'rgba(0, 255, 255, 0.15)',
-      '--accent-gold-line':    'rgba(0, 255, 255, 0.35)',
-      '--orb-colors':          '#00ffff, #ff00ff, #8a2be2, #00bfff, #ff1493',
-      '--orb-blur-factor':     '1.1',
-      '--orb-speed-multiplier':'1.3',
+      '--bg-base':             '#050505',
+      '--glass-bg':            'rgba(15, 15, 15, 0.65)',
+      '--glass-bg-strong':     'rgba(10, 10, 10, 0.88)',
+      '--glass-border':        'rgba(212, 175, 55, 0.15)', // Subtle gold
+      '--glass-border-hover':  'rgba(212, 175, 55, 0.60)',
+      '--text-main':           '#faf9f6', // Pearl white
+      '--text-muted':          '#a39b8b',
+      '--text-dim':            '#5c574d',
+      '--accent-gold':         '#d4af37', // Metallic Gold
+      '--accent-gold-dim':     'rgba(212, 175, 55, 0.12)',
+      '--accent-gold-line':    'rgba(212, 175, 55, 0.25)',
+      '--orb-colors':          '#d4af37, #f3e5ab, #aa8c2c, #e6c27a, #8c7322',
+      '--orb-blur-factor':     '1.4',  // Very soft
+      '--orb-speed-multiplier':'0.6',  // Very slow, ambient movement
       '--orb-scale-multiplier':'1.15'
     }
   },
   {
-    name: "Solar Flare", // Analogous (Reds, Oranges, Golds)
+    name: "Obsidian Copper", // Modern Industrial Luxury (Warm Charcoal & Rose Gold/Copper)
     tokens: {
-      '--bg-base':             '#0a0402',
-      '--glass-bg':            'rgba(40, 15, 8, 0.65)',
-      '--glass-bg-strong':     'rgba(25, 10, 5, 0.88)',
-      '--glass-border':        'rgba(255, 85, 0, 0.25)',
-      '--glass-border-hover':  'rgba(255, 85, 0, 0.85)',
-      '--text-main':           '#fff5f0',
-      '--text-muted':          '#dcbab0',
-      '--text-dim':            '#8b5a50',
-      '--accent-gold':         '#ff5500',
-      '--accent-gold-dim':     'rgba(255, 85, 0, 0.15)',
-      '--accent-gold-line':    'rgba(255, 85, 0, 0.35)',
-      '--orb-colors':          '#ff5500, #ff8c00, #ffd700, #dc143c, #ff4500',
-      '--orb-blur-factor':     '1.0',
-      '--orb-speed-multiplier':'1.1',
+      '--bg-base':             '#0a0908',
+      '--glass-bg':            'rgba(25, 20, 18, 0.65)',
+      '--glass-bg-strong':     'rgba(18, 14, 12, 0.88)',
+      '--glass-border':        'rgba(184, 115, 51, 0.15)',
+      '--glass-border-hover':  'rgba(184, 115, 51, 0.60)',
+      '--text-main':           '#fffcf2', // Warm ivory
+      '--text-muted':          '#b5a596',
+      '--text-dim':            '#6b6158',
+      '--accent-gold':         '#b87333', // Copper
+      '--accent-gold-dim':     'rgba(184, 115, 51, 0.12)',
+      '--accent-gold-line':    'rgba(184, 115, 51, 0.25)',
+      '--orb-colors':          '#b87333, #cd7f32, #d99058, #995522, #e6a87c',
+      '--orb-blur-factor':     '1.3',
+      '--orb-speed-multiplier':'0.7',
+      '--orb-scale-multiplier':'1.1'
+    }
+  },
+  {
+    name: "Imperial Emerald", // Organic Luxury (Deepest Forest & Champagne)
+    tokens: {
+      '--bg-base':             '#020a06',
+      '--glass-bg':            'rgba(10, 25, 18, 0.65)',
+      '--glass-bg-strong':     'rgba(6, 18, 12, 0.88)',
+      '--glass-border':        'rgba(212, 195, 145, 0.15)',
+      '--glass-border-hover':  'rgba(212, 195, 145, 0.60)',
+      '--text-main':           '#f8f9fa',
+      '--text-muted':          '#9ba8a1',
+      '--text-dim':            '#55635b',
+      '--accent-gold':         '#d4c391', // Champagne Gold
+      '--accent-gold-dim':     'rgba(212, 195, 145, 0.12)',
+      '--accent-gold-line':    'rgba(212, 195, 145, 0.25)',
+      '--orb-colors':          '#047857, #065f46, #d4c391, #022c22, #f3eacb', // Mix of dark emerald and champagne
+      '--orb-blur-factor':     '1.5',  // Maximum blur for a cloudy, mysterious vibe
+      '--orb-speed-multiplier':'0.65',
       '--orb-scale-multiplier':'1.2'
     }
   },
   {
-    name: "Bioluminescent Abyss", // Analogous Cool (Teals & Greens)
+    name: "Midnight Pearl", // Minimalist Tech Luxury (Deepest Navy & Silver/Ice)
     tokens: {
-      '--bg-base':             '#01080c',
-      '--glass-bg':            'rgba(5, 30, 45, 0.65)',
-      '--glass-bg-strong':     'rgba(3, 20, 30, 0.88)',
-      '--glass-border':        'rgba(0, 255, 204, 0.25)',
-      '--glass-border-hover':  'rgba(0, 255, 204, 0.85)',
-      '--text-main':           '#e0ffff',
-      '--text-muted':          '#98cacc',
-      '--text-dim':            '#4a7c80',
-      '--accent-gold':         '#00ffcc',
-      '--accent-gold-dim':     'rgba(0, 255, 204, 0.15)',
-      '--accent-gold-line':    'rgba(0, 255, 204, 0.35)',
-      '--orb-colors':          '#00ffcc, #00fa9a, #00bfff, #50c878, #20b2aa',
-      '--orb-blur-factor':     '1.2',
-      '--orb-speed-multiplier':'0.9',
-      '--orb-scale-multiplier':'1.1'
-    }
-  },
-  {
-    name: "Regal Amethyst", // Split-Complementary (Purple, Gold, Lime)
-    tokens: {
-      '--bg-base':             '#07030d',
-      '--glass-bg':            'rgba(30, 15, 50, 0.65)',
-      '--glass-bg-strong':     'rgba(20, 10, 35, 0.88)',
-      '--glass-border':        'rgba(255, 184, 0, 0.25)',
-      '--glass-border-hover':  'rgba(255, 184, 0, 0.85)',
-      '--text-main':           '#fbf8ff',
-      '--text-muted':          '#c8badb',
-      '--text-dim':            '#7c6a96',
-      '--accent-gold':         '#ffb800',
-      '--accent-gold-dim':     'rgba(255, 184, 0, 0.15)',
-      '--accent-gold-line':    'rgba(255, 184, 0, 0.35)',
-      '--orb-colors':          '#9966cc, #ffb800, #ccff00, #8a2be2, #ffd700',
-      '--orb-blur-factor':     '0.95',
-      '--orb-speed-multiplier':'1.15',
+      '--bg-base':             '#03050a',
+      '--glass-bg':            'rgba(15, 20, 35, 0.65)',
+      '--glass-bg-strong':     'rgba(8, 12, 25, 0.88)',
+      '--glass-border':        'rgba(203, 213, 225, 0.15)',
+      '--glass-border-hover':  'rgba(203, 213, 225, 0.60)',
+      '--text-main':           '#f8fafc', // Crisp snow white
+      '--text-muted':          '#94a3b8',
+      '--text-dim':            '#475569',
+      '--accent-gold':         '#cbd5e1', // Pearlescent Silver
+      '--accent-gold-dim':     'rgba(203, 213, 225, 0.12)',
+      '--accent-gold-line':    'rgba(203, 213, 225, 0.25)',
+      '--orb-colors':          '#cbd5e1, #f1f5f9, #94a3b8, #e2e8f0, #64748b',
+      '--orb-blur-factor':     '1.25',
+      '--orb-speed-multiplier':'0.75',
       '--orb-scale-multiplier':'1.05'
     }
   },
   {
-    name: "Vaporwave Dream", // Triadic (Pink, Cyan, Yellow)
+    name: "Amethyst Ash", // Avant-Garde Luxury (Deep Violet-Black & Warm Bronze)
     tokens: {
-      '--bg-base':             '#0a0814',
-      '--glass-bg':            'rgba(35, 25, 60, 0.65)',
-      '--glass-bg-strong':     'rgba(25, 15, 45, 0.88)',
-      '--glass-border':        'rgba(255, 119, 255, 0.25)',
-      '--glass-border-hover':  'rgba(255, 119, 255, 0.85)',
-      '--text-main':           '#fdf0ff',
-      '--text-muted':          '#d0b8d6',
-      '--text-dim':            '#8b7a96',
-      '--accent-gold':         '#ff77ff',
-      '--accent-gold-dim':     'rgba(255, 119, 255, 0.15)',
-      '--accent-gold-line':    'rgba(255, 119, 255, 0.35)',
-      '--orb-colors':          '#ff77ff, #00f0ff, #fff000, #ff1493, #00ffff',
-      '--orb-blur-factor':     '1.15',
-      '--orb-speed-multiplier':'1.2',
-      '--orb-scale-multiplier':'1.1'
+      '--bg-base':             '#08060a',
+      '--glass-bg':            'rgba(25, 18, 35, 0.65)',
+      '--glass-bg-strong':     'rgba(16, 12, 22, 0.88)',
+      '--glass-border':        'rgba(224, 192, 151, 0.15)',
+      '--glass-border-hover':  'rgba(224, 192, 151, 0.60)',
+      '--text-main':           '#fdfcfb',
+      '--text-muted':          '#bca8c2',
+      '--text-dim':            '#6a5a70',
+      '--accent-gold':         '#e0c097', // Warm Bronze
+      '--accent-gold-dim':     'rgba(224, 192, 151, 0.12)',
+      '--accent-gold-line':    'rgba(224, 192, 151, 0.25)',
+      '--orb-colors':          '#e0c097, #c89f70, #2e1f47, #4c326b, #f5dabb', // Bronze mixing into deep purple
+      '--orb-blur-factor':     '1.35',
+      '--orb-speed-multiplier':'0.7',
+      '--orb-scale-multiplier':'1.15'
     }
   }
 ];
