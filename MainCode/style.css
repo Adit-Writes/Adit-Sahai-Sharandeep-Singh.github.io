@@ -1760,3 +1760,137 @@ h1, h2, h3, h4 {
   .article-body-card { padding: 22px 18px; }
   .comment-form-card { padding: 20px 18px; }
 }
+
+/* ============================================================
+   PERFORMANCE PATCH — add these rules to the END of style.css
+   (or merge them into the relevant sections)
+   ============================================================ */
+
+/* ── ORB: use transform instead of left/top so the GPU composites
+   them without triggering layout. The JS now sets transform only. */
+.bg-orb {
+  position:      absolute;
+  border-radius: 50%;
+  will-change:   transform, background;   /* compositor hint */
+  top:           0;                       /* anchor at origin */
+  left:          0;
+  /* Remove any will-change: filter — filter changes force a new
+     compositing layer which is fine, but listing it explicitly can
+     cause the browser to promote the layer too early on mobile.
+     It is set dynamically in JS only when the value changes. */
+}
+
+/* ── AMBIENT CANVAS: already injected by JS if absent, but declared
+   here as a fallback so it never flashes before JS runs. */
+#ambient-canvas {
+  position:       fixed;
+  inset:          0;
+  width:          100%;
+  height:         100%;
+  pointer-events: none;
+  z-index:        0;
+  opacity:        0.6;
+}
+
+/* ── MOBILE OPTIMISATIONS ─────────────────────────────────────── */
+@media (max-width: 768px) {
+
+  /* Disable the heavy blur on glass cards on mobile.
+     backdrop-filter: blur() forces a new compositing layer AND
+     a full repaint every frame the element moves — brutal on phones.
+     Replace with a semi-opaque solid background instead. */
+  .glass-card,
+  .article-card,
+  .article-body-card {
+    backdrop-filter:         none !important;
+    -webkit-backdrop-filter: none !important;
+    background:              var(--glass-bg-strong) !important;
+  }
+
+  .navbar {
+    backdrop-filter:         none !important;
+    -webkit-backdrop-filter: none !important;
+    background:              var(--glass-bg-strong) !important;
+  }
+
+  /* Disable hover transforms on mobile — they trigger on tap and look janky */
+  .glass-card:hover,
+  .article-card:hover {
+    transform:   none !important;
+    border-color: var(--glass-border) !important;
+    box-shadow:   0 8px 32px rgba(0, 0, 0, 0.45),
+                  inset 0 1px 0 rgba(140, 180, 255, 0.07) !important;
+  }
+
+  /* Disable dot grid on mobile — tiny pattern = lots of pixels to paint */
+  #bg-dots {
+    display: none;
+  }
+
+  /* Disable the grid pattern on mobile */
+  #bg-pattern {
+    display: none;
+  }
+
+  /* Corner beams are already skipped in JS on mobile,
+     but hide the wrapper just in case */
+  #corner-beams {
+    display: none;
+  }
+
+  /* Stars pulse animation is cheap but disable on low-end devices */
+  body::after {
+    animation: none;
+    opacity: 0.6;
+  }
+
+  /* Reduce global CSS transition durations on mobile:
+     2.5s theme transitions are fine visually but
+     every transitioning property is a style recalc.
+     Keep them but only on properties that use hardware accel. */
+  body,
+  .glass-card,
+  .article-card,
+  .article-body-card,
+  .navbar,
+  .category-btn,
+  p, h1, h2, h3, a {
+    transition:
+      color        1.5s ease-in-out,
+      border-color 2.5s ease-in-out;
+    /* drop background/box-shadow transitions on mobile */
+  }
+}
+
+/* ── REDUCED MOTION: respect user preference ──────────────── */
+@media (prefers-reduced-motion: reduce) {
+  #ambient-canvas,
+  #bg-canvas,
+  #bg-pattern,
+  #bg-dots {
+    display: none !important;
+  }
+
+  .glass-card,
+  .article-card,
+  .book-card,
+  .person-card {
+    transition: none !important;
+  }
+
+  .reveal,
+  .reveal.active {
+    transform:  none !important;
+    filter:     none !important;
+    opacity:    1 !important;
+    transition: none !important;
+  }
+}
+
+/* ── PROGRESS BAR: use transform for width animation instead of
+   width property — avoids layout recalc on every scroll tick.
+   The JS still sets width% which is fine, but this hint helps. */
+.progress-bar {
+  transform-origin: left center;
+  will-change: width;
+}
