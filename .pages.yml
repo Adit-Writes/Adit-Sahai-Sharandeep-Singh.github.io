@@ -118,7 +118,7 @@ content:
             type: string
             required: true
 
-  - name: Sharan
+  - name: SharanPage
     type: group
     items:
 
