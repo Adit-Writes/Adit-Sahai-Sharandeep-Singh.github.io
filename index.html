@@ -1165,18 +1165,18 @@ permalink: /index.html
     <div class="stats-row">
 
       <div class="stat-card reveal scale-in">
-        <span class="stat-icon">🎮</span>
+        <span class="stat-icon">🗃️</span>
         <div class="stat-number">
           {% set pcount = 0 %}
           {% for p in Sharan.Projects %}{% if p.Published %}{% set pcount = pcount + 1 %}{% endif %}{% endfor %}
           {{ pcount }}
         </div>
-        <div class="stat-label">Projects Built</div>
-        <div class="stat-sublabel">games, tools &amp; more</div>
+        <div class="stat-label">Projects Uploaded</div>
+        <div class="stat-sublabel">games, videos&amp; more</div>
       </div>
 
       <div class="stat-card reveal scale-in" style="transition-delay:.12s">
-        <span class="stat-icon">🎬</span>
+        <span class="stat-icon">✅</span>
         <div class="stat-number">
           {% set vcount = 0 %}
           {% for p in Sharan.Projects %}
@@ -1189,7 +1189,7 @@ permalink: /index.html
           {% endfor %}
           {{ vcount }}
         </div>
-        <div class="stat-label">Videos Edited</div>
+        <div class="stat-label">Projects Completed</div>
         <div class="stat-sublabel">from project portfolio</div>
       </div>
 
