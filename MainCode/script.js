@@ -975,60 +975,19 @@ function initReveal() {
 // ============================================================
 
 function initHeroTitleReveal() {
+  // index.html manages its own char split with CSS animations.
+  // Only run on pages that don't have the inline split (no _heroTitleRevealDone flag).
   if (window._heroTitleRevealDone) return;
+
   const titles = document.querySelectorAll('.hero-title');
   if (!titles.length) return;
 
-  let globalLetterIndex = 0;
-
-  titles.forEach((title, titleIdx) => {
-    const text = title.textContent.trim();
-    title.innerHTML = '';
-    title.setAttribute('aria-label', text);
-
-    const titleDelay = titleIdx * 180;
-    const words = text.split(/\s+/);
-
-    words.forEach((word, wi) => {
-      const wordSpan = document.createElement('span');
-      wordSpan.style.cssText = 'display:inline-block; white-space:nowrap;';
-
-      word.split('').forEach(char => {
-        const span       = document.createElement('span');
-        span.textContent = char;
-        span.style.cssText = `
-          display: inline-block;
-          opacity: 0;
-          transform: translateY(40px) rotateX(-30deg);
-          transition: opacity 0.55s cubic-bezier(0.16,1,0.3,1),
-                      transform 0.55s cubic-bezier(0.16,1,0.3,1);
-          transition-delay: ${titleDelay + globalLetterIndex * 38}ms;
-          will-change: transform, opacity;
-        `;
-        wordSpan.appendChild(span);
-        globalLetterIndex++;
-      });
-
-      title.appendChild(wordSpan);
-      if (wi < words.length - 1) {
-        const space = document.createElement('span');
-        space.innerHTML     = '&nbsp;';
-        space.style.display = 'inline-block';
-        title.appendChild(space);
-      }
-    });
-
-    globalLetterIndex += 2;
+  titles.forEach((title) => {
+    // Just fade in cleanly — no rotateX, no char split
+    title.style.opacity   = '1';
+    title.style.transform = 'none';
+    title.style.filter    = 'none';
   });
-
-  setTimeout(() => {
-    titles.forEach(title => {
-      title.querySelectorAll('span > span').forEach(span => {
-        span.style.opacity   = '1';
-        span.style.transform = 'translateY(0) rotateX(0)';
-      });
-    });
-  }, 200);
 }
 
 // ============================================================
