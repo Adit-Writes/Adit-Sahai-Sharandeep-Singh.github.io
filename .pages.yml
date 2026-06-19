@@ -359,29 +359,11 @@ content:
                   collection: ProjectStatus
                   field: name
 
-              - name: Pics
-                type: image
-                list: true
-
-              - name: Files
-                type: file
-                list: true
-
-              - name: Links
-                type: string
-                list: true
 
               - name: Published
                 type: boolean
                 default: false
 
-              - name: Comments
-                type: boolean
-                default: true
-
-              - name: Likes
-                type: boolean
-                default: true
 
               - name: Description
                 type: rich-text
@@ -394,17 +376,32 @@ content:
                 options:
                   switcher: false
 
-              - name: ReadTime
-                type: number
-                options:
-                  min: 1
-
               - name: StartedDate
                 type: date
                 required: true
 
               - name: LastUpdated
                 type: date
+                
+              - name: Pics
+                type: image
+                list: true
+
+              - name: Files
+                type: file
+                list: true
+
+              - name: Links
+                type: string
+                list: true
+                
+              - name: Comments
+                type: boolean
+                default: true
+
+              - name: Likes
+                type: boolean
+                default: true
 
           - name: ProjectUpdates
             path: _data/Sharan/ProjectUpdates
