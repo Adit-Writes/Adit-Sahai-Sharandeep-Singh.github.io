@@ -188,23 +188,23 @@ permalink: /index.html
 
   /* State after JS splits and marks ready — shimmer runs via background-position.
      No ::after pseudo, no mix-blend-mode, no separate composite layer.           */
-  .hero-title.chars-ready {
-    opacity:                  1;
-    background:               linear-gradient(
-                                100deg,
-                                #ffffff       0%,
-                                #ffffff      35%,
-                                rgba(212,175,55,0.9) 50%,
-                                #ffffff      65%,
-                                #ffffff      100%
-                              );
-    background-size:          300% auto;
-    -webkit-background-clip: text;
-    background-clip:          text;
-    -webkit-text-fill-color: transparent;
-    /* Starts after the char-reveal finishes (~1.6s) */
-    animation:                titleShimmer 7s ease-in-out 1.8s infinite;
-  }
+.hero-title.chars-ready {
+  opacity:                  1;
+  filter:                   none; /* ← ADD THIS */
+  background:               linear-gradient(
+                              100deg,
+                              #ffffff       0%,
+                              #ffffff      35%,
+                              rgba(212,175,55,0.9) 50%,
+                              #ffffff      65%,
+                              #ffffff      100%
+                            );
+  background-size:          300% auto;
+  -webkit-background-clip: text;
+  background-clip:          text;
+  -webkit-text-fill-color: transparent;
+  animation:                titleShimmer 7s ease-in-out 1.8s infinite;
+}
 
   /* Individual characters — translateY only (no rotateX = no extra layer) */
   .hero-char {
