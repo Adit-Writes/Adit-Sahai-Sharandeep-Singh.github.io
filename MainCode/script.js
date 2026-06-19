@@ -135,26 +135,6 @@ const MY_FAVORITE_THEMES = [
     }
   },
   {
-    name: "Regal Amethyst",
-    tokens: {
-      '--bg-base':             '#07030d',
-      '--glass-bg':            'rgba(30, 15, 50, 0.65)',
-      '--glass-bg-strong':     'rgba(20, 10, 35, 0.88)',
-      '--glass-border':        'rgba(255, 184, 0, 0.25)',
-      '--glass-border-hover':  'rgba(255, 184, 0, 0.85)',
-      '--text-main':           '#fbf8ff',
-      '--text-muted':          '#c8badb',
-      '--text-dim':            '#7c6a96',
-      '--accent-gold':         '#ffb800',
-      '--accent-gold-dim':     'rgba(255, 184, 0, 0.15)',
-      '--accent-gold-line':    'rgba(255, 184, 0, 0.35)',
-      '--orb-colors':          '#9966cc, #ffb800, #ccff00, #8a2be2, #ffd700',
-      '--orb-blur-factor':     '0.95',
-      '--orb-speed-multiplier':'1.15',
-      '--orb-scale-multiplier':'1.05'
-    }
-  },
-  {
     name: "Vaporwave Dream",
     tokens: {
       '--bg-base':             '#0a0814',
