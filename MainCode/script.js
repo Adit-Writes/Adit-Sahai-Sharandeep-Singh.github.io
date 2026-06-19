@@ -32,6 +32,7 @@ const MY_FAVORITE_THEMES = [
       '--orb-scale-multiplier':'1.15'
     }
   },
+  {
     name: "Crimson Ember",
     tokens: {
       '--bg-base':             '#0a0506',
