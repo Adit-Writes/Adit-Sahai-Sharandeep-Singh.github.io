@@ -439,6 +439,21 @@ content:
                   collection: ProjectStatus
                   field: name
 
+              - name: Description
+                type: rich-text
+                options:
+                  switcher: false
+
+              - name: Body
+                type: rich-text
+                required: true
+                options:
+                  switcher: false
+
+              - name: UpdateDate
+                type: date
+                required: true
+                
               - name: Pics
                 type: image
                 list: true
@@ -462,18 +477,3 @@ content:
               - name: Likes
                 type: boolean
                 default: true
-
-              - name: Description
-                type: rich-text
-                options:
-                  switcher: false
-
-              - name: Body
-                type: rich-text
-                required: true
-                options:
-                  switcher: false
-
-              - name: UpdateDate
-                type: date
-                required: true
