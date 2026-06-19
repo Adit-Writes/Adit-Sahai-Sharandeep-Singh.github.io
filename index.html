@@ -1232,44 +1232,49 @@ permalink: /index.html
 
 
   <script>
-    /* ── CHAR SPLIT: hero titles ──────────────────────────────── */
-    (function() {
-      // Split each hero title into individual character spans
-      // so we can stagger their entry animation
-      const titles = document.querySelectorAll('.hero-title');
-      titles.forEach((title, titleIdx) => {
-        const baseDelay = titleIdx === 0 ? 0.2 : 0.55; // title 1 starts sooner
-        const text = title.textContent;
-        const words = text.trim().split(/(\s+)/);
-        let charCount = 0;
-        title.innerHTML = '';
-        words.forEach(word => {
-          if (/^\s+$/.test(word)) {
-            // preserve spaces
-            title.appendChild(document.createTextNode(word));
-            return;
-          }
-          const wordSpan = document.createElement('span');
-          wordSpan.style.display = 'inline-block';
-          wordSpan.style.whiteSpace = 'nowrap';
-          [...word].forEach(ch => {
-            const span = document.createElement('span');
-            span.className = 'hero-char';
-            span.textContent = ch;
-            // stagger each character
-            span.style.animationDelay = (baseDelay + charCount * 0.032) + 's';
-            wordSpan.appendChild(span);
-            charCount++;
-          });
-          title.appendChild(wordSpan);
-        });
-        // After splitting, show the title and trigger the sweep
-        requestAnimationFrame(() => {
-          title.classList.add('chars-ready');
-        });
-      });
-    })();
 
+    
+/* ── CHAR SPLIT: hero titles ─────────────────────────────── */
+(function() {
+  const titles = document.querySelectorAll('.hero-title');
+  titles.forEach((title, titleIdx) => {
+    // Stagger: second title starts after first finishes roughly
+    const baseDelay = titleIdx === 0 ? 0.18 : 0.52;
+    const text  = title.textContent;
+    const parts = text.trim().split(/(\s+)/);
+    let charCount = 0;
+    title.innerHTML = '';
+ 
+    parts.forEach(part => {
+      if (/^\s+$/.test(part)) {
+        title.appendChild(document.createTextNode(part));
+        return;
+      }
+      const wordSpan = document.createElement('span');
+      wordSpan.style.cssText = 'display:inline-block;white-space:nowrap;';
+ 
+      [...part].forEach(ch => {
+        const span = document.createElement('span');
+        span.className   = 'hero-char';
+        span.textContent = ch;
+        // Delay drives the stagger — no inline transform needed
+        span.style.animationDelay = (baseDelay + charCount * 0.030) + 's';
+        wordSpan.appendChild(span);
+        charCount++;
+      });
+      title.appendChild(wordSpan);
+    });
+ 
+    // Mark as ready AFTER splitting so shimmer animation starts cleanly
+    // Use rAF to avoid triggering it during the same paint as innerHTML change
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        title.classList.add('chars-ready');
+      });
+    });
+  });
+})();
+    
     /* ── SCROLL REVEAL ─────────────────────────────────────────── */
     (function() {
       const io = new IntersectionObserver((entries) => {
