@@ -421,27 +421,67 @@ content:
                 order: desc
           
             fields:
-              - name: Title
-                type: string
-                required: true
-          
               - name: Project
                 type: reference
                 required: true
                 options:
                   collection: Projects
-                  field: Title      # ← this is the field on Projects shown/matched in the picker
-          
+                  field: Title
+
+              - name: Title
+                type: string
+                required: true
+
+              - name: Status
+                type: reference
+                required: true
+                options:
+                  collection: ProjectStatus
+                  field: name
+
+              - name: Pics
+                type: image
+                list: true
+
+              - name: Files
+                type: file
+                list: true
+
+              - name: Links
+                type: string
+                list: true
+
+              - name: Published
+                type: boolean
+                default: false
+
+              - name: Comments
+                type: boolean
+                default: true
+
+              - name: Likes
+                type: boolean
+                default: true
+
+              - name: Description
+                type: rich-text
+                options:
+                  switcher: false
+
               - name: Body
                 type: rich-text
                 required: true
                 options:
                   switcher: false
-          
-              - name: ReleaseDate
+
+              - name: ReadTime
+                type: number
+                options:
+                  min: 1
+
+              - name: StartedDate
                 type: date
                 required: true
-          
-              - name: Published
-                type: boolean
-                default: false
+
+              - name: LastUpdated
+                type: date
