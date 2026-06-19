@@ -828,10 +828,17 @@ function startUnifiedLoop() {
           state.el.style.height = `${sizePx}px`;
           state._lastSz = sizePx;
         }
-        if (blurRounded !== state._lastBlur) {
-          state.el.style.filter = `blur(${blurRounded}px)`;
-          state._lastBlur = blurRounded;
-        }
+        // Apply blur override from scroll warp if present, else normal blur
+let effectiveBlur = blurRounded;
+if (state._blurOverride !== undefined) {
+  effectiveBlur = state._blurOverride.toFixed(1);
+  state._blurOverrideTTL = (state._blurOverrideTTL || 0) - 1;
+  if (state._blurOverrideTTL <= 0) delete state._blurOverride;
+}
+if (effectiveBlur !== state._lastBlur) {
+  state.el.style.filter = `blur(${effectiveBlur}px)`;
+  state._lastBlur = effectiveBlur;
+}
         if (state.colorT < 1 || state._colorDirty) {
           const { r, g, b } = state.currentRgb;
           state.el.style.background = `radial-gradient(circle, rgb(${r},${g},${b}) 0%, rgba(0,0,0,0) 70%)`;
