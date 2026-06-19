@@ -630,15 +630,76 @@ permalink: /Sharan/SharanPage.html
 
     /* ═══ RESPONSIVE ════════════════════════════════════════════ */
     @media (max-width: 768px) {
-      body { padding: 0 4%; }
-      .sp-nav-fixed-wrap { padding: 0 4%; }
-      .sp-nav { grid-template-columns: auto 1fr; margin: 0; }
-      .sp-nav-center { display: none; }
-      .sp-about { grid-template-columns: 1fr; padding: 30px 26px; gap: 28px; }
-      .sp-portrait-frame { display: none; }
-      .sp-project-grid { grid-template-columns: 1fr; }
-      .sp-links-grid { grid-template-columns: 1fr; }
-    }
+  body { padding: 0 4%; overflow-x: hidden; }
+
+  /* ── Nav: stop it stretching the page ── */
+  .sp-nav-fixed-wrap {
+    padding: 0;
+    left: 0; right: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+  .sp-nav {
+    margin: 0 14px;          /* fixed px instead of % to avoid overflow */
+    grid-template-columns: 1fr auto;
+    padding: 10px 16px;
+    width: auto;             /* let margin handle the sides */
+    max-width: calc(100vw - 28px);
+  }
+  .sp-nav-center { display: none; }
+
+  /* ── Banner ── */
+  .sp-banner { padding: 76px 16px 28px; margin-bottom: 32px; }
+
+  /* ── About card ── */
+  .sp-about {
+    grid-template-columns: 1fr;
+    padding: 28px 22px;
+    gap: 22px;
+  }
+  .sp-portrait-frame { display: none; }
+
+  /* ── Filter buttons: allow wrapping ── */
+  .sp-filter-wrap { gap: 8px; }
+  .sp-filter-btn  { padding: 10px 18px; font-size: 0.78rem; }
+
+  /* ── Project grid: single column ── */
+  .sp-project-grid { grid-template-columns: 1fr; gap: 16px; }
+
+  /* ── Links grid: single column ── */
+  .sp-links-grid { grid-template-columns: 1fr; gap: 12px; }
+
+  /* ── Search bar ── */
+  .sp-search { padding: 11px 16px; }
+
+  /* ── Disable backdrop-filter on mobile (GPU cost) ── */
+  .sp-nav,
+  .sp-about,
+  .sp-project-card,
+  .sp-link-card,
+  .sp-search {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  /* ── Disable hover tilt/transform on tap ── */
+  .sp-project-card:hover,
+  .sp-link-card:hover,
+  .sp-about:hover {
+    transform: none !important;
+  }
+    /* Hide search button on mobile — use the inline search bar instead */
+  .sp-nav-right { display: none; }
+
+  /* Prevent banner title from overflowing on very small screens */
+  .sp-banner-title {
+    font-size: clamp(2.8rem, 12vw, 4rem);
+    letter-spacing: -0.02em;
+  }
+
+  /* About card: prevent text overflow */
+  .sp-about-name { font-size: clamp(1.8rem, 7vw, 2.4rem); }
+}
 
     @media (prefers-reduced-motion: reduce) {
       .sp-project-card:hover { animation: none; }
