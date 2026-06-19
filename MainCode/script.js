@@ -2,8 +2,8 @@
 //  CONFIGURATION
 // ============================================================
 
-const ROTATION_INTERVAL_MS  = 30000;
-const ORB_TRANSITION_SECS   = 10.0;
+const ROTATION_INTERVAL_MS  = 5000;
+const ORB_TRANSITION_SECS   = 3.0;
 const IS_MOBILE             = window.innerWidth <= 768 || /Mobi|Android/i.test(navigator.userAgent);
 const REDUCED_MOTION        = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
