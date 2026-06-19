@@ -67,7 +67,7 @@ content:
 
 # Adits Stuff======================================================================
 
-  - name: Adit
+  - name: AditPage
     type: group
     items:
     
