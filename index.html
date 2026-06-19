@@ -345,6 +345,7 @@ permalink: /index.html
     flex-direction:  column;
     align-items:     center;
     text-align:      center;
+    contain: layout style;
     cursor:          pointer;
     text-decoration: none;
     color:           inherit;
@@ -570,6 +571,7 @@ permalink: /index.html
     -webkit-backdrop-filter: blur(16px);
     position:        relative;
     overflow:        hidden;
+    contain: layout style; /* add this — prevents card repaints from propagating */
     cursor:          default;
     transition:      background 2.5s ease-in-out, border-color 0.3s ease, box-shadow 0.3s ease;
   }
