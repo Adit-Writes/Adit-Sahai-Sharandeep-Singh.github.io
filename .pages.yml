@@ -251,7 +251,7 @@ content:
     
     - name: SiteHeader
       type: file
-      path: _data/Sharan/SiteHead.json
+      path: _data/Sharan/SiteHeader.json
       fields:
         - name: PageTitle
           type: string
