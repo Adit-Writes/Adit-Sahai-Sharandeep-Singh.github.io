@@ -4,7 +4,7 @@ media:
 
 content:
 
-  # MainPage Stuff======================================================================
+  # Page Stuff======================================================================
 
   - name: MainPage
     type: group
@@ -63,7 +63,6 @@ content:
             type: string
             required: true
 
-  # Adits Stuff======================================================================
 
   - name: AditPage
     type: group
@@ -174,6 +173,7 @@ content:
             type: string
             required: true
 
+  # Adits Content================================================================
 
   - name: AditContent
     type: group
