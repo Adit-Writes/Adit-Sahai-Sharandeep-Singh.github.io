@@ -111,6 +111,245 @@ const MY_FAVORITE_THEMES = [
       '--orb-speed-multiplier':'0.7',
       '--orb-scale-multiplier':'1.15'
     }
+  },{
+    name: "Ruby Horizon", // Inspired by: Crimson / Midnight Ember
+    tokens: {
+      '--bg-base':             '#080304',
+      '--glass-bg':            'rgba(25, 10, 12, 0.60)',
+      '--glass-bg-strong':     'rgba(18, 6, 8, 0.88)',
+      '--glass-border':        'rgba(155, 44, 58, 0.15)',
+      '--glass-border-hover':  'rgba(155, 44, 58, 0.50)',
+      '--text-main':           '#fcf5f5',
+      '--text-muted':          '#c7acaf',
+      '--text-dim':            '#7a5e62',
+      '--accent-gold':         '#9b2c3a', // Muted Ruby
+      '--accent-gold-dim':     'rgba(155, 44, 58, 0.12)',
+      '--accent-gold-line':    'rgba(155, 44, 58, 0.25)',
+      '--orb-colors':          '#9b2c3a, #b04353, #e5a4ab, #5e1620, #c46d78',
+      '--orb-blur-factor':     '1.45',
+      '--orb-speed-multiplier':'0.65',
+      '--orb-scale-multiplier':'1.15'
+    }
+  },
+  {
+    name: "Glacial Sapphire", // Inspired by: Aurora Ice / Arctic Glass
+    tokens: {
+      '--bg-base':             '#030508',
+      '--glass-bg':            'rgba(10, 15, 25, 0.60)',
+      '--glass-bg-strong':     'rgba(6, 10, 18, 0.88)',
+      '--glass-border':        'rgba(107, 140, 174, 0.15)',
+      '--glass-border-hover':  'rgba(107, 140, 174, 0.50)',
+      '--text-main':           '#f4f7fa',
+      '--text-muted':          '#a3b5c7',
+      '--text-dim':            '#5e7082',
+      '--accent-gold':         '#6b8cae', // Frosted Sapphire
+      '--accent-gold-dim':     'rgba(107, 140, 174, 0.12)',
+      '--accent-gold-line':    'rgba(107, 140, 174, 0.25)',
+      '--orb-colors':          '#6b8cae, #8caecf, #4a6b8c, #cddbe8, #34506e',
+      '--orb-blur-factor':     '1.3',
+      '--orb-speed-multiplier':'0.7',
+      '--orb-scale-multiplier':'1.08'
+    }
+  },
+  {
+    name: "Desert Titanium", // Inspired by: Sand & Ivory
+    tokens: {
+      '--bg-base':             '#080706',
+      '--glass-bg':            'rgba(25, 22, 20, 0.60)',
+      '--glass-bg-strong':     'rgba(18, 15, 14, 0.88)',
+      '--glass-border':        'rgba(168, 159, 145, 0.15)',
+      '--glass-border-hover':  'rgba(168, 159, 145, 0.50)',
+      '--text-main':           '#fbfaf9',
+      '--text-muted':          '#bfb6a8',
+      '--text-dim':            '#787063',
+      '--accent-gold':         '#a89f91', // Warm Titanium
+      '--accent-gold-dim':     'rgba(168, 159, 145, 0.12)',
+      '--accent-gold-line':    'rgba(168, 159, 145, 0.25)',
+      '--orb-colors':          '#a89f91, #c4bcb0, #877e70, #e0d9cf, #6e6557',
+      '--orb-blur-factor':     '1.35',
+      '--orb-speed-multiplier':'0.6',
+      '--orb-scale-multiplier':'1.1'
+    }
+  },
+  {
+    name: "Malachite Shadows", // Inspired by: Neon Forest
+    tokens: {
+      '--bg-base':             '#020604',
+      '--glass-bg':            'rgba(8, 20, 14, 0.60)',
+      '--glass-bg-strong':     'rgba(5, 15, 10, 0.88)',
+      '--glass-border':        'rgba(74, 124, 89, 0.15)',
+      '--glass-border-hover':  'rgba(74, 124, 89, 0.50)',
+      '--text-main':           '#f2f9f5',
+      '--text-muted':          '#a5bfae',
+      '--text-dim':            '#5a7563',
+      '--accent-gold':         '#4a7c59', // Muted Malachite
+      '--accent-gold-dim':     'rgba(74, 124, 89, 0.12)',
+      '--accent-gold-line':    'rgba(74, 124, 89, 0.25)',
+      '--orb-colors':          '#4a7c59, #6b9e7a, #2f5439, #a3c4b0, #1c3623',
+      '--orb-blur-factor':     '1.4',
+      '--orb-speed-multiplier':'0.65',
+      '--orb-scale-multiplier':'1.15'
+    }
+  },
+  {
+    name: "Royal Amaranth", // Inspired by: Velvet Void / Void Sakura
+    tokens: {
+      '--bg-base':             '#060306',
+      '--glass-bg':            'rgba(22, 12, 22, 0.60)',
+      '--glass-bg-strong':     'rgba(16, 8, 16, 0.88)',
+      '--glass-border':        'rgba(136, 90, 112, 0.15)',
+      '--glass-border-hover':  'rgba(136, 90, 112, 0.50)',
+      '--text-main':           '#fbf4f8',
+      '--text-muted':          '#c9aabc',
+      '--text-dim':            '#7a5a6a',
+      '--accent-gold':         '#885a70', // Dusty Amaranth
+      '--accent-gold-dim':     'rgba(136, 90, 112, 0.12)',
+      '--accent-gold-line':    'rgba(136, 90, 112, 0.25)',
+      '--orb-colors':          '#885a70, #a87b90, #663e52, #c7a4b6, #472636',
+      '--orb-blur-factor':     '1.3',
+      '--orb-speed-multiplier':'0.7',
+      '--orb-scale-multiplier':'1.12'
+    }
+  },
+  {
+    name: "Tungsten Glow", // Inspired by: Obsidian Pulse
+    tokens: {
+      '--bg-base':             '#050505',
+      '--glass-bg':            'rgba(18, 18, 18, 0.60)',
+      '--glass-bg-strong':     'rgba(12, 12, 12, 0.88)',
+      '--glass-border':        'rgba(122, 130, 136, 0.15)',
+      '--glass-border-hover':  'rgba(122, 130, 136, 0.50)',
+      '--text-main':           '#f7f8f9',
+      '--text-muted':          '#aeb3b8',
+      '--text-dim':            '#656a6e',
+      '--accent-gold':         '#7a8288', // Tungsten Steel
+      '--accent-gold-dim':     'rgba(122, 130, 136, 0.12)',
+      '--accent-gold-line':    'rgba(122, 130, 136, 0.25)',
+      '--orb-colors':          '#7a8288, #9ba3a8, #5a6066, #c5cacc, #3e4448',
+      '--orb-blur-factor':     '1.35',
+      '--orb-speed-multiplier':'0.55',
+      '--orb-scale-multiplier':'1.05'
+    }
+  },
+  {
+    name: "Abyssal Cobalt", // Inspired by: Deep Ocean
+    tokens: {
+      '--bg-base':             '#02040a',
+      '--glass-bg':            'rgba(10, 15, 30, 0.60)',
+      '--glass-bg-strong':     'rgba(6, 10, 22, 0.88)',
+      '--glass-border':        'rgba(59, 89, 152, 0.15)',
+      '--glass-border-hover':  'rgba(59, 89, 152, 0.50)',
+      '--text-main':           '#f2f5fb',
+      '--text-muted':          '#a2b0ce',
+      '--text-dim':            '#556382',
+      '--accent-gold':         '#3b5998', // Deep Cobalt
+      '--accent-gold-dim':     'rgba(59, 89, 152, 0.12)',
+      '--accent-gold-line':    'rgba(59, 89, 152, 0.25)',
+      '--orb-colors':          '#3b5998, #5977b5, #223766, #88a4d4, #152240',
+      '--orb-blur-factor':     '1.45',
+      '--orb-speed-multiplier':'0.6',
+      '--orb-scale-multiplier':'1.2'
+    }
+  },
+  {
+    name: "Rose Quartz", // New Luxury Concept
+    tokens: {
+      '--bg-base':             '#080506',
+      '--glass-bg':            'rgba(25, 18, 20, 0.60)',
+      '--glass-bg-strong':     'rgba(18, 12, 14, 0.88)',
+      '--glass-border':        'rgba(191, 163, 168, 0.15)',
+      '--glass-border-hover':  'rgba(191, 163, 168, 0.50)',
+      '--text-main':           '#fcf8f9',
+      '--text-muted':          '#cebcc0',
+      '--text-dim':            '#8a7579',
+      '--accent-gold':         '#bfa3a8', // Rose Quartz
+      '--accent-gold-dim':     'rgba(191, 163, 168, 0.12)',
+      '--accent-gold-line':    'rgba(191, 163, 168, 0.25)',
+      '--orb-colors':          '#bfa3a8, #d4bcc0, #967d82, #ecd8db, #755e62',
+      '--orb-blur-factor':     '1.3',
+      '--orb-speed-multiplier':'0.65',
+      '--orb-scale-multiplier':'1.1'
+    }
+  },
+  {
+    name: "Bronze Patina", // Inspired by: Golden Dusk
+    tokens: {
+      '--bg-base':             '#070605',
+      '--glass-bg':            'rgba(24, 20, 16, 0.60)',
+      '--glass-bg-strong':     'rgba(16, 14, 10, 0.88)',
+      '--glass-border':        'rgba(156, 122, 82, 0.15)',
+      '--glass-border-hover':  'rgba(156, 122, 82, 0.50)',
+      '--text-main':           '#fbf9f6',
+      '--text-muted':          '#bdae9c',
+      '--text-dim':            '#736657',
+      '--accent-gold':         '#9c7a52', // Aged Bronze
+      '--accent-gold-dim':     'rgba(156, 122, 82, 0.12)',
+      '--accent-gold-line':    'rgba(156, 122, 82, 0.25)',
+      '--orb-colors':          '#9c7a52, #b89872, #3a6358, #608f82, #735332', // Mixes bronze with oxidized teal
+      '--orb-blur-factor':     '1.4',
+      '--orb-speed-multiplier':'0.6',
+      '--orb-scale-multiplier':'1.15'
+    }
+  },
+  {
+    name: "Celestial Ivory", // New Luxury Concept
+    tokens: {
+      '--bg-base':             '#080808',
+      '--glass-bg':            'rgba(25, 25, 24, 0.60)',
+      '--glass-bg-strong':     'rgba(18, 18, 16, 0.88)',
+      '--glass-border':        'rgba(224, 218, 199, 0.12)',
+      '--glass-border-hover':  'rgba(224, 218, 199, 0.45)',
+      '--text-main':           '#ffffff',
+      '--text-muted':          '#c7c2b5',
+      '--text-dim':            '#7d786d',
+      '--accent-gold':         '#e0dac7', // Warm Ivory
+      '--accent-gold-dim':     'rgba(224, 218, 199, 0.10)',
+      '--accent-gold-line':    'rgba(224, 218, 199, 0.20)',
+      '--orb-colors':          '#e0dac7, #f2efe6, #b8b29e, #ffffff, #8a8571',
+      '--orb-blur-factor':     '1.5', // Ultra blurred for a cloudy, soft white glow
+      '--orb-speed-multiplier':'0.5', // The slowest movement
+      '--orb-scale-multiplier':'1.25'
+    }
+  },
+  {
+    name: "Vintage Violet", // Inspired by: Cyber Magenta
+    tokens: {
+      '--bg-base':             '#050308',
+      '--glass-bg':            'rgba(18, 12, 25, 0.60)',
+      '--glass-bg-strong':     'rgba(12, 8, 18, 0.88)',
+      '--glass-border':        'rgba(107, 91, 122, 0.15)',
+      '--glass-border-hover':  'rgba(107, 91, 122, 0.50)',
+      '--text-main':           '#f8f6fc',
+      '--text-muted':          '#b2a7bd',
+      '--text-dim':            '#6a5f73',
+      '--accent-gold':         '#6b5b7a', // Dusty Violet
+      '--accent-gold-dim':     'rgba(107, 91, 122, 0.12)',
+      '--accent-gold-line':    'rgba(107, 91, 122, 0.25)',
+      '--orb-colors':          '#6b5b7a, #8c7b9c, #4c3e59, #b5a8c2, #32263d',
+      '--orb-blur-factor':     '1.3',
+      '--orb-speed-multiplier':'0.65',
+      '--orb-scale-multiplier':'1.1'
+    }
+  },
+  {
+    name: "Smoked Topaz", // Inspired by: Golden Dusk / Amber
+    tokens: {
+      '--bg-base':             '#0a0602',
+      '--glass-bg':            'rgba(25, 15, 8, 0.60)',
+      '--glass-bg-strong':     'rgba(18, 10, 5, 0.88)',
+      '--glass-border':        'rgba(176, 125, 76, 0.15)',
+      '--glass-border-hover':  'rgba(176, 125, 76, 0.50)',
+      '--text-main':           '#fdf9f4',
+      '--text-muted':          '#c7a98f',
+      '--text-dim':            '#7a6350',
+      '--accent-gold':         '#b07d4c', // Smoked Amber
+      '--accent-gold-dim':     'rgba(176, 125, 76, 0.12)',
+      '--accent-gold-line':    'rgba(176, 125, 76, 0.25)',
+      '--orb-colors':          '#b07d4c, #cc9b6a, #8a5a2e, #e8be97, #5c3817',
+      '--orb-blur-factor':     '1.35',
+      '--orb-speed-multiplier':'0.6',
+      '--orb-scale-multiplier':'1.15'
+    }
   }
 ];
 
