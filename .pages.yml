@@ -474,14 +474,6 @@ content:
                 options:
                   switcher: false
 
-              - name: ReadTime
-                type: number
-                options:
-                  min: 1
-
-              - name: StartedDate
+              - name: UpdateDate
                 type: date
                 required: true
-
-              - name: LastUpdated
-                type: date
