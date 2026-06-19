@@ -1106,11 +1106,24 @@ function initTaglineReveal() {
 function initAccentLineDraw() {
   const dot = document.querySelector('.hero-accent-dot');
   if (!dot) return;
-  dot.style.transform  = 'scale(0)';
-  dot.style.transition = 'transform 0.5s cubic-bezier(0.34,1.56,0.64,1)';
-  setTimeout(() => { dot.style.transform = 'scale(1)'; }, 1400);
+ 
+  // 1. Pause the CSS pulse animation and hide the dot
+  dot.style.animationPlayState = 'paused';
+  dot.style.transform          = 'scale(0)';
+  dot.style.transition         = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
+ 
+  // 2. After the hero sequence completes, pop the dot in
+  setTimeout(() => {
+    dot.style.transform = 'scale(1)';
+ 
+    // 3. Once the pop-in transition finishes, hand control back to CSS animation
+    dot.addEventListener('transitionend', () => {
+      dot.style.transform          = '';   // clear inline — CSS takes over
+      dot.style.transition         = '';
+      dot.style.animationPlayState = 'running';
+    }, { once: true });
+  }, 1400);
 }
-
 // ============================================================
 //  PERSON CARDS — fly-in
 // ============================================================
