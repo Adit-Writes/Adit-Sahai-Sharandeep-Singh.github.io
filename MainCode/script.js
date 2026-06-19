@@ -1107,18 +1107,16 @@ function initAccentLineDraw() {
   const dot = document.querySelector('.hero-accent-dot');
   if (!dot) return;
  
-  // 1. Pause the CSS pulse animation and hide the dot
+  // Pause CSS animation and start hidden
   dot.style.animationPlayState = 'paused';
   dot.style.transform          = 'scale(0)';
   dot.style.transition         = 'transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1)';
  
-  // 2. After the hero sequence completes, pop the dot in
   setTimeout(() => {
     dot.style.transform = 'scale(1)';
- 
-    // 3. Once the pop-in transition finishes, hand control back to CSS animation
+    // Once the pop-in finishes, hand off to CSS animation
     dot.addEventListener('transitionend', () => {
-      dot.style.transform          = '';   // clear inline — CSS takes over
+      dot.style.transform          = '';
       dot.style.transition         = '';
       dot.style.animationPlayState = 'running';
     }, { once: true });
@@ -1214,21 +1212,36 @@ function initStatCounters() {
 // ============================================================
 
 function initParallax() {
-  if (IS_MOBILE) return; // Disable parallax on mobile — causes repaints
-  const heroTitles  = document.querySelectorAll('.hero-title');
+  if (IS_MOBILE) return; // parallax disabled on mobile (too janky)
+ 
+  // We move the eyebrow and tagline the old way (they have no
+  // competing animation). For the titles, we move their PARENT.
+  const heroSection = document.querySelector('.hero-section');
   const heroEyebrow = document.querySelector('.hero-eyebrow');
   const heroTagline = document.querySelector('.hero-tagline');
-  if (!heroTitles.length) return;
-
+ 
+  // Find all .hero-title elements and their shared parent container.
+  // If you wrap them in .hero-parallax-wrap in the HTML, grab that.
+  // Otherwise we grab their direct parent.
+  const titleEls     = document.querySelectorAll('.hero-title');
+  const titlesParent = titleEls.length
+    ? (document.querySelector('.hero-parallax-wrap') || titleEls[0].parentElement)
+    : null;
+ 
+  if (!titlesParent && !heroEyebrow) return;
+ 
   let ticking = false;
   window.addEventListener('scroll', () => {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(() => {
       const sy = window.scrollY;
-      heroTitles.forEach(t => { t.style.transform = `translateY(${sy * 0.22}px)`; });
-      if (heroEyebrow) heroEyebrow.style.transform = `translateY(${sy * 0.14}px)`;
-      if (heroTagline) heroTagline.style.transform = `translateY(${sy * 0.10}px)`;
+      // Move the PARENT wrapper — titles inside are untouched
+      if (titlesParent) {
+        titlesParent.style.transform = `translateY(${sy * 0.18}px)`;
+      }
+      if (heroEyebrow) heroEyebrow.style.transform = `translateY(${sy * 0.12}px)`;
+      if (heroTagline) heroTagline.style.transform = `translateY(${sy * 0.08}px)`;
       ticking = false;
     });
   }, { passive: true });
