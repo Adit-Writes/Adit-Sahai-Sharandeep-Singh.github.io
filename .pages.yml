@@ -299,9 +299,9 @@ content:
             type: string
             required: true
 
-      - name: Projects
-        type: group
-        items:
+  - name: SharanContent
+    type: group
+    items:
 
           - name: ProjectCategories
             type: collection
