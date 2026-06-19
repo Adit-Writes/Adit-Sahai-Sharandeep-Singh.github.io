@@ -155,92 +155,96 @@ content:
   
         - name: Link
           type: string
+
+  - name: Articles
+    type: group
+    items:
   
-    - name: ArticleCategories
-      label: Categories
-      type: collection
-      path: _data/Adit/categories
-      format: json
-      filename: "{slug}.json"
-      view:
-        primary: name
-      fields:
-        - name: name
-          type: string
-          required: true
-  
-    - name: Articles
-      path: _data/Adit/ArticlesData
-      type: collection
-      format: json
-      filename: "{slug}.json" # Changed to slug for cleaner URLs in your 11ty build
-      
-      view:
-        fields: [Title, Topic, Published, ReleaseDate, LastUpdated]
-        primary: Title
-        sort: [ReleaseDate, Title]
-        default:
-            sort: ReleaseDate
-            order: desc
-          
-      fields:
-        - name: Title
-          type: string
-          required: true
-          
-        - name: Topic
-          type: reference 
-          required: true
-          options:
-            collection: ArticleCategories 
-            field: name 
-  
-        - name: Pics
-          type: image
-          list: true
-  
-        - name: Files
-          type: file
-          list: true
-  
-        - name: Links
-          type: string
-          list: true
-          
-        - name: Published
-          type: boolean
-          default: false
-  
-        - name: Comments
-          type: boolean
-          default: true
-          
-        - name: Likes
-          type: boolean
-          default: true
-  
-        - name: Description
-          type: rich-text
-          options:
-            switcher: false
-          
-        - name: Body
-          type: rich-text
-          required: true
-          options:
-            switcher: false
-          
-        - name: ReadTime
-          type: number
-          options:
-            min: 1
+      - name: ArticleCategories
+        label: Categories
+        type: collection
+        path: _data/Adit/categories
+        format: json
+        filename: "{slug}.json"
+        view:
+          primary: name
+        fields:
+          - name: name
+            type: string
+            required: true
+    
+      - name: Articles
+        path: _data/Adit/ArticlesData
+        type: collection
+        format: json
+        filename: "{slug}.json" # Changed to slug for cleaner URLs in your 11ty build
+        
+        view:
+          fields: [Title, Topic, Published, ReleaseDate, LastUpdated]
+          primary: Title
+          sort: [ReleaseDate, Title]
+          default:
+              sort: ReleaseDate
+              order: desc
             
-        - name: ReleaseDate
-          type: date
-          required: true
-          
-        - name: LastUpdated
-          type: date
+        fields:
+          - name: Title
+            type: string
+            required: true
+            
+          - name: Topic
+            type: reference 
+            required: true
+            options:
+              collection: ArticleCategories 
+              field: name 
+    
+          - name: Pics
+            type: image
+            list: true
+    
+          - name: Files
+            type: file
+            list: true
+    
+          - name: Links
+            type: string
+            list: true
+            
+          - name: Published
+            type: boolean
+            default: false
+    
+          - name: Comments
+            type: boolean
+            default: true
+            
+          - name: Likes
+            type: boolean
+            default: true
+    
+          - name: Description
+            type: rich-text
+            options:
+              switcher: false
+            
+          - name: Body
+            type: rich-text
+            required: true
+            options:
+              switcher: false
+            
+          - name: ReadTime
+            type: number
+            options:
+              min: 1
+              
+          - name: ReleaseDate
+            type: date
+            required: true
+            
+          - name: LastUpdated
+            type: date
 
 
 # Sharan's Stuff======================================================================
