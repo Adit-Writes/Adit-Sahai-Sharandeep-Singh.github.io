@@ -22,6 +22,9 @@ content:
 
         - name: DownTitle
           type: string
+
+        - name: Description
+          type: string
   
         - name: Pic
           type: image
