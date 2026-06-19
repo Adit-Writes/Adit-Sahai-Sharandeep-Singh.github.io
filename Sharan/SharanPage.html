@@ -589,6 +589,8 @@ permalink: /Sharan/SharanPage.html
       text-decoration: none; color: inherit; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
       will-change: transform;
       transition: border-color 0.5s ease, box-shadow 0.5s ease, transform 0.7s cubic-bezier(0.22,1,0.36,1);
+        min-width: 0;
+  overflow: hidden;
     }
     .sp-link-card.is-hovering { border-color: var(--glass-border-hover); box-shadow: 0 16px 46px rgba(0,0,0,0.55), 0 0 22px var(--accent-gold-dim); }
 
@@ -601,7 +603,8 @@ permalink: /Sharan/SharanPage.html
     .sp-link-card:hover .sp-link-icon { transform: scale(1.12) rotate(-4deg); filter: brightness(1.2); }
     .sp-link-icon svg { width: 22px; height: 22px; }
 
-    .sp-link-text { flex: 1; min-width: 0; }
+    .sp-link-text { flex: 1; min-width: 0;   min-width: 0;
+  overflow: hidden;}
     .sp-link-name {
       display: block; font-family: 'Space Grotesk', sans-serif;
       font-size: 1rem; font-weight: 600;
@@ -613,6 +616,10 @@ permalink: /Sharan/SharanPage.html
       color: var(--text-dim) !important;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
       transition: color 0.25s ease;
+        white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
     }
     .sp-link-card:hover .sp-link-url { color: var(--accent-gold) !important; }
 
