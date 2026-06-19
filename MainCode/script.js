@@ -13,6 +13,25 @@ const REDUCED_MOTION        = window.matchMedia('(prefers-reduced-motion: reduce
 
 const MY_FAVORITE_THEMES = [
   {
+    name: "Bordeaux Reserve", // Deep wine, crushed velvet, and soft rose-champagne
+    tokens: {
+      '--bg-base':             '#0a0405',
+      '--glass-bg':            'rgba(28, 12, 14, 0.60)',
+      '--glass-bg-strong':     'rgba(20, 8, 10, 0.88)',
+      '--glass-border':        'rgba(180, 130, 140, 0.15)',
+      '--glass-border-hover':  'rgba(180, 130, 140, 0.50)',
+      '--text-main':           '#fdfafb',
+      '--text-muted':          '#cfbcc0',
+      '--text-dim':            '#856a70',
+      '--accent-gold':         '#b87a88', // Muted Rose-Champagne
+      '--accent-gold-dim':     'rgba(184, 122, 136, 0.12)',
+      '--accent-gold-line':    'rgba(184, 122, 136, 0.25)',
+      '--orb-colors':          '#752033, #9e364a, #b87a88, #4a1320, #cca3ab', // Deep burgundy mixing with champagne
+      '--orb-blur-factor':     '1.45',
+      '--orb-speed-multiplier':'0.6',
+      '--orb-scale-multiplier':'1.15'
+    }
+  },
     name: "Crimson Ember",
     tokens: {
       '--bg-base':             '#0a0506',
