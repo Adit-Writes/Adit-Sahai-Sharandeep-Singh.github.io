@@ -1268,54 +1268,30 @@ permalink: /index.html
 
 
   <script>
+  window._heroTitleRevealDone = true;
 
-  /* ── CHAR SPLIT: hero titles ─────────────────────────────── */
-  (function() {
-    const titles = document.querySelectorAll('.hero-title');
-    titles.forEach((title, titleIdx) => {
-      const baseDelay = titleIdx === 0 ? 0.18 : 0.52;
-      const text  = title.textContent;
-      const parts = text.trim().split(/(\s+)/);
-      let charCount = 0;
-      title.innerHTML = '';
-
-      parts.forEach(part => {
-        if (/^\s+$/.test(part)) {
-          title.appendChild(document.createTextNode(part));
-          return;
-        }
-        const wordSpan = document.createElement('span');
-        wordSpan.style.cssText = 'display:inline-block;white-space:nowrap;';
-
-        [...part].forEach(ch => {
-          const span = document.createElement('span');
-          span.className   = 'hero-char';
-          span.textContent = ch;
-          span.style.animationDelay = (baseDelay + charCount * 0.030) + 's';
-          wordSpan.appendChild(span);
-          charCount++;
-        });
-        title.appendChild(wordSpan);
-      });
-
+  /* ── HERO TITLES: simple fade-in, no char split ── */
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('.hero-title').forEach((title, i) => {
+      title.style.transition = `opacity 0.8s ease ${0.2 + i * 0.3}s, filter 0.8s ease ${0.2 + i * 0.3}s`;
+      title.style.filter = 'none';
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
+          title.style.opacity = '1';
           title.classList.add('chars-ready');
         });
       });
     });
-  })();
+  });
 
-  /* ── SCROLL REVEAL ─────────────────────────────────────────── */
+  /* ── SCROLL REVEAL ── */
   (function() {
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
         if (!e.isIntersecting) return;
         const el = e.target;
         el.classList.add('is-visible');
-        if (el.classList.contains('links-section-title')) {
-          el.classList.add('heading-visible');
-        }
+        if (el.classList.contains('links-section-title')) el.classList.add('heading-visible');
         const titleChild = el.querySelector('.links-section-title');
         if (titleChild) titleChild.classList.add('heading-visible');
         io.unobserve(el);
