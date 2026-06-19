@@ -75,11 +75,6 @@ permalink: /index.html
     50%       { text-shadow: 0 0 40px rgba(212,175,55,0.45), 0 0 90px rgba(212,175,55,0.18); }
   }
 
-  @keyframes cardGlowSpin {
-    from { transform: rotate(0deg); }
-    to   { transform: rotate(360deg); }
-  }
-
   @keyframes heroFadeUp {
     from { opacity: 0; transform: translateY(28px); filter: blur(6px); }
     to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
@@ -359,27 +354,26 @@ permalink: /index.html
     transform: translateY(-10px) scale(1.015);
   }
 
-  .person-card-glow {
-    position:        absolute;
-    inset:           -60%;
-    z-index:         0;
-    pointer-events:  none;
-    opacity:         0;
-    transition:      opacity 0.6s ease;
-    background:      conic-gradient(
-                       from 0deg,
-                       transparent 0deg, var(--accent-gold) 50deg,
-                       transparent 130deg, transparent 230deg,
-                       var(--accent-gold) 290deg, transparent 360deg
-                     );
-    filter:                  blur(55px);
-    animation:               cardGlowSpin 10s linear infinite;
-    animation-play-state:    paused;
-  }
-  .person-card:hover .person-card-glow {
-    opacity:                1;
-    animation-play-state:   running;
-  }
+/* AFTER — simpler radial, no spin animation, GPU-friendly */
+.person-card-glow {
+  position:       absolute;
+  inset:          -20%;
+  z-index:        0;
+  pointer-events: none;
+  opacity:        0;
+  border-radius:  50%;
+  background:     radial-gradient(
+                    ellipse at 50% 50%,
+                    var(--accent-gold) 0%,
+                    transparent 65%
+                  );
+  filter:         blur(60px);
+  transition:     opacity 0.6s ease;
+  will-change:    opacity;
+}
+.person-card:hover .person-card-glow {
+  opacity: 0.18;
+}
 
   .person-card::before {
     content:          '';
@@ -1276,13 +1270,12 @@ permalink: /index.html
 (function() {
   const titles = document.querySelectorAll('.hero-title');
   titles.forEach((title, titleIdx) => {
-    // Stagger: second title starts after first finishes roughly
     const baseDelay = titleIdx === 0 ? 0.18 : 0.52;
     const text  = title.textContent;
     const parts = text.trim().split(/(\s+)/);
     let charCount = 0;
     title.innerHTML = '';
- 
+
     parts.forEach(part => {
       if (/^\s+$/.test(part)) {
         title.appendChild(document.createTextNode(part));
@@ -1290,18 +1283,26 @@ permalink: /index.html
       }
       const wordSpan = document.createElement('span');
       wordSpan.style.cssText = 'display:inline-block;white-space:nowrap;';
- 
+
       [...part].forEach(ch => {
         const span = document.createElement('span');
         span.className   = 'hero-char';
         span.textContent = ch;
-        // Delay drives the stagger — no inline transform needed
+        // NO rotateX — keeps chars in the same compositing layer as the gradient
         span.style.animationDelay = (baseDelay + charCount * 0.030) + 's';
         wordSpan.appendChild(span);
         charCount++;
       });
       title.appendChild(wordSpan);
     });
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        title.classList.add('chars-ready');
+      });
+    });
+  });
+})();
  
     // Mark as ready AFTER splitting so shimmer animation starts cleanly
     // Use rAF to avoid triggering it during the same paint as innerHTML change
