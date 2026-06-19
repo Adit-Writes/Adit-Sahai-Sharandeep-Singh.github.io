@@ -1554,24 +1554,27 @@ function initMagneticHover() {
 // ============================================================
 
 function initScrollVelocityWarp() {
-  if (IS_MOBILE) return; // Skip on mobile
-  let lastY    = window.scrollY;
-  let ticking  = false;
+  if (IS_MOBILE) return;
+  let lastY   = window.scrollY;
+  let ticking = false;
 
   window.addEventListener('scroll', () => {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(() => {
-      const currentY = window.scrollY;
-      const velocity = Math.abs(currentY - lastY);
-      lastY    = currentY;
-      ticking  = false;
+      const currentY  = window.scrollY;
+      const velocity  = Math.abs(currentY - lastY);
+      lastY   = currentY;
+      ticking = false;
 
       const states = window._orbStates;
-      if (!states) return;
+      if (!states || velocity < 2) return; // skip tiny movements
       const boost = Math.min(velocity / 20, 3.5);
+      // Write to state, let the unified loop apply it next tick
+      // instead of touching el.style.filter directly here
       states.forEach(s => {
-        s.el.style.filter = `blur(${(s.currentBlurPx * (1 - boost * 0.12)).toFixed(1)}px)`;
+        s._blurOverride = s.currentBlurPx * (1 - boost * 0.12);
+        s._blurOverrideTTL = 3; // clear after 3 frames
       });
     });
   }, { passive: true });
