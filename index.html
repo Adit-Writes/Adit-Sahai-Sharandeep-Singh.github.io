@@ -874,7 +874,124 @@ permalink: /index.html
       z-index: 0;
       opacity: 0.6;
     }
-
+@media (max-width: 768px) {
+  /* Kill the gold sweep pseudo-element on mobile */
+  .hero-title.chars-ready::after {
+    display: none !important;
+    animation: none !important;
+  }
+ 
+  /* Kill the pulsing glow on mobile — it re-triggers paint each cycle */
+  .hero-title.chars-ready {
+    animation: none !important;
+    text-shadow:
+      0 0 30px rgba(212, 175, 55, 0.2),
+      0 0 60px rgba(212, 175, 55, 0.08);
+  }
+ 
+  /* Simpler, flicker-free character entry on mobile:
+     just fade up, no rotateX (3D transforms = extra composite layer) */
+  .hero-char {
+    transform-origin: 50% 100%;
+    animation: charInMobile var(--char-dur, 0.45s) cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+ 
+  @keyframes charInMobile {
+    from { opacity: 0; transform: translateY(0.25em); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+ 
+  /* Also prevent the eyebrow animation from fighting its own opacity reveal */
+  .hero-eyebrow {
+    animation: blurFadeUp 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.05s both !important;
+  }
+}
+ 
+ 
+/* ── FIX 2: Accent dot below title ───────────────────────────
+   The JS does scale(0) → scale(1) while `dotPulse` animation is
+   also running — they fight each other and cause a flicker pop.
+   Fix: pause dotPulse until after the reveal completes.
+   We do this with an animation-delay that skips the reveal window. */
+ 
+.hero-accent-dot {
+  /* delay the pulse so it only starts after the JS reveal (1.4s + 0.5s buffer) */
+  animation-delay: 1.9s !important;
+}
+ 
+/* On mobile, also simplify the pulse — scale + box-shadow changes
+   together force a repaint each frame on phones */
+@media (max-width: 768px) {
+  .hero-accent-dot {
+    animation-name: dotPulseMobile !important;
+  }
+ 
+  @keyframes dotPulseMobile {
+    0%, 100% { transform: scale(1);   opacity: 1; }
+    50%       { transform: scale(1.4); opacity: 0.85; }
+    /* no box-shadow change — avoids repaint */
+  }
+}
+ 
+ 
+/* ── FIX 3: "Choose your destination" pill text cutting ──────
+   The section-eyebrow span is a rounded pill but has no
+   white-space:nowrap — on narrow viewports the text wraps inside
+   the pill and gets clipped by overflow or border-radius.        */
+ 
+.section-eyebrow span {
+  white-space:   nowrap;         /* prevent mid-word line break inside pill */
+  display:       inline-block;   /* ensure padding applies correctly */
+  text-align:    center;
+  max-width:     calc(100vw - 48px); /* never wider than viewport */
+  box-sizing:    border-box;
+}
+ 
+/* On very narrow screens, allow the text to wrap but keep the pill */
+@media (max-width: 380px) {
+  .section-eyebrow span {
+    white-space:  normal;
+    text-align:   center;
+    line-height:  1.5;
+    padding:      7px 16px;    /* a bit more vertical room if it wraps */
+  }
+}
+ 
+ 
+/* ── FIX 4: "Around the Web" eyebrow + "Find Us Online" title
+   appearing on the same line on desktop ──────────────────────
+   The .links-section-eyebrow is display:inline-block so it
+   flows inline with the h2 that follows it.
+   Fix: force a block-level break after the eyebrow so the h2
+   always starts on a new line, on all screen sizes.             */
+ 
+.links-section-header {
+  display:        flex;
+  flex-direction: column;
+  align-items:    center;       /* keep everything centred */
+  gap:            10px;         /* tidy vertical spacing */
+  text-align:     center;
+}
+ 
+/* The eyebrow pill: make it block so nothing sits next to it */
+.links-section-eyebrow {
+  display:    inline-block;     /* keep pill shape */
+  align-self: center;           /* centre in the flex column */
+  /* margin-bottom already provided by existing rule — no change needed */
+}
+ 
+/* The h2 title: force it onto its own line */
+.links-section-title {
+  display:    block !important; /* override any inline-block leakage */
+  width:      100%;
+  text-align: center;
+}
+ 
+/* The underline ornament below the title */
+.links-underline {
+  align-self: center;
+}
+ 
   </style>
 </head>
 <body>
