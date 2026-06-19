@@ -207,13 +207,14 @@ permalink: /index.html
 }
 
   /* Individual characters — translateY only (no rotateX = no extra layer) */
-  .hero-char {
-    display:          inline-block;
-    opacity:          0;
-    transform:        translateY(0.35em);
-    transform-origin: 50% 100%;
-    animation:        charIn 0.5s cubic-bezier(0.22,1,0.36,1) both;
-  }
+.hero-char {
+  display:          inline-block;
+  opacity:          0;
+  transform:        translateY(0.35em); /* translateY only, NO rotateX */
+  transform-origin: 50% 100%;
+  filter:           none; /* ← ADD THIS */
+  animation:        charIn 0.5s cubic-bezier(0.22,1,0.36,1) both;
+}
 
   /* ── Tagline ── */
   .hero-tagline {
