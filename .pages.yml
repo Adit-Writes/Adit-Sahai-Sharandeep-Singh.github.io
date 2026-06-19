@@ -302,106 +302,110 @@ content:
           type: string
           required: true
 
-    - name: ProjectCategories
-      type: collection
-      path: _data/Sharan/Projectcategories
-      format: json
-      filename: "{slug}.json"
-      view:
-        primary: name
-      fields:
-        - name: name
-          type: string
-          required: true
+  - name: Projects
+    type: group
+    items:
 
-    - name: ProjectStatus
-      type: collection
-      path: _data/Sharan/ProjectStatus
-      format: json
-      filename: "{slug}.json"
-      view:
-        primary: name
-      fields:
-        - name: name
-          type: string
-          required: true
-
-    - name: Projects
-      path: _data/Sharan/Projects
-      type: collection
-      format: json
-      filename: "{slug}.json"
-      
-      view:
-        fields: [Title, Status,Category, Published, ReleaseDate, LastUpdated]
-        primary: Title
-        sort: [ReleaseDate, Title]
-        default:
-            sort: ReleaseDate
-            order: desc
-          
-      fields:
-        - name: Title
-          type: string
-          required: true
-          
-        - name: Category
-          type: reference 
-          required: true
-          options:
-            collection: ProjectCategories 
-            field: name 
-
-        - name: Status
-          type: reference 
-          required: true
-          options:
-            collection: ProjectStatus 
-            field: name
+      - name: ProjectCategories
+        type: collection
+        path: _data/Sharan/Projectcategories
+        format: json
+        filename: "{slug}.json"
+        view:
+          primary: name
+        fields:
+          - name: name
+            type: string
+            required: true
   
-        - name: Pics
-          type: image
-          list: true
+      - name: ProjectStatus
+        type: collection
+        path: _data/Sharan/ProjectStatus
+        format: json
+        filename: "{slug}.json"
+        view:
+          primary: name
+        fields:
+          - name: name
+            type: string
+            required: true
   
-        - name: Files
-          type: file
-          list: true
-  
-        - name: Links
-          type: string
-          list: true
-          
-        - name: Published
-          type: boolean
-          default: false
-  
-        - name: Comments
-          type: boolean
-          default: true
-          
-        - name: Likes
-          type: boolean
-          default: true
-  
-        - name: Description
-          type: rich-text
-          options:
-            switcher: false
-          
-        - name: Body
-          type: rich-text
-          required: true
-          options:
-            switcher: false
-          
-        - name: ReadTime
-          type: number
-          options:
-            min: 1
+      - name: Projects
+        path: _data/Sharan/Projects
+        type: collection
+        format: json
+        filename: "{slug}.json"
+        
+        view:
+          fields: [Title, Status,Category, Published, ReleaseDate, LastUpdated]
+          primary: Title
+          sort: [ReleaseDate, Title]
+          default:
+              sort: ReleaseDate
+              order: desc
             
-        - name: StartedDate
-          type: date
-          required: true
-          
-        - name: LastUpdated
-          type: date
+        fields:
+          - name: Title
+            type: string
+            required: true
+            
+          - name: Category
+            type: reference 
+            required: true
+            options:
+              collection: ProjectCategories 
+              field: name 
+  
+          - name: Status
+            type: reference 
+            required: true
+            options:
+              collection: ProjectStatus 
+              field: name
+    
+          - name: Pics
+            type: image
+            list: true
+    
+          - name: Files
+            type: file
+            list: true
+    
+          - name: Links
+            type: string
+            list: true
+            
+          - name: Published
+            type: boolean
+            default: false
+    
+          - name: Comments
+            type: boolean
+            default: true
+            
+          - name: Likes
+            type: boolean
+            default: true
+    
+          - name: Description
+            type: rich-text
+            options:
+              switcher: false
+            
+          - name: Body
+            type: rich-text
+            required: true
+            options:
+              switcher: false
+            
+          - name: ReadTime
+            type: number
+            options:
+              min: 1
+              
+          - name: StartedDate
+            type: date
+            required: true
+            
+          - name: LastUpdated
+            type: date
