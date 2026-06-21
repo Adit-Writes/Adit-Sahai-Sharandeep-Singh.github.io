@@ -410,11 +410,11 @@ content:
             filename: "{slug}.json"
           
             view:
-              fields: [Title, Project, Published, ReleaseDate]
+              fields: [Title, Project, Published, UpdateDate]
               primary: Title
-              sort: [ReleaseDate, Title]
+              sort: [UpdateDate, Title]
               default:
-                sort: ReleaseDate
+                sort: UpdateDate
                 order: desc
           
             fields:
