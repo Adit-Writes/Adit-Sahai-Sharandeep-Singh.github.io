@@ -1444,29 +1444,31 @@ document.addEventListener('DOMContentLoaded', () => {
         const sparks    = document.getElementById('likesSparks');
         if (!zone || !likeBtn) return;
 
-        function spawnSparks() {
-            const count = 12;
-            const cx = zone.offsetWidth * 0.06 + 36;
-            const cy = zone.offsetHeight / 2;
-            for (let i = 0; i < count; i++) {
-                const s = document.createElement('div');
-                s.className = 'plz-spark-particle';
-                const angle = (i / count) * Math.PI * 2;
-                const speed = 40 + Math.random() * 50;
-                const size  = 3 + Math.random() * 4;
-                const dur   = 0.5 + Math.random() * 0.35;
-                const delay = i * 20;
-                const tx = Math.cos(angle) * speed;
-                const ty = Math.sin(angle) * speed;
-                s.style.cssText = `left:${cx}px;top:${cy}px;width:${size}px;height:${size}px;opacity:1;animation:plzSparkFly${i} ${dur}s ease-out ${delay}ms forwards;`;
-                const kf = `@keyframes plzSparkFly${i} { 0% { opacity:1; transform:translate(0,0) scale(1); } 100% { opacity:0; transform:translate(${tx}px,${ty}px) scale(0.2); } }`;
-                const st = document.createElement('style');
-                st.textContent = kf;
-                document.head.appendChild(st);
-                sparks.appendChild(s);
-                setTimeout(() => { s.remove(); st.remove(); }, (dur + delay / 1000 + 0.1) * 1000);
-            }
-        }
+       function spawnSparks() {
+          const count = 12;
+          const btnRect = likeBtn.getBoundingClientRect();
+          const zoneRect = zone.getBoundingClientRect();
+          const cx = btnRect.left - zoneRect.left + btnRect.width / 2;
+          const cy = btnRect.top - zoneRect.top + btnRect.height / 2;
+          for (let i = 0; i < count; i++) {
+              const s = document.createElement('div');
+              s.className = 'plz-spark-particle';
+              const angle = (i / count) * Math.PI * 2;
+              const speed = 40 + Math.random() * 50;
+              const size  = 3 + Math.random() * 4;
+              const dur   = 0.5 + Math.random() * 0.35;
+              const delay = i * 20;
+              const tx = Math.cos(angle) * speed;
+              const ty = Math.sin(angle) * speed;
+              s.style.cssText = `left:${cx}px;top:${cy}px;width:${size}px;height:${size}px;opacity:1;animation:plzSparkFly${i} ${dur}s ease-out ${delay}ms forwards;`;
+              const kf = `@keyframes plzSparkFly${i} { 0% { opacity:1; transform:translate(0,0) scale(1); } 100% { opacity:0; transform:translate(${tx}px,${ty}px) scale(0.2); } }`;
+              const st = document.createElement('style');
+              st.textContent = kf;
+              document.head.appendChild(st);
+              sparks.appendChild(s);
+              setTimeout(() => { s.remove(); st.remove(); }, (dur + delay / 1000 + 0.1) * 1000);
+          }
+      }
 
         function fireRipple() {
             ripple.classList.remove('fire');
