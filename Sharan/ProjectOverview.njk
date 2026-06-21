@@ -525,48 +525,107 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
             font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; font-style: italic;
         }
 
-        /* ════════════════════════════════════════════════════════
-           LIKES — STAMP
-           ════════════════════════════════════════════════════════ */
-        .proj-likes-zone {
-            display: flex; align-items: center; gap: 20px; margin: 48px 0 52px; padding: 20px 28px;
-            background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 14px;
-            position: relative; overflow: hidden;
-        }
-        .proj-likes-zone::before {
-            content: ''; position: absolute; inset: 0;
-            background: radial-gradient(ellipse at 0% 50%, rgba(212,160,80,0.06) 0%, transparent 60%);
-            pointer-events: none;
-        }
-        .proj-stamp-btn {
-            position: relative; width: 56px; height: 56px; border: 2px solid var(--glass-border);
-            border-radius: 12px; background: var(--glass-bg); cursor: pointer;
-            display: flex; align-items: center; justify-content: center; font-size: 1.5rem; line-height: 1;
-            transition: border-color 0.3s ease, background 0.3s ease, transform 0.2s ease;
-            flex-shrink: 0; transform-origin: center;
-        }
-        .proj-stamp-btn:hover { border-color: var(--accent-gold-line); background: var(--accent-gold-dim); transform: scale(1.06); }
-        .proj-stamp-btn.stamped { border-color: var(--accent-gold); background: var(--accent-gold-dim); animation: stampPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
-        .proj-stamp-btn.stamped:hover { transform: scale(1.06) rotate(-3deg); }
-        @keyframes stampPop {
-            0%   { transform: scale(1.0); }
-            40%  { transform: scale(0.88) rotate(-4deg); }
-            70%  { transform: scale(1.12) rotate(2deg); }
-            100% { transform: scale(1.0); }
-        }
-        .proj-stamp-icon { font-size: 1.4rem; line-height: 1; transition: transform 0.2s ease; user-select: none; }
-        .proj-likes-info { flex: 1; }
-        .proj-likes-count {
-            font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 700;
-            color: var(--text-main); letter-spacing: -0.02em; line-height: 1; margin-bottom: 4px; display: block;
-        }
-        .proj-likes-label {
-            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; text-transform: uppercase;
-            letter-spacing: 3px; color: var(--text-dim); display: block;
-        }
-        .proj-likes-sparks { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
-        .proj-spark { position: absolute; width: 4px; height: 4px; border-radius: 50%; background: var(--accent-gold); opacity: 0; pointer-events: none; }
-
+              /* ════ LIKE CARD — redesigned ════ */
+      .proj-like-card {
+          position: relative;
+          display: flex; align-items: center; gap: 26px;
+          margin: 52px 0 56px;
+          padding: 30px 34px;
+          border-radius: 20px;
+          background: linear-gradient(155deg, rgba(255,80,80,0.05) 0%, var(--glass-bg) 45%, var(--glass-bg) 100%);
+          border: 1px solid var(--glass-border);
+          overflow: hidden;
+          transition: border-color 0.4s ease, box-shadow 0.4s ease;
+      }
+      .proj-like-card:hover { border-color: rgba(255,100,100,0.35); box-shadow: 0 20px 50px rgba(0,0,0,0.5), 0 0 30px rgba(255,80,80,0.08); }
+      
+      .plc-glow {
+          position: absolute; inset: -30%; z-index: 0; pointer-events: none;
+          background: radial-gradient(ellipse at 15% 50%, rgba(255,90,90,0.16) 0%, transparent 60%);
+          animation: plcGlowPulse 4s ease-in-out infinite;
+      }
+      @keyframes plcGlowPulse { 0%,100% { opacity: 0.6; } 50% { opacity: 1; } }
+      
+      .plc-grain {
+          position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: 0.03;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+          background-size: 140px 140px; mix-blend-mode: overlay;
+      }
+      
+      .plc-heart-btn {
+          position: relative; z-index: 1; flex-shrink: 0;
+          width: 84px; height: 84px; border-radius: 50%;
+          border: 2px solid rgba(255,255,255,0.12);
+          background: rgba(255,255,255,0.03);
+          display: flex; align-items: center; justify-content: center;
+          cursor: pointer;
+          transition: border-color 0.3s ease, background 0.3s ease, transform 0.25s cubic-bezier(0.34,1.56,0.64,1);
+      }
+      .plc-heart-btn:hover { transform: scale(1.06); border-color: rgba(255,100,100,0.4); background: rgba(255,80,80,0.08); }
+      .plc-heart-btn:active { transform: scale(0.94); }
+      
+      .plc-ring {
+          position: absolute; inset: -2px; border-radius: 50%;
+          border: 2px solid rgba(255,100,100,0.55);
+          opacity: 0; transform: scale(1);
+      }
+      .plc-heart-btn.stamped .plc-ring { animation: plcRingPop 0.6s cubic-bezier(0.22,1,0.36,1); }
+      @keyframes plcRingPop {
+          0%   { opacity: 0.9; transform: scale(0.8); }
+          100% { opacity: 0; transform: scale(1.7); }
+      }
+      
+      .plc-heart-icon {
+          width: 34px; height: 34px;
+          color: rgba(255,255,255,0.5);
+          fill: none;
+          transition: color 0.3s ease, fill 0.3s ease, transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
+          position: relative; z-index: 1;
+      }
+      .plc-heart-btn:hover .plc-heart-icon { color: rgba(255,140,140,0.8); }
+      .plc-heart-btn.stamped .plc-heart-icon {
+          color: #ff5b5b; fill: #ff5b5b;
+          animation: plcHeartPop 0.5s cubic-bezier(0.34,1.56,0.64,1);
+      }
+      @keyframes plcHeartPop {
+          0%   { transform: scale(1); }
+          35%  { transform: scale(1.35) rotate(-6deg); }
+          65%  { transform: scale(0.92) rotate(3deg); }
+          100% { transform: scale(1.12); }
+      }
+      
+      .plc-sparks { position: absolute; inset: -40%; pointer-events: none; overflow: visible; z-index: 2; }
+      .plc-spark {
+          position: absolute; border-radius: 50%; background: #ff7373; opacity: 0; pointer-events: none;
+          box-shadow: 0 0 6px #ff5b5b;
+      }
+      
+      .plc-info { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 2px; }
+      .plc-count {
+          font-family: 'Space Grotesk', sans-serif; font-size: 2.1rem; font-weight: 700;
+          color: var(--text-main); letter-spacing: -0.02em; line-height: 1;
+          transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      }
+      .plc-heart-btn.stamped ~ .plc-info .plc-count { animation: plcCountPop 0.4s ease; }
+      @keyframes plcCountPop { 0% { transform: scale(1); } 50% { transform: scale(1.18); color: #ff8a8a; } 100% { transform: scale(1); } }
+      .plc-label {
+          font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; text-transform: uppercase;
+          letter-spacing: 2.5px; color: var(--text-dim);
+      }
+      .plc-hint {
+          margin-left: auto; position: relative; z-index: 1;
+          font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; font-style: italic;
+          color: var(--text-dim); opacity: 0.7; max-width: 200px; text-align: right;
+          display: none;
+      }
+      @media (min-width: 640px) { .plc-hint { display: block; } }
+      
+      @media (max-width: 768px) {
+          .proj-like-card { padding: 22px 20px; gap: 18px; }
+          .plc-heart-btn { width: 66px; height: 66px; }
+          .plc-heart-icon { width: 27px; height: 27px; }
+          .plc-count { font-size: 1.7rem; }
+      }
         /* ════════════════════════════════════════════════════════
            DISCUSSION
            ════════════════════════════════════════════════════════ */
@@ -840,16 +899,22 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
 
         <!-- ── Likes ──────────────────────────────────────────────── -->
         {% if project.Likes %}
-        <div class="proj-likes-zone reveal" id="likesSection">
-            <div class="proj-likes-sparks" id="likesSparks"></div>
-            <button class="proj-stamp-btn" id="likeBtn" aria-label="Like this project">
-                <span class="proj-stamp-icon" id="stampIcon">✦</span>
-            </button>
-            <div class="proj-likes-info">
-                <span class="proj-likes-count" id="likeCount">—</span>
-                <span class="proj-likes-label">Likes</span>
-            </div>
-        </div>
+          <div class="proj-like-card reveal" id="likesSection">
+              <div class="plc-glow"></div>
+              <div class="plc-grain"></div>
+              <button class="plc-heart-btn" id="likeBtn" aria-label="Like this project">
+                  <span class="plc-ring"></span>
+                  <svg class="plc-heart-icon" id="stampIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 20.6s-7.6-4.6-9.8-9.1C.6 8 1.8 4.2 5.6 4.2c2.3 0 3.7 1.2 4.6 2.6.7-1.4 2.3-2.6 4.6-2.6 3.8 0 5 3.8 3.4 7.3C19.6 16 12 20.6 12 20.6z"/>
+                  </svg>
+                  <span class="plc-sparks" id="likesSparks"></span>
+              </button>
+              <div class="plc-info">
+                  <span class="plc-count" id="likeCount">—</span>
+                  <span class="plc-label">people liked this</span>
+              </div>
+              <div class="plc-hint">Tap the heart if this is your kind of thing</div>
+          </div>
         {% endif %}
 
         <!-- ── Discussion ─────────────────────────────────────────── -->
