@@ -1181,6 +1181,7 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
                   {% set timePart = "" %}
                   {% if rawDate.length > 10 %}
                     {% set timePart = rawDate | replace(datePart, '') | trim | truncate(5, false, '') %}
+                    {% set timePart = timePart | replace("T","") %}
                   {% endif %}
              
                   <a
