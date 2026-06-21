@@ -7,12 +7,42 @@ permalink: /Sharan/SharanPage.html
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{{ Sharan.SiteHeader.PageTitle }}</title>
-  <meta name="description" content="{{ Sharan.SiteHeader.Description | striptags }}" />
+  <meta name="description" content="{{ Sharan.SiteHeader.Description | striptags | truncate(160) }}" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://adit-sahai-sharandeep-singh.github.io/Sharan/SharanPage.html" />
+  
+  <!-- Open Graph -->
   <meta property="og:title" content="{{ Sharan.SiteHeader.PageTitle }}" />
-  <meta property="og:description" content="{{ Sharan.SiteHeader.Description | striptags }}" />
+  <meta property="og:description" content="{{ Sharan.SiteHeader.Description | striptags | truncate(160) }}" />
   <meta property="og:image" content="{{ Sharan.SiteHeader.Pic }}" />
   <meta property="og:type" content="website" />
+  
+  <!-- Twitter/X -->
   <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{{ Sharan.SiteHeader.PageTitle }}" />
+  <meta name="twitter:description" content="{{ Sharan.SiteHeader.Description | striptags | truncate(160) }}" />
+  <meta name="twitter:image" content="{{ Sharan.SiteHeader.Pic }}" />
+  
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfilePage",
+    "name": "{{ Sharan.SiteHeader.PageTitle }}",
+    "url": "https://adit-sahai-sharandeep-singh.github.io/Sharan/SharanPage.html",
+    "description": "{{ Sharan.SiteHeader.Description | striptags }}",
+    "mainEntity": {
+      "@type": "Person",
+      "name": "{{ Sharan.AboutPage.Name }}",
+      "description": "{{ Sharan.AboutPage.Desciption | striptags }}"
+    },
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "{{ MainPage.MainSiteHeader.PageTitle }}",
+      "url": "https://adit-sahai-sharandeep-singh.github.io/"
+    }
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
