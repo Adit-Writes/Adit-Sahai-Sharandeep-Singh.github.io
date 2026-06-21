@@ -753,15 +753,15 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
           transition: border-color 0.5s ease, box-shadow 0.5s ease;
         }
         .proj-likes-zone.is-liked {
-          border-color: rgba(212,160,80,0.4);
-          box-shadow: 0 0 60px rgba(212,160,80,0.06), 0 20px 60px rgba(0,0,0,0.4);
+          border-color: var(--glass-border-hover);
+          box-shadow: 0 0 60px var(--accent-gold-dim), 0 20px 60px rgba(0,0,0,0.4);
         }
          
         /* Animated fill background — grows left to right on like */
         .plz-bg-fill {
           position: absolute;
           inset: 0;
-          background: linear-gradient(90deg, rgba(212,160,80,0.06) 0%, rgba(212,160,80,0.02) 60%, transparent 100%);
+          background: linear-gradient(90deg, var(--accent-gold-dim) 0%, transparent 60%, transparent 100%);
           transform: scaleX(0);
           transform-origin: left center;
           transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
@@ -805,7 +805,7 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
         }
         .plz-heart-btn.stamped {
           border-color: var(--accent-gold);
-          background: rgba(212,160,80,0.15);
+          background: var(--accent-gold-dim);
         }
         .plz-heart-btn:active { transform: scale(0.94); }
          
@@ -825,7 +825,7 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
         }
         .plz-heart-btn.stamped .plz-heart-path {
           stroke: var(--accent-gold);
-          fill: rgba(212,160,80,0.25);
+          fill: var(--accent-gold-dim);
           stroke-width: 2;
         }
          
@@ -836,7 +836,7 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
           border-radius: 20px;
           pointer-events: none;
           opacity: 0;
-          background: radial-gradient(circle at center, rgba(212,160,80,0.3) 0%, transparent 65%);
+          background: radial-gradient(circle at center, var(--accent-gold-dim) 0%, transparent 65%);
           transform: scale(0.5);
         }
         .plz-ripple.fire {
@@ -906,7 +906,7 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
           transition: color 0.4s ease;
         }
         .proj-likes-zone.is-liked .plz-prompt-line {
-          color: rgba(212,160,80,0.55);
+          color: var(--accent-gold-line);
         }
          
         /* Spark particle */
