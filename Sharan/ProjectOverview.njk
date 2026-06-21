@@ -1502,7 +1502,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch(e) { likeCount.textContent = '—'; console.warn('Likes unavailable', e); }
 
-            likeBtn.addEventListener('click', async () => {
+            likeBtn.addEventListener('click', async (e) => {
                 likeBtn.disabled = true;
                 const liked = localStorage.getItem(LIKE_KEY);
                 fireRipple();
