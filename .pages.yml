@@ -454,6 +454,8 @@ content:
               - name: UpdateDate
                 type: date
                 required: true
+                options:
+                  time: true
                 
               - name: Pics
                 type: image
