@@ -1176,16 +1176,15 @@ permalink: /index.html
 
       <div class="stat-card reveal scale-in" style="transition-delay:.12s">
         <span class="stat-icon">✅</span>
-        <div class="stat-number">
-        {% set vcount = 0 %}
-            {% for p in Sharan.Projects %}
-              {# Nunjucks uses 'and' and direct comparisons #}
-              {% if p.Published == true and p.Status.name | trim | lower == 'completed' %}
-                {% set vcount = vcount + 1 %}
-              {% endif %}
-            {% endfor %}
-            {{ vcount }}
-        </div>
+          <div class="stat-number">
+          {% set vcount = 0 %}
+              {% for p in Sharan.Projects %}
+                {% if p.Published == true and 'completed' in (p.Status | lower) %}
+                  {% set vcount = vcount + 1 %}
+                {% endif %}
+              {% endfor %}
+              {{ vcount }}
+          </div>
         <div class="stat-label">Projects Completed</div>
         <div class="stat-sublabel">from projects</div>
       </div>
