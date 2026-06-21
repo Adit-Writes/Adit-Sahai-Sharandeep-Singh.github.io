@@ -1176,13 +1176,12 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
                   {% set uStatusSlug = uStatusName | lower | replace(" ","-") %}
              
                   <!-- parse date and time from UpdateDate (ISO or "YYYY-MM-DD HH:MM") -->
-                  {% set rawDate = update.UpdateDate | string %}
-                  {% set datePart = rawDate | truncate(10, false, '') %}
-                  {% set timePart = "" %}
-                  {% if rawDate.length > 10 %}
-                    {% set timePart = rawDate | replace(datePart, '') | trim | truncate(5, false, '') %}
-                    {% set timePart = timePart | replace("T","") %}
-                  {% endif %}
+                    {% set rawDate = update.UpdateDate | string %}
+                    {% set datePart = rawDate | truncate(10, false, '') %}
+                    {% set timePart = "" %}
+                    {% if rawDate.length > 10 %}
+                      {% set timePart = rawDate | replace(datePart, '') | replace("T","") | replace("t","") | trim | truncate(5, false, '') %}
+                    {% endif %}
              
                   <a
                     href="/Adit-Sahai-Sharandeep-Singh.github.io/Sharan/projects/{{ projectSlug }}/updates/{{ update.Title | slug }}/"
