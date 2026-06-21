@@ -1444,13 +1444,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const sparks    = document.getElementById('likesSparks');
         if (!zone || !likeBtn) return;
 
-       function spawnSparks() {
-          const count = 12;
-          const btnRect = likeBtn.getBoundingClientRect();
-          const zoneRect = zone.getBoundingClientRect();
-          const cx = btnRect.left - zoneRect.left + btnRect.width / 2;
-          const cy = btnRect.top - zoneRect.top + btnRect.height / 2;
-          for (let i = 0; i < count; i++) {
+          function spawnSparks(e) {
+              const count = 12;
+              const zoneRect = zone.getBoundingClientRect();
+              const cx = e.clientX - zoneRect.left;
+              const cy = e.clientY - zoneRect.top;
+              for (let i = 0; i < count; i++) {
               const s = document.createElement('div');
               s.className = 'plz-spark-particle';
               const angle = (i / count) * Math.PI * 2;
@@ -1511,7 +1510,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     likeBtn.classList.add('stamped', 'just-stamped');
                     zone.classList.add('is-liked');
                     prompt.textContent = 'you liked this — thanks ✦';
-                    spawnSparks();
+                    spawnSparks(e);
                     setTimeout(() => likeBtn.classList.remove('just-stamped'), 600);
                     try {
                         const fp = crypto.randomUUID();
