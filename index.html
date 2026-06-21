@@ -8,12 +8,34 @@ permalink: /index.html
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="google-site-verification" content="pvEqpTOogXhfCdC85sQZbjvLQp6gPupMCs62PZL1urA" />
 
-  <title>{{ MainPage.PageInfo.PageTitle }}</title>
-  <meta name="description" content="{{ MainPage.PageInfo.Description | striptags }}" />
-  <meta name="keywords" content="{{ Adit.AboutAuthor.Name }}, {{ Sharan.AboutPage.Name }}, {{ MainPage.PageInfo.PageTitle }}, blog, articles" />
-  <meta property="og:title" content="{{ MainPage.PageInfo.PageTitle }}" />
-  <meta property="og:description" content="{{ MainPage.PageInfo.Description | striptags }}" />
-  <meta property="og:type" content="website" />
+  <title>{{ MainPage.MainSiteHeader.PageTitle }}</title>
+  <meta name="description" content="{{ MainPage.MainSiteHeader.Description | striptags | truncate(160) }}" />
+  <link rel="canonical" href="https://adit-sahai-sharandeep-Singh.github.io/" />
+  <meta property="og:title" content="{{ MainPage.MainSiteHeader.PageTitle }}" />
+  <meta property="og:description" content="{{ MainPage.MainSiteHeader.Description | striptags | truncate(160) }}" />
+  <meta property="og:image" content="{{ MainPage.MainSiteHeader.Pic }}" />
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "{{ MainPage.MainSiteHeader.PageTitle }}",
+    "url": "https://adit-sahai-sharandeep-singh.github.io/",
+    "description": "{{ MainPage.MainSiteHeader.Description | striptags }}",
+    "hasPart": [
+      {
+        "@type": "WebPage",
+        "name": "{{ Adit.PageInfo.PageTitle }}",
+        "url": "https://adit-sahai-sharandeep-singh.github.io/Adit/AditPage.html"
+      },
+      {
+        "@type": "WebPage",
+        "name": "{{ Sharan.SiteHeader.PageTitle }}",
+        "url": "https://adit-sahai-sharandeep-singh.github.io/Sharan/SharanPage.html"
+      }
+    ]
+  }
+  </script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
