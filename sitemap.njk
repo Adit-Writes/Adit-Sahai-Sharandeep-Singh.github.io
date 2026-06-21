@@ -5,23 +5,23 @@ eleventyExcludeFromCollections: true
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://adit-sahai-sharandeep-singh.github.io/</loc>
+    <loc>https://adit-writes.github.io/Adit-Sahai-Sharandeep-Singh.github.io/</loc>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://adit-sahai-sharandeep-singh.github.io/Adit/AditPage.html</loc>
+    <loc>https://adit-writes.github.io/Adit-Sahai-Sharandeep-Singh.github.io/Adit/AditPage.html</loc>
     <priority>0.9</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://adit-sahai-sharandeep-singh.github.io/Sharan/SharanPage.html</loc>
+    <loc>https://adit-writes.github.io/Adit-Sahai-Sharandeep-Singh.github.io/Sharan/SharanPage.html</loc>
     <priority>0.9</priority>
     <changefreq>monthly</changefreq>
   </url>
   {% for article in Adit.Articles %}{% if article.Published %}
   <url>
-    <loc>https://adit-sahai-sharandeep-singh.github.io/Adit/articles/{{ article.Title | slug }}/</loc>
+    <loc>https://adit-writes.github.io/Adit-Sahai-Sharandeep-Singh.github.io/Adit/articles/{{ article.Title | slug }}/</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
     {% if article.LastUpdated %}<lastmod>{{ article.LastUpdated }}</lastmod>{% endif %}
@@ -29,7 +29,7 @@ eleventyExcludeFromCollections: true
   {% endif %}{% endfor %}
   {% for project in Sharan.Projects %}{% if project.Published %}
   <url>
-    <loc>https://adit-sahai-sharandeep-singh.github.io/Sharan/projects/{{ project.Title | slug }}/</loc>
+    <loc>https://adit-writes.github.io/Adit-Sahai-Sharandeep-Singh.github.io/Sharan/projects/{{ project.Title | slug }}/</loc>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
     {% if project.LastUpdated %}<lastmod>{{ project.LastUpdated }}</lastmod>{% endif %}
