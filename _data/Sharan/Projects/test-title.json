@@ -1,7 +1,7 @@
 {
   "Title": "Test Title",
   "Category": "_data/Sharan/Projectcategories/game-dev.json",
-  "Status": "_data/Sharan/ProjectStatus/ongoing.json",
+  "Status": "_data/Sharan/ProjectStatus/completed.json",
   "Published": true,
   "Description": "dec",
   "Body": "bbbbb",
