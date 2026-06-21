@@ -9,38 +9,41 @@ permalink: /Adit/AditPage.html
 
     <!-- SEO -->
     <title>{{ Adit.PageInfo.PageTitle }}</title>
-
-    <meta name="description"
-          content="{{ Adit.PageInfo.Description | striptags }}">
-
-    <meta name="robots"
-          content="index, follow">
-
-    <!-- Open Graph (Facebook, LinkedIn, Discord, etc.) -->
-    <meta property="og:title"
-          content="{{ Adit.PageInfo.PageTitle }}">
-
-    <meta property="og:description"
-          content="{{ Adit.PageInfo.Description | striptags }}">
-
-    <meta property="og:image"
-          content="{{ Adit.PageInfo.Pic }}">
-
-    <meta property="og:type"
-          content="website">
-
+    <meta name="description" content="{{ Adit.PageInfo.Description | striptags | truncate(160) }}" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://adit-sahai-sharandeep-singh.github.io/Adit/AditPage.html" />
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ Adit.PageInfo.PageTitle }}" />
+    <meta property="og:description" content="{{ Adit.PageInfo.Description | striptags | truncate(160) }}" />
+    <meta property="og:image" content="{{ Adit.PageInfo.Pic }}" />
+    <meta property="og:type" content="website" />
+    
     <!-- Twitter/X -->
-    <meta name="twitter:card"
-          content="summary_large_image">
-
-    <meta name="twitter:title"
-          content="{{ Adit.PageInfo.PageTitle }}">
-
-    <meta name="twitter:description"
-          content="{{ Adit.PageInfo.Description | striptags }}">
-
-    <meta name="twitter:image"
-          content="{{ Adit.PageInfo.Pic }}">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ Adit.PageInfo.PageTitle }}" />
+    <meta name="twitter:description" content="{{ Adit.PageInfo.Description | striptags | truncate(160) }}" />
+    <meta name="twitter:image" content="{{ Adit.PageInfo.Pic }}" />
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": "{{ Adit.PageInfo.PageTitle }}",
+      "url": "https://adit-sahai-sharandeep-singh.github.io/Adit/AditPage.html",
+      "description": "{{ Adit.PageInfo.Description | striptags }}",
+      "author": {
+        "@type": "Person",
+        "name": "{{ Adit.AboutAuthor.Name }}"
+      },
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "{{ MainPage.MainSiteHeader.PageTitle }}",
+        "url": "https://adit-sahai-sharandeep-singh.github.io/"
+      }
+    }
+    </script>
 
     <!-- Favicon -->
     <link rel="icon"
