@@ -27,27 +27,31 @@ permalink: /index.html
   <meta name="twitter:image" content="{{ MainPage.PageInfo.Pic }}" />
   
   <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    "name": "{{ MainPage.PageInfo.PageTitle }}",
-    "url": "https://adit-writes.github.io/Adit-Sahai-Sharandeep-Singh.github.io/",
-    "description": "{{ MainPage.PageInfo.Description | striptags }}",
-    "hasPart": [
-      {
-        "@type": "WebPage",
-        "name": "{{ Adit.PageInfo.PageTitle }}",
-        "url": "https://adit-writes.github.io/Adit-Sahai-Sharandeep-Singh.github.io/Adit/AditPage.html"
-      },
-      {
-        "@type": "WebPage",
-        "name": "{{ Sharan.SiteHeader.PageTitle }}",
-        "url": "https://adit-writes.github.io/Adit-Sahai-Sharandeep-Singh.github.io/Sharan/SharanPage.html"
-      }
-    ]
-  }
-  </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "{{ MainPage.PageInfo.PageTitle }}",
+  "url": "https://adit-writes.github.io/Adit-Sahai-Sharandeep-Singh.github.io/",
+  "description": "{{ MainPage.PageInfo.Description | striptags }}",
+  "author": [
+    { "@type": "Person", "name": "{{ Adit.AboutAuthor.Name }}" },
+    { "@type": "Person", "name": "{{ Sharan.AboutPage.Name }}" }
+  ],
+  "hasPart": [
+    {
+      "@type": "WebPage",
+      "name": "{{ Adit.PageInfo.PageTitle }}",
+      "url": "https://adit-writes.github.io/Adit-Sahai-Sharandeep-Singh.github.io/Adit/AditPage.html"
+    },
+    {
+      "@type": "WebPage",
+      "name": "{{ Sharan.SiteHeader.PageTitle }}",
+      "url": "https://adit-writes.github.io/Adit-Sahai-Sharandeep-Singh.github.io/Sharan/SharanPage.html"
+    }
+  ]
+}
+</script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
