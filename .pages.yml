@@ -260,12 +260,14 @@ content:
             type: rich-text
             options:
               switcher: false
+              format: html
 
           - name: Body
             type: rich-text
             required: true
             options:
               switcher: true
+              format: html
 
           - name: ReadTime
             type: number
