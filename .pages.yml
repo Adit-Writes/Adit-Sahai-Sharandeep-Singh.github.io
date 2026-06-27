@@ -251,7 +251,6 @@ content:
               collection: ArticleCategories
               field: name
 
-            
           - name: Published
             type: boolean
             default: false
