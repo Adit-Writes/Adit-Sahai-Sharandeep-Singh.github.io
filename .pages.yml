@@ -265,7 +265,7 @@ content:
             type: rich-text
             required: true
             options:
-              switcher: false
+              switcher: true
 
           - name: ReadTime
             type: number
