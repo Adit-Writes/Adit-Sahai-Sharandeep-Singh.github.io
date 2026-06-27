@@ -369,6 +369,7 @@ content:
                 type: rich-text
                 options:
                   switcher: false
+                  format: html
 
               - name: Body
                 type: rich-text
