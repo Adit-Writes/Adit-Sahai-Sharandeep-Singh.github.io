@@ -266,6 +266,7 @@ content:
             required: true
             options:
               format: html
+              switcher: false
 
           - name: ReadTime
             type: number
