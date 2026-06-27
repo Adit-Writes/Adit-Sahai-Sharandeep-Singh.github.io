@@ -363,7 +363,7 @@ content:
 
               - name: Published
                 type: boolean
-                default: false
+                default: true
 
 
               - name: Description
@@ -441,7 +441,7 @@ content:
 
               - name: Published
                 type: boolean
-                default: false
+                default: true
                 
               - name: Description
                 type: rich-text
