@@ -243,7 +243,7 @@ permalink: /Sharan/SharanPage.html
       padding: 52px 58px;
       background: var(--glass-bg); border: 1px solid var(--glass-border);
       border-radius: 28px; backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-      display: grid; grid-template-columns: 1fr 190px;
+      display: grid; grid-template-columns: 1fr 240px;   /* was 190px */
       gap: 56px; align-items: center;
       position: relative; overflow: hidden;
       transform-style: preserve-3d;
@@ -289,7 +289,8 @@ permalink: /Sharan/SharanPage.html
     .sp-about-bio { font-size: 0.96rem; color: var(--text-muted); font-weight: 300; line-height: 1.85; max-width: 560px; }
 
     .sp-portrait-frame {
-      width: 175px; height: 222px; border-radius: 18px;
+      width: 225px; height: 285px;   /* was 175px / 222px */
+      border-radius: 18px;
       overflow: hidden; border: 1px solid var(--glass-border);
       position: relative; z-index: 1;
     }
@@ -695,9 +696,11 @@ permalink: /Sharan/SharanPage.html
   padding: 28px 22px;
   gap: 22px;
 }
-  .sp-portrait-frame {
-  width: 120px;
-  height: 152px;
+.sp-about-content { order: 2; }
+.sp-portrait-frame {
+  order: 1;
+  width: 150px;
+  height: 190px;
   margin: 0 auto;
 }
 
