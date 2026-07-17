@@ -673,8 +673,8 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
       }
       .upd-card-date {
         font-family: 'JetBrains Mono', monospace;
-        font-size: 0.65rem;
-        color: var(--text-dim);
+        font-size: 0.78rem;
+        color: rgba(255,255,255,0.65);
         letter-spacing: 1px;
         white-space: nowrap;
       }
@@ -1001,117 +1001,180 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
             .proj-gallery-track { transition: none; }
         }
 
-       .host-badge {
-        display: inline-flex; align-items: center; gap: 4px;
-        font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; font-weight: 700;
-        letter-spacing: 1.5px; text-transform: uppercase;
-        color: #0d0a08; background: var(--accent-gold);
-        padding: 3px 9px; border-radius: 6px;
-        box-shadow: 0 0 10px var(--accent-gold-dim);
-      }
-      .host-badge::before { content: '✦'; font-size: 0.62rem; }
-      
-      .proj-comment-item.is-host-comment {
-        background: linear-gradient(90deg, var(--accent-gold-dim), transparent 40%);
-        border-radius: 10px; padding-left: 12px; margin-left: -12px;
-      }
-      
-      /* Comment nodes — tree structure */
-      .proj-comment-node { display: block; }
-      .proj-comments-list > .proj-comment-node { padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
-      .proj-comments-list > .proj-comment-node:last-child { border-bottom: none; }
-      .proj-comment-node .proj-comment-item { padding: 0; border-bottom: none; animation: none; opacity: 1; transform: none; }
-      
-      /* Bigger, clearer date text */
-      .proj-comment-date {
-        font-family: 'JetBrains Mono', monospace; font-size: 0.74rem;
-        color: rgba(255,255,255,0.5); letter-spacing: 0.5px;
-      }
-      
-      /* Bigger, clearer action buttons */
-      .proj-comment-actions { gap: 16px; }
-      .proj-comment-like-btn, .proj-comment-reply-btn {
-        display: flex; align-items: center; gap: 6px;
-        font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
-        color: rgba(255,255,255,0.55); background: none; border: none; cursor: pointer;
-        padding: 6px 12px; border-radius: 8px; letter-spacing: 0.5px;
-        transition: color 0.2s ease, background 0.2s ease;
-      }
-      .proj-comment-like-btn:hover, .proj-comment-like-btn.liked,
-      .proj-comment-reply-btn:hover {
-        color: var(--accent-gold); background: var(--accent-gold-dim);
-      }
-      .proj-clheart { font-size: 0.95rem; }
-      .proj-comment-delete-btn {
-        font-family: 'JetBrains Mono', monospace; font-size: 0.76rem;
-        color: rgba(255,110,110,0.6); background: none; border: none; cursor: pointer;
-        padding: 6px 12px; border-radius: 8px; letter-spacing: 0.5px;
-        transition: color 0.2s ease, background 0.2s ease;
-      }
-      .proj-comment-delete-btn:hover { color: #ff7070; background: rgba(255,70,70,0.1); }
-      
-      .proj-comment-reply-btn {
-        font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text-dim);
-        background: none; border: none; cursor: pointer; padding: 3px 8px; border-radius: 6px;
-        letter-spacing: 0.5px; transition: color 0.2s ease, background 0.2s ease;
-      }
-      .proj-comment-reply-btn:hover { color: var(--accent-gold); background: var(--accent-gold-dim); }
-      
-      .reply-compose {
-        margin-top: 14px; margin-left: 52px;
-        background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
-        border-radius: 10px; padding: 14px; display: none;
-      }
-      .reply-compose.open { display: block; animation: replyOpen 0.25s ease; }
-      @keyframes replyOpen { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
-      .reply-compose input, .reply-compose textarea {
-        width: 100%; background: transparent; border: none; color: var(--text-main);
-        font-family: 'Inter', sans-serif; outline: none;
-      }
-      .reply-compose input {
-        border-bottom: 1px solid var(--glass-border); font-family: 'Space Grotesk', sans-serif;
-        font-size: 0.82rem; font-weight: 600; padding: 4px 0 6px; margin-bottom: 10px;
-      }
-      .reply-compose input::placeholder, .reply-compose textarea::placeholder { color: rgba(255,255,255,0.4); }
-      .reply-compose textarea { font-size: 0.86rem; line-height: 1.6; resize: none; min-height: 50px; }
-      .reply-compose-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
-      .reply-compose-cancel {
-        font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: rgba(255,255,255,0.5);
-        background: none; border: none; cursor: pointer; letter-spacing: 1px;
-      }
-      .reply-compose-submit {
-        font-family: 'Space Grotesk', sans-serif; font-size: 0.74rem; font-weight: 700;
-        letter-spacing: 1px; text-transform: uppercase; color: #0d0a08; background: var(--accent-gold);
-        border: none; border-radius: 100px; padding: 7px 18px; cursor: pointer; transition: background 0.2s ease;
-      }
-      .reply-compose-submit:hover { background: #e0b060; }
-      
-      /* Tree indentation — each nested level stacks visually */
-      .proj-replies-wrap {
-        margin-left: 52px; margin-top: 14px;
-        border-left: 2px solid var(--accent-gold-line);
-        padding-left: 20px;
-        display: flex; flex-direction: column; gap: 18px;
-      }
-      .proj-replies-toggle {
-        display: flex; align-items: center; gap: 6px; margin-left: 52px; margin-top: 12px;
-        font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--accent-gold);
-        background: none; border: none; cursor: pointer; letter-spacing: 1px; opacity: 0.9;
-      }
-      .proj-replies-toggle:hover { opacity: 1; }
-      .proj-replies-toggle-arrow { transition: transform 0.25s ease; display: inline-block; }
-      .proj-replies-toggle.expanded .proj-replies-toggle-arrow { transform: rotate(90deg); }
-      
-      /* ── Text visibility fixes ── */
-      .proj-body-eyebrow { opacity: 1; color: var(--accent-gold); font-size: 0.7rem; }
-      .article-hero-meta .date, .article-hero-meta .category {
-        color: rgba(255,255,255,0.6) !important; font-size: 0.85rem !important;
-      }
-      .plz-count-word { color: rgba(255,255,255,0.55); font-size: 0.68rem; }
-      .plz-prompt-line { color: rgba(255,255,255,0.6); }
-      .proj-discussion-count { color: rgba(255,255,255,0.55); font-size: 0.72rem; }
-      .proj-compose-name::placeholder, .proj-compose-text::placeholder { color: rgba(255,255,255,0.42); }
-      .proj-compose-chars { color: rgba(255,255,255,0.4); }
+/* ════════════════════════════════════════════════════════
+           NAV — PROJECT INFO (scroll-in title + status)
+           ════════════════════════════════════════════════════════ */
+        .sp-nav-project-info {
+          display: flex; align-items: center; gap: 10px;
+          opacity: 0; transform: translateX(-8px);
+          pointer-events: none;
+          transition: opacity 0.4s ease, transform 0.4s ease;
+          overflow: hidden; white-space: nowrap;
+        }
+        .sp-nav-project-info.visible {
+          opacity: 1; transform: translateX(0); pointer-events: auto;
+        }
+        .sp-nav-project-title {
+          font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.85rem;
+          color: var(--text-main); overflow: hidden; text-overflow: ellipsis;
+          white-space: nowrap; max-width: 220px;
+        }
+        .sp-nav-project-status {
+          display: inline-flex; align-items: center; gap: 5px;
+          font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; font-weight: 700;
+          letter-spacing: 1px; text-transform: uppercase; padding: 3px 10px; border-radius: 100px;
+          border: 1px solid currentColor; flex-shrink: 0;
+        }
+        .sp-nav-project-status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; box-shadow: 0 0 6px currentColor; }
+        .sp-nav-project-status[data-status="completed"] { color: #00dc82; background: rgba(0,220,130,0.08); }
+        .sp-nav-project-status[data-status="concept"]   { color: #a06fff; background: rgba(160,111,255,0.08); }
+        .sp-nav-project-status[data-status="ongoing"]   { color: #00b4ff; background: rgba(0,180,255,0.08); }
+        .sp-nav-project-status[data-status="onhold"]    { color: #ffbe32; background: rgba(255,190,50,0.08); }
+        .sp-nav-project-status[data-status="canceled"]  { color: #ff5f56; background: rgba(255,95,86,0.08); }
+        @media (max-width: 768px) { .sp-nav-project-info { display: none; } }
+
+        /* ════════════════════════════════════════════════════════
+           TEXT VISIBILITY FIXES
+           ════════════════════════════════════════════════════════ */
+        .proj-body-eyebrow {
+          font-family: 'Space Grotesk', sans-serif;
+          font-size: clamp(1.4rem, 3vw, 2rem);
+          font-weight: 700;
+          letter-spacing: -0.01em;
+          text-transform: none;
+          color: var(--text-main);
+          opacity: 1;
+          margin-bottom: 20px;
+        }
+        .article-hero-meta .date, .article-hero-meta .category {
+          color: rgba(255,255,255,0.6) !important; font-size: 0.85rem !important;
+        }
+        .upd-card-date {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.78rem;
+          color: rgba(255,255,255,0.65);
+          letter-spacing: 1px;
+          white-space: nowrap;
+        }
+        .upd-card-index {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.72rem;
+          color: rgba(255,255,255,0.5);
+          letter-spacing: 1.5px;
+          opacity: 0.9;
+        }
+        .proj-discussion-title {
+          font-family: 'JetBrains Mono', monospace;
+          font-size: 0.95rem;
+          font-weight: 700;
+          color: rgba(255,255,255,0.85);
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          margin: 0;
+        }
+        .plz-count-word { color: rgba(255,255,255,0.55); font-size: 0.68rem; }
+        .plz-prompt-line { color: rgba(255,255,255,0.6); }
+        .proj-discussion-count { color: rgba(255,255,255,0.55); font-size: 0.72rem; }
+        .proj-compose-name::placeholder, .proj-compose-text::placeholder { color: rgba(255,255,255,0.42); }
+        .proj-compose-chars { color: rgba(255,255,255,0.4); }
+
+        /* ════════════════════════════════════════════════════════
+           HOST BADGE
+           ════════════════════════════════════════════════════════ */
+        .host-badge {
+          display: inline-flex; align-items: center; gap: 4px;
+          font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; font-weight: 700;
+          letter-spacing: 1.5px; text-transform: uppercase;
+          color: #0d0a08; background: var(--accent-gold);
+          padding: 3px 9px; border-radius: 6px;
+          box-shadow: 0 0 10px var(--accent-gold-dim);
+        }
+        .host-badge::before { content: '✦'; font-size: 0.62rem; }
+
+        .proj-comment-item.is-host-comment {
+          background: linear-gradient(90deg, var(--accent-gold-dim), transparent 40%);
+          border-radius: 10px; padding-left: 12px; margin-left: -12px;
+        }
+
+        /* ════════════════════════════════════════════════════════
+           COMMENT TREE
+           ════════════════════════════════════════════════════════ */
+        .proj-comment-node { display: block; }
+        .proj-comments-list > .proj-comment-node { padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .proj-comments-list > .proj-comment-node:last-child { border-bottom: none; }
+        .proj-comment-node .proj-comment-item { padding: 0; border-bottom: none; animation: none; opacity: 1; transform: none; }
+
+        .proj-comment-date {
+          font-family: 'JetBrains Mono', monospace; font-size: 0.74rem;
+          color: rgba(255,255,255,0.5); letter-spacing: 0.5px;
+        }
+
+        .proj-comment-actions { gap: 16px; }
+        .proj-comment-like-btn, .proj-comment-reply-btn {
+          display: flex; align-items: center; gap: 6px;
+          font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+          color: rgba(255,255,255,0.55); background: none; border: none; cursor: pointer;
+          padding: 6px 12px; border-radius: 8px; letter-spacing: 0.5px;
+          transition: color 0.2s ease, background 0.2s ease;
+        }
+        .proj-comment-like-btn:hover, .proj-comment-like-btn.liked,
+        .proj-comment-reply-btn:hover {
+          color: var(--accent-gold); background: var(--accent-gold-dim);
+        }
+        .proj-clheart { font-size: 0.95rem; }
+        .proj-comment-delete-btn {
+          font-family: 'JetBrains Mono', monospace; font-size: 0.76rem;
+          color: rgba(255,110,110,0.6); background: none; border: none; cursor: pointer;
+          padding: 6px 12px; border-radius: 8px; letter-spacing: 0.5px;
+          transition: color 0.2s ease, background 0.2s ease;
+        }
+        .proj-comment-delete-btn:hover { color: #ff7070; background: rgba(255,70,70,0.1); }
+
+        .reply-compose {
+          margin-top: 14px; margin-left: 52px;
+          background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+          border-radius: 10px; padding: 14px; display: none;
+        }
+        .reply-compose.open { display: block; animation: replyOpen 0.25s ease; }
+        @keyframes replyOpen { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+        .reply-compose input, .reply-compose textarea {
+          width: 100%; background: transparent; border: none; color: var(--text-main);
+          font-family: 'Inter', sans-serif; outline: none;
+        }
+        .reply-compose input {
+          border-bottom: 1px solid var(--glass-border); font-family: 'Space Grotesk', sans-serif;
+          font-size: 0.82rem; font-weight: 600; padding: 4px 0 6px; margin-bottom: 10px;
+        }
+        .reply-compose input::placeholder, .reply-compose textarea::placeholder { color: rgba(255,255,255,0.4); }
+        .reply-compose textarea { font-size: 0.86rem; line-height: 1.6; resize: none; min-height: 50px; }
+        .reply-compose-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
+        .reply-compose-cancel {
+          font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: rgba(255,255,255,0.5);
+          background: none; border: none; cursor: pointer; letter-spacing: 1px;
+        }
+        .reply-compose-submit {
+          font-family: 'Space Grotesk', sans-serif; font-size: 0.74rem; font-weight: 700;
+          letter-spacing: 1px; text-transform: uppercase; color: #0d0a08; background: var(--accent-gold);
+          border: none; border-radius: 100px; padding: 7px 18px; cursor: pointer; transition: background 0.2s ease;
+        }
+        .reply-compose-submit:hover { background: #e0b060; }
+
+        .proj-replies-wrap {
+          margin-left: 52px; margin-top: 14px;
+          border-left: 2px solid var(--accent-gold-line);
+          padding-left: 20px;
+          display: flex; flex-direction: column; gap: 18px;
+        }
+        .proj-replies-toggle {
+          display: flex; align-items: center; gap: 6px; margin-left: 52px; margin-top: 12px;
+          font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--accent-gold);
+          background: none; border: none; cursor: pointer; letter-spacing: 1px; opacity: 0.9;
+        }
+        .proj-replies-toggle:hover { opacity: 1; }
+        .proj-replies-toggle-arrow { transition: transform 0.25s ease; display: inline-block; }
+        .proj-replies-toggle.expanded .proj-replies-toggle-arrow { transform: rotate(90deg); }
+
+    </style>
 
     </style>
 </head>
@@ -1131,6 +1194,13 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
                 <div class="sp-nav-sep"></div>
                 <div class="sp-nav-dot"></div>
                 <span class="sp-nav-brand">{{ Sharan.SiteHeader.PageTitle }}</span>
+                <div class="sp-nav-project-info" id="navProjectInfo">
+                    <div class="sp-nav-sep"></div>
+                    <span class="sp-nav-project-title">{{ project.Title }}</span>
+                    <span class="sp-nav-project-status" data-status="{{ statusSlug }}">
+                        <span class="sp-nav-project-status-dot"></span>{{ statusName }}
+                    </span>
+                </div>
             </div>
 
             <div class="sp-nav-center">
@@ -1649,7 +1719,32 @@ document.addEventListener('DOMContentLoaded', () => {
         window._plzLoadLikes();
     })();
 
-/* ── Comments ── */
+/* ── Nav project-info reveal on scroll ── */
+    (function () {
+        const heroEl = document.querySelector('.proj-hero');
+        const navInfo = document.getElementById('navProjectInfo');
+        if (!heroEl || !navInfo) return;
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => navInfo.classList.toggle('visible', !entry.isIntersecting));
+        }, { rootMargin: '-80px 0px 0px 0px', threshold: 0 });
+        obs.observe(heroEl);
+    })();
+
+    /* ── Hero scroll parallax/fade ── */
+    (function () {
+        const hero = document.querySelector('.proj-hero');
+        if (!hero) return;
+        hero.style.willChange = 'opacity, transform';
+        window.addEventListener('scroll', () => {
+            const y = window.scrollY;
+            const fade = Math.max(0, 1 - y / 380);
+            const translate = Math.min(36, y * 0.14);
+            hero.style.opacity = fade;
+            hero.style.transform = `translateY(-${translate}px)`;
+        }, { passive: true });
+    })();
+
+    /* ── Comments ── */
 
     let commentLikeCounts = {};
     const nameInput = document.getElementById('commentName');
@@ -1669,8 +1764,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (p) { localStorage.setItem('hostPassphrase', p); alert('Host key saved on this device.'); }
     }
 
-// Tracks which comment threads are currently expanded, so re-renders don't collapse them.
+    // Tracks which comment threads are currently expanded, so re-renders don't collapse them.
     const expandedThreads = new Set();
+
+    // Counts every descendant reply (replies of replies, recursively) under a given comment id.
+    function countDescendants(id, byParent) {
+        const kids = byParent[id] || [];
+        let total = kids.length;
+        kids.forEach(k => { total += countDescendants(k.id, byParent); });
+        return total;
+    }
 
     // Recursive: renders a comment AND all its nested replies as a tree.
     function renderCommentNode(c, byParent) {
@@ -1715,21 +1818,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const children = (byParent[c.id] || []).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
         if (children.length) {
-            const isOpen = expandedThreads.has(String(c.id));
+            const key = String(c.id);
+            const isOpen = expandedThreads.has(key);
+            const totalReplies = countDescendants(c.id, byParent);
 
             const toggle = document.createElement('button');
             toggle.className = 'proj-replies-toggle' + (isOpen ? ' expanded' : '');
-            toggle.innerHTML = `<span class="proj-replies-toggle-arrow">▸</span> ${children.length} ${children.length === 1 ? 'reply' : 'replies'}`;
+            toggle.innerHTML = `<span class="proj-replies-toggle-arrow">▸</span> ${totalReplies} ${totalReplies === 1 ? 'reply' : 'replies'}`;
             const wrap = document.createElement('div');
             wrap.className = 'proj-replies-wrap';
             wrap.style.display = isOpen ? 'block' : 'none';
             children.forEach(child => wrap.appendChild(renderCommentNode(child, byParent)));
 
-           toggle.addEventListener('click', () => {
+            toggle.addEventListener('click', () => {
                 const open = wrap.style.display !== 'none';
                 wrap.style.display = open ? 'none' : 'block';
                 toggle.classList.toggle('expanded', !open);
-                const key = String(c.id);
                 if (open) { expandedThreads.delete(key); } else { expandedThreads.add(key); }
             });
 
@@ -1783,10 +1887,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch(e) { btn.disabled = false; }
     }
 
-    function updateCommentCount(topLevelCount) {
+    function updateCommentCount(totalCount) {
         const el = document.getElementById('commentsCount');
         if (!el) return;
-        el.textContent = topLevelCount <= 0 ? '' : topLevelCount === 1 ? '1 entry' : `${topLevelCount} entries`;
+        el.textContent = totalCount <= 0 ? '' : totalCount === 1 ? '1 comment' : `${totalCount} comments`;
     }
 
     async function loadComments() {
@@ -1805,7 +1909,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (loader) loader.remove();
-            updateCommentCount(topLevel.length);
+            updateCommentCount(data.length);
 
             list.innerHTML = '';
             if (!topLevel.length) { list.innerHTML = '<p class="proj-no-comments">no comments yet</p>'; }
