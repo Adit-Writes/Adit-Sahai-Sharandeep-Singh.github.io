@@ -185,6 +185,16 @@ permalink: "/Sharan/projects/{{ update.Project.Title | slug if update.Project.Ti
             background: linear-gradient(to bottom, transparent 0%, var(--accent-gold-line) 8%, var(--accent-gold-line) 92%, transparent 100%);
             border-radius: 2px;
         }
+
+        .meta-views-pill {
+          display: inline-flex; align-items: center; gap: 6px;
+          font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+          color: rgba(255,255,255,0.55);
+          letter-spacing: 0.3px;
+        }
+        .meta-views-pill svg { width: 14px; height: 14px; opacity: 0.65; flex-shrink: 0; }
+        .meta-views-pill .views-num { color: rgba(255,255,255,0.75); font-weight: 500; min-width: 1ch; }
+
         .upd-body-rail-dot {
             position: sticky; top: 120px; width: 11px; height: 11px; border-radius: 50%;
             background: var(--accent-gold); border: 2px solid #0d0a08;
