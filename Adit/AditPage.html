@@ -368,6 +368,11 @@ permalink: /Adit/AditPage.html
             <a href="#articles">Articles</a>
             <a href="#links">Links</a>
         </div>
+        
+        <button id="exitHostModeBtn" class="category-btn" style="display:none;">
+        Exit Host Mode
+        </button>
+        
         <div class="search-wrap" id="searchWrap">
             <button class="search-toggle" id="searchToggle" aria-label="Search articles" title="Search articles">
                 &#x2315;
@@ -844,12 +849,26 @@ permalink: /Adit/AditPage.html
         }
     }
         
-        function checkHostOnlyPanel() {
-        const panel = document.getElementById('hostOnlyPanel');
-        if (panel && localStorage.getItem('hostPassphrase')) {
-            panel.style.display = '';
+        function checkHostMode() {
+            const isHost = !!localStorage.getItem('hostPassphrase');
+        
+            const panel = document.getElementById('hostOnlyPanel');
+            if (panel && isHost) panel.style.display = '';
+        
+            const exitBtn = document.getElementById('exitHostModeBtn');
+            if (exitBtn && isHost) exitBtn.style.display = '';
         }
-    }
+        
+        function initExitHostMode() {
+            const btn = document.getElementById('exitHostModeBtn');
+            if (!btn) return;
+            btn.addEventListener('click', () => {
+                if (confirm('Exit host mode on this device? You\'ll need the passphrase again to re-enable it.')) {
+                    localStorage.removeItem('hostPassphrase');
+                    location.reload();
+                }
+            });
+        }
 
     // ── Init ─────────────────────────────────────────────────────
     loadIndexLikes();
@@ -857,7 +876,7 @@ permalink: /Adit/AditPage.html
     initCategoryFilter();
     initNavSearch();
     initInlineSearch();
-    checkHostOnlyPanel();
+    initExitHostMode();
     </script>
 
     <script>
