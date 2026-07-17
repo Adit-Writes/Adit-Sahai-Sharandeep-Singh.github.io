@@ -797,29 +797,29 @@ document.addEventListener('DOMContentLoaded', () => {
         return text ? JSON.parse(text) : null;
     }
 
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-        supabaseClient
-          .channel(`realtime_article_${ARTICLE_ID}`)
-          .on('postgres_changes',
-              { event: '*', schema: 'public', table: 'article_comments', filter: `article_id=eq.${ARTICLE_ID}` },
-              () => { if (document.getElementById('commentsSection')) loadComments(); }
-          )
-          .on('postgres_changes',
-              { event: '*', schema: 'public', table: 'comment_likes' },
-              () => { if (document.getElementById('commentsSection')) loadComments(); }
-          )
-          .on('postgres_changes',
-              { event: '*', schema: 'public', table: 'article_likes', filter: `article_id=eq.${ARTICLE_ID}` },
-              async () => {
-                if (!document.getElementById('likesSection')) return;
-                try {
-                  const all = await sb(`article_likes?article_id=eq.${ARTICLE_ID}&select=id`);
-                  setLikeCount(all.length);
-                } catch (e) {}
-              }
-          )
-          .subscribe();
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    
+    supabaseClient
+      .channel(`realtime_${PROJECT_ID}`)
+      .on('postgres_changes',
+          { event: '*', schema: 'public', table: 'project_comments', filter: `project_id=eq.${PROJECT_ID}` },
+          () => { if (document.getElementById('commentsSection')) loadComments(); }
+      )
+      .on('postgres_changes',
+          { event: '*', schema: 'public', table: 'project_comment_likes' },
+          () => { if (document.getElementById('commentsSection')) loadComments(); }
+      )
+      .on('postgres_changes',
+          { event: '*', schema: 'public', table: 'project_likes', filter: `project_id=eq.${PROJECT_ID}` },
+          async () => {
+            if (!document.getElementById('likesSection')) return;
+            try {
+              const all = await sb(`project_likes?project_id=eq.${PROJECT_ID}&select=id`);
+              document.getElementById('likeCount').textContent = all.length;
+            } catch (e) {}
+          }
+      )
+      .subscribe();
 
     (function initGallery() {
         const track   = document.getElementById('galleryTrack');
