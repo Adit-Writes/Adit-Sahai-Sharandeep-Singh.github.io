@@ -1426,6 +1426,42 @@ function initActiveNav() {
 }
 
 // ============================================================
+//  HOST MODE
+// ============================================================
+
+function checkHostSetup() {
+  if (location.search.includes('setuphost')) {
+    const p = prompt('Enter host passphrase:');
+    if (p) {
+      localStorage.setItem('hostPassphrase', p);
+      alert('Host key saved on this device.');
+      location.href = location.pathname; // strip ?setuphost from the URL
+    }
+  }
+}
+
+function checkHostMode() {
+  const isHost = !!localStorage.getItem('hostPassphrase');
+
+  const panel = document.getElementById('hostOnlyPanel');
+  if (panel && isHost) panel.style.display = '';
+
+  const exitBtn = document.getElementById('exitHostModeBtn');
+  if (exitBtn && isHost) exitBtn.style.display = '';
+}
+
+function initExitHostMode() {
+  const btn = document.getElementById('exitHostModeBtn');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    if (confirm('Exit host mode on this device? You\'ll need the passphrase again to re-enable it.')) {
+      localStorage.removeItem('hostPassphrase');
+      location.reload();
+    }
+  });
+}
+
+// ============================================================
 //  SECTION TITLE LARGE
 // ============================================================
 
@@ -1520,12 +1556,16 @@ function initScrollVelocityWarp() {
     });
   }, { passive: true });
 }
-
 // ============================================================
 //  INIT
 // ============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Host mode — check this first
+  checkHostSetup();
+  checkHostMode();
+  initExitHostMode();
+  
   // Ambient particles first (runs on all pages)
   initAmbientParticles();
 
