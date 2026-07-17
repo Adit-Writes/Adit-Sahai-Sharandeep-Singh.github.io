@@ -848,27 +848,6 @@ permalink: /Adit/AditPage.html
             });
         }
     }
-        
-        function checkHostMode() {
-            const isHost = !!localStorage.getItem('hostPassphrase');
-        
-            const panel = document.getElementById('hostOnlyPanel');
-            if (panel && isHost) panel.style.display = '';
-        
-            const exitBtn = document.getElementById('exitHostModeBtn');
-            if (exitBtn && isHost) exitBtn.style.display = '';
-        }
-        
-        function initExitHostMode() {
-            const btn = document.getElementById('exitHostModeBtn');
-            if (!btn) return;
-            btn.addEventListener('click', () => {
-                if (confirm('Exit host mode on this device? You\'ll need the passphrase again to re-enable it.')) {
-                    localStorage.removeItem('hostPassphrase');
-                    location.reload();
-                }
-            });
-        }
 
     // ── Init ─────────────────────────────────────────────────────
     loadIndexLikes();
@@ -876,8 +855,6 @@ permalink: /Adit/AditPage.html
     initCategoryFilter();
     initNavSearch();
     initInlineSearch();
-    initExitHostMode();
-    checkHostMode();
     </script>
 
     <script>
