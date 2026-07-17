@@ -2,7 +2,7 @@
   "Project": "_data/Sharan/Projects/sharan.json",
   "Title": "asdsaf",
   "Status": "_data/Sharan/ProjectStatus/completed.json",
-  "HostOnly": true,
+  "HostOnly": false,
   "Published": true,
   "Description": "<p>asda</p>",
   "Body": "<p>asdasd</p>",
