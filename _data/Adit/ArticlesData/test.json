@@ -1,6 +1,7 @@
 {
   "Title": "test",
   "Topic": "_data/Adit/categories/philosophy.json",
+  "HostOnly": true,
   "Published": true,
   "Description": "<p>sas</p>",
   "Body": "<p>asd</p>",
