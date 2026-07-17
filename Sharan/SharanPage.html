@@ -805,6 +805,9 @@ permalink: /Sharan/SharanPage.html
       </div>
 
       <div class="sp-nav-right">
+          <button id="exitHostModeBtn" class="sp-nav-link" style="display:none; cursor:pointer; border: 1px solid transparent; background: none;">
+            Exit Host
+          </button>
         <button class="sp-nav-search-btn" id="spNavSearchBtn" onclick="document.getElementById('spProjectSearch').focus(); document.getElementById('projects').scrollIntoView({behavior:'smooth'});">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           Search
@@ -870,7 +873,7 @@ permalink: /Sharan/SharanPage.html
 
     <div class="sp-project-grid" id="spProjectGrid">
       {% for project in Sharan.Projects %}
-      {% if project.Published %}
+      {% if project.Published and not project.HostOnly %}
 
       {% if project.Category and project.Category.name %}
         {% set catRaw = project.Category.name %}
@@ -945,7 +948,38 @@ permalink: /Sharan/SharanPage.html
       {% endif %}
       {% endfor %}
     </div>
+    {% set hostOnlyProjects = [] %}
+{% for project in Sharan.Projects %}
+  {% if project.HostOnly %}
+    {% set hostOnlyProjects = (hostOnlyProjects.push(project), hostOnlyProjects) %}
+  {% endif %}
+{% endfor %}
 
+{% if hostOnlyProjects.length > 0 %}
+<div id="hostOnlyPanel" style="display:none;">
+    <div class="sp-section reveal">
+        <h2 class="sp-section-title reveal">Host Only</h2>
+        <p class="sp-section-sub">Hidden projects — only visible to you</p>
+        <div class="sp-section-rule">
+            <div class="sp-section-rule-dot"></div>
+            <div class="sp-section-rule-line"></div>
+        </div>
+    </div>
+    <div class="sp-links-grid">
+        {% for project in hostOnlyProjects %}
+        <a href="/Adit-Sahai-Sharandeep-Singh.github.io/Sharan/projects/{{ project.Title | slug }}/" class="sp-link-card">
+            <div class="sp-link-icon" style="background:var(--accent-gold-dim); color:var(--accent-gold);">🔒</div>
+            <div class="sp-link-text">
+                <span class="sp-link-name">{{ project.Title }}</span>
+                <span class="sp-link-url">{% if project.Published %}Ready to publish{% else %}Draft{% endif %}</span>
+            </div>
+            <span class="sp-link-arrow">→</span>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+    
     <p class="sp-no-results" id="spNoResults">// no projects found.</p>
   </div>
 
