@@ -1803,7 +1803,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Recursive: renders a comment AND all its nested replies as a tree.
     function renderCommentNode(c, byParent) {
-        const isOwner = !!getOwnerFp(c.id);
+        const isOwner = !!getOwnerFp(c.id) || !!getHostPassphrase();
         const isLiked = !!getCommentLikeFp(c.id);
         const likes   = commentLikeCounts[c.id] || 0;
 
@@ -1904,13 +1904,20 @@ document.addEventListener('DOMContentLoaded', () => {
     async function deleteComment(btn) {
         const id = btn.getAttribute('data-comment-id');
         const fp = getOwnerFp(id);
-        if (!fp || !confirm('Delete this comment?')) return;
+        const isHost = !!getHostPassphrase();
+        if ((!fp && !isHost) || !confirm('Delete this comment?')) return;
         btn.disabled = true;
         try {
-            await sb(`project_comments?id=eq.${id}&fingerprint=eq.${fp}`, { method: 'DELETE' });
+            const query = fp
+              ? `article_comments?id=eq.${id}&fingerprint=eq.${fp}`
+              : `article_comments?id=eq.${id}`;
+            await sb(query, { method: 'DELETE' });
             localStorage.removeItem(`comment_owner:${id}`);
             loadComments();
-        } catch(e) { btn.disabled = false; }
+        } catch(e) {
+            console.warn('Delete failed', e);
+            btn.disabled = false;
+        }
     }
 
     function updateCommentCount(totalCount) {
