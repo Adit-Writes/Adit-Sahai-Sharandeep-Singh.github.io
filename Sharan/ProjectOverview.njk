@@ -1888,7 +1888,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateCommentCount(totalCount) {
         const el = document.getElementById('commentsCount');
         if (!el) return;
-        el.textContent = totalCount <= 0 ? '' : totalCount === 1 ? '1 comment' : `${totalCount} comments`;
+        el.textContent = totalCount <= 0 ? '' : totalCount === 1 ? '1 comment' : `${totalCount} Comments`;
     }
 
     async function loadComments() {
