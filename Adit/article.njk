@@ -801,6 +801,81 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
     .article-body { font-size: 1rem; line-height: 1.75; }
     .article-body > p:first-child::first-letter { font-size: 2.8em; }
 }
+
+        /* ════════════════════════════════════════════════════════════
+           COMMENT THREADING + HOST BADGE
+           ════════════════════════════════════════════════════════════ */
+
+        .host-badge {
+          display: inline-flex; align-items: center; gap: 4px;
+          font-size: 0.6rem; font-weight: 700;
+          letter-spacing: 1.5px; text-transform: uppercase;
+          color: #04121f; background: var(--accent-gold);
+          padding: 3px 9px; border-radius: 6px;
+          box-shadow: 0 0 10px var(--accent-gold-dim);
+        }
+        .host-badge::before { content: '✦'; font-size: 0.62rem; }
+
+        .comment-item.is-host-comment {
+          background: linear-gradient(90deg, var(--accent-gold-dim), transparent 40%);
+          border-radius: 10px; padding-left: 12px; margin-left: -12px;
+        }
+
+        .comment-node { display: block; }
+        .comments-list > .comment-node { padding-bottom: 22px; margin-bottom: 22px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .comments-list > .comment-node:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+
+        .comment-reply-btn {
+          font-size: 0.78rem; color: rgba(220, 232, 248, 0.5);
+          background: none; border: none; cursor: pointer;
+          padding: 6px 12px; border-radius: 8px; letter-spacing: 0.5px;
+          transition: color 0.2s ease, background 0.2s ease;
+        }
+        .comment-reply-btn:hover { color: #4db8d8; background: rgba(77, 184, 216, 0.1); }
+
+        .reply-compose {
+          margin-top: 14px; margin-left: 52px;
+          background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border);
+          border-radius: 10px; padding: 14px; display: none;
+        }
+        .reply-compose.open { display: block; animation: replyOpen 0.25s ease; }
+        @keyframes replyOpen { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+        .reply-compose input, .reply-compose textarea {
+          width: 100%; background: transparent; border: none; color: var(--text-main);
+          font-family: 'Inter', sans-serif; outline: none;
+        }
+        .reply-compose input {
+          border-bottom: 1px solid var(--glass-border);
+          font-size: 0.82rem; font-weight: 600; padding: 4px 0 6px; margin-bottom: 10px;
+        }
+        .reply-compose input::placeholder, .reply-compose textarea::placeholder { color: rgba(255,255,255,0.4); }
+        .reply-compose textarea { font-size: 0.86rem; line-height: 1.6; resize: none; min-height: 50px; }
+        .reply-compose-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
+        .reply-compose-cancel {
+          font-size: 0.72rem; color: rgba(255,255,255,0.5);
+          background: none; border: none; cursor: pointer; letter-spacing: 1px;
+        }
+        .reply-compose-submit {
+          font-size: 0.74rem; font-weight: 700;
+          letter-spacing: 1px; text-transform: uppercase; color: #04121f; background: var(--accent-gold);
+          border: none; border-radius: 100px; padding: 7px 18px; cursor: pointer; transition: background 0.2s ease;
+        }
+        .reply-compose-submit:hover { background: #e0b060; }
+
+        .replies-wrap {
+          margin-left: 52px; margin-top: 14px;
+          border-left: 2px solid var(--accent-gold-line);
+          padding-left: 20px;
+          display: flex; flex-direction: column; gap: 18px;
+        }
+        .replies-toggle {
+          display: flex; align-items: center; gap: 6px; margin-left: 52px; margin-top: 12px;
+          font-size: 0.74rem; color: var(--accent-gold);
+          background: none; border: none; cursor: pointer; letter-spacing: 1px; opacity: 0.9;
+        }
+        .replies-toggle:hover { opacity: 1; }
+        .replies-toggle-arrow { transition: transform 0.25s ease; display: inline-block; }
+        .replies-toggle.expanded .replies-toggle-arrow { transform: rotate(90deg); }
     </style>
 </head>
 <body>
@@ -986,7 +1061,7 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
                 {%- set ext = df.split('.') | last | lower -%}
                 {%- set isPdf    = ext === 'pdf' -%}
                 {%- set isDoc    = ext in ['doc','docx','odt','pages','txt','rtf','xls','xlsx','csv','ppt','pptx'] -%}
-                <a
+                
                     href="/Adit-Sahai-Sharandeep-Singh.github.io{{ df }}"
                     class="file-card link-card reveal"
                     style="transition-delay: {{ loop.index0 * 60 }}ms"
@@ -1287,46 +1362,92 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
         // COMMENTS
         // ══════════════════════════════════════════════════════════
         let commentLikeCounts = {};
+        const expandedThreads = new Set();
 
         function getOwnerFp(commentId) { return localStorage.getItem(`comment_owner:${commentId}`); }
         function getCommentLikeFp(commentId) { return localStorage.getItem(`comment_liked:${commentId}`); }
+        function getHostPassphrase() { return localStorage.getItem('hostPassphrase') || null; }
 
-        function renderComment(c) {
-            const isOwner    = !!getOwnerFp(c.id);
-            const isLiked    = !!getCommentLikeFp(c.id);
-            const likeCount  = commentLikeCounts[c.id] || 0;
+        if (location.search.includes('setuphost')) {
+            const p = prompt('Enter host passphrase:');
+            if (p) { localStorage.setItem('hostPassphrase', p); alert('Host key saved on this device.'); }
+        }
 
-            const div = document.createElement('div');
-            div.className  = 'comment-item';
-            div.dataset.id = c.id;
+        function countDescendants(id, byParent) {
+            const kids = byParent[id] || [];
+            let total = kids.length;
+            kids.forEach(k => { total += countDescendants(k.id, byParent); });
+            return total;
+        }
 
-            div.innerHTML = `
+        function renderCommentNode(c, byParent) {
+            const isOwner   = !!getOwnerFp(c.id);
+            const isLiked   = !!getCommentLikeFp(c.id);
+            const likeCount = commentLikeCounts[c.id] || 0;
+
+            const node = document.createElement('div');
+            node.className = 'comment-node';
+            node.dataset.id = c.id;
+
+            const item = document.createElement('div');
+            item.className = 'comment-item' + (c.is_host ? ' is-host-comment' : '');
+            item.innerHTML = `
                 <div class="comment-top-row">
                     <div class="comment-avatar">${escHtml(c.name).trim().charAt(0).toUpperCase()}</div>
                     <div class="comment-content">
                         <div class="comment-meta-row">
                             <span class="comment-author">${escHtml(c.name)}</span>
+                            ${c.is_host ? '<span class="host-badge">Host</span>' : ''}
                             <span class="comment-date">${formatDate(c.created_at)}</span>
                         </div>
                         <p class="comment-text">${escHtml(c.body)}</p>
                         <div class="comment-actions">
-                            <button
-                                class="comment-like-btn ${isLiked ? 'liked' : ''}"
-                                data-comment-id="${c.id}"
-                            >
+                            <button class="comment-like-btn ${isLiked ? 'liked' : ''}" data-comment-id="${c.id}">
                                 <span class="clheart">${isLiked ? '♥' : '♡'}</span>
                                 <span class="cl-count">${likeCount > 0 ? likeCount : ''}</span>
                             </button>
-                            ${isOwner ? `
-                            <button
-                                class="comment-delete-btn"
-                                data-comment-id="${c.id}"
-                            >Delete</button>` : ''}
+                            <button class="comment-reply-btn" data-comment-id="${c.id}">Reply</button>
+                            ${isOwner ? `<button class="comment-delete-btn" data-comment-id="${c.id}">Delete</button>` : ''}
+                        </div>
+                        <div class="reply-compose" id="reply-compose-${c.id}">
+                            <input type="text" class="reply-name" placeholder="Your name" maxlength="60" />
+                            <textarea class="reply-body" placeholder="Write a reply…" maxlength="1200" rows="2"></textarea>
+                            <div class="reply-compose-footer">
+                                <button class="reply-compose-cancel" data-cancel-for="${c.id}">Cancel</button>
+                                <button class="reply-compose-submit" data-reply-to="${c.id}">Reply</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             `;
-            return div;
+            node.appendChild(item);
+
+            const children = (byParent[c.id] || []).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+            if (children.length) {
+                const key = String(c.id);
+                const isOpen = expandedThreads.has(key);
+                const totalReplies = countDescendants(c.id, byParent);
+
+                const toggle = document.createElement('button');
+                toggle.className = 'replies-toggle' + (isOpen ? ' expanded' : '');
+                toggle.innerHTML = `<span class="replies-toggle-arrow">▸</span> ${totalReplies} ${totalReplies === 1 ? 'reply' : 'replies'}`;
+                const wrap = document.createElement('div');
+                wrap.className = 'replies-wrap';
+                wrap.style.display = isOpen ? 'block' : 'none';
+                children.forEach(child => wrap.appendChild(renderCommentNode(child, byParent)));
+
+                toggle.addEventListener('click', () => {
+                    const open = wrap.style.display !== 'none';
+                    wrap.style.display = open ? 'none' : 'block';
+                    toggle.classList.toggle('expanded', !open);
+                    if (open) { expandedThreads.delete(key); } else { expandedThreads.add(key); }
+                });
+
+                node.appendChild(toggle);
+                node.appendChild(wrap);
+            }
+
+            return node;
         }
 
         async function loadCommentLikes(commentIds) {
@@ -1367,8 +1488,8 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
                     commentLikeCounts[commentId] = Math.max(0, (commentLikeCounts[commentId] || 1) - 1);
                 }
 
-                const count    = commentLikeCounts[commentId];
-                const countEl  = btn.querySelector('.cl-count');
+                const count   = commentLikeCounts[commentId];
+                const countEl = btn.querySelector('.cl-count');
                 countEl.textContent = count > 0 ? count : '';
             } catch (e) { console.warn('Comment like failed', e); }
 
@@ -1379,34 +1500,23 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
             const commentId = btn.getAttribute('data-comment-id');
             const fp        = getOwnerFp(commentId);
             if (!fp) return;
-
             if (!confirm('Delete your comment? This cannot be undone.')) return;
 
             btn.disabled = true;
             try {
-                await sb(`article_comments?id=eq.${commentId}&fingerprint=eq.${fp}`, {
-                    method: 'DELETE'
-                });
-
-                const item = document.querySelector(`.comment-item[data-id="${commentId}"]`);
-                if (item) {
-                    item.style.opacity    = '0';
-                    item.style.transform  = 'translateY(-8px)';
-                    item.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-                    setTimeout(() => item.remove(), 320);
-                }
+                await sb(`article_comments?id=eq.${commentId}&fingerprint=eq.${fp}`, { method: 'DELETE' });
                 localStorage.removeItem(`comment_owner:${commentId}`);
-
-                const countEl = document.getElementById('commentsCount');
-                if (countEl) {
-                    const cur     = parseInt(countEl.textContent) || 0;
-                    const next    = Math.max(0, cur - 1);
-                    countEl.textContent = next === 0 ? '' : next === 1 ? '1 comment' : `${next} comments`;
-                }
+                loadComments();
             } catch (e) {
                 console.warn('Delete failed', e);
                 btn.disabled = false;
             }
+        }
+
+        function updateCommentCount(totalCount) {
+            const countEl = document.getElementById('commentsCount');
+            if (!countEl) return;
+            countEl.textContent = totalCount === 0 ? '' : totalCount === 1 ? '1 comment' : `${totalCount} comments`;
         }
 
         async function loadComments() {
@@ -1416,37 +1526,57 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
 
             try {
                 const data = await sb(
-                    `article_comments?article_id=eq.${ARTICLE_ID}&order=created_at.desc&select=id,name,body,created_at,fingerprint`
+                    `article_comments?article_id=eq.${ARTICLE_ID}&order=created_at.asc&select=id,name,body,created_at,fingerprint,parent_id,is_host`
                 );
+                commentLikeCounts = {};
+                await loadCommentLikes(data.map(c => c.id));
 
-                const ids = data.map(c => c.id);
-                await loadCommentLikes(ids);
-
-                if (loader) loader.remove();
-                const countEl = document.getElementById('commentsCount');
-                if (countEl) {
-                    countEl.textContent = data.length === 0 ? '' :
-                                          data.length === 1 ? '1 comment' : `${data.length} comments`;
-                }
-
-                if (data.length === 0) {
-                    list.innerHTML = '<p class="no-comments">No comments yet — be the first to share your thoughts.</p>';
-                } else {
-                    data.forEach(c => list.appendChild(renderComment(c)));
-                }
-
-                list.addEventListener('click', (e) => {
-                    const likeBtn = e.target.closest('.comment-like-btn');
-                    if (likeBtn) toggleCommentLike(likeBtn);
-
-                    const deleteBtn = e.target.closest('.comment-delete-btn');
-                    if (deleteBtn) deleteComment(deleteBtn);
+                const topLevel = data.filter(c => !c.parent_id).sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+                const repliesByParent = {};
+                data.filter(c => c.parent_id).forEach(r => {
+                    (repliesByParent[r.parent_id] = repliesByParent[r.parent_id] || []).push(r);
                 });
 
+                if (loader) loader.remove();
+                updateCommentCount(data.length);
+
+                list.innerHTML = '';
+                if (!topLevel.length) {
+                    list.innerHTML = '<p class="no-comments">No comments yet — be the first to share your thoughts.</p>';
+                } else {
+                    topLevel.forEach(c => list.appendChild(renderCommentNode(c, repliesByParent)));
+                }
             } catch (e) {
                 if (loader) loader.textContent = 'Could not load comments.';
                 console.warn('Comments unavailable', e);
             }
+        }
+
+        async function submitReply(btn) {
+            const parentId = String(btn.getAttribute('data-reply-to'));
+            const box = document.getElementById(`reply-compose-${parentId}`);
+            const nameEl = box.querySelector('.reply-name');
+            const bodyEl = box.querySelector('.reply-body');
+            const name = nameEl.value.trim();
+            const body = bodyEl.value.trim();
+            if (!name || !body || body.length < 2) return;
+
+            btn.disabled = true; btn.textContent = '…';
+            try {
+                const fp = crypto.randomUUID();
+                const passphrase = getHostPassphrase();
+                const result = await sb('rpc/post_article_comment', {
+                    method: 'POST', prefer: 'return=representation',
+                    body: { p_article_id: ARTICLE_ID, p_name: name, p_body: body, p_fingerprint: fp, p_parent_id: parentId, p_passphrase: passphrase }
+                });
+                const nc = Array.isArray(result) ? result[0] : result;
+                if (nc?.id) localStorage.setItem(`comment_owner:${nc.id}`, fp);
+                box.classList.remove('open');
+                nameEl.value = ''; bodyEl.value = '';
+                expandedThreads.add(parentId);
+                await loadComments();
+            } catch (e) { alert('Reply failed — try again'); }
+            btn.disabled = false; btn.textContent = 'Reply';
         }
 
         async function submitComment() {
@@ -1469,11 +1599,10 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
 
             try {
                 const fp = crypto.randomUUID();
-                const result = await sb('article_comments', {
-                    method:  'POST',
-                    prefer:  'return=representation',
-                    headers: { 'Prefer': 'return=representation' },
-                    body:    { article_id: ARTICLE_ID, name, body, fingerprint: fp }
+                const passphrase = getHostPassphrase();
+                const result = await sb('rpc/post_article_comment', {
+                    method: 'POST', prefer: 'return=representation',
+                    body: { p_article_id: ARTICLE_ID, p_name: name, p_body: body, p_fingerprint: fp, p_parent_id: null, p_passphrase: passphrase }
                 });
 
                 const newComment = Array.isArray(result) ? result[0] : result;
@@ -1486,24 +1615,7 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
                 const charCountEl = document.getElementById('charCount');
                 if (charCountEl) charCountEl.textContent = '0 / 1200';
 
-                const list  = document.getElementById('commentsList');
-                const noMsg = list.querySelector('.no-comments');
-                if (noMsg) noMsg.remove();
-
-                const fakeComment = {
-                    id:         newComment?.id || crypto.randomUUID(),
-                    name,
-                    body,
-                    created_at: new Date().toISOString()
-                };
-                list.insertBefore(renderComment(fakeComment), list.firstChild);
-
-                const countEl = document.getElementById('commentsCount');
-                if (countEl) {
-                    const cur     = parseInt(countEl.textContent) || 0;
-                    const next    = cur + 1;
-                    countEl.textContent = next === 1 ? '1 comment' : `${next} comments`;
-                }
+                await loadComments();
             } catch (e) {
                 errEl.textContent = 'Failed to post comment. Please try again.';
                 console.warn('Submit failed', e);
@@ -1525,6 +1637,26 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
         const submitBtnTrigger = document.getElementById('submitBtn');
         if (submitBtnTrigger) {
             submitBtnTrigger.addEventListener('click', submitComment);
+        }
+
+        const commentsListEl = document.getElementById('commentsList');
+        if (commentsListEl) {
+            commentsListEl.addEventListener('click', e => {
+                const lb = e.target.closest('.comment-like-btn');
+                if (lb) toggleCommentLike(lb);
+                const db = e.target.closest('.comment-delete-btn');
+                if (db) deleteComment(db);
+                const rb = e.target.closest('.comment-reply-btn');
+                if (rb) {
+                    const id = rb.getAttribute('data-comment-id');
+                    document.querySelectorAll('.reply-compose.open').forEach(el => { if (el.id !== `reply-compose-${id}`) el.classList.remove('open'); });
+                    document.getElementById(`reply-compose-${id}`)?.classList.toggle('open');
+                }
+                const cb = e.target.closest('.reply-compose-cancel');
+                if (cb) document.getElementById(`reply-compose-${cb.getAttribute('data-cancel-for')}`)?.classList.remove('open');
+                const sb2 = e.target.closest('.reply-compose-submit');
+                if (sb2) submitReply(sb2);
+            });
         }
 
         // ══════════════════════════════════════════════════════════
