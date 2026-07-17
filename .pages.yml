@@ -250,7 +250,11 @@ content:
             options:
               collection: ArticleCategories
               field: name
-
+              
+          - name: HostOnly
+            type: boolean
+            default: false
+            
           - name: Published
             type: boolean
             default: false
