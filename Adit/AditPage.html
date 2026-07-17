@@ -531,6 +531,36 @@ permalink: /Adit/AditPage.html
         {% endfor %}
     </section>
 
+        {% set hostOnlyArticles = [] %}
+    {% for article in Adit.Articles %}
+      {% if article.HostOnly %}
+        {% set hostOnlyArticles = (hostOnlyArticles.push(article), hostOnlyArticles) %}
+      {% endif %}
+    {% endfor %}
+    
+    {% if hostOnlyArticles.length > 0 %}
+    <section id="hostOnlyPanel" class="host-only-panel" style="display:none;">
+        <div class="section-divider reveal">
+            <h2>Host Only</h2>
+            <div class="section-title-large reveal-heading">Hidden Articles</div>
+            <p class="section-divider-subtitle">Only visible to you — not shown to regular visitors</p>
+            <div class="gold-line"></div>
+        </div>
+        <div class="links-grid">
+            {% for article in hostOnlyArticles %}
+            <a href="/Adit-Sahai-Sharandeep-Singh.github.io/Adit/articles/{{ article.Title | slug }}/" class="link-card">
+                <div class="link-card-icon">🔒</div>
+                <div class="link-card-text">
+                    <span class="link-card-label">{{ article.Title }}</span>
+                    <span class="link-card-url">{{ article.Topic }} · {% if article.Published %}Ready to publish{% else %}Draft{% endif %}</span>
+                </div>
+                <span class="link-card-arrow">→</span>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
     <p class="no-results-msg" id="noResultsMsg">No articles found.</p>
 
     {# ── Links / MentionedLinks ────────────────────────── #}
@@ -813,6 +843,13 @@ permalink: /Adit/AditPage.html
             });
         }
     }
+        
+        function checkHostOnlyPanel() {
+        const panel = document.getElementById('hostOnlyPanel');
+        if (panel && localStorage.getItem('hostPassphrase')) {
+            panel.style.display = '';
+        }
+    }
 
     // ── Init ─────────────────────────────────────────────────────
     loadIndexLikes();
@@ -820,6 +857,7 @@ permalink: /Adit/AditPage.html
     initCategoryFilter();
     initNavSearch();
     initInlineSearch();
+    checkHostOnlyPanel();
     </script>
 
     <script>
@@ -940,8 +978,9 @@ permalink: /Adit/AditPage.html
             el.innerHTML          = data.svg;
         });
     }
-
+        
     initLinkIcons();
+    
     </script>
 </body>
 </html>
