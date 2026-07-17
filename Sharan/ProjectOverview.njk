@@ -1715,7 +1715,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const children = (byParent[c.id] || []).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
         if (children.length) {
-            const isOpen = expandedThreads.has(c.id);
+            const isOpen = expandedThreads.has(String(c.id));
 
             const toggle = document.createElement('button');
             toggle.className = 'proj-replies-toggle' + (isOpen ? ' expanded' : '');
@@ -1725,11 +1725,12 @@ document.addEventListener('DOMContentLoaded', () => {
             wrap.style.display = isOpen ? 'block' : 'none';
             children.forEach(child => wrap.appendChild(renderCommentNode(child, byParent)));
 
-            toggle.addEventListener('click', () => {
+           toggle.addEventListener('click', () => {
                 const open = wrap.style.display !== 'none';
                 wrap.style.display = open ? 'none' : 'block';
                 toggle.classList.toggle('expanded', !open);
-                if (open) { expandedThreads.delete(c.id); } else { expandedThreads.add(c.id); }
+                const key = String(c.id);
+                if (open) { expandedThreads.delete(key); } else { expandedThreads.add(key); }
             });
 
             node.appendChild(toggle);
@@ -1815,7 +1816,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function submitReply(btn) {
-        const parentId = btn.getAttribute('data-reply-to');
+        const parentId = String(btn.getAttribute('data-reply-to'));
         const box = document.getElementById(`reply-compose-${parentId}`);
         const nameEl = box.querySelector('.reply-name');
         const bodyEl = box.querySelector('.reply-body');
@@ -1832,6 +1833,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             const nc = Array.isArray(result) ? result[0] : result;
             if (nc?.id) localStorage.setItem(`comment_owner:${nc.id}`, fp);
+            box.classList.remove('open');
+            nameEl.value = ''; bodyEl.value = '';
+            expandedThreads.add(parentId);
             await loadComments();
         } catch(e) { alert('Reply failed — try again'); }
         btn.disabled = false; btn.textContent = 'Reply';
