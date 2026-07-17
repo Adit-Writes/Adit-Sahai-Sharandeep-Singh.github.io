@@ -233,7 +233,7 @@ content:
         format: json
         filename: "{slug}.json" # Changed to slug for cleaner URLs in your 11ty build
         view:
-          fields: [Title, Topic, Published, ReleaseDate, LastUpdated]
+          fields: [Title, Topic, HostOnly,Published, ReleaseDate, LastUpdated]
           primary: Title
           sort: [ReleaseDate, Title]
           default:
@@ -339,7 +339,7 @@ content:
             format: json
             filename: "{slug}.json"
             view:
-              fields: [Title, Status, Category, Published, ReleaseDate, LastUpdated]
+              fields: [Title, Status, Category, HostOnly,Published, ReleaseDate, LastUpdated]
               primary: Title
               sort: [ReleaseDate, Title]
               default:
@@ -420,7 +420,7 @@ content:
             filename: "{slug}.json"
           
             view:
-              fields: [Title, Project, Published, Status, UpdateDate]
+              fields: [Title, Project, HostOnly,Published, Status, UpdateDate]
               primary: Title
               sort: [UpdateDate, Title]
               default:
