@@ -1381,7 +1381,7 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
         }
 
         function renderCommentNode(c, byParent) {
-            const isOwner   = !!getOwnerFp(c.id);
+            const isOwner = !!getOwnerFp(c.id) || !!getHostPassphrase();
             const isLiked   = !!getCommentLikeFp(c.id);
             const likeCount = commentLikeCounts[c.id] || 0;
 
@@ -1497,21 +1497,23 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
         }
 
         async function deleteComment(btn) {
-            const commentId = btn.getAttribute('data-comment-id');
-            const fp        = getOwnerFp(commentId);
-            if (!fp) return;
-            if (!confirm('Delete your comment? This cannot be undone.')) return;
-
-            btn.disabled = true;
-            try {
-                await sb(`article_comments?id=eq.${commentId}&fingerprint=eq.${fp}`, { method: 'DELETE' });
-                localStorage.removeItem(`comment_owner:${commentId}`);
-                loadComments();
-            } catch (e) {
-                console.warn('Delete failed', e);
-                btn.disabled = false;
-            }
-        }
+    const id = btn.getAttribute('data-comment-id');
+    const fp = getOwnerFp(id);
+    const isHost = !!getHostPassphrase();
+    if ((!fp && !isHost) || !confirm('Delete this comment?')) return;
+    btn.disabled = true;
+    try {
+        const query = fp
+          ? `article_comments?id=eq.${id}&fingerprint=eq.${fp}`
+          : `article_comments?id=eq.${id}`;
+        await sb(query, { method: 'DELETE' });
+        localStorage.removeItem(`comment_owner:${id}`);
+        loadComments();
+    } catch(e) {
+        console.warn('Delete failed', e);
+        btn.disabled = false;
+    }
+}
 
         function updateCommentCount(totalCount) {
             const countEl = document.getElementById('commentsCount');
