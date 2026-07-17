@@ -1049,6 +1049,16 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
         .article-hero-meta .date, .article-hero-meta .category {
           color: rgba(255,255,255,0.6) !important; font-size: 0.85rem !important;
         }
+
+        .meta-views-pill {
+          display: inline-flex; align-items: center; gap: 6px;
+          font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+          color: rgba(255,255,255,0.55);
+          letter-spacing: 0.3px;
+        }
+        .meta-views-pill svg { width: 14px; height: 14px; opacity: 0.65; flex-shrink: 0; }
+        .meta-views-pill .views-num { color: rgba(255,255,255,0.75); font-weight: 500; min-width: 1ch; }
+
         .upd-card-date {
           font-family: 'JetBrains Mono', monospace;
           font-size: 0.78rem;
@@ -1230,6 +1240,16 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
                 <span class="meta-dot"></span>
                 <span class="date">Updated {{ project.LastUpdated }}</span>
                 {% endif %}
+                {% if project.ViewsCounter %}
+                    <span class="meta-dot"></span>
+                    <span class="meta-views-pill" id="viewsPill">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                        <span class="views-num" id="viewsCount">—</span> views
+                    </span>
+                    {% endif %}
             </div>
 
             <div class="proj-status-badge reveal" data-status="{{ statusSlug }}">
@@ -1571,6 +1591,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wZXFyaXB5d3Fpb3RzZWxweXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTE4MzUsImV4cCI6MjA5Njg4NzgzNX0.1lTHIY3M1xk5FmnTC2YMbSMNpi7vhWDuGGXUSNkwkm8';
     const PROJECT_ID   = '{{ projectSlug }}';
     const LIKE_KEY     = `likedProject:${PROJECT_ID}`;
+    const VIEW_KEY = `viewedProject:${PROJECT_ID}`;
+    
+    (function initViewsCounter() {
+        const pill = document.getElementById('viewsPill');
+        if (!pill) return;
+        (async function register() {
+            try {
+                let fp = localStorage.getItem(VIEW_KEY);
+                if (!fp) { fp = crypto.randomUUID(); localStorage.setItem(VIEW_KEY, fp); }
+                const result = await sb('rpc/register_project_view', {
+                    method: 'POST', prefer: 'return=representation',
+                    body: { p_project_id: PROJECT_ID, p_fingerprint: fp }
+                });
+                const row = Array.isArray(result) ? result[0] : result;
+                const countEl = document.getElementById('viewsCount');
+                if (countEl && row) countEl.textContent = row.unique_views;
+            } catch (e) { console.warn('View registration failed', e); }
+        })();
+    })();
 
     async function sb(path, opts = {}) {
         const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
