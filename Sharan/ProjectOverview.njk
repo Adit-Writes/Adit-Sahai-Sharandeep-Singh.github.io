@@ -1902,23 +1902,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function deleteComment(btn) {
-        const id = btn.getAttribute('data-comment-id');
-        const fp = getOwnerFp(id);
-        const isHost = !!getHostPassphrase();
-        if ((!fp && !isHost) || !confirm('Delete this comment?')) return;
-        btn.disabled = true;
-        try {
-            const query = fp
-              ? `article_comments?id=eq.${id}&fingerprint=eq.${fp}`
-              : `article_comments?id=eq.${id}`;
-            await sb(query, { method: 'DELETE' });
-            localStorage.removeItem(`comment_owner:${id}`);
-            loadComments();
-        } catch(e) {
-            console.warn('Delete failed', e);
-            btn.disabled = false;
-        }
+    const id = btn.getAttribute('data-comment-id');
+    const fp = getOwnerFp(id);
+    const isHost = !!getHostPassphrase();
+    if ((!fp && !isHost) || !confirm('Delete this comment?')) return;
+    btn.disabled = true;
+    try {
+        const query = fp
+          ? `project_comments?id=eq.${id}&fingerprint=eq.${fp}`
+          : `project_comments?id=eq.${id}`;
+        await sb(query, { method: 'DELETE' });
+        localStorage.removeItem(`comment_owner:${id}`);
+        loadComments();
+    } catch(e) {
+        console.warn('Delete failed', e);
+        btn.disabled = false;
     }
+}
 
     function updateCommentCount(totalCount) {
         const el = document.getElementById('commentsCount');
