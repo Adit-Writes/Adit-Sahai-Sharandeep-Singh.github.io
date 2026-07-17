@@ -1669,6 +1669,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (p) { localStorage.setItem('hostPassphrase', p); alert('Host key saved on this device.'); }
     }
 
+// Tracks which comment threads are currently expanded, so re-renders don't collapse them.
+    const expandedThreads = new Set();
+
     // Recursive: renders a comment AND all its nested replies as a tree.
     function renderCommentNode(c, byParent) {
         const isOwner = !!getOwnerFp(c.id);
@@ -1712,18 +1715,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const children = (byParent[c.id] || []).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
         if (children.length) {
+            const isOpen = expandedThreads.has(c.id);
+
             const toggle = document.createElement('button');
-            toggle.className = 'proj-replies-toggle';
+            toggle.className = 'proj-replies-toggle' + (isOpen ? ' expanded' : '');
             toggle.innerHTML = `<span class="proj-replies-toggle-arrow">▸</span> ${children.length} ${children.length === 1 ? 'reply' : 'replies'}`;
             const wrap = document.createElement('div');
             wrap.className = 'proj-replies-wrap';
-            wrap.style.display = 'none';
+            wrap.style.display = isOpen ? 'block' : 'none';
             children.forEach(child => wrap.appendChild(renderCommentNode(child, byParent)));
 
             toggle.addEventListener('click', () => {
                 const open = wrap.style.display !== 'none';
                 wrap.style.display = open ? 'none' : 'block';
                 toggle.classList.toggle('expanded', !open);
+                if (open) { expandedThreads.delete(c.id); } else { expandedThreads.add(c.id); }
             });
 
             node.appendChild(toggle);
