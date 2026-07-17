@@ -1048,8 +1048,8 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.disabled = true;
     try {
         const query = fp
-          ? `article_comments?id=eq.${id}&fingerprint=eq.${fp}`
-          : `article_comments?id=eq.${id}`;
+          ? `project_comments?id=eq.${id}&fingerprint=eq.${fp}`
+          : `project_comments?id=eq.${id}`;
         await sb(query, { method: 'DELETE' });
         localStorage.removeItem(`comment_owner:${id}`);
         loadComments();
