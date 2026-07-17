@@ -532,7 +532,23 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
         transform: scale(1.5);
         box-shadow: 0 0 20px currentColor, 0 0 40px rgba(212,160,80,0.2);
       }
-       
+
+      .upd-card-views-pill {
+        display: inline-flex; align-items: center; gap: 5px;
+        font-family: 'JetBrains Mono', monospace; font-size: 0.65rem;
+        letter-spacing: 0.5px; font-weight: 600;
+        padding: 3px 9px; border-radius: 20px;
+        border: 1px solid var(--glass-border);
+        color: var(--text-dim);
+        background: transparent;
+        transition: color 0.35s ease, border-color 0.35s ease;
+        margin-top: 4px;
+      }
+      .upd-card-views-pill svg { width: 10px; height: 10px; opacity: 0.7; flex-shrink: 0; }
+      .upd-card-views-pill.loading { opacity: 0.35; }
+      .upd-card:hover .upd-card-views-pill { color: rgba(255,255,255,0.6); border-color: var(--accent-gold-line); }
+
+
       /* Status colours */
       .upd-card-dot[data-status="completed"] { color: #00dc82; }
       .upd-card-dot[data-status="concept"]    { color: #a06fff; }
@@ -1236,7 +1252,7 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
                 <span class="meta-dot"></span>
                 {% endif %}
                 <span class="date">{{ project.StartedDate }}</span>
-                {% if project.LastUpdated %}
+                {% if project.LastUpdated and project.LastUpdated != project.StartedDate %}
                 <span class="meta-dot"></span>
                 <span class="date">Updated {{ project.LastUpdated }}</span>
                 {% endif %}
@@ -1388,6 +1404,7 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
                     href="/Adit-Sahai-Sharandeep-Singh.github.io/Sharan/projects/{{ projectSlug }}/updates/{{ update.Title | slug }}/"
                     class="upd-card reveal"
                     style="transition-delay: {{ loop.index0 * 60 }}ms"
+                    data-composed-id="{{ projectSlug }}__{{ update.Title | slug }}"
                   >
                     <div class="upd-card-dot-wrap">
                       <div class="upd-card-dot" data-status="{{ uStatusSlug }}"></div>
@@ -1410,6 +1427,15 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
                         <span class="upd-card-date">{{ datePart }}</span>
                         {% if timePart and timePart != "" %}
                         <span class="upd-card-time">{{ timePart }}</span>
+                        {% endif %}
+                        {% if update.ViewsCounter %}
+                        <span class="upd-card-views-pill loading" data-composed-id="{{ projectSlug }}__{{ update.Title | slug }}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                            <span class="views-count">—</span>
+                        </span>
                         {% endif %}
                       </div>
                       <!-- Footer -->
@@ -1589,12 +1615,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     }
 
+
     const SUPABASE_URL = 'https://mpeqripywqiotselpyut.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wZXFyaXB5d3Fpb3RzZWxweXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTE4MzUsImV4cCI6MjA5Njg4NzgzNX0.1lTHIY3M1xk5FmnTC2YMbSMNpi7vhWDuGGXUSNkwkm8';
     const PROJECT_ID   = '{{ projectSlug }}';
     const LIKE_KEY     = `likedProject:${PROJECT_ID}`;
     const VIEW_KEY = `viewedProject:${PROJECT_ID}`;
     
+    (function initUpdateListViews() {
+            const pills = Array.from(document.querySelectorAll('.upd-card-views-pill[data-composed-id]'));
+            if (!pills.length) return;
+            (async () => {
+                try {
+                    const ids = pills.map(p => `"${p.dataset.composedId}"`).join(',');
+                    const rows = await sb(`project_views?project_id=in.(${ids})&select=project_id`);
+                    const counts = {};
+                    rows.forEach(r => { counts[r.project_id] = (counts[r.project_id] || 0) + 1; });
+                    pills.forEach(pill => {
+                        pill.querySelector('.views-count').textContent = counts[pill.dataset.composedId] || 0;
+                        pill.classList.remove('loading');
+                    });
+                } catch (e) {
+                    pills.forEach(pill => { pill.classList.remove('loading'); pill.querySelector('.views-count').textContent = ''; });
+                    console.warn('Could not load update view counts', e);
+                }
+            })();
+        })();
+
     (function initViewsCounter() {
         const pill = document.getElementById('viewsPill');
         if (!pill) return;
