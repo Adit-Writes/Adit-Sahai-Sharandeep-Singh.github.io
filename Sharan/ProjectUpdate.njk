@@ -102,6 +102,34 @@ permalink: "/Sharan/projects/{{ update.Project.Title | slug if update.Project.Ti
         @keyframes navDotPulse { 0%,100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.5); opacity: 1; } }
         .sp-nav-right { display: flex; align-items: center; justify-content: flex-end; gap: 4px; }
 
+        /* Nav project info reveal */
+        .sp-nav-project-info {
+          display: flex; align-items: center; gap: 10px;
+          opacity: 0; transform: translateX(-8px);
+          pointer-events: none;
+          transition: opacity 0.4s ease, transform 0.4s ease;
+          overflow: hidden; white-space: nowrap;
+        }
+        .sp-nav-project-info.visible { opacity: 1; transform: translateX(0); pointer-events: auto; }
+        .sp-nav-project-title {
+          font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 0.85rem;
+          color: var(--text-main); overflow: hidden; text-overflow: ellipsis;
+          white-space: nowrap; max-width: 220px;
+        }
+        .sp-nav-project-status {
+          display: inline-flex; align-items: center; gap: 5px;
+          font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; font-weight: 700;
+          letter-spacing: 1px; text-transform: uppercase; padding: 3px 10px; border-radius: 100px;
+          border: 1px solid currentColor; flex-shrink: 0;
+        }
+        .sp-nav-project-status-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; box-shadow: 0 0 6px currentColor; }
+        .sp-nav-project-status[data-status="completed"] { color: #00dc82; background: rgba(0,220,130,0.08); }
+        .sp-nav-project-status[data-status="concept"]   { color: #a06fff; background: rgba(160,111,255,0.08); }
+        .sp-nav-project-status[data-status="ongoing"]   { color: #00b4ff; background: rgba(0,180,255,0.08); }
+        .sp-nav-project-status[data-status="onhold"]    { color: #ffbe32; background: rgba(255,190,50,0.08); }
+        .sp-nav-project-status[data-status="canceled"]  { color: #ff5f56; background: rgba(255,95,86,0.08); }
+        @media (max-width: 768px) { .sp-nav-project-info { display: none; } }
+
         .sp-scroll-progress {
             position: fixed; top: 0; left: 0; height: 2px; width: 0%;
             background: linear-gradient(90deg, var(--accent-gold-line), var(--accent-gold));
@@ -165,9 +193,14 @@ permalink: "/Sharan/projects/{{ update.Project.Title | slug if update.Project.Ti
         }
         @keyframes railDotGlow { 0%,100% { box-shadow: 0 0 0 2px var(--accent-gold), 0 0 12px var(--accent-gold); } 50% { box-shadow: 0 0 0 2px var(--accent-gold), 0 0 24px var(--accent-gold), 0 0 40px rgba(212,160,80,0.3); } }
         .upd-body-eyebrow {
-            display: flex; align-items: center; gap: 10px;
-            font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 4px; color: var(--accent-gold); margin-bottom: 18px; opacity: 0.8;
+          font-family: 'Space Grotesk', sans-serif;
+          font-size: clamp(1.4rem, 3vw, 2rem);
+          font-weight: 700;
+          letter-spacing: -0.01em;
+          text-transform: none;
+          color: var(--text-main);
+          opacity: 1;
+          margin-bottom: 20px;
         }
         .upd-body-content .article-body { font-size: 1.025rem; line-height: 1.85; color: rgba(255,255,255,0.78); }
         .upd-body-content .article-body h2, .upd-body-content .article-body h3 { font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: var(--text-main); margin-top: 2em; margin-bottom: 0.6em; }
@@ -180,7 +213,6 @@ permalink: "/Sharan/projects/{{ update.Project.Title | slug if update.Project.Ti
         .upd-body-content .article-body ul, .upd-body-content .article-body ol { padding-left: 1.5em; margin-bottom: 1.2em; }
         .upd-body-content .article-body li { margin-bottom: 0.4em; }
 
-        /* gallery / files / links — identical visual language to project page */
         #upd-media { scroll-margin-top: 100px; }
         .proj-gallery { margin-bottom: 56px; position: relative; }
         .proj-gallery-label { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 4px; color: var(--text-dim); }
@@ -250,114 +282,38 @@ permalink: "/Sharan/projects/{{ update.Project.Title | slug if update.Project.Ti
 
         /* ── Likes Zone ───────────────────────────────────────────── */
         .proj-likes-zone {
-          position: relative;
-          display: flex;
-          align-items: center;
-          gap: 28px;
-          margin: 56px 0 60px;
-          padding: 32px 40px;
-          background: rgba(255,255,255,0.03);
-          border: 1px solid var(--glass-border);
-          border-radius: 24px;
-          overflow: hidden;
-          transition: border-color 0.5s ease, box-shadow 0.5s ease;
+          position: relative; display: flex; align-items: center; gap: 28px;
+          margin: 56px 0 60px; padding: 32px 40px;
+          background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 24px;
+          overflow: hidden; transition: border-color 0.5s ease, box-shadow 0.5s ease;
         }
-        .proj-likes-zone.is-liked {
-          border-color: var(--glass-border-hover);
-          box-shadow: 0 0 60px var(--accent-gold-dim), 0 20px 60px rgba(0,0,0,0.4);
-        }
-         
-        /* Animated fill background — grows left to right on like */
+        .proj-likes-zone.is-liked { border-color: var(--glass-border-hover); box-shadow: 0 0 60px var(--accent-gold-dim), 0 20px 60px rgba(0,0,0,0.4); }
         .plz-bg-fill {
-          position: absolute;
-          inset: 0;
+          position: absolute; inset: 0;
           background: linear-gradient(90deg, var(--accent-gold-dim) 0%, transparent 60%, transparent 100%);
-          transform: scaleX(0);
-          transform-origin: left center;
+          transform: scaleX(0); transform-origin: left center;
           transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-          pointer-events: none;
-          border-radius: 24px;
+          pointer-events: none; border-radius: 24px;
         }
-        .proj-likes-zone.is-liked .plz-bg-fill {
-          transform: scaleX(1);
-        }
-         
-        /* Sparks canvas */
-        .plz-sparks-canvas {
-          position: absolute;
-          inset: 0;
-          pointer-events: none;
-          overflow: hidden;
-          border-radius: 24px;
-        }
-         
-        /* ── Heart button ── */
+        .proj-likes-zone.is-liked .plz-bg-fill { transform: scaleX(1); }
+        .plz-sparks-canvas { position: absolute; inset: 0; pointer-events: none; overflow: hidden; border-radius: 24px; }
         .plz-heart-btn {
-          position: relative;
-          flex-shrink: 0;
-          width: 72px;
-          height: 72px;
-          border-radius: 20px;
-          background: rgba(255,255,255,0.04);
-          border: 1.5px solid var(--glass-border);
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          position: relative; flex-shrink: 0; width: 72px; height: 72px; border-radius: 20px;
+          background: rgba(255,255,255,0.04); border: 1.5px solid var(--glass-border);
+          cursor: pointer; display: flex; align-items: center; justify-content: center;
           transition: border-color 0.35s ease, background 0.35s ease, transform 0.2s ease;
-          overflow: hidden;
-          z-index: 1;
+          overflow: hidden; z-index: 1;
         }
-        .plz-heart-btn:hover {
-          border-color: var(--accent-gold-line);
-          background: var(--accent-gold-dim);
-          transform: scale(1.06);
-        }
-        .plz-heart-btn.stamped {
-          border-color: var(--accent-gold);
-          background: var(--accent-gold-dim);
-        }
+        .plz-heart-btn:hover { border-color: var(--accent-gold-line); background: var(--accent-gold-dim); transform: scale(1.06); }
+        .plz-heart-btn.stamped { border-color: var(--accent-gold); background: var(--accent-gold-dim); }
         .plz-heart-btn:active { transform: scale(0.94); }
-         
-        .plz-heart-svg {
-          width: 34px;
-          height: 34px;
-          transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
-          position: relative;
-          z-index: 1;
-        }
+        .plz-heart-svg { width: 34px; height: 34px; transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1); position: relative; z-index: 1; }
         .plz-heart-btn:hover .plz-heart-svg { transform: scale(1.12); }
-         
-        .plz-heart-path {
-          stroke: var(--text-dim);
-          fill: transparent;
-          transition: stroke 0.35s ease, fill 0.35s ease, stroke-width 0.35s ease;
-        }
-        .plz-heart-btn.stamped .plz-heart-path {
-          stroke: var(--accent-gold);
-          fill: var(--accent-gold-dim);
-          stroke-width: 2;
-        }
-         
-        /* Ripple ring on click */
-        .plz-ripple {
-          position: absolute;
-          inset: 0;
-          border-radius: 20px;
-          pointer-events: none;
-          opacity: 0;
-          background: radial-gradient(circle at center, var(--accent-gold-dim) 0%, transparent 65%);
-          transform: scale(0.5);
-        }
-        .plz-ripple.fire {
-          animation: plzRipplePop 0.5s ease-out forwards;
-        }
-        @keyframes plzRipplePop {
-          0%   { opacity: 1; transform: scale(0.5); }
-          100% { opacity: 0; transform: scale(2.2); }
-        }
-         
-        /* Pop animation on stamp */
+        .plz-heart-path { stroke: var(--text-dim); fill: transparent; transition: stroke 0.35s ease, fill 0.35s ease, stroke-width 0.35s ease; }
+        .plz-heart-btn.stamped .plz-heart-path { stroke: var(--accent-gold); fill: var(--accent-gold-dim); stroke-width: 2; }
+        .plz-ripple { position: absolute; inset: 0; border-radius: 20px; pointer-events: none; opacity: 0; background: radial-gradient(circle at center, var(--accent-gold-dim) 0%, transparent 65%); transform: scale(0.5); }
+        .plz-ripple.fire { animation: plzRipplePop 0.5s ease-out forwards; }
+        @keyframes plzRipplePop { 0% { opacity: 1; transform: scale(0.5); } 100% { opacity: 0; transform: scale(2.2); } }
         @keyframes heartStampPop {
           0%   { transform: scale(1); }
           30%  { transform: scale(0.82) rotate(-6deg); }
@@ -365,69 +321,16 @@ permalink: "/Sharan/projects/{{ update.Project.Title | slug if update.Project.Ti
           82%  { transform: scale(0.96) rotate(-1deg); }
           100% { transform: scale(1) rotate(0deg); }
         }
-        .plz-heart-btn.just-stamped .plz-heart-svg {
-          animation: heartStampPop 0.55s cubic-bezier(0.34,1.56,0.64,1);
-        }
-         
-        /* ── Count block ── */
-        .plz-count-block {
-          display: flex;
-          flex-direction: column;
-          gap: 4px;
-          z-index: 1;
-        }
-        .plz-count-num {
-          font-family: 'Space Grotesk', sans-serif;
-          font-size: 2.6rem;
-          font-weight: 700;
-          line-height: 1;
-          letter-spacing: -0.04em;
-          color: var(--text-main);
-          transition: color 0.4s ease;
-          min-width: 3ch;
-        }
+        .plz-heart-btn.just-stamped .plz-heart-svg { animation: heartStampPop 0.55s cubic-bezier(0.34,1.56,0.64,1); }
+        .plz-count-block { display: flex; flex-direction: column; gap: 4px; z-index: 1; }
+        .plz-count-num { font-family: 'Space Grotesk', sans-serif; font-size: 2.6rem; font-weight: 700; line-height: 1; letter-spacing: -0.04em; color: var(--text-main); transition: color 0.4s ease; min-width: 3ch; }
         .proj-likes-zone.is-liked .plz-count-num { color: var(--accent-gold); }
-         
-        .plz-count-word {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.62rem;
-          letter-spacing: 3px;
-          text-transform: uppercase;
-          color: var(--text-dim);
-        }
-         
-        /* ── Divider ── */
-        .plz-divider {
-          width: 1px;
-          height: 48px;
-          background: var(--glass-border);
-          flex-shrink: 0;
-          z-index: 1;
-        }
-         
-        /* ── Prompt ── */
+        .plz-count-word { color: rgba(255,255,255,0.55); font-size: 0.68rem; font-family: 'JetBrains Mono', monospace; letter-spacing: 3px; text-transform: uppercase; }
+        .plz-divider { width: 1px; height: 48px; background: var(--glass-border); flex-shrink: 0; z-index: 1; }
         .plz-prompt-block { z-index: 1; flex: 1; }
-        .plz-prompt-line {
-          font-family: 'JetBrains Mono', monospace;
-          font-size: 0.78rem;
-          color: var(--text-dim);
-          letter-spacing: 1.5px;
-          font-style: italic;
-          transition: color 0.4s ease;
-        }
-        .proj-likes-zone.is-liked .plz-prompt-line {
-          color: var(--accent-gold-line);
-        }
-         
-        /* Spark particle */
-        .plz-spark-particle {
-          position: absolute;
-          border-radius: 50%;
-          background: var(--accent-gold);
-          pointer-events: none;
-          opacity: 0;
-        }
-         
+        .plz-prompt-line { font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; color: rgba(255,255,255,0.6); letter-spacing: 1.5px; font-style: italic; transition: color 0.4s ease; }
+        .proj-likes-zone.is-liked .plz-prompt-line { color: var(--accent-gold-line); }
+        .plz-spark-particle { position: absolute; border-radius: 50%; background: var(--accent-gold); pointer-events: none; opacity: 0; }
         @media (max-width: 600px) {
           .proj-likes-zone { padding: 24px 20px; gap: 18px; }
           .plz-count-num { font-size: 2rem; }
@@ -436,11 +339,15 @@ permalink: "/Sharan/projects/{{ update.Project.Title | slug if update.Project.Ti
           .plz-heart-btn { width: 60px; height: 60px; }
         }
 
+        /* ── Discussion ── */
         .proj-discussion { margin-bottom: 80px; border: 1px solid var(--glass-border); border-radius: 16px; overflow: hidden; }
         .proj-discussion-header { padding: 18px 28px; border-bottom: 1px solid var(--glass-border); background: rgba(255,255,255,0.03); display: flex; align-items: center; gap: 14px; }
         .proj-chrome-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--glass-border); }
-        .proj-discussion-title { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 700; color: var(--text-dim); letter-spacing: 3px; text-transform: uppercase; margin: 0; }
-        .proj-discussion-count { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--text-dim); letter-spacing: 1px; }
+        .proj-discussion-title {
+          font-family: 'JetBrains Mono', monospace; font-size: 0.95rem; font-weight: 700;
+          color: rgba(255,255,255,0.85); letter-spacing: 2px; text-transform: uppercase; margin: 0;
+        }
+        .proj-discussion-count { margin-left: auto; font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: rgba(255,255,255,0.55); letter-spacing: 1px; }
         .proj-discussion-body { padding: 28px; }
         .proj-comment-compose { background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 12px; padding: 20px; margin-bottom: 32px; transition: border-color 0.3s ease; }
         .proj-comment-compose:focus-within { border-color: var(--accent-gold-line); }
@@ -448,12 +355,12 @@ permalink: "/Sharan/projects/{{ update.Project.Title | slug if update.Project.Ti
         .proj-compose-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--accent-gold-dim); border: 1px solid var(--accent-gold-line); display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--accent-gold); font-weight: 700; flex-shrink: 0; }
         .proj-compose-fields { flex: 1; min-width: 0; }
         .proj-compose-name { width: 100%; background: transparent; border: none; border-bottom: 1px solid var(--glass-border); color: var(--text-main); font-family: 'Space Grotesk', sans-serif; font-size: 0.88rem; font-weight: 600; padding: 6px 0 8px; margin-bottom: 12px; outline: none; transition: border-color 0.2s ease; }
-        .proj-compose-name::placeholder { color: var(--text-dim); font-weight: 400; }
+        .proj-compose-name::placeholder { color: rgba(255,255,255,0.42); font-weight: 400; }
         .proj-compose-name:focus { border-color: var(--accent-gold-line); }
         .proj-compose-text { width: 100%; background: transparent; border: none; color: rgba(255,255,255,0.75); font-family: 'Inter', sans-serif; font-size: 0.92rem; line-height: 1.65; padding: 0; outline: none; resize: none; min-height: 70px; }
-        .proj-compose-text::placeholder { color: var(--text-dim); }
+        .proj-compose-text::placeholder { color: rgba(255,255,255,0.42); }
         .proj-compose-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--glass-border); }
-        .proj-compose-chars { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--text-dim); letter-spacing: 1px; }
+        .proj-compose-chars { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 1px; }
         .proj-compose-submit { font-family: 'Space Grotesk', sans-serif; font-size: 0.78rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: #0d0a08; background: var(--accent-gold); border: none; border-radius: 100px; padding: 9px 22px; cursor: pointer; transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease; }
         .proj-compose-submit:hover { background: #e0b060; transform: translateY(-1px); box-shadow: 0 6px 18px rgba(212,160,80,0.35); }
         .proj-compose-submit:disabled { opacity: 0.5; cursor: default; transform: none; box-shadow: none; }
@@ -466,14 +373,25 @@ permalink: "/Sharan/projects/{{ update.Project.Title | slug if update.Project.Ti
         .proj-comment-right { min-width: 0; }
         .proj-comment-meta { display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px; }
         .proj-comment-author { font-family: 'Space Grotesk', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text-main); }
-        .proj-comment-date { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.5px; }
+        .proj-comment-date { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; }
         .proj-comment-text { font-size: 0.9rem; line-height: 1.7; color: rgba(255,255,255,0.65); margin: 0 0 12px; }
-        .proj-comment-actions { display: flex; align-items: center; gap: 12px; }
-        .proj-comment-like-btn { display: flex; align-items: center; gap: 5px; font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text-dim); background: none; border: none; cursor: pointer; padding: 3px 8px; border-radius: 6px; transition: color 0.2s ease, background 0.2s ease; letter-spacing: 0.5px; }
-        .proj-comment-like-btn:hover, .proj-comment-like-btn.liked { color: var(--accent-gold); background: var(--accent-gold-dim); }
-        .proj-clheart { font-size: 0.75rem; }
-        .proj-comment-delete-btn { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: rgba(255,100,100,0.45); background: none; border: none; cursor: pointer; padding: 3px 8px; border-radius: 6px; transition: color 0.2s ease, background 0.2s ease; letter-spacing: 0.5px; }
-        .proj-comment-delete-btn:hover { color: #ff7070; background: rgba(255,70,70,0.08); }
+        .proj-comment-actions { display: flex; align-items: center; gap: 16px; }
+        .proj-comment-like-btn, .proj-comment-reply-btn {
+          display: flex; align-items: center; gap: 6px;
+          font-family: 'JetBrains Mono', monospace; font-size: 0.78rem;
+          color: rgba(255,255,255,0.55); background: none; border: none; cursor: pointer;
+          padding: 6px 12px; border-radius: 8px; letter-spacing: 0.5px;
+          transition: color 0.2s ease, background 0.2s ease;
+        }
+        .proj-comment-like-btn:hover, .proj-comment-like-btn.liked, .proj-comment-reply-btn:hover { color: var(--accent-gold); background: var(--accent-gold-dim); }
+        .proj-clheart { font-size: 0.95rem; }
+        .proj-comment-delete-btn {
+          font-family: 'JetBrains Mono', monospace; font-size: 0.76rem;
+          color: rgba(255,110,110,0.6); background: none; border: none; cursor: pointer;
+          padding: 6px 12px; border-radius: 8px; letter-spacing: 0.5px;
+          transition: color 0.2s ease, background 0.2s ease;
+        }
+        .proj-comment-delete-btn:hover { color: #ff7070; background: rgba(255,70,70,0.1); }
         .proj-no-comments { text-align: center; padding: 40px 20px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; letter-spacing: 1.5px; }
         .proj-no-comments::before { content: '// '; color: var(--accent-gold-line); }
         .proj-comments-loading { display: flex; align-items: center; justify-content: center; gap: 6px; padding: 32px; }
@@ -481,6 +399,71 @@ permalink: "/Sharan/projects/{{ update.Project.Title | slug if update.Project.Ti
         .proj-loading-dot:nth-child(2) { animation-delay: 0.2s; }
         .proj-loading-dot:nth-child(3) { animation-delay: 0.4s; }
         @keyframes projLoadPulse { 0%,100% { transform: scale(0.7); opacity: 0.4; } 50% { transform: scale(1.2); opacity: 1; } }
+
+        /* ── Host Badge ── */
+        .host-badge {
+          display: inline-flex; align-items: center; gap: 4px;
+          font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; font-weight: 700;
+          letter-spacing: 1.5px; text-transform: uppercase;
+          color: #0d0a08; background: var(--accent-gold);
+          padding: 3px 9px; border-radius: 6px;
+          box-shadow: 0 0 10px var(--accent-gold-dim);
+        }
+        .host-badge::before { content: '✦'; font-size: 0.62rem; }
+        .proj-comment-item.is-host-comment {
+          background: linear-gradient(90deg, var(--accent-gold-dim), transparent 40%);
+          border-radius: 10px; padding-left: 12px; margin-left: -12px;
+        }
+
+        /* ── Comment Tree ── */
+        .proj-comment-node { display: block; }
+        .proj-comments-list > .proj-comment-node { padding: 22px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .proj-comments-list > .proj-comment-node:last-child { border-bottom: none; }
+        .proj-comment-node .proj-comment-item { padding: 0; border-bottom: none; animation: none; opacity: 1; transform: none; }
+
+        .reply-compose {
+          margin-top: 14px; margin-left: 52px;
+          background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+          border-radius: 10px; padding: 14px; display: none;
+        }
+        .reply-compose.open { display: block; animation: replyOpen 0.25s ease; }
+        @keyframes replyOpen { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+        .reply-compose input, .reply-compose textarea {
+          width: 100%; background: transparent; border: none; color: var(--text-main);
+          font-family: 'Inter', sans-serif; outline: none;
+        }
+        .reply-compose input {
+          border-bottom: 1px solid var(--glass-border); font-family: 'Space Grotesk', sans-serif;
+          font-size: 0.82rem; font-weight: 600; padding: 4px 0 6px; margin-bottom: 10px;
+        }
+        .reply-compose input::placeholder, .reply-compose textarea::placeholder { color: rgba(255,255,255,0.4); }
+        .reply-compose textarea { font-size: 0.86rem; line-height: 1.6; resize: none; min-height: 50px; }
+        .reply-compose-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
+        .reply-compose-cancel {
+          font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: rgba(255,255,255,0.5);
+          background: none; border: none; cursor: pointer; letter-spacing: 1px;
+        }
+        .reply-compose-submit {
+          font-family: 'Space Grotesk', sans-serif; font-size: 0.74rem; font-weight: 700;
+          letter-spacing: 1px; text-transform: uppercase; color: #0d0a08; background: var(--accent-gold);
+          border: none; border-radius: 100px; padding: 7px 18px; cursor: pointer; transition: background 0.2s ease;
+        }
+        .reply-compose-submit:hover { background: #e0b060; }
+
+        .proj-replies-wrap {
+          margin-left: 52px; margin-top: 14px;
+          border-left: 2px solid var(--accent-gold-line);
+          padding-left: 20px;
+          display: flex; flex-direction: column; gap: 18px;
+        }
+        .proj-replies-toggle {
+          display: flex; align-items: center; gap: 6px; margin-left: 52px; margin-top: 12px;
+          font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; color: var(--accent-gold);
+          background: none; border: none; cursor: pointer; letter-spacing: 1px; opacity: 0.9;
+        }
+        .proj-replies-toggle:hover { opacity: 1; }
+        .proj-replies-toggle-arrow { transition: transform 0.25s ease; display: inline-block; }
+        .proj-replies-toggle.expanded .proj-replies-toggle-arrow { transform: rotate(90deg); }
 
         .sp-footer { text-align: center; padding: 40px 24px; border-top: 1px solid var(--glass-border); color: var(--text-dim); font-size: 0.7rem; letter-spacing: 2px; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; max-width: 1100px; margin: 60px auto 0; }
         .sp-footer a { color: var(--accent-gold); text-decoration: none; }
@@ -514,6 +497,13 @@ permalink: "/Sharan/projects/{{ update.Project.Title | slug if update.Project.Ti
                 <div class="sp-nav-sep"></div>
                 <div class="sp-nav-dot"></div>
                 <span class="sp-nav-brand">{{ projTitle }}</span>
+                <div class="sp-nav-project-info" id="navProjectInfo">
+                    <div class="sp-nav-sep"></div>
+                    <span class="sp-nav-project-title">{{ update.Title }}</span>
+                    <span class="sp-nav-project-status" data-status="{{ statusSlug }}">
+                        <span class="sp-nav-project-status-dot"></span>{{ statusName }}
+                    </span>
+                </div>
             </div>
             <div class="sp-nav-right"></div>
         </nav>
@@ -716,6 +706,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { passive: true });
     })();
 
+    (function () {
+        const heroEl = document.querySelector('.upd-hero');
+        const navInfo = document.getElementById('navProjectInfo');
+        if (!heroEl || !navInfo) return;
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => navInfo.classList.toggle('visible', !entry.isIntersecting));
+        }, { rootMargin: '-80px 0px 0px 0px', threshold: 0 });
+        obs.observe(heroEl);
+    })();
+
+    (function () {
+        const hero = document.querySelector('.upd-hero');
+        if (!hero) return;
+        hero.style.willChange = 'opacity, transform';
+        window.addEventListener('scroll', () => {
+            const y = window.scrollY;
+            const fade = Math.max(0, 1 - y / 380);
+            const translate = Math.min(36, y * 0.14);
+            hero.style.opacity = fade;
+            hero.style.transform = `translateY(-${translate}px)`;
+        }, { passive: true });
+    })();
+
     const bar = document.getElementById('progressBar');
     if (bar) {
         window.addEventListener('scroll', () => {
@@ -905,6 +918,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })();
 
     /* ── Comments ── */
+
     let commentLikeCounts = {};
     const nameInput = document.getElementById('commentName');
     const avatarEl  = document.getElementById('composeAvatar');
@@ -916,19 +930,39 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function getOwnerFp(id) { return localStorage.getItem(`comment_owner:${id}`); }
     function getCommentLikeFp(id) { return localStorage.getItem(`comment_liked:${id}`); }
+    function getHostPassphrase() { return localStorage.getItem('hostPassphrase') || null; }
 
-    function renderComment(c) {
+    if (location.search.includes('setuphost')) {
+        const p = prompt('Enter host passphrase:');
+        if (p) { localStorage.setItem('hostPassphrase', p); alert('Host key saved on this device.'); }
+    }
+
+    const expandedThreads = new Set();
+
+    function countDescendants(id, byParent) {
+        const kids = byParent[id] || [];
+        let total = kids.length;
+        kids.forEach(k => { total += countDescendants(k.id, byParent); });
+        return total;
+    }
+
+    function renderCommentNode(c, byParent) {
         const isOwner = !!getOwnerFp(c.id);
         const isLiked = !!getCommentLikeFp(c.id);
         const likes   = commentLikeCounts[c.id] || 0;
-        const div = document.createElement('div');
-        div.className = 'proj-comment-item';
-        div.dataset.id = c.id;
-        div.innerHTML = `
+
+        const node = document.createElement('div');
+        node.className = 'proj-comment-node';
+        node.dataset.id = c.id;
+
+        const item = document.createElement('div');
+        item.className = 'proj-comment-item' + (c.is_host ? ' is-host-comment' : '');
+        item.innerHTML = `
             <div class="proj-comment-avatar">${escHtml(c.name).trim().charAt(0).toUpperCase()}</div>
             <div class="proj-comment-right">
                 <div class="proj-comment-meta">
                     <span class="proj-comment-author">${escHtml(c.name)}</span>
+                    ${c.is_host ? '<span class="host-badge">Host</span>' : ''}
                     <span class="proj-comment-date">${formatDate(c.created_at)}</span>
                 </div>
                 <p class="proj-comment-text">${escHtml(c.body)}</p>
@@ -937,11 +971,47 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="proj-clheart">${isLiked ? '♥' : '♡'}</span>
                         <span class="cl-count">${likes > 0 ? likes : ''}</span>
                     </button>
+                    <button class="proj-comment-reply-btn" data-comment-id="${c.id}">reply</button>
                     ${isOwner ? `<button class="proj-comment-delete-btn" data-comment-id="${c.id}">delete</button>` : ''}
+                </div>
+                <div class="reply-compose" id="reply-compose-${c.id}">
+                    <input type="text" class="reply-name" placeholder="Your name" maxlength="60" />
+                    <textarea class="reply-body" placeholder="Write a reply…" maxlength="1200" rows="2"></textarea>
+                    <div class="reply-compose-footer">
+                        <button class="reply-compose-cancel" data-cancel-for="${c.id}">cancel</button>
+                        <button class="reply-compose-submit" data-reply-to="${c.id}">Reply</button>
+                    </div>
                 </div>
             </div>
         `;
-        return div;
+        node.appendChild(item);
+
+        const children = (byParent[c.id] || []).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+        if (children.length) {
+            const key = String(c.id);
+            const isOpen = expandedThreads.has(key);
+            const totalReplies = countDescendants(c.id, byParent);
+
+            const toggle = document.createElement('button');
+            toggle.className = 'proj-replies-toggle' + (isOpen ? ' expanded' : '');
+            toggle.innerHTML = `<span class="proj-replies-toggle-arrow">▸</span> ${totalReplies} ${totalReplies === 1 ? 'reply' : 'replies'}`;
+            const wrap = document.createElement('div');
+            wrap.className = 'proj-replies-wrap';
+            wrap.style.display = isOpen ? 'block' : 'none';
+            children.forEach(child => wrap.appendChild(renderCommentNode(child, byParent)));
+
+            toggle.addEventListener('click', () => {
+                const open = wrap.style.display !== 'none';
+                wrap.style.display = open ? 'none' : 'block';
+                toggle.classList.toggle('expanded', !open);
+                if (open) { expandedThreads.delete(key); } else { expandedThreads.add(key); }
+            });
+
+            node.appendChild(toggle);
+            node.appendChild(wrap);
+        }
+
+        return node;
     }
 
     async function loadCommentLikes(ids) {
@@ -978,23 +1048,19 @@ document.addEventListener('DOMContentLoaded', () => {
     async function deleteComment(btn) {
         const id = btn.getAttribute('data-comment-id');
         const fp = getOwnerFp(id);
-        if (!fp || !confirm('Delete your comment?')) return;
+        if (!fp || !confirm('Delete this comment?')) return;
         btn.disabled = true;
         try {
             await sb(`project_comments?id=eq.${id}&fingerprint=eq.${fp}`, { method: 'DELETE' });
-            const item = document.querySelector(`.proj-comment-item[data-id="${id}"]`);
-            if (item) { item.style.opacity = '0'; item.style.transform = 'translateY(-8px)'; item.style.transition = 'all 0.3s ease'; setTimeout(() => item.remove(), 320); }
             localStorage.removeItem(`comment_owner:${id}`);
-            updateCommentCount(-1);
+            loadComments();
         } catch(e) { btn.disabled = false; }
     }
 
-    function updateCommentCount(delta) {
+    function updateCommentCount(totalCount) {
         const el = document.getElementById('commentsCount');
         if (!el) return;
-        const cur = parseInt(el.dataset.count || '0') + delta;
-        el.dataset.count = cur;
-        el.textContent = cur <= 0 ? '' : cur === 1 ? '1 entry' : `${cur} entries`;
+        el.textContent = totalCount <= 0 ? '' : totalCount === 1 ? '1 comment' : `${totalCount} comments`;
     }
 
     async function loadComments() {
@@ -1002,22 +1068,51 @@ document.addEventListener('DOMContentLoaded', () => {
         const loader = document.getElementById('commentsLoading');
         if (!list) return;
         try {
-            const data = await sb(`project_comments?project_id=eq.${PROJECT_ID}&order=created_at.desc&select=id,name,body,created_at,fingerprint`);
+            const data = await sb(`project_comments?project_id=eq.${PROJECT_ID}&order=created_at.asc&select=id,name,body,created_at,fingerprint,parent_id,is_host`);
+            commentLikeCounts = {};
             await loadCommentLikes(data.map(c => c.id));
-            if (loader) loader.remove();
-            const el = document.getElementById('commentsCount');
-            if (el) { el.dataset.count = data.length; el.textContent = data.length <= 0 ? '' : data.length === 1 ? '1 entry' : `${data.length} entries`; }
-            if (!data.length) { list.innerHTML = '<p class="proj-no-comments">no comments yet</p>'; }
-            else { data.forEach(c => list.appendChild(renderComment(c))); }
-            list.addEventListener('click', e => {
-                const lb = e.target.closest('.proj-comment-like-btn');
-                if (lb) toggleCommentLike(lb);
-                const db = e.target.closest('.proj-comment-delete-btn');
-                if (db) deleteComment(db);
+
+            const topLevel = data.filter(c => !c.parent_id).sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+            const repliesByParent = {};
+            data.filter(c => c.parent_id).forEach(r => {
+                (repliesByParent[r.parent_id] = repliesByParent[r.parent_id] || []).push(r);
             });
+
+            if (loader) loader.remove();
+            updateCommentCount(data.length);
+
+            list.innerHTML = '';
+            if (!topLevel.length) { list.innerHTML = '<p class="proj-no-comments">no comments yet</p>'; }
+            else { topLevel.forEach(c => list.appendChild(renderCommentNode(c, repliesByParent))); }
         } catch(e) {
-            if (loader) loader.innerHTML = '<span style="font-family:\'JetBrains Mono\',monospace;font-size:0.72rem;color:var(--text-dim)">// could not load entries</span>';
+            list.innerHTML = '<span style="font-family:\'JetBrains Mono\',monospace;font-size:0.72rem;color:var(--text-dim)">// could not load entries</span>';
         }
+    }
+
+    async function submitReply(btn) {
+        const parentId = String(btn.getAttribute('data-reply-to'));
+        const box = document.getElementById(`reply-compose-${parentId}`);
+        const nameEl = box.querySelector('.reply-name');
+        const bodyEl = box.querySelector('.reply-body');
+        const name = nameEl.value.trim();
+        const body = bodyEl.value.trim();
+        if (!name || !body || body.length < 2) return;
+        btn.disabled = true; btn.textContent = '…';
+        try {
+            const fp = crypto.randomUUID();
+            const passphrase = getHostPassphrase();
+            const result = await sb('rpc/post_project_comment', {
+                method: 'POST', prefer: 'return=representation',
+                body: { p_project_id: PROJECT_ID, p_name: name, p_body: body, p_fingerprint: fp, p_parent_id: parentId, p_passphrase: passphrase }
+            });
+            const nc = Array.isArray(result) ? result[0] : result;
+            if (nc?.id) localStorage.setItem(`comment_owner:${nc.id}`, fp);
+            box.classList.remove('open');
+            nameEl.value = ''; bodyEl.value = '';
+            expandedThreads.add(parentId);
+            await loadComments();
+        } catch(e) { alert('Reply failed — try again'); }
+        btn.disabled = false; btn.textContent = 'Reply';
     }
 
     async function submitComment() {
@@ -1033,18 +1128,17 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.disabled = true; btn.textContent = '…';
         try {
             const fp = crypto.randomUUID();
-            const result = await sb('project_comments', { method: 'POST', prefer: 'return=representation', headers: { 'Prefer': 'return=representation' }, body: { project_id: PROJECT_ID, name, body, fingerprint: fp } });
+            const passphrase = getHostPassphrase();
+            const result = await sb('rpc/post_project_comment', {
+                method: 'POST', prefer: 'return=representation',
+                body: { p_project_id: PROJECT_ID, p_name: name, p_body: body, p_fingerprint: fp, p_parent_id: null, p_passphrase: passphrase }
+            });
             const nc = Array.isArray(result) ? result[0] : result;
             if (nc?.id) localStorage.setItem(`comment_owner:${nc.id}`, fp);
             nameInput.value = ''; bodyEl.value = '';
             if (avatarEl) avatarEl.textContent = '?';
             document.getElementById('charCount').textContent = '0 / 1200';
-            const list  = document.getElementById('commentsList');
-            const noMsg = list.querySelector('.proj-no-comments');
-            if (noMsg) noMsg.remove();
-            const fake = { id: nc?.id || crypto.randomUUID(), name, body, created_at: new Date().toISOString() };
-            list.insertBefore(renderComment(fake), list.firstChild);
-            updateCommentCount(1);
+            await loadComments();
         } catch(e) { errEl.textContent = '// post failed — try again'; }
         btn.disabled = false; btn.textContent = 'Post';
     }
@@ -1053,6 +1147,26 @@ document.addEventListener('DOMContentLoaded', () => {
     if (bodyTa) bodyTa.addEventListener('input', () => { document.getElementById('charCount').textContent = `${bodyTa.value.length} / 1200`; });
     const submitTrigger = document.getElementById('submitBtn');
     if (submitTrigger) submitTrigger.addEventListener('click', submitComment);
+
+    const commentsListEl = document.getElementById('commentsList');
+    if (commentsListEl) {
+        commentsListEl.addEventListener('click', e => {
+            const lb = e.target.closest('.proj-comment-like-btn');
+            if (lb) toggleCommentLike(lb);
+            const db = e.target.closest('.proj-comment-delete-btn');
+            if (db) deleteComment(db);
+            const rb = e.target.closest('.proj-comment-reply-btn');
+            if (rb) {
+                const id = rb.getAttribute('data-comment-id');
+                document.querySelectorAll('.reply-compose.open').forEach(el => { if (el.id !== `reply-compose-${id}`) el.classList.remove('open'); });
+                document.getElementById(`reply-compose-${id}`)?.classList.toggle('open');
+            }
+            const cb = e.target.closest('.reply-compose-cancel');
+            if (cb) document.getElementById(`reply-compose-${cb.getAttribute('data-cancel-for')}`)?.classList.remove('open');
+            const sb2 = e.target.closest('.reply-compose-submit');
+            if (sb2) submitReply(sb2);
+        });
+    }
 
     if (document.getElementById('commentsSection')) loadComments();
 });
