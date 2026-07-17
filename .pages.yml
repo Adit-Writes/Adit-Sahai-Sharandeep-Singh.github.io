@@ -364,7 +364,10 @@ content:
                   collection: ProjectStatus
                   field: name
 
-
+              - name: HostOnly
+                type: boolean
+                default: false
+            
               - name: Published
                 type: boolean
                 default: true
@@ -442,7 +445,11 @@ content:
                 options:
                   collection: ProjectStatus
                   field: name
-
+                  
+              - name: HostOnly
+                type: boolean
+                default: false
+            
               - name: Published
                 type: boolean
                 default: true
