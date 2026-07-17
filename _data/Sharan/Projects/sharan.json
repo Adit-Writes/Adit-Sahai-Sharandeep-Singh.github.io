@@ -8,7 +8,7 @@
   "Body": "<p>asd</p>",
   "StartedDate": "2026-07-17",
   "LastUpdated": "2026-07-17",
-  "ViewsCounter": false,
+  "ViewsCounter": true,
   "Comments": true,
   "Likes": true
 }
