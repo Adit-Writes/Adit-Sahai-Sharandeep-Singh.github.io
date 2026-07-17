@@ -1000,6 +1000,69 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
             .proj-gallery-slide img { transition: opacity 0.3s ease; }
             .proj-gallery-track { transition: none; }
         }
+
+        .host-badge {
+          display: inline-flex; align-items: center; gap: 4px;
+          font-family: 'JetBrains Mono', monospace; font-size: 0.58rem; font-weight: 700;
+          letter-spacing: 1.5px; text-transform: uppercase;
+          color: #0d0a08; background: var(--accent-gold);
+          padding: 2px 8px; border-radius: 6px;
+          box-shadow: 0 0 10px var(--accent-gold-dim);
+        }
+        .host-badge::before { content: '✦'; font-size: 0.6rem; }
+        
+        .proj-comment-item.is-host-comment {
+          background: linear-gradient(90deg, var(--accent-gold-dim), transparent 40%);
+          border-radius: 10px; padding-left: 12px; margin-left: -12px;
+        }
+        
+        .proj-comment-reply-btn {
+          font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text-dim);
+          background: none; border: none; cursor: pointer; padding: 3px 8px; border-radius: 6px;
+          letter-spacing: 0.5px; transition: color 0.2s ease, background 0.2s ease;
+        }
+        .proj-comment-reply-btn:hover { color: var(--accent-gold); background: var(--accent-gold-dim); }
+        
+        .reply-compose {
+          margin-top: 14px; margin-left: 52px;
+          background: rgba(255,255,255,0.04); border: 1px solid var(--glass-border);
+          border-radius: 10px; padding: 14px; display: none;
+        }
+        .reply-compose.open { display: block; animation: replyOpen 0.25s ease; }
+        @keyframes replyOpen { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+        .reply-compose input, .reply-compose textarea {
+          width: 100%; background: transparent; border: none; color: var(--text-main);
+          font-family: 'Inter', sans-serif; outline: none;
+        }
+        .reply-compose input {
+          border-bottom: 1px solid var(--glass-border); font-family: 'Space Grotesk', sans-serif;
+          font-size: 0.82rem; font-weight: 600; padding: 4px 0 6px; margin-bottom: 10px;
+        }
+        .reply-compose textarea { font-size: 0.86rem; line-height: 1.6; resize: none; min-height: 50px; }
+        .reply-compose-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 10px; }
+        .reply-compose-cancel {
+          font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; color: var(--text-dim);
+          background: none; border: none; cursor: pointer; letter-spacing: 1px;
+        }
+        .reply-compose-submit {
+          font-family: 'Space Grotesk', sans-serif; font-size: 0.72rem; font-weight: 700;
+          letter-spacing: 1px; text-transform: uppercase; color: #0d0a08; background: var(--accent-gold);
+          border: none; border-radius: 100px; padding: 6px 16px; cursor: pointer; transition: background 0.2s ease;
+        }
+        .reply-compose-submit:hover { background: #e0b060; }
+        
+        .proj-replies-wrap { margin-left: 52px; margin-top: 12px; border-left: 2px solid var(--glass-border); padding-left: 20px; }
+        .proj-replies-toggle {
+          display: flex; align-items: center; gap: 6px; margin-left: 52px; margin-top: 10px;
+          font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--accent-gold);
+          background: none; border: none; cursor: pointer; letter-spacing: 1px; opacity: 0.85;
+        }
+        .proj-replies-toggle:hover { opacity: 1; }
+        .proj-replies-toggle-arrow { transition: transform 0.25s ease; display: inline-block; }
+        .proj-replies-toggle.expanded .proj-replies-toggle-arrow { transform: rotate(90deg); }
+        .proj-reply-item { padding: 14px 0; display: grid; grid-template-columns: 30px 1fr; gap: 12px; }
+        .proj-reply-item .proj-comment-avatar { width: 30px; height: 30px; font-size: 0.72rem; }
+
     </style>
 </head>
 <body>
@@ -1537,6 +1600,7 @@ document.addEventListener('DOMContentLoaded', () => {
     })();
 
     /* ── Comments ── */
+
     let commentLikeCounts = {};
     const nameInput = document.getElementById('commentName');
     const avatarEl  = document.getElementById('composeAvatar');
@@ -1548,19 +1612,48 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function getOwnerFp(id) { return localStorage.getItem(`comment_owner:${id}`); }
     function getCommentLikeFp(id) { return localStorage.getItem(`comment_liked:${id}`); }
-
-    function renderComment(c) {
+    function getHostPassphrase() { return localStorage.getItem('hostPassphrase') || null; }
+    
+    // Type ?setuphost in the URL once, or run in devtools:
+    // localStorage.setItem('hostPassphrase', 'yourphrase')
+    if (location.search.includes('setuphost')) {
+        const p = prompt('Enter host passphrase:');
+        if (p) { localStorage.setItem('hostPassphrase', p); alert('Host key saved on this device.'); }
+    }
+    
+    function renderReply(r) {
+        const isOwner = !!getOwnerFp(r.id);
+        const div = document.createElement('div');
+        div.className = 'proj-reply-item';
+        div.dataset.id = r.id;
+        div.innerHTML = `
+            <div class="proj-comment-avatar">${escHtml(r.name).trim().charAt(0).toUpperCase()}</div>
+            <div class="proj-comment-right">
+                <div class="proj-comment-meta">
+                    <span class="proj-comment-author">${escHtml(r.name)}</span>
+                    ${r.is_host ? '<span class="host-badge">Host</span>' : ''}
+                    <span class="proj-comment-date">${formatDate(r.created_at)}</span>
+                </div>
+                <p class="proj-comment-text">${escHtml(r.body)}</p>
+                ${isOwner ? `<div class="proj-comment-actions"><button class="proj-comment-delete-btn" data-comment-id="${r.id}">delete</button></div>` : ''}
+            </div>
+        `;
+        return div;
+    }
+    
+    function renderComment(c, replies) {
         const isOwner = !!getOwnerFp(c.id);
         const isLiked = !!getCommentLikeFp(c.id);
         const likes   = commentLikeCounts[c.id] || 0;
         const div = document.createElement('div');
-        div.className = 'proj-comment-item';
+        div.className = 'proj-comment-item' + (c.is_host ? ' is-host-comment' : '');
         div.dataset.id = c.id;
         div.innerHTML = `
             <div class="proj-comment-avatar">${escHtml(c.name).trim().charAt(0).toUpperCase()}</div>
             <div class="proj-comment-right">
                 <div class="proj-comment-meta">
                     <span class="proj-comment-author">${escHtml(c.name)}</span>
+                    ${c.is_host ? '<span class="host-badge">Host</span>' : ''}
                     <span class="proj-comment-date">${formatDate(c.created_at)}</span>
                 </div>
                 <p class="proj-comment-text">${escHtml(c.body)}</p>
@@ -1569,13 +1662,45 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span class="proj-clheart">${isLiked ? '♥' : '♡'}</span>
                         <span class="cl-count">${likes > 0 ? likes : ''}</span>
                     </button>
+                    <button class="proj-comment-reply-btn" data-comment-id="${c.id}">reply</button>
                     ${isOwner ? `<button class="proj-comment-delete-btn" data-comment-id="${c.id}">delete</button>` : ''}
+                </div>
+                <div class="reply-compose" id="reply-compose-${c.id}">
+                    <input type="text" class="reply-name" placeholder="Your name" maxlength="60" />
+                    <textarea class="reply-body" placeholder="Write a reply…" maxlength="1200" rows="2"></textarea>
+                    <div class="reply-compose-footer">
+                        <button class="reply-compose-cancel" data-cancel-for="${c.id}">cancel</button>
+                        <button class="reply-compose-submit" data-reply-to="${c.id}">Reply</button>
+                    </div>
                 </div>
             </div>
         `;
-        return div;
+    
+        const wrap = document.createDocumentFragment();
+        wrap.appendChild(div);
+    
+        if (replies && replies.length) {
+            const toggle = document.createElement('button');
+            toggle.className = 'proj-replies-toggle';
+            toggle.innerHTML = `<span class="proj-replies-toggle-arrow">▸</span> ${replies.length} ${replies.length === 1 ? 'reply' : 'replies'}`;
+            const repliesWrap = document.createElement('div');
+            repliesWrap.className = 'proj-replies-wrap';
+            repliesWrap.style.display = 'none';
+            replies.forEach(r => repliesWrap.appendChild(renderReply(r)));
+    
+            toggle.addEventListener('click', () => {
+                const open = repliesWrap.style.display !== 'none';
+                repliesWrap.style.display = open ? 'none' : 'block';
+                toggle.classList.toggle('expanded', !open);
+            });
+    
+            wrap.appendChild(toggle);
+            wrap.appendChild(repliesWrap);
+        }
+    
+        return wrap;
     }
-
+    
     async function loadCommentLikes(ids) {
         if (!ids.length) return;
         try {
@@ -1583,7 +1708,7 @@ document.addEventListener('DOMContentLoaded', () => {
             rows.forEach(r => { commentLikeCounts[r.comment_id] = (commentLikeCounts[r.comment_id] || 0) + 1; });
         } catch(e) {}
     }
-
+    
     async function toggleCommentLike(btn) {
         const id = btn.getAttribute('data-comment-id');
         btn.disabled = true;
@@ -1606,21 +1731,21 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch(e) {}
         btn.disabled = false;
     }
-
+    
     async function deleteComment(btn) {
         const id = btn.getAttribute('data-comment-id');
         const fp = getOwnerFp(id);
-        if (!fp || !confirm('Delete your comment?')) return;
+        if (!fp || !confirm('Delete this comment?')) return;
         btn.disabled = true;
         try {
             await sb(`project_comments?id=eq.${id}&fingerprint=eq.${fp}`, { method: 'DELETE' });
-            const item = document.querySelector(`.proj-comment-item[data-id="${id}"]`);
-            if (item) { item.style.opacity = '0'; item.style.transform = 'translateY(-8px)'; item.style.transition = 'all 0.3s ease'; setTimeout(() => item.remove(), 320); }
+            const item = document.querySelector(`[data-id="${id}"]`);
+            if (item) { item.style.opacity = '0'; item.style.transition = 'opacity 0.3s ease'; setTimeout(() => item.remove(), 320); }
             localStorage.removeItem(`comment_owner:${id}`);
             updateCommentCount(-1);
         } catch(e) { btn.disabled = false; }
     }
-
+    
     function updateCommentCount(delta) {
         const el = document.getElementById('commentsCount');
         if (!el) return;
@@ -1628,30 +1753,73 @@ document.addEventListener('DOMContentLoaded', () => {
         el.dataset.count = cur;
         el.textContent = cur <= 0 ? '' : cur === 1 ? '1 entry' : `${cur} entries`;
     }
-
+    
     async function loadComments() {
         const list   = document.getElementById('commentsList');
         const loader = document.getElementById('commentsLoading');
         if (!list) return;
         try {
-            const data = await sb(`project_comments?project_id=eq.${PROJECT_ID}&order=created_at.desc&select=id,name,body,created_at,fingerprint`);
-            await loadCommentLikes(data.map(c => c.id));
+            const data = await sb(`project_comments?project_id=eq.${PROJECT_ID}&order=created_at.asc&select=id,name,body,created_at,fingerprint,parent_id,is_host`);
+            await loadCommentLikes(data.filter(c => !c.parent_id).map(c => c.id));
+    
+            const topLevel = data.filter(c => !c.parent_id).sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
+            const repliesByParent = {};
+            data.filter(c => c.parent_id).forEach(r => {
+                (repliesByParent[r.parent_id] = repliesByParent[r.parent_id] || []).push(r);
+            });
+    
             if (loader) loader.remove();
             const el = document.getElementById('commentsCount');
-            if (el) { el.dataset.count = data.length; el.textContent = data.length <= 0 ? '' : data.length === 1 ? '1 entry' : `${data.length} entries`; }
-            if (!data.length) { list.innerHTML = '<p class="proj-no-comments">no comments yet</p>'; }
-            else { data.forEach(c => list.appendChild(renderComment(c))); }
+            if (el) { el.dataset.count = topLevel.length; el.textContent = topLevel.length <= 0 ? '' : topLevel.length === 1 ? '1 entry' : `${topLevel.length} entries`; }
+            if (!topLevel.length) { list.innerHTML = '<p class="proj-no-comments">no comments yet</p>'; }
+            else { topLevel.forEach(c => list.appendChild(renderComment(c, repliesByParent[c.id]))); }
+    
             list.addEventListener('click', e => {
                 const lb = e.target.closest('.proj-comment-like-btn');
                 if (lb) toggleCommentLike(lb);
                 const db = e.target.closest('.proj-comment-delete-btn');
                 if (db) deleteComment(db);
+                const rb = e.target.closest('.proj-comment-reply-btn');
+                if (rb) {
+                    const id = rb.getAttribute('data-comment-id');
+                    document.querySelectorAll('.reply-compose.open').forEach(el => { if (el.id !== `reply-compose-${id}`) el.classList.remove('open'); });
+                    document.getElementById(`reply-compose-${id}`)?.classList.toggle('open');
+                }
+                const cb = e.target.closest('.reply-compose-cancel');
+                if (cb) document.getElementById(`reply-compose-${cb.getAttribute('data-cancel-for')}`)?.classList.remove('open');
+                const sb2 = e.target.closest('.reply-compose-submit');
+                if (sb2) submitReply(sb2);
             });
         } catch(e) {
             if (loader) loader.innerHTML = '<span style="font-family:\'JetBrains Mono\',monospace;font-size:0.72rem;color:var(--text-dim)">// could not load entries</span>';
         }
     }
-
+    
+    async function submitReply(btn) {
+        const parentId = btn.getAttribute('data-reply-to');
+        const box = document.getElementById(`reply-compose-${parentId}`);
+        const nameEl = box.querySelector('.reply-name');
+        const bodyEl = box.querySelector('.reply-body');
+        const name = nameEl.value.trim();
+        const body = bodyEl.value.trim();
+        if (!name || !body || body.length < 2) return;
+        btn.disabled = true; btn.textContent = '…';
+        try {
+            const fp = crypto.randomUUID();
+            const passphrase = getHostPassphrase();
+            const result = await sb('rpc/post_project_comment', {
+                method: 'POST', prefer: 'return=representation',
+                body: { p_project_id: PROJECT_ID, p_name: name, p_body: body, p_fingerprint: fp, p_parent_id: parentId, p_passphrase: passphrase }
+            });
+            const nc = Array.isArray(result) ? result[0] : result;
+            if (nc?.id) localStorage.setItem(`comment_owner:${nc.id}`, fp);
+            box.classList.remove('open');
+            nameEl.value = ''; bodyEl.value = '';
+            loadComments(); // simplest reliable refresh so counts/threads stay correct
+        } catch(e) { alert('Reply failed — try again'); }
+        btn.disabled = false; btn.textContent = 'Reply';
+    }
+    
     async function submitComment() {
         const bodyEl = document.getElementById('commentBody');
         const errEl  = document.getElementById('commentError');
@@ -1665,27 +1833,27 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.disabled = true; btn.textContent = '…';
         try {
             const fp = crypto.randomUUID();
-            const result = await sb('project_comments', { method: 'POST', prefer: 'return=representation', headers: { 'Prefer': 'return=representation' }, body: { project_id: PROJECT_ID, name, body, fingerprint: fp } });
+            const passphrase = getHostPassphrase();
+            const result = await sb('rpc/post_project_comment', {
+                method: 'POST', prefer: 'return=representation',
+                body: { p_project_id: PROJECT_ID, p_name: name, p_body: body, p_fingerprint: fp, p_parent_id: null, p_passphrase: passphrase }
+            });
             const nc = Array.isArray(result) ? result[0] : result;
             if (nc?.id) localStorage.setItem(`comment_owner:${nc.id}`, fp);
             nameInput.value = ''; bodyEl.value = '';
             if (avatarEl) avatarEl.textContent = '?';
             document.getElementById('charCount').textContent = '0 / 1200';
-            const list  = document.getElementById('commentsList');
-            const noMsg = list.querySelector('.proj-no-comments');
-            if (noMsg) noMsg.remove();
-            const fake = { id: nc?.id || crypto.randomUUID(), name, body, created_at: new Date().toISOString() };
-            list.insertBefore(renderComment(fake), list.firstChild);
+            loadComments();
             updateCommentCount(1);
         } catch(e) { errEl.textContent = '// post failed — try again'; }
         btn.disabled = false; btn.textContent = 'Post';
     }
-
+    
     const bodyTa = document.getElementById('commentBody');
     if (bodyTa) bodyTa.addEventListener('input', () => { document.getElementById('charCount').textContent = `${bodyTa.value.length} / 1200`; });
     const submitTrigger = document.getElementById('submitBtn');
     if (submitTrigger) submitTrigger.addEventListener('click', submitComment);
-
+    
     if (document.getElementById('commentsSection')) loadComments();
 });
 
