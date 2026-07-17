@@ -1530,6 +1530,8 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
     </footer>
 
     <script src="/Adit-Sahai-Sharandeep-Singh.github.io/MainCode/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
 function scrollToSection(id) {
     const el = document.getElementById(id);
@@ -1625,6 +1627,30 @@ document.addEventListener('DOMContentLoaded', () => {
         const text = await res.text();
         return text ? JSON.parse(text) : null;
     }
+
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+supabaseClient
+  .channel(`realtime_${PROJECT_ID}`)
+  .on('postgres_changes',
+      { event: '*', schema: 'public', table: 'project_comments', filter: `project_id=eq.${PROJECT_ID}` },
+      () => { if (document.getElementById('commentsSection')) loadComments(); }
+  )
+  .on('postgres_changes',
+      { event: '*', schema: 'public', table: 'project_comment_likes' },
+      () => { if (document.getElementById('commentsSection')) loadComments(); }
+  )
+  .on('postgres_changes',
+      { event: '*', schema: 'public', table: 'project_likes', filter: `project_id=eq.${PROJECT_ID}` },
+      async () => {
+        if (!document.getElementById('likesSection')) return;
+        try {
+          const all = await sb(`project_likes?project_id=eq.${PROJECT_ID}&select=id`);
+          document.getElementById('likeCount').textContent = all.length;
+        } catch (e) {}
+      }
+  )
+  .subscribe();
 
     /* expose sb globally for the likes zone IIFE */
     window._sb = sb;
