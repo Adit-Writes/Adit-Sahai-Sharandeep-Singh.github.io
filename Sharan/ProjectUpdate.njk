@@ -932,11 +932,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function getCommentLikeFp(id) { return localStorage.getItem(`comment_liked:${id}`); }
     function getHostPassphrase() { return localStorage.getItem('hostPassphrase') || null; }
 
-    if (location.search.includes('setuphost')) {
-        const p = prompt('Enter host passphrase:');
-        if (p) { localStorage.setItem('hostPassphrase', p); alert('Host key saved on this device.'); }
-    }
-
     const expandedThreads = new Set();
 
     function countDescendants(id, byParent) {
