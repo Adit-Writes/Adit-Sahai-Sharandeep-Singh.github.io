@@ -473,7 +473,7 @@ permalink: /Adit/AditPage.html
 
    <section class="article-feed">
         {% for article in Adit.Articles %}
-        {% if article.Published %}
+        {% if article.Published and not article.HostOnly %}
 
         {# article.Topic is already resolved to the category display name by _data/Adit/Articles.js #}
         {% set firstPic = article.Pics[0] if article.Pics and article.Pics.length > 0 else null %}
