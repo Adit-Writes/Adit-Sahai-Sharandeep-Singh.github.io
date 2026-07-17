@@ -964,7 +964,6 @@ permalink: /Sharan/SharanPage.html
                   <span class="views-count">—</span>
                 </span>
                 {% endif %}
-              </span>
             </div>
             <span class="sp-card-link">
               view
@@ -1316,113 +1315,93 @@ permalink: /Sharan/SharanPage.html
     // SUPABASE LIKE COUNTS and View Counter— batch fetch, hydrate all cards
     // ══════════════════════════════════════════════════════════════
     (function () {
-      const SUPABASE_URL = 'https://mpeqripywqiotselpyut.supabase.co';
-      const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wZXFyaXB5d3Fpb3RzZWxweXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTE4MzUsImV4cCI6MjA5Njg4NzgzNX0.1lTHIY3M1xk5FmnTC2YMbSMNpi7vhWDuGGXUSNkwkm8';
+  const SUPABASE_URL = 'https://mpeqripywqiotselpyut.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wZXFyaXB5d3Fpb3RzZWxweXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTE4MzUsImV4cCI6MjA5Njg4NzgzNX0.1lTHIY3M1xk5FmnTC2YMbSMNpi7vhWDuGGXUSNkwkm8';
 
-      const pills = Array.from(document.querySelectorAll('.sp-card-like-pill[data-slug]'));
-      if (!pills.length) return;
+  const likePills  = Array.from(document.querySelectorAll('.sp-card-like-pill[data-slug]'));
+  const viewsPills = Array.from(document.querySelectorAll('.sp-card-views-pill[data-slug]'));
 
-        async function fetchViewCounts() {
-    const slugs  = pills.map(p => p.dataset.slug);
+  // ── Views ──
+  if (viewsPills.length) {
+    (async function () {
+      try {
+        const slugs  = viewsPills.map(p => p.dataset.slug);
+        const inList = slugs.map(s => `"${s}"`).join(',');
+        const res = await fetch(
+          `${SUPABASE_URL}/rest/v1/project_views?project_id=in.(${inList})&select=project_id`,
+          { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+        );
+        if (!res.ok) throw new Error('Supabase error');
+        const rows = await res.json();
+        const counts = {};
+        rows.forEach(r => { counts[r.project_id] = (counts[r.project_id] || 0) + 1; });
+        viewsPills.forEach(pill => {
+          pill.querySelector('.views-count').textContent = counts[pill.dataset.slug] || 0;
+          pill.classList.remove('loading');
+        });
+      } catch (err) {
+        viewsPills.forEach(pill => {
+          pill.classList.remove('loading');
+          pill.querySelector('.views-count').textContent = '';
+        });
+        console.warn('Could not load view counts:', err);
+      }
+    })();
+  }
+
+  // ── Likes ──
+  if (!likePills.length) return;
+
+  function getLikedSlugs() {
+    const set = new Set();
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith('likedProject:')) set.add(k.slice(13));
+    }
+    return set;
+  }
+
+  async function fetchLikeCounts() {
+    const slugs  = likePills.map(p => p.dataset.slug);
     const inList = slugs.map(s => `"${s}"`).join(',');
     const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/project_views?project_id=in.(${inList})&select=project_id`,
-      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` } }
+      `${SUPABASE_URL}/rest/v1/project_likes?project_id=in.(${inList})&select=project_id`,
+      { headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' } }
     );
     if (!res.ok) throw new Error('Supabase error');
     return await res.json();
   }
 
-  fetchViewCounts().then(rows => {
+  fetchLikeCounts().then(rows => {
     const counts = {};
     rows.forEach(r => { counts[r.project_id] = (counts[r.project_id] || 0) + 1; });
+    const likedSlugs = getLikedSlugs();
 
-    pills.forEach(pill => {
-      const slug  = pill.dataset.slug;
-      const count = counts[slug] || 0;
-      pill.querySelector('.views-count').textContent = count;
+    likePills.forEach((pill, i) => {
+      const slug    = pill.dataset.slug;
+      const count   = counts[slug] || 0;
+      const isLiked = likedSlugs.has(slug);
+      const heart   = pill.querySelector('.pill-heart');
+      const counter = pill.querySelector('.pill-count');
+      if (heart)   heart.textContent   = isLiked ? '♥' : '♡';
+      if (counter) counter.textContent = count > 0 ? count : '';
       pill.classList.remove('loading');
+      if (isLiked) pill.classList.add('is-liked');
+      const card = pill.closest('.sp-project-card');
+      if (card && isLiked) card.classList.add('is-liked-card');
+      setTimeout(() => { pill.classList.add('just-loaded'); setTimeout(() => pill.classList.remove('just-loaded'), 600); }, i * 35);
     });
+
+    if (window._spApplyFilters) window._spApplyFilters();
   }).catch(err => {
-    pills.forEach(pill => {
+    likePills.forEach(pill => {
       pill.classList.remove('loading');
-      pill.querySelector('.views-count').textContent = '';
+      const counter = pill.querySelector('.pill-count');
+      if (counter) counter.textContent = '';
     });
-    console.warn('Could not load view counts:', err);
+    console.warn('Could not load like counts:', err);
   });
 })();
-    
-      // Determine which slugs are locally liked
-      function getLikedSlugs() {
-        const set = new Set();
-        for (let i = 0; i < localStorage.length; i++) {
-          const k = localStorage.key(i);
-          if (k && k.startsWith('likedProject:')) set.add(k.slice(13));
-        }
-        return set;
-      }
-
-      async function fetchLikeCounts() {
-        const slugs  = pills.map(p => p.dataset.slug);
-        const inList = slugs.map(s => `"${s}"`).join(',');
-
-        const res = await fetch(
-          `${SUPABASE_URL}/rest/v1/project_likes?project_id=in.(${inList})&select=project_id`,
-          {
-            headers: {
-              'apikey': SUPABASE_KEY,
-              'Authorization': `Bearer ${SUPABASE_KEY}`,
-              'Content-Type': 'application/json'
-            }
-          }
-        );
-        if (!res.ok) throw new Error('Supabase error');
-        return await res.json();
-      }
-
-      fetchLikeCounts().then(rows => {
-        // Build count map
-        const counts = {};
-        rows.forEach(r => { counts[r.project_id] = (counts[r.project_id] || 0) + 1; });
-
-        const likedSlugs = getLikedSlugs();
-
-        pills.forEach((pill, i) => {
-          const slug  = pill.dataset.slug;
-          const count = counts[slug] || 0;
-          const isLiked = likedSlugs.has(slug);
-
-          const heart   = pill.querySelector('.pill-heart');
-          const counter = pill.querySelector('.pill-count');
-
-          // Update content
-          if (heart)   heart.textContent   = isLiked ? '♥' : '♡';
-          if (counter) counter.textContent = count > 0 ? count : '';
-
-          // Update state classes
-          pill.classList.remove('loading');
-          if (isLiked) pill.classList.add('is-liked');
-
-          // Also mark the parent card
-          const card = pill.closest('.sp-project-card');
-          if (card && isLiked) card.classList.add('is-liked-card');
-
-          // Stagger the pop-in animation slightly
-          setTimeout(() => { pill.classList.add('just-loaded'); setTimeout(() => pill.classList.remove('just-loaded'), 600); }, i * 35);
-        });
-
-        // Re-run filter in case "liked" filter was somehow pre-selected
-        if (window._spApplyFilters) window._spApplyFilters();
-      }).catch(err => {
-        // On error, just clear the loading state silently
-        pills.forEach(pill => {
-          pill.classList.remove('loading');
-          const counter = pill.querySelector('.pill-count');
-          if (counter) counter.textContent = '';
-        });
-        console.warn('Could not load like counts:', err);
-      });
-    })();
 
     // ── Link card icons ──
     (function () {
