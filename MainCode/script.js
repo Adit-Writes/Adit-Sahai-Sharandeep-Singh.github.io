@@ -1429,14 +1429,37 @@ function initActiveNav() {
 //  HOST MODE
 // ============================================================
 
-function checkHostSetup() {
-  if (location.search.includes('setuphost')) {
-    const p = prompt('Enter host passphrase:');
-    if (p) {
+async function checkHostSetup() {
+  if (!location.search.includes('setuphost')) return;
+
+  const p = prompt('Enter host passphrase:');
+  if (!p) return;
+
+  try {
+    const res = await fetch(
+      'https://mpeqripywqiotselpyut.supabase.co/rest/v1/rpc/verify_host_passphrase',
+      {
+        method: 'POST',
+        headers: {
+          'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wZXFyaXB5d3Fpb3RzZWxweXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTE4MzUsImV4cCI6MjA5Njg4NzgzNX0.1lTHIY3M1xk5FmnTC2YMbSMNpi7vhWDuGGXUSNkwkm8',
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wZXFyaXB5d3Fpb3RzZWxweXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTE4MzUsImV4cCI6MjA5Njg4NzgzNX0.1lTHIY3M1xk5FmnTC2YMbSMNpi7vhWDuGGXUSNkwkm8',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ p_passphrase: p })
+      }
+    );
+    const isValid = await res.json();
+
+    if (isValid === true) {
       localStorage.setItem('hostPassphrase', p);
       alert('Host key saved on this device.');
-      location.href = location.pathname; // strip ?setuphost from the URL
+      location.href = location.pathname;
+    } else {
+      alert('Incorrect passphrase.');
     }
+  } catch (e) {
+    console.error('Host verification failed', e);
+    alert('Something went wrong verifying the passphrase.');
   }
 }
 
@@ -1562,9 +1585,10 @@ function initScrollVelocityWarp() {
 
 document.addEventListener('DOMContentLoaded', () => {
   // Host mode — check this first
-  checkHostSetup();
-  checkHostMode();
-  initExitHostMode();
+    checkHostSetup().then(() => {
+      checkHostMode();
+      initExitHostMode();
+    });
   
   // Ambient particles first (runs on all pages)
   initAmbientParticles();
