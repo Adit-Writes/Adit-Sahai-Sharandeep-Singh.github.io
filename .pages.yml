@@ -295,7 +295,11 @@ content:
           - name: Links
             type: string
             list: true
-
+            
+          - name: ViewsCounter
+            type: boolean
+            default: true
+            
           - name: Comments
             type: boolean
             default: true
