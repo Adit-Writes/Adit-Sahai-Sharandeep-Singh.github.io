@@ -1339,7 +1339,7 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
             <div class="upd-timeline">
               {% set anyUpdate = false %}
               {% for update in Sharan.ProjectUpdates %}
-              {% if update.Published %}
+              {% if update.Published and not update.HostOnly %}
                 {% if update.Project and update.Project.Title %}
                   {% set updProjTitle = update.Project.Title %}
                 {% else %}
@@ -1408,6 +1408,39 @@ permalink: "/Sharan/projects/{{ project.Title | slug }}/index.html"
               <p class="upd-empty">// no updates posted yet.</p>
               {% endif %}
             </div>
+
+        {% set hostOnlyUpdates = [] %}
+        {% for update in Sharan.ProjectUpdates %}
+          {% if update.HostOnly %}
+            {% if update.Project and update.Project.Title %}
+              {% set uProjTitle = update.Project.Title %}
+            {% else %}
+              {% set uProjRaw = update.Project | string %}
+              {% set uProjTitle = uProjRaw | replace("_data/Sharan/Projects/","") | replace(".json","") | replace("-"," ") | trim %}
+            {% endif %}
+            {% if (uProjTitle | slug) == projectSlug %}
+              {% set hostOnlyUpdates = (hostOnlyUpdates.push(update), hostOnlyUpdates) %}
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+
+        {% if hostOnlyUpdates.length > 0 %}
+        <div id="hostOnlyPanel" style="display:none; margin-top: 20px;">
+            <div class="proj-section-label"><span>Host Only Updates</span></div>
+            <div class="files-grid">
+                {% for update in hostOnlyUpdates %}
+                <a href="/Adit-Sahai-Sharandeep-Singh.github.io/Sharan/projects/{{ projectSlug }}/updates/{{ update.Title | slug }}/" class="file-card">
+                    <div class="file-icon type-other">🔒</div>
+                    <div class="file-info">
+                        <span class="file-name">{{ update.Title }}</span>
+                        <span class="file-type-label">{% if update.Published %}Ready to publish{% else %}Draft{% endif %}</span>
+                    </div>
+                    <span class="file-arrow">→</span>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
         </div>
 
         <!-- ── Likes ──────────────────────────────────────────────── -->
@@ -1756,11 +1789,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function getOwnerFp(id) { return localStorage.getItem(`comment_owner:${id}`); }
     function getCommentLikeFp(id) { return localStorage.getItem(`comment_liked:${id}`); }
     function getHostPassphrase() { return localStorage.getItem('hostPassphrase') || null; }
-
-    if (location.search.includes('setuphost')) {
-        const p = prompt('Enter host passphrase:');
-        if (p) { localStorage.setItem('hostPassphrase', p); alert('Host key saved on this device.'); }
-    }
 
     // Tracks which comment threads are currently expanded, so re-renders don't collapse them.
     const expandedThreads = new Set();
