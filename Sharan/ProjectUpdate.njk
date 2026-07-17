@@ -703,6 +703,7 @@ permalink: "/Sharan/projects/{{ update.Project.Title | slug if update.Project.Ti
     </footer>
 
     <script src="/Adit-Sahai-Sharandeep-Singh.github.io/MainCode/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
@@ -795,6 +796,30 @@ document.addEventListener('DOMContentLoaded', () => {
         const text = await res.text();
         return text ? JSON.parse(text) : null;
     }
+
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        supabaseClient
+          .channel(`realtime_article_${ARTICLE_ID}`)
+          .on('postgres_changes',
+              { event: '*', schema: 'public', table: 'article_comments', filter: `article_id=eq.${ARTICLE_ID}` },
+              () => { if (document.getElementById('commentsSection')) loadComments(); }
+          )
+          .on('postgres_changes',
+              { event: '*', schema: 'public', table: 'comment_likes' },
+              () => { if (document.getElementById('commentsSection')) loadComments(); }
+          )
+          .on('postgres_changes',
+              { event: '*', schema: 'public', table: 'article_likes', filter: `article_id=eq.${ARTICLE_ID}` },
+              async () => {
+                if (!document.getElementById('likesSection')) return;
+                try {
+                  const all = await sb(`article_likes?article_id=eq.${ARTICLE_ID}&select=id`);
+                  setLikeCount(all.length);
+                } catch (e) {}
+              }
+          )
+          .subscribe();
 
     (function initGallery() {
         const track   = document.getElementById('galleryTrack');
