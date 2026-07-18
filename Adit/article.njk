@@ -876,6 +876,14 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
         .replies-toggle:hover { opacity: 1; }
         .replies-toggle-arrow { transition: transform 0.25s ease; display: inline-block; }
         .replies-toggle.expanded .replies-toggle-arrow { transform: rotate(90deg); }
+
+    .meta-views-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 0.85rem; color: rgba(255,255,255,0.55); letter-spacing: 0.3px;
+    }
+    .meta-views-pill svg { width: 14px; height: 14px; opacity: 0.65; flex-shrink: 0; }
+    .meta-views-pill .views-num { color: rgba(255,255,255,0.75); font-weight: 500; min-width: 1ch; }
+
     </style>
 </head>
 <body>
@@ -930,6 +938,16 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
                 {% if article.LastUpdated %}
                 <span class="meta-dot"></span>
                 <span class="date">Updated {{ article.LastUpdated }}</span>
+                {% endif %}
+                {% if article.ViewsCounter %}
+                <span class="meta-dot"></span>
+                <span class="meta-views-pill" id="viewsPill">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                    <span class="views-num" id="viewsCount">—</span> views
+                </span>
                 {% endif %}
             </div>
             <h1 class="article-main-title reveal-heading">{{ article.Title }}</h1>
@@ -1168,6 +1186,8 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
     </footer>
 
     <script src="/Adit-Sahai-Sharandeep-Singh.github.io/MainCode/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
 
@@ -1307,6 +1327,49 @@ permalink: "/Adit/articles/{{ article.Title | slug }}/index.html"
         const LIKE_KEY = `liked:${ARTICLE_ID}`;
         const likeBtn = document.getElementById('likeBtn');
         const likeCountEl = document.getElementById('likeCount');
+
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        
+        supabaseClient
+          .channel(`realtime_${ARTICLE_ID}`)
+          .on('postgres_changes',
+              { event: '*', schema: 'public', table: 'article_comments', filter: `article_id=eq.${ARTICLE_ID}` },
+              () => { if (document.getElementById('commentsSection')) loadComments(); }
+          )
+          .on('postgres_changes',
+              { event: '*', schema: 'public', table: 'comment_likes' },
+              () => { if (document.getElementById('commentsSection')) loadComments(); }
+          )
+          .on('postgres_changes',
+              { event: '*', schema: 'public', table: 'article_likes', filter: `article_id=eq.${ARTICLE_ID}` },
+              async () => {
+                if (!document.getElementById('likesSection')) return;
+                try {
+                  const all = await sb(`article_likes?article_id=eq.${ARTICLE_ID}&select=id`);
+                  setLikeCount(all.length);
+                } catch (e) {}
+              }
+          )
+          .subscribe();
+
+        const VIEW_KEY = `viewedArticle:${ARTICLE_ID}`;
+        (function initViewsCounter() {
+            const pill = document.getElementById('viewsPill');
+            if (!pill) return;
+            (async function register() {
+                try {
+                    let fp = localStorage.getItem(VIEW_KEY);
+                    if (!fp) { fp = crypto.randomUUID(); localStorage.setItem(VIEW_KEY, fp); }
+                    const result = await sb('rpc/register_article_view', {
+                        method: 'POST', prefer: 'return=representation',
+                        body: { p_article_id: ARTICLE_ID, p_fingerprint: fp }
+                    });
+                    const row = Array.isArray(result) ? result[0] : result;
+                    const countEl = document.getElementById('viewsCount');
+                    if (countEl && row) countEl.textContent = row.unique_views;
+                } catch (e) { console.warn('View registration failed', e); }
+            })();
+        })();
 
         async function loadLikes() {
             if (!likeBtn) return;
