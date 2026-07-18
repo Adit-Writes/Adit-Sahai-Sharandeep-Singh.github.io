@@ -349,16 +349,13 @@ permalink: /Adit/AditPage.html
             }
         }
 
-        .section-title-large {
-    color: #fff; /* fallback paint layer under the clip, if not already present */
-}
-@supports not (-webkit-background-clip: text) {
-    .section-title-large {
-        background: none;
-        -webkit-text-fill-color: rgba(255,255,255,0.95);
-        color: rgba(255,255,255,0.95);
-    }
-}
+        .section-title-large,
+        .section-title-large > * {
+          background: inherit;
+          -webkit-background-clip: inherit;
+          background-clip: inherit;
+          -webkit-text-fill-color: inherit;
+        }
         
     </style>
 </head>
