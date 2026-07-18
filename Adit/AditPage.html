@@ -348,6 +348,18 @@ permalink: /Adit/AditPage.html
                 border-bottom: 1px solid var(--glass-border);
             }
         }
+
+        .section-title-large {
+    color: #fff; /* fallback paint layer under the clip, if not already present */
+}
+@supports not (-webkit-background-clip: text) {
+    .section-title-large {
+        background: none;
+        -webkit-text-fill-color: rgba(255,255,255,0.95);
+        color: rgba(255,255,255,0.95);
+    }
+}
+        
     </style>
 </head>
 <body>
@@ -876,7 +888,6 @@ permalink: /Adit/AditPage.html
     }
 
     // ── Init ─────────────────────────────────────────────────────
-    loadIndexLikes();
     applyLikedBadges();
     initCategoryFilter();
     initNavSearch();
