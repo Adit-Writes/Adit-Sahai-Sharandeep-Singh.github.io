@@ -519,6 +519,11 @@ permalink: /Adit/AditPage.html
                     <span class="index-like-count" data-slug="{{ article.Title | slug }}">0 likes</span>
                     {% endif %}
 
+                    {% if article.ViewsCounter %}
+                    <span class="meta-sep"></span>
+                    <span class="index-view-count" data-slug="{{ article.Title | slug }}">— views</span>
+                    {% endif %}
+
                     <span class="meta-sep liked-badge-sep" style="display:none"></span>
                     <span class="liked-badge" data-slug="{{ article.Title | slug }}">
                         <span class="liked-badge-heart">♥</span> Liked
@@ -650,7 +655,28 @@ permalink: /Adit/AditPage.html
             console.error('Failed to load likes for homepage', e);
         }
     }
-
+        
+        async function loadIndexViews() {
+            try {
+                const res = await fetch(`${SUPABASE_URL}/rest/v1/article_views?select=article_id`, {
+                    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+                });
+                if (!res.ok) return;
+                const views = await res.json();
+        
+                const viewCounts = {};
+                views.forEach(v => { viewCounts[v.article_id] = (viewCounts[v.article_id] || 0) + 1; });
+        
+                document.querySelectorAll('.index-view-count').forEach(el => {
+                    const slug  = el.getAttribute('data-slug');
+                    const count = viewCounts[slug] || 0;
+                    el.textContent = count === 1 ? '1 view' : `${count} views`;
+                });
+            } catch (e) {
+                console.error('Failed to load views for homepage', e);
+            }
+        }
+        
     // ── Liked badges ─────────────────────────────────────────────
     function applyLikedBadges() {
         const likedSlugs = new Set(getLikedSlugs());
@@ -855,6 +881,8 @@ permalink: /Adit/AditPage.html
     initCategoryFilter();
     initNavSearch();
     initInlineSearch();
+    loadIndexLikes();
+    loadIndexViews();    
     </script>
 
     <script>
