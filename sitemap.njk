@@ -1,1 +1,82 @@
 
+---
+permalink: /sitemap.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  {%- set baseUrl = "https://adit-writes.github.io/Adit-Sahai-Sharandeep-Singh.github.io" -%}
+
+  <!-- ══ Static pages ══════════════════════════════════════ -->
+  <url>
+    <loc>{{ baseUrl }}/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>{{ baseUrl }}/Adit/AditPage.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>{{ baseUrl }}/Sharan/SharanPage.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- ══ Adit's Articles ═══════════════════════════════════ -->
+  {%- for article in Adit.Articles -%}
+  {%- if article.Published and not article.HostOnly -%}
+  <url>
+    <loc>{{ baseUrl }}/Adit/articles/{{ article.Title | slug }}/</loc>
+    {%- if article.LastUpdated %}
+    <lastmod>{{ article.LastUpdated | date("YYYY-MM-DD") }}</lastmod>
+    {%- elif article.ReleaseDate %}
+    <lastmod>{{ article.ReleaseDate | date("YYYY-MM-DD") }}</lastmod>
+    {%- endif %}
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  {%- endif -%}
+  {%- endfor -%}
+
+  <!-- ══ Sharan's Projects ═════════════════════════════════ -->
+  {%- for project in Sharan.Projects -%}
+  {%- if project.Published and not project.HostOnly -%}
+  <url>
+    <loc>{{ baseUrl }}/Sharan/projects/{{ project.Title | slug }}/</loc>
+    {%- if project.LastUpdated %}
+    <lastmod>{{ project.LastUpdated | date("YYYY-MM-DD") }}</lastmod>
+    {%- elif project.StartedDate %}
+    <lastmod>{{ project.StartedDate | date("YYYY-MM-DD") }}</lastmod>
+    {%- endif %}
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  {%- endif -%}
+  {%- endfor -%}
+
+  <!-- ══ Project Updates ═══════════════════════════════════ -->
+  {%- for update in Sharan.ProjectUpdates -%}
+  {%- if update.Published and not update.HostOnly -%}
+  {%- if update.Project and update.Project.Title -%}
+    {%- set updProjTitle = update.Project.Title -%}
+  {%- else -%}
+    {%- set updProjRaw = update.Project | string -%}
+    {%- set updProjTitle = updProjRaw | replace("_data/Sharan/Projects/","") | replace(".json","") | replace("-"," ") | trim -%}
+  {%- endif -%}
+  <url>
+    <loc>{{ baseUrl }}/Sharan/projects/{{ updProjTitle | slug }}/updates/{{ update.Title | slug }}/</loc>
+    {%- if update.UpdateDate %}
+    <lastmod>{{ update.UpdateDate | date("YYYY-MM-DD") }}</lastmod>
+    {%- endif %}
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  {%- endif -%}
+  {%- endfor -%}
+
+</urlset>
