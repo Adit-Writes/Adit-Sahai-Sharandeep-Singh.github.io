@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Unsubscribe</title>
+    <link rel="stylesheet" href="/Adit-Sahai-Sharandeep-Singh.github.io/MainCode/style.css">
+</head>
+<body>
+    <div style="max-width:480px; margin:100px auto; text-align:center;">
+        <h2 id="unsubTitle">Unsubscribing…</h2>
+        <p id="unsubMsg"></p>
+    </div>
+    <script>
+    const SUPABASE_URL = 'https://mpeqripywqiotselpyut.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wZXFyaXB5d3Fpb3RzZWxweXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTE4MzUsImV4cCI6MjA5Njg4NzgzNX0.1lTHIY3M1xk5FmnTC2YMbSMNpi7vhWDuGGXUSNkwkm8';
+    const params = new URLSearchParams(location.search);
+    const token = params.get('token');
+
+    (async () => {
+        const titleEl = document.getElementById('unsubTitle');
+        const msgEl = document.getElementById('unsubMsg');
+        if (!token) { titleEl.textContent = 'Invalid link'; return; }
+        try {
+            const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/unsubscribe_by_token`, {
+                method: 'POST',
+                headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ p_token: token })
+            });
+            const success = await res.json();
+            titleEl.textContent = success ? 'Unsubscribed' : 'Already unsubscribed';
+            msgEl.textContent = success ? "You won't receive further update emails." : "This link may have already been used.";
+        } catch (e) {
+            titleEl.textContent = 'Something went wrong';
+        }
+    })();
+    </script>
+</body>
+</html>
