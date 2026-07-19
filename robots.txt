@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://adit-writes.github.io/Adit-Sahai-Sharandeep-Singh.github.io/mysitemap.xml
+Sitemap: https://adit-writes.github.io/Adit-Sahai-Sharandeep-Singh.github.io/sitemap.xml
