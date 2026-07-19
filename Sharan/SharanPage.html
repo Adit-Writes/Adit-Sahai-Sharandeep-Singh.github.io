@@ -1075,6 +1075,46 @@ permalink: /Sharan/SharanPage.html
   <script src="/Adit-Sahai-Sharandeep-Singh.github.io/MainCode/script.js"></script>
 
   <script>
+
+function initNotifySubscribersButton(functionsUrl) {
+  const passphrase = localStorage.getItem('hostPassphrase');
+  if (!passphrase) return;
+
+  document.querySelectorAll('.sp-card-notify-btn').forEach(btn => {
+    btn.style.display = 'inline-flex';
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const title = btn.dataset.title;
+      const slug  = btn.dataset.slug;
+      const url   = `https://adit-writes.github.io/Adit-Sahai-Sharandeep-Singh.github.io/Sharan/projects/${slug}/`;
+
+      const body = prompt(`Write the email body for "${title}":`);
+      if (!body) return;
+      if (!confirm(`Send notification for "${title}" to all subscribers?`)) return;
+
+      btn.disabled = true;
+      const originalText = btn.textContent;
+      btn.textContent = 'Sending…';
+
+      try {
+        const res = await fetch(`${functionsUrl}/send-notification`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, url, type: 'project', body, passphrase })
+        });
+        const data = await res.json();
+        alert(data.error ? `Error: ${data.error}` : `Sent to ${data.sent}/${data.total} subscribers.`);
+      } catch (err) {
+        alert('Failed to send notification.');
+      }
+      btn.disabled = false;
+      btn.textContent = originalText;
+    });
+  });
+}
+    
     // ── Fixed nav: scroll state + active section highlighting ──
     (function () {
       const nav = document.getElementById('spNav');
