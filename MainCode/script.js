@@ -1616,6 +1616,61 @@ function initNewsletterSignup(supabaseUrl, supabaseKey) {
         btn.disabled = false;
     });
 }
+
+function initNotifySubscribersButton(functionsUrl, supabaseKey) {
+  const passphrase = localStorage.getItem('hostPassphrase');
+  if (!passphrase) return;
+
+  document.querySelectorAll('.notify-btn').forEach(btn => {
+    btn.style.display = 'inline-flex';
+    btn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      const title    = btn.dataset.title;
+      const slug     = btn.dataset.slug;
+      const desc     = btn.dataset.desc;
+      const category = btn.dataset.category;
+      const readtime = btn.dataset.readtime;
+      const status   = btn.dataset.status; // undefined on articles, fine
+      const pic      = btn.dataset.pic;
+      const date     = btn.dataset.date;
+
+      const isArticle = btn.classList.contains('article-notify-btn');
+      const url = isArticle
+        ? `https://adit-writes.github.io/Adit-Sahai-Sharandeep-Singh.github.io/Adit/articles/${slug}/`
+        : `https://adit-writes.github.io/Adit-Sahai-Sharandeep-Singh.github.io/Sharan/projects/${slug}/`;
+      const type = isArticle ? 'article' : 'project';
+
+      const body = prompt(`Write the email body for "${title}":`);
+      if (!body) return;
+      if (!confirm(`Send notification for "${title}" to all subscribers?`)) return;
+
+      btn.disabled = true;
+      const originalText = btn.textContent;
+      btn.textContent = 'Sending…';
+
+      try {
+        const res = await fetch(`${functionsUrl}/send-notification`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${supabaseKey}`
+          },
+          body: JSON.stringify({ title, url, type, body, passphrase, desc, category, status, readtime, pic, date })
+        });
+        const data = await res.json();
+        alert(data.error ? `Error: ${data.error}` : `Sent to ${data.sent}/${data.total} subscribers.`);
+      } catch (err) {
+        console.error('Notify error:', err);
+        alert('Failed to send notification: ' + err.message);
+      }
+      btn.disabled = false;
+      btn.textContent = originalText;
+    });
+  });
+}
+
 // ============================================================
 //  INIT
 // ============================================================
