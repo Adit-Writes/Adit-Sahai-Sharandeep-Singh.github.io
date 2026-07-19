@@ -1,4 +1,3 @@
-
 ---
 permalink: /sitemap.xml
 eleventyExcludeFromCollections: true
@@ -33,9 +32,9 @@ eleventyExcludeFromCollections: true
   <url>
     <loc>{{ baseUrl }}/Adit/articles/{{ article.Title | slug }}/</loc>
     {%- if article.LastUpdated %}
-    <lastmod>{{ article.LastUpdated | date("YYYY-MM-DD") }}</lastmod>
+    <lastmod>{{ article.LastUpdated }}</lastmod>
     {%- elif article.ReleaseDate %}
-    <lastmod>{{ article.ReleaseDate | date("YYYY-MM-DD") }}</lastmod>
+    <lastmod>{{ article.ReleaseDate }}</lastmod>
     {%- endif %}
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -49,9 +48,9 @@ eleventyExcludeFromCollections: true
   <url>
     <loc>{{ baseUrl }}/Sharan/projects/{{ project.Title | slug }}/</loc>
     {%- if project.LastUpdated %}
-    <lastmod>{{ project.LastUpdated | date("YYYY-MM-DD") }}</lastmod>
+    <lastmod>{{ project.LastUpdated }}</lastmod>
     {%- elif project.StartedDate %}
-    <lastmod>{{ project.StartedDate | date("YYYY-MM-DD") }}</lastmod>
+    <lastmod>{{ project.StartedDate }}</lastmod>
     {%- endif %}
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -71,7 +70,7 @@ eleventyExcludeFromCollections: true
   <url>
     <loc>{{ baseUrl }}/Sharan/projects/{{ updProjTitle | slug }}/updates/{{ update.Title | slug }}/</loc>
     {%- if update.UpdateDate %}
-    <lastmod>{{ update.UpdateDate | date("YYYY-MM-DD") }}</lastmod>
+    <lastmod>{{ update.UpdateDate }}</lastmod>
     {%- endif %}
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
