@@ -1080,29 +1080,27 @@ permalink: /Sharan/SharanPage.html
 function initNotifySubscribersButton(functionsUrl) {
   const passphrase = localStorage.getItem('hostPassphrase');
   if (!passphrase) return;
-
   document.querySelectorAll('.sp-card-notify-btn').forEach(btn => {
     btn.style.display = 'inline-flex';
     btn.addEventListener('click', async (e) => {
       e.preventDefault();
       e.stopPropagation();
-
       const title = btn.dataset.title;
       const slug  = btn.dataset.slug;
       const url   = `https://adit-writes.github.io/Adit-Sahai-Sharandeep-Singh.github.io/Sharan/projects/${slug}/`;
-
       const body = prompt(`Write the email body for "${title}":`);
       if (!body) return;
       if (!confirm(`Send notification for "${title}" to all subscribers?`)) return;
-
       btn.disabled = true;
       const originalText = btn.textContent;
       btn.textContent = 'Sending…';
-
       try {
         const res = await fetch(`${functionsUrl}/send-notification`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${SUPABASE_KEY}`
+          },
           body: JSON.stringify({ title, url, type: 'project', body, passphrase })
         });
         const data = await res.json();
@@ -1115,7 +1113,6 @@ function initNotifySubscribersButton(functionsUrl) {
     });
   });
 }
-    
     // ── Fixed nav: scroll state + active section highlighting ──
     (function () {
       const nav = document.getElementById('spNav');
