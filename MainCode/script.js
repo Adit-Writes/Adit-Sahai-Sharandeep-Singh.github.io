@@ -1579,6 +1579,80 @@ function initScrollVelocityWarp() {
     });
   }, { passive: true });
 }
+
+// ══════════════════════════════════════════════════════════════
+// NEWSLETTER SIGNUP (shared across all pages)
+// ══════════════════════════════════════════════════════════════
+function initNewsletterSignup(supabaseUrl, supabaseKey) {
+    const btn = document.getElementById('subscribeBtn');
+    const input = document.getElementById('subscribeEmail');
+    const msg = document.getElementById('subscribeMsg');
+    if (!btn || !input || !msg) return;
+
+    btn.addEventListener('click', async () => {
+        const email = input.value.trim();
+        if (!email || !email.includes('@')) {
+            msg.textContent = 'Please enter a valid email.';
+            return;
+        }
+        btn.disabled = true;
+        try {
+            const res = await fetch(`${supabaseUrl}/rest/v1/rpc/subscribe_to_updates`, {
+                method: 'POST',
+                headers: {
+                    'apikey': supabaseKey,
+                    'Authorization': `Bearer ${supabaseKey}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ p_email: email })
+            });
+            const data = await res.json();
+            const already = Array.isArray(data) ? data[0]?.already_subscribed : data?.already_subscribed;
+            msg.textContent = already ? "You're already subscribed!" : "Subscribed! You'll hear about new posts.";
+            input.value = '';
+        } catch (e) {
+            msg.textContent = 'Something went wrong — try again.';
+        }
+        btn.disabled = false;
+    });
+}
+
+// ══════════════════════════════════════════════════════════════
+// NOTIFY SUBSCRIBERS (host-only, shared across all pages)
+// ══════════════════════════════════════════════════════════════
+function initNotifySubscribersButton(functionsUrl) {
+    const btn = document.getElementById('notifySubscribersBtn');
+    if (!btn) return;
+    const passphrase = localStorage.getItem('hostPassphrase');
+    if (passphrase) btn.style.display = 'inline-block';
+
+    btn.addEventListener('click', async () => {
+        const title = prompt('Title of the new post:');
+        if (!title) return;
+        const url = prompt('Full URL to the post:');
+        if (!url) return;
+        const type = confirm('Is this a project? (OK = project, Cancel = article)') ? 'project' : 'article';
+
+        if (!confirm(`Send notification email for "${title}" to all subscribers?`)) return;
+
+        btn.disabled = true;
+        btn.textContent = 'Sending…';
+        try {
+            const res = await fetch(`${functionsUrl}/send-notification`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, url, type, passphrase })
+            });
+            const data = await res.json();
+            alert(data.error ? `Error: ${data.error}` : `Sent to ${data.sent}/${data.total} subscribers.`);
+        } catch (e) {
+            alert('Failed to send notifications.');
+        }
+        btn.disabled = false;
+        btn.textContent = '📧 Notify Subscribers';
+    });
+}
+
 // ============================================================
 //  INIT
 // ============================================================
