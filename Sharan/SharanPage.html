@@ -1077,7 +1077,7 @@ permalink: /Sharan/SharanPage.html
 
   <script>
 
-function initNotifySubscribersButton(functionsUrl) {
+function initNotifySubscribersButton(functionsUrl, supabaseKey) {
   const passphrase = localStorage.getItem('hostPassphrase');
   if (!passphrase) return;
   document.querySelectorAll('.sp-card-notify-btn').forEach(btn => {
@@ -1099,14 +1099,15 @@ function initNotifySubscribersButton(functionsUrl) {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${SUPABASE_KEY}`
+            'Authorization': `Bearer ${supabaseKey}`
           },
           body: JSON.stringify({ title, url, type: 'project', body, passphrase })
         });
         const data = await res.json();
         alert(data.error ? `Error: ${data.error}` : `Sent to ${data.sent}/${data.total} subscribers.`);
       } catch (err) {
-        alert('Failed to send notification.');
+        console.error('Notify error:', err);
+        alert('Failed to send notification: ' + err.message);
       }
       btn.disabled = false;
       btn.textContent = originalText;
@@ -1387,7 +1388,7 @@ function initNotifySubscribersButton(functionsUrl) {
   const viewsPills = Array.from(document.querySelectorAll('.sp-card-views-pill[data-slug]'));
 
     initNewsletterSignup(SUPABASE_URL, SUPABASE_KEY);
-    initNotifySubscribersButton(`${SUPABASE_URL.replace('.supabase.co', '.functions.supabase.co')}`);
+    initNotifySubscribersButton(`${SUPABASE_URL.replace('.supabase.co', '.functions.supabase.co')}`, SUPABASE_KEY);
   
   // ── Views ──
   if (viewsPills.length) {
