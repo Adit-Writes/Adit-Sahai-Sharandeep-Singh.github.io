@@ -974,6 +974,14 @@ permalink: /Sharan/SharanPage.html
                 </span>
                 {% endif %}
             </div>
+
+            <button class="sp-card-notify-btn" data-slug="{{ project.Title | slug }}"
+                      data-title="{{ project.Title }}"
+                      data-desc="{{ project.Description | striptags | truncate(160) }}"
+                      style="display:none;">
+                📧 Notify
+              </button>
+            
             <span class="sp-card-link">
               view
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="sp-card-link-arrow"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg>
