@@ -1330,6 +1330,9 @@ permalink: /Sharan/SharanPage.html
   const likePills  = Array.from(document.querySelectorAll('.sp-card-like-pill[data-slug]'));
   const viewsPills = Array.from(document.querySelectorAll('.sp-card-views-pill[data-slug]'));
 
+    initNewsletterSignup(SUPABASE_URL, SUPABASE_KEY);
+    initNotifySubscribersButton(`${SUPABASE_URL.replace('.supabase.co', '.functions.supabase.co')}`);
+  
   // ── Views ──
   if (viewsPills.length) {
     (async function () {
@@ -1448,9 +1451,6 @@ permalink: /Sharan/SharanPage.html
         el.innerHTML         = d.svg;
       });
     })();
-
-    initNewsletterSignup(SUPABASE_URL, SUPABASE_KEY);
-    initNotifySubscribersButton(`${SUPABASE_URL.replace('.supabase.co', '.functions.supabase.co')}`);
   </script>
 </body>
 </html>
