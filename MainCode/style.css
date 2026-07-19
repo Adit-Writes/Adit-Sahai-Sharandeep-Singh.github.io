@@ -1956,3 +1956,12 @@ h1, h2, h3, h4 {
   transform-origin: left center;
   will-change: width;
 }
+
+.notify-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.3px;
+  padding: 5px 12px; border-radius: 20px;
+  border: 1px solid var(--accent-gold-line);
+  color: var(--accent-gold); background: var(--accent-gold-dim);
+  cursor: pointer;
+}
