@@ -942,6 +942,14 @@ permalink: /Sharan/SharanPage.html
 
         <div class="sp-card-hud">
           <span class="sp-hud-index">{{ "0" if loop.index < 10 }}{{ loop.index }}</span>
+
+              <button class="sp-card-notify-btn" data-slug="{{ project.Title | slug }}"
+                      data-title="{{ project.Title }}"
+                      data-desc="{{ project.Description | striptags | truncate(160) }}"
+                      style="display:none;">
+                📧 Notify
+              </button>
+    
           {% if statusName and statusName != "undefined" and statusName != "" %}
           <span class="sp-hud-status" data-status="{{ statusSlug }}"><span class="sp-status-dot"></span>{{ statusName }}</span>
           {% endif %}
@@ -984,13 +992,6 @@ permalink: /Sharan/SharanPage.html
                 </span>
                 {% endif %}
             </div>
-
-            <button class="sp-card-notify-btn" data-slug="{{ project.Title | slug }}"
-                      data-title="{{ project.Title }}"
-                      data-desc="{{ project.Description | striptags | truncate(160) }}"
-                      style="display:none;">
-                📧 Notify
-              </button>
             
             <span class="sp-card-link">
               view
