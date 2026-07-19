@@ -356,6 +356,15 @@ permalink: /Adit/AditPage.html
           background-clip: inherit;
           -webkit-text-fill-color: inherit;
         }
+
+        .notify-btn {
+          font-family: 'Inter', sans-serif;
+          font-size: 0.68rem; font-weight: 600; letter-spacing: 0.3px;
+          padding: 5px 12px; border-radius: 20px;
+          border: 1px solid var(--accent-gold-line);
+          color: var(--accent-gold); background: var(--accent-gold-dim);
+          cursor: pointer;
+        }
         
     </style>
 </head>
@@ -551,6 +560,16 @@ permalink: /Adit/AditPage.html
                 <p class="article-excerpt">{{ article.Description | safe }}</p>
                 <div class="article-footer">
                     <span class="date">{{ article.ReleaseDate }}</span>
+                    <button class="notify-btn article-notify-btn" data-slug="{{ article.Title | slug }}"
+                      data-title="{{ article.Title }}"
+                      data-desc="{{ article.Description | striptags | truncate(160) }}"
+                      data-category="{{ article.Topic }}"
+                      data-readtime="{{ article.ReadTime }}"
+                      data-pic="{% if firstPic %}/Adit-Sahai-Sharandeep-Singh.github.io{{ firstPic }}{% endif %}"
+                      data-date="{{ article.ReleaseDate }}"
+                      style="display:none;">
+                        📧 Notify
+                    </button>
                     <a href="/Adit-Sahai-Sharandeep-Singh.github.io/Adit/articles/{{ article.Title | slug }}/" class="read-link">Read Article →</a>
                 </div>
             </div>
