@@ -629,6 +629,9 @@ permalink: /Adit/AditPage.html
     const SUPABASE_URL = 'https://mpeqripywqiotselpyut.supabase.co';
     const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1wZXFyaXB5d3Fpb3RzZWxweXV0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEzMTE4MzUsImV4cCI6MjA5Njg4NzgzNX0.1lTHIY3M1xk5FmnTC2YMbSMNpi7vhWDuGGXUSNkwkm8';
 
+    initNewsletterSignup(SUPABASE_URL, SUPABASE_KEY);
+    initNotifySubscribersButton(`${SUPABASE_URL.replace('.supabase.co', '.functions.supabase.co')}`);
+        
     // ── State ────────────────────────────────────────────────────
     let activeFilter     = 'all';
     let likedSubActive   = false;
@@ -1022,9 +1025,6 @@ permalink: /Adit/AditPage.html
     }
         
     initLinkIcons();
-
-    initNewsletterSignup(SUPABASE_URL, SUPABASE_KEY);
-    initNotifySubscribersButton(`${SUPABASE_URL.replace('.supabase.co', '.functions.supabase.co')}`);
     
     </script>
 </body>
