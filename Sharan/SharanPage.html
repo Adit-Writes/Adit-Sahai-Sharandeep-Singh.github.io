@@ -943,7 +943,7 @@ permalink: /Sharan/SharanPage.html
         <div class="sp-card-hud">
           <span class="sp-hud-index">{{ "0" if loop.index < 10 }}{{ loop.index }}</span>
 
-              <button class="sp-card-notify-btn" data-slug="{{ project.Title | slug }}"
+              <button class="notify-btn sp-card-notify-btn" data-slug="{{ project.Title | slug }}"
                 data-title="{{ project.Title }}"
                 data-desc="{{ project.Description | striptags | truncate(160) }}"
                 data-category="{{ catName }}"
