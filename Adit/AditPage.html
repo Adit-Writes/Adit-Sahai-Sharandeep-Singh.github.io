@@ -1022,6 +1022,9 @@ permalink: /Adit/AditPage.html
     }
         
     initLinkIcons();
+
+    initNewsletterSignup(SUPABASE_URL, SUPABASE_KEY);
+    initNotifySubscribersButton(`${SUPABASE_URL.replace('.supabase.co', '.functions.supabase.co')}`);
     
     </script>
 </body>
