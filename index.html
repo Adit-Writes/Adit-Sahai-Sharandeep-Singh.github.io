@@ -1012,6 +1012,36 @@ permalink: /index.html
     .link-card     { flex: 1 1 auto; max-width: 100%; min-width: 0; box-sizing: border-box; }
     .link-card-text { min-width: 0; overflow: hidden; }
 
+/* Newsletter signup — stack and constrain on mobile */
+    .newsletter-inline-wrap {
+      padding: 0 16px;
+      box-sizing: border-box;
+    }
+    .newsletter-inline {
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .newsletter-inline-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      width: 100%;
+    }
+    .newsletter-inline-row input,
+    .newsletter-inline-row button {
+      box-sizing: border-box;
+      max-width: 100%;
+    }
+    #subscribeEmail {
+      flex: 1 1 100%;
+      min-width: 0;
+      width: 100%;
+    }
+    #subscribeBtn {
+      flex: 1 1 100%;
+      width: 100%;
+    }
+    
     /* Eyebrow pill — allow it to wrap gracefully on very narrow screens */
     .section-eyebrow span {
       white-space: normal;
